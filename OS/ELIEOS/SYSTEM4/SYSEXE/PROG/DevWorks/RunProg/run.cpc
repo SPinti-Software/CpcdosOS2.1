@@ -1,0 +1,66 @@
+
+fenetre/ APP_EXEC_MIDLET
+	.titre 			= "Program to execute"
+	.px				= "500"
+	.py				= "100"
+	.tx				= "280"
+	.ty				= "76"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond = "255,255,255"
+	.event			= ""
+	@#exec_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ EXE_CPC
+	.Handle			= "%exec_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "2"
+	.PY				= "2"
+	.tx				= "70"
+	.ty				= "39"
+	rem/ .opacite		= "200"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ELIENOTE/execpc.png"
+	.event			= ""
+	creer/
+Fin/ picturebox
+
+bouton/ btn_open
+	.Handle			= "%exec_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "215"
+	.PY				= "42"
+	.tx				= "56"
+	.ty				= "22"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_RED.png"
+	.texte          = "Launch"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ bouton
+
+fix/ filename = \#NULL
+
+Textebox/ file_data
+	.handle			= "%exec_Fenetre%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "3"
+        .PY                             = "45"
+	.TX				= "190"
+	.TY				= "17"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%filename%"
+	.event			= "%_exe_path_%"
+    Creer/
+Fin/ Textebox
+
+fonction/ btn_open.Click()
+                
+         textebox/ /modif:file_data
+			 @#filename .texte
+		 Fin/ textbox
+ 
+  EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/projects/%filename%
+fin/ fonction

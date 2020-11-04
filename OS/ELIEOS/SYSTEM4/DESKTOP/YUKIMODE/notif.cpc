@@ -1,0 +1,107 @@
+
+fix/ posy = /C(%CPC.SCR.Y% - 240)
+FIX/ menuprog_POSX = /C(%CPC.SCR.X% - 310)
+
+fenetre/ ntif
+	.titre 			= "Notification"
+	.px				= "0"
+	.py				= "%posy%"
+	.tx				= "310"
+	.ty				= "200"
+    .Opacite 		= "155"
+	.Parametres		= "TYPE:4 CTN:1 OMBRE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurTitre	= "000,000,000"
+	.CouleurFond	= "155,155,155"
+	.event			= ""
+	@#data_notif creer/
+Fin/ fenetre
+
+
+fix/ update = false
+
+
+picturebox/ fond
+	.Handle			= "%data_notif%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "310"
+	.ty		        = "200"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/OS/BACKFONT/notifce.png"
+	rem/.opacite		= "100"
+	rem/.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+Bouton/ close_win
+	.Handle			= "%data_notif%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "7"
+	.PY				= "175"
+	.tx				= "76"
+	.ty				= "22"
+	rem/ .opacite		= "100"
+	.texte			= "Close"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_PRPL.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ close_win.Click()
+fermer/ ntif
+fin/ fonction
+
+SI/ "%update%" == "false" alors:
+ccp/ /pause 3000
+picturebox/ noupdate
+	.Handle			= "%data_notif%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "7"
+	.PY			= "30"
+	.tx			= "296"
+	.ty		        = "142"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/OS/BACKFONT/noupdate.png"
+	rem/.opacite		= "100"
+	rem/.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+SINON:
+   SI/ "%update%" == "true" alors:
+   ccp/ /pause 3000
+    picturebox/ noupdate
+	.Handle			= "%data_notif%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "7"
+	.PY			= "30"
+	.tx			= "296"
+	.ty		        = "142"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/OS/BACKFONT/update.png"
+	rem/.opacite		= "100"
+	rem/.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+   Fin/ picturebox
+    Bouton/ apply_up
+	.Handle			= "%data_notif%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "215"
+	.PY				= "110"
+	.tx				= "76"
+	.ty				= "22"
+	rem/ .opacite		= "100"
+	.texte			= "Update"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+ fonction/ apply_up.Click()
+ message/ update
+ fin/ fonction
+   fin/ si
+fin/ si
+
+
+
+
+

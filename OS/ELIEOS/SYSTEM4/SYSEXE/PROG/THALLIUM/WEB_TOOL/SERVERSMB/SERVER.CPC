@@ -1,0 +1,6 @@
+si/ liveboot.cfg == LIVE alors: 
+erreur demarrer en normal
+
+si/ liveboot.cfg == NOLIVE alors:
+
+Continuer a afficher la fenetre 

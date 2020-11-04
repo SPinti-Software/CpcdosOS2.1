@@ -1,0 +1,10 @@
+Fenetre/ Type3
+	.Titre					= "TYPE3"
+	.Parametres				= "TYPE:3"
+	.PX						= "200"
+	.PY						= "200"
+	.TX						= "200"
+	.TY						= "200"
+	.CouleurFond			= "050,050,050"
+creer/
+Fin/ Fenetre

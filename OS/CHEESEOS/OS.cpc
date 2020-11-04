@@ -1,0 +1,30 @@
+// This file is the index file for the kernel. Don't delete or rename this.
+// Created on : 11/24/19 | Updated on : 03/21/20
+
+ccp/ /set.level = 4
+
+// Operating System Informations
+
+set/ os_name = cheeseOS
+set/ os_developper = chrapatia
+set/ os_publisher = chrapatia
+set/ os_version_major = 1
+set/ os_version_minor = 3
+set/ os_version_patch = 0
+set/ os_development_statement = Alpha
+
+// Graphic User Interface Configuration
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
+@#SCREEN_RESOLUTION ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+set/ SCR_RES = %SCREEN_RESOLUTION%
+set/ SCR_IMG_MODE = 2
+@#FOND ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/BACKGRD/config.cfg
+set/ SCR_IMG = %FOND%
+exe/ /llvm OS/CHEESEOS/SYS_APPS/TEST/Test.ll
+ccp/ /pause:5000
+iug/
+exe/ & OS/CHEESEOS/UI/TASKBAR/taskbar.cpc
+// exe/ & OS/CHEESEOS/SYS_APPS/LOGIN/login.cpc
+
+

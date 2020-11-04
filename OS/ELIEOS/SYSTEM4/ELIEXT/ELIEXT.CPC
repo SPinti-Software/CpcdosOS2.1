@@ -1,0 +1,78 @@
+///////////////////////////////////////////////////////////////////////////
+//// Gestionnaire de demarrage au systeme ElieOS qui verifie lexistence////
+//// des modules systeme de base des parametre utilisateur             ////
+////                                                                   ////
+//// ElieXT (eXperience Technology for Elie Office System              ////
+//// Version Beta 0.9  Tout se temps deja :O                           ////
+//// Meaxy Computer (c) 2019 All right reserved                        ////
+///////////////////////////////////////////////////////////////////////////
+
+
+
+rem/ ElieXT 3.0 (c) 2020 Meaxy Computer
+
+
+ccp/ /fix.niveau = 4
+
+
+ 
+IUG/ /CONSOLE
+SYS/ /OS:ELIEOS
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+
+@#BITS OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg
+
+
+FIX/ SCR_BIT = %BITS%
+
+
+@#RESOLUTION OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+FIX/ SCR_RES = %RESOLUTION%
+	
+SET/ SCR_IMG_MODE = 2
+
+CCP/ /OPTIMISATION = 1
+iug/
+
+////////////// LIRE LE LAUNCHER /////////////////
+
+
+@#GUI OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/ELIEXT/GUI/gui.cfg
+
+SI/ "%GUI%" == "ELIE" alors:
+        
+       ccp/ /fix.niveau = 3
+	   FIX/ CPC_GUI.WINDOW.TITLE_RGB = 000,000,000
+       FIX/ CPC_GUI.WINDOW.BT_CLOSE = OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/OS/BT_CLOSE.png
+       SET/ CPC_GUI.LOAD_IMG = OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/OS/LOAD.png
+       FIX/ CPC_GUI.WINDOW.ICO = OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/OS/elie.png
+       FIX/ CPC_GUI.WINDOW.TITLE_IMG = OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_GRA3.png
+	   ccp/ /fix.niveau = 4
+ SINON:
+	SI/ "%GUI%" == "YUKI" alors:
+	    
+       ccp/ /fix.niveau = 3
+       FIX/ CPC_GUI.WINDOW.TITLE_RGB = 255,255,255
+       FIX/ CPC_GUI.WINDOW.ICO = %HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/TITLE/circle.png
+       FIX/ CPC_GUI.WINDOW.BT_CLOSE = %HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/CLOSE/BT_CLOSE.png
+       SET/ CPC_GUI.LOAD_IMG = %HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/CURSOR/LOAD.png
+       FIX/ CPC_GUI.WINDOW.TITLE_IMG = %HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BAR_TITL.png
+	   ccp/ /fix.niveau = 4
+     FIN/ SI
+FIN/ SI
+
+
+@#FIRST OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/FRSTSET/frstime.cfg
+
+SI/ "%FIRST%" == "TRUE" alors:
+        CMD/ /PID:%PID_SETUP% exe/ & OS/ELIEOS/SYSTEM4/ELIEXT/install/setup.cpc
+		FERMER/ /PID:%PID_STARTUP%
+SINON:
+	SI/ "%FIRST%" == "FALSE" alors:
+	    EXE/ & OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/gui.cpc
+     FIN/ SI
+FIN/ SI
+
+

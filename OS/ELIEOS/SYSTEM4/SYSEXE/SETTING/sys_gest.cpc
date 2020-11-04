@@ -1,0 +1,68 @@
+///////////////////////////////////
+//// Gestionnaire du Systeme   ////
+//// Elie Office System        ////
+///////////////////////////////////
+
+fenetre/ sys_pad
+	.titre 			= "System Managers"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "490"
+	.ty = "100"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "195,195,195"
+	.event = ""
+	@#system_gest creer/
+fin/ fenetre
+
+TEXTEBLOC/ id_cpu
+	.Handle = "%system_gest%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "ID: %CPC.SYS.CPU.ID%"
+	.PX = "20"
+	.PY = "3"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ id_vendor
+	.Handle = "%system_gest%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Seller: %CPC.SYS.CPU.VENDOR%"
+	.PX = "20"
+	.PY = "15"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ id_name
+	.Handle = "%system_gest%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "CPU name: %CPC.SYS.CPU.NAME%"
+	.PX = "20"
+	.PY = "27"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ id_name
+	.Handle = "%system_gest%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "OS: ElieOS %OS_VERSION% 32 bit"
+	.PX = "20"
+	.PY = "39"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ cpu_act
+	.Handle = "%system_gest%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "CPU activity: ${CPC.SYS.CPU.ACT} %"
+	.PX = "20"
+	.PY = "51"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC

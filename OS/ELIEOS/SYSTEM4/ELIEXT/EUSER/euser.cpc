@@ -1,0 +1,182 @@
+///////////////////////////
+/// LOGIN SCREEN ELIEOS ///
+///////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////// Definition des parametre de resolution de lecran de verrouillage          /////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+FIX/ password_POSX = /C((%CPC.SCR.X% / 2) - (200 / 2))
+FIX/ passwordtxt_POSX = /C(%password_POSX% - 100)
+FIX/ username_POSX = /C((%CPC.SCR.X% / 2) - (200 / 2))
+FIX/ usernametxt_POSX = /C(%username_POSX% - 95)
+FIX/ connect_POSX = /C((%CPC.SCR.X% / 2) - (91 / 2))
+FIX/ icon_POSX = /C((%CPC.SCR.X% / 2) - (110 / 2))
+FIX/ connectinfo_POSX = /C(%usernametxt_POSX% + 139)
+FIX/ LOGOY = 240
+FIX/ CONNY = 440
+FIX/ USERY = 375
+FIX/ PASSY = 413
+
+
+FIX/ POSSHUTX = /C(%CPC.SCR.X% - 39)
+FIX/ POSSHUTY = /C(%CPC.SCR.Y% - 33)
+
+
+fenetre/ LOGIN_USER
+	.titre 			= "LOGIN"
+	.px				= "0"
+	.py				= "0"
+	.tx				= "%CPC.SCR.X%"
+	.ty				= "%CPC.SCR.Y%"
+	.Opacite 		= "200"
+	.Parametres		= "TYPE:4 CTN:1 OMBRE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "195,195,195"
+	.event			= ""
+	@#LOG_SCR creer/
+Fin/ fenetre
+
+
+TEXTEBLOC/ Utilisateur
+	.Handle = "%LOG_SCR%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "User"
+	.PX = "%usernametxt_POSX%"
+	.PY = "372"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ MDP
+	.Handle = "%LOG_SCR%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Password"
+	.PX = "%passwordtxt_POSX%"
+	.PY = "410"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ LOGON
+	.Handle = "%LOG_SCR%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Log in"
+	.PX = "%connectinfo_POSX%"
+	.PY = "360"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ OSNAMEPOSY = /C(%CPC.SCR.Y% - 23)
+
+TEXTEBLOC/ OS_NAME
+	.Handle = "%LOG_SCR%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Elie Office-System Version %OS_VERSION%"
+	.PX = "3"
+	.PY = "%OSNAMEPOSY%"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ COMPNAMEPOSY = /C(%CPC.SCR.Y% - 13)
+
+TEXTEBLOC/ COMP_NAME
+	.Handle = "%LOG_SCR%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Copyright (c) Meaxy Computer"
+	.PX = "3"
+	.PY = "%COMPNAMEPOSY%"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+@#AVATAR OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/avatar.cfg
+
+picturebox/ logologin
+	.Handle			= "%LOG_SCR%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "%icon_POSX%"
+	.PY				= "%LOGOY%"
+	.tx				= "110"
+	.ty				= "110"
+	.Image			= "%AVATAR%"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+picturebox/ shutdown
+	.Handle			= "%LOG_SCR%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "%POSSHUTX%"
+	.PY				= "%POSSHUTY%"
+	.tx				= "30"
+	.ty				= "30"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/logshut.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+FONCTION/ shutdown.Click()
+  SYS/ /ARRETER
+FIN/ FONCTION
+
+FIX/ DATAUSR = \#NULL
+
+Textbox/ USERNAME
+	.handle			= "%LOG_SCR%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINE:1"
+	.PX				= "%username_POSX%"
+	.PY				= "%USERY%"
+	.TX				= "200"
+	.TY				= "15"
+	.CouleurFond	= "135,135,135"
+	.CouleurTexte	= "000,000,000"
+	.texte			= "%DATAUSR%"
+	.event			= ""
+	Creer/
+Fin/ Textebox
+
+FIX/ DATAPASSWORD = \#NULL
+
+Textbox/ PASSWORD_DATA
+	.handle			= "%LOG_SCR%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINE:1"
+	.PX				= "%password_POSX%"
+	.PY				= "%PASSY%"
+	.TX				= "200"
+	.TY				= "15"
+	.CouleurFond	= "135,135,135"
+	.CouleurTexte	= "000,000,000"
+	.texte			= "%DATAPASSWORD%"
+	.event			= ""
+	Creer/
+Fin/ Textebox
+
+
+Bouton/ connexion
+	.Handle			= "%LOG_SCR%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "%connect_POSX%"
+	.PY				= "%CONNY%"
+	.tx				= "91"
+	.ty				= "30"
+	texte 			= "Sign in"
+	.CouleurTexte	= "255,255,255"
+	rem/ .opacite		= "100"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_GRA2.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ connexion.Click()
+
+exe/ & OS/ELIEOS/SYSTEM4/ELIEXT/EUSER/user.cpc
+fermer/ LOGIN_USER
+
+fin/ fonction
+

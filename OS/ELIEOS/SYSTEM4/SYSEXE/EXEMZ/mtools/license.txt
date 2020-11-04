@@ -1,0 +1,50 @@
+
+Legal Terms and Conditions
+
+This package is provided to you under the following conditions:
+
+ 1. This package is distributed as freeware.  You may copy the  files, and 
+    give them to anyone who accepts these terms, as long as the copies you 
+    distribute are complete and unmodified.
+    
+ 2. There is no registration fee for using this package. However, a note or
+    comment stating that you have  downloaded this  package and are  using,
+    deleting, liking, loving, hating, etc., would  be appreciated.  You may
+    send all comments to:
+    
+         fys [at] fysnet [dot] net
+    
+    Commercial,  government, and  educational institutions and/or  training
+    facilities must be registered  in order to  use this  package.   Please
+    contact me for special terms and conditions.
+    
+ 3. This package may not be sold to anyone.  If this package is distributed
+    any fees  collected must be for  media and handling and  may not exceed 
+    ten US dollars.
+    
+ 4. I am not to be held liable  for any damages, of any  kind, arising from
+    any failure of  any programs within  this package or any images created
+    with this package.  Use at your own risk.
+
+ 5. You may sell or distribute any  image that you have created or modified
+    using this package.  There is no  fee for any image  file produced with 
+    this package as long as this image file  is for non-commercial use.  If
+    you use this package for commercial use,  please contact me for special
+    terms and conditions.
+    
+ 6. Sorry for all the legalities.  This is to protect me as well as protect 
+    you.
+    
+ 7. I do not imply that  the utilities within this  package are free of any
+    errors or other bugs.  You use these utilities are your own risk.
+    
+ 8. If source code is included and if you modify any utility for the better,
+    please  inform me  of the modifications  you have added  so that I  may
+    consider added them to this package for all to use.
+
+ X.
+    To aquire an original source package, please visit
+      
+      http://www.fysnet.net/mtools.htm
+      
+    

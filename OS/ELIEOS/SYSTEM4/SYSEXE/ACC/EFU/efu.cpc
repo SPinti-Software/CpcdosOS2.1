@@ -1,0 +1,193 @@
+
+ 
+fenetre/ elie_utility
+	.titre 			= "Elie File Utility"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "650"
+	.ty = "260"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "005,000,98"
+	.CouleurFond	= "112,146,190"
+	.event = ""
+	@#elie_efu creer/
+fin/ fenetre
+
+
+
+FIX/ sourcecopie = \#NULL
+FIX/ sourcesupprimer = \#NULL
+FIX/ sourcerenommer = \#NULL
+
+
+
+TEXTEBLOC/ copytxt
+	.Handle = "%elie_efu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "-Copy section-"
+	.PX = "3"
+	.PY = "20"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ sourcy
+	.Handle = "%elie_efu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Source:"
+	.PX = "25"
+	.PY = "45"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ sourcx
+	.Handle = "%elie_efu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Source:"
+	.PX = "25"
+	.PY = "175"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ destix
+	.Handle = "%elie_efu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Destination:"
+	.PX = "25"
+	.PY = "95"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ deltxt
+	.Handle = "%elie_efu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "-Delete section-"
+	.PX = "3"
+	.PY = "140"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+
+FIX/ sourcecopie = \#NULL
+FIX/ destcopie = \#NULL
+FIX/ sourcedel = \#NULL
+
+Textebox/ source_copie
+	.handle			= "%elie_efu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "25"
+        .PY                             = "60"
+	.TX				= "500"
+	.TY				= "15"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%sourcecopie%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+Textebox/ dest_copie
+	.handle			= "%elie_efu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "25"
+        .PY                             = "110"
+	.TX				= "500"
+	.TY				= "15"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%destcopie%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+Textebox/ del_data
+	.handle			= "%elie_efu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "25"
+        .PY                             = "190"
+	.TX				= "500"
+	.TY				= "15"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%sourcedel%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+
+
+Bouton/ copier_Bouton
+	.Handle			= "%elie_efu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "535"
+	.PY				= "78"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Copy"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+Bouton/ del_Bouton
+	.Handle			= "%elie_efu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "535"
+	.PY				= "183"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Delete"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+
+fonction/ copier_Bouton.Click()
+
+           textebox/ /modif:source_copie
+			 @#srcdata .texte
+		 Fin/ textbox
+		 
+		 textebox/ /modif:dest_copie
+			 @#destdata .texte
+		 Fin/ textbox
+		 
+		 set/ octets = 1
+		 cmd/ /thread COPIER/ %srcdata%, %destdata% /octets:octets
+		 
+		 Message/ File copied! /Titre: Elie Office System /Erreur:1 /Type:0
+
+FIN/ FONCTION
+
+FONCTION/ del_Bouton.Click()
+
+          textebox/ /modif:del_data
+			 @#deldata .texte
+		 Fin/ textbox
+		 
+		 CMD/ /THREAD SUPPRIMER/ %deldata%
+		 
+		 Message/ File deleted! /Titre: Elie Office System /Erreur:1 /Type:0
+
+FIN/ FONCTION
+
+
+
+
+
+
+
+
+

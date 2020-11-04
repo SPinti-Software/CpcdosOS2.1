@@ -1,0 +1,43 @@
+
+=============== TODO ===============
+
+- NETINST : Corriger "Configuratioin"
+- Telecharger/ --> Dans une variable au lieu d'un fichier TMP
+- Corriger ping/ "Erreur reseau" si le DNS est pas la
+- mode CCP --> "Execution de la commande...." +  resultat apres
+- %CPC.SYS.NET.CLT% ne marche pas
+- Les ev des textebloc ne marchent pas
+- TX et TY d'une fenetre non vidé, du coup si on crée
+	un objet sans tx ty il prendl es valeurs de la fenetre
+
+
+===========================================================================
+===========================================================================
+===========================================================================
+
+FB : 
+-fpmode FAST
+-fpu SSE
+-gen gcc
+-asm intel
+ -v
+ -Wc -I,../../djgpp/include,-include,mss/mss.h
+-l mss
+
+-g
+-Wc -ggdb3
+-profile
+-ex
+
+
+C++ :
+-ffast-math
+-msse
+-mfpmath=sse
+
+-Wreturn-type -fno-exceptions -Werror=return-type 
+-pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Wno-unused
+
+
+
+	

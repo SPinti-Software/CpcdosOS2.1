@@ -1,0 +1,54 @@
+/*	
+	======================================
+	==      CPinti ---> Input/Output    ==
+	==                     Suppression  ==
+	======================================
+	
+	Developpe entierement par Sebastien FAVIER
+	
+	Description
+		Module de suppression CPinti Core(tm) pour Cpcdos OSx.
+	
+	Creation 
+		02/10/2017
+	
+
+	Mise a jour
+		02/10/2017
+		
+
+*/
+#include <memory>
+#include <iostream>
+#include "io.h"
+#include "CPinti.h" // Doevents
+ 
+namespace NP_cpinti_io
+{
+	
+
+	// ===========================================================================
+	// ================================ SUPPRIMER ================================
+	// ===========================================================================
+	
+	bool cpinti_io::Supprimer_Ficher(std::string Chemin, bool securise, int NombrePasses)
+	{
+		// Cette methode permet de supprimer un fichier sur un support
+		//  il est egalement possible de securiser la suppression en effacant la zone
+		//  de donnees avec des ZEROS et avec un certain nombre de passes.
+		
+		if(Chemin.empty())
+			securise = true;
+		
+		if(securise == false)
+			securise = true;
+		
+		if(NombrePasses == 0)
+			securise = true;
+		
+		return false;
+		
+	}
+	
+	
+}

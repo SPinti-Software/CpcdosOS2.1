@@ -1,0 +1,10 @@
+Fenetre/ Type5
+	.Titre					= "TYPE5"
+	.Parametres				= "TYPE:5"
+	.PX						= "200"
+	.PY						= "200"
+	.TX						= "200"
+	.TY						= "200"
+	.CouleurFond			= "050,050,050"
+creer/
+Fin/ Fenetre

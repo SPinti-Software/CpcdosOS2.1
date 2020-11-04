@@ -1,0 +1,151 @@
+                      DOS Navigator - overview
+
+1.  File panel:
+   - under file panel understands any panel with any list of files:
+     The panel with list of found files, temp drive, archive  and
+     usual list of files of directory. Any list is displayed as a
+     directory, therefore the appearance at Archive view and Temporary drive
+     coincide accurately to information part.
+   - Drag-and-Drop ideology.
+   - works with files and subdirectories - copy, move, delete etc.
+     - copy/move:
+        - is used XMS/EMS;
+        - check for free disk space (optionally);
+        - verifying disk writing (optionally);
+        - the possibility to append files to already existing files ( even if
+          moving in space of one disk ) is present;
+        - if destination of Copy is TEMP: files will be copied on TEMP drive
+          of the disk.
+     - creation of file-list of selected files. You may create a batch file,
+       each line of it is outcoming from string `Action' - if it doesn't
+
+       contain any name macros (i.e. !.!, !), then file name will be simply
+       added to end of Action string, otherwise macros will be proceed.
+     - managing of printing of files.
+     - view/edit of file can be as external, as internal. These viewers
+        are: text/hex/dump, .dbf with opportunity viewing of memo-fields,
+        archive viewing, .tdr;
+     - it is possible to split/combine of long files on parts.
+     - it is possible to uuencode/uudecode files.
+     - when erasing files, if "Direct disk access" option set on,
+       erasing files will speed up.
+   - Archive processing:
+     - 17 different archive types support:
+          ARC - Arc (C) NoGate Consulting
+          ARJ - ARJ (C) Robert K. Jung
+          BSA - BSArc v1.xx (C) PhysTechSoft
+          BS2 - BSArc v2.xx (C) PhysTechSoft
+          CHZ - ChArc (C) Dialogue
+          HA  - HA (C) Harry Hirvola
+          HAP - HAP (C) Hamarsoft
+          HPK - HPack (C) Peter Gutmann
+          HYP - Hyper (C) P.Sawatzki . K.P.Nicshke
+          LHA - LHArc (C) Haruyasu Yoshizaki
+          LIM - Limit (C) J Y Lim
+          RAR - RAR (C) E. Roshal
+          SQZ - SQZ (C) J.I.Hammarberg
+          TAR - Tape Archver for *NIX
+          UC2 - UltraCompressor II (C) Ad Infinitum Programs
+          ZIP - PKZIP (C) PKWARE Inc.
+          ZOO - Zoo (C) Rahul Dhesi
+
+     - you can enter an archive such as an usually directory (optionally)
+     - if destination of Copy/Move is <archive descriptor>:<archive name>
+       the files will be copied/moved into desired archive.
+       Archive descriptor can be: ARC, ARJ, BSA, BS2, CHZ, HA, HAP, HYP, LHA,
+        SQZ, ZIP, ZOO, HPK, RAR, LIM, UC2.
+     - it is possible to unpack, to view, to erase, to test selected files
+       or subdirectories from archive.
+   - when comparing of two panels it is possible to indicate criterions
+       of comparing (date, size, attributes).
+   - visualization of list of files:
+     - view of list of files in catalogues with use of file of
+       descriptions ( if such is present in given subdirectory - as 4DOS Dir,
+       if finds the file descript.ion ). The names of files with descriptions
+       are set in filter in File Panel defaults. Column Setup of each panel is
+       allowed. You can copy, move, edit and create file descriptions.
+     - according to source of list the heading of panel - "Find: *.qqp ",
+       "TEMP:", "ARJ:DN2-25.ARJ", "C:\" etc. And information below of list
+       (for Find: and TEMP: afterwards information about current file
+       its catalogue, for archives - packed size and compression ratio)
+     - possible the file highlight by different colors in dependencies
+       on type ( are possible 3 standard type - directories, executable files
+       (EXE, COM, BAT, BTM and CMD) and archives and five user defined types,
+       which can be defined by user with help of extension file -
+       Options|File Manager|Highlight groups).
+     - files are possible to sort not only on standard (i.e. name, ext, size
+       etc.), but also on colors if highlight option is set on.
+     - you can put executable files and archives in head of file panel list.
+     - it is possible to establish mode of conclusion of list - not only
+       Full/Brief - to show whether size, date, time ( for Find: and TEMP:
+       the way, for archives - packed size and compression ratio)
+     - to show whether in info pane information about marked files, about
+       all files of list, about free location on disk ( only for usual lists
+       of files of catalogue ).
+     - installation multiple filter for file list - for example:
+       "*.exe; *.pas; *.tpu ".
+   - Point-and-shoot (association to run files in dependence of its type):
+     - the batch file (instead of one command DOS) is started.
+     - file is possible to process on several to key combinations -
+       <ENTER>, <Shift-ENTER>, <Alt-ENTER>. On < Alt-ENTER > user menu
+       associated for this extension will be started.
+     - the number of extension is unlimited.
+
+2. User menu:
+     - it is possible to multiply menu nesting. Unfortunately, that large menu
+       of user it is possible to reduce only by use of enclosure.
+     - after a menu selection the batch file is started. You can use different
+       macros allows processing with current and passive panel of File Manager.
+3. Work with disks:
+    - edit of label of volume on disk ( on network disks it is not
+      executed, unfortunately )
+    - restoring of erased files
+    - floppy disk formatting
+    - disk editing.
+4. File editor:
+    - multi-level undo
+    - block operations uses Clipboard.
+    - streamed and vertical block
+    - text formatting
+5. Calculator:
+    - it is possible to calculate formulas
+    - hexadecimal, octal, binary and decimal operations
+    - common Clipboard with editor.
+6. Spreadsheet:
+    - the function evaluation is possible: SUM, MUL, IF, sin, cos, tg, ctg,
+      arctg, sqr, sqrt, ln, lg, sign, rad, grad
+    - it is possible export in text file.
+7. Terminal:
+    - emulation ANSI, AVATAR, TTY
+    - protocols: XModem, YModem, ZModem, Kermit - works in background
+    - works in background
+    - phone book
+8. System information:
+    - it is possible to get information about your machine ( type, CPU,
+      co-processor, disks, ports, OS version, Conventional/Extended/EMS
+      memory sizes, CPU speed)
+    - information about TSR programs, system areas and loaded drivers.
+    - standard information about current disk, catalogue, volume label,
+      free memory size: User, DN, XMS, EMS.
+9. Game - Tetris/Pentix
+10. Extended text modes support ( type 132å60, 100x25 etc. ).
+    Be sure that 'Standard cursor' in Mouse Setup is set off because many
+    mouse drivers do not support extended video modes (I think only OS/2
+    mouse driver works correctly).
+11. Advanced file search. It is possible to search for files by filter
+    ( e.g. *.bak;*.$$$;*.tmp ), by text string, by date, size and attributes.
+    In addition, File Find works in background (i.e. you can switch to
+    another window while search processing)
+12. It is possible to work with file lists and create TEMP: drive
+    ( usual file list, but you can include files with different location)
+    You can copy, move, view etc. files from these lists.
+13. Working with keyboard macros:
+         Shift + Alt + n - record  ( 1-9 ) / the end of record
+         Ctrl + Alt + n - play macro n
+14. Is possible the task group of commands for batch  processing in command
+    line - they must be separated  by '||'
+15. OS/2 v2.10 support - you may start OS/2 or DOS application from DN in
+    separated session. Also OS/2 command prompt mode is available.
+16. CD-ROM player working with MSCDEX.EXE (or VCDROM.SYS under OS/2).
+17. Arvid streamer board support.
+18. Navigator Link

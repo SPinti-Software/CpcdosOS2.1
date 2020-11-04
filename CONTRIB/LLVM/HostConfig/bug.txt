@@ -1,0 +1,121 @@
+Okay, but what if you want to pass more than 32767 characters of information to a process? You’ll have to find something other than the command line
+ 
+
+
+-- linker lib
+#error "libpsapi.a should be present"
+#error "libimagehlp.a should be present"
+  #error "libshell32.a should be present" ??
+  #error "libimagehlp.a & libpsapi.a should be present"
+
+  
+
+
+
+#define HAVE_ISINF_IN_MATH_H
+#define HAVE_ISNAN_IN_MATH_H
+
+Com.inc CoInitializeEx et CoUninitialize require -lole32 (maybe can be removed)
+
+Mingw 
+-lole32
+-limagehlp
+
+
+PRIx64 bug?
+    OS << format("Abbrev table for offset: 0x%8.8" PRIx64 "\n", I.first);
+	
+->defined in datatype 
+
+//DriverFlag { HelpHidden = (1 << 0), RenderAsInput = (1 << 1), RenderJoined = (1 << 2), RenderSeparate = (1 << 3) }
+
+
+//Winodws
+typedef GUID KNOWNFOLDERID;
+*** removed SHGetKnownFolderPath in Path.inc, getUserCacheDir return false,  getKnownFolderPath return false ** mix with 3.6 work
+removed HRESULT WINAPI SHGetImageList(int,REFIID,void**); in shellapi of mingw XD
+ ////// 
+
+
+#add to Options inc
+
+#define HelpHidden  (1 << 0)
+#define RenderAsInput (1 << 1)
+#define RenderJoined (1 << 2)
+#define RenderSeparate = (1 << 3)
+
+#define DriverOption  (1 << 4)
+#define LinkerInput  (1 << 5)
+#define NoArgumentUnused  (1 << 6)
+#define Unsupported  (1 << 7)
+#define CoreOption  (1 << 8)
+#define CLOption  (1 << 9)
+#define CC1Option (1 << 10)
+#define CC1AsOption (1 << 11)
+#define NoDriverOption  (1 << 12)
+
+//add & rem fileno
+#define	STDIN_FILENO	0
+#define	STDOUT_FILENO	1
+#define	STDERR_FILENO	2
+
+
+
+
+//////////////////Correct Some cpp error: //////////////////
+isascii error :
+inline bool isascii(char c){ return ((int)c < 128);}
+
+Error handling :::write error ** , just add #include <unistd.h>
+
+WIN32_ELMCB_PCSTR error :  #define WIN32_ELMCB_PCSTR char*
+
+FileEno error add -> #define _fileno(FP) ((FP)->_fileno)  , try  #define _fileno(FP) ((FP)->_file)
+
+
+regcom.cpp, remove (uintptr_t) -> recast with wanted type
+
+//lseek (os_stream)  add 
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/types.h>
+
+signals.inc _exit change to exit
+///////////////////////////////////////////////
+
+
+
+
+DynamicLibrary.cpp ** removed .inc with  #LLVM_ON_WIN32_ASS  * readd but not seem work TODO remove
+regexe.cpp ** readd 
+signal.cpp  ** remove some 64 shit in .inc , remove findModulesAndOffsets (return false ) -> readd for MinGW64
+threadpool.cpp  ** readd x -> removed
+threadlocal ** readd
+
+rem target
+Keep only x86
+
+GCC
+rem MILParser
+rem Path.cpp ** readd
+rem Program.cpp ** readd ?
+rem Process.cpp  ** readd
+rem rawosting.cpp ** readd
+
+Clean rem
+TableGen
+
+
+Change
+    fprintf(stderr, "LLVM Error %s!", MessageStr.data());
+  //  ssize_t written = ::write(2, MessageStr.data(), MessageStr.size());
+ //   (void)written; // If something went wrong, we deliberately just give up.
+
+ 
+
+remove folder:
+dia //altbase Windows error 
+intelJITEventListener
+OProfileJT
+Fuzzer
+LibDriver

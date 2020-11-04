@@ -1,0 +1,51 @@
+rem/ bitmap render test
+
+Window/ bitmap_test
+
+        .title          = "OpenGL - Bitmap CPU render test"
+        .parameters     = ""
+        .px             = "100"
+        .py             = "100"
+        .sx             = "800"
+        .sy             = "600"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .BackColor      = "255,255,255"
+        .events         = ""
+
+        @#window_handle create/
+
+End/ Window
+
+ 
+// OpenGL
+@#NumeroThread cmd/ /thread[MAX] sys/ /wrp 13
+
+// Convertir en numero de handle
+Fix/ Handle = /C(%NumeroThread% * 1024)
+
+CCP/ /PAUSE 3000
+
+@#ImgID SYS/ /BITMAP /Get /IDbyHandle %Handle%
+
+
+Picturebox/ render
+
+
+        .handle         = "%window_handle%"
+        .parameters     = "UPD:1"
+        .px             = "0"
+        .py             = "0"
+        .sx             = "800"
+        .sy             = "600"
+        .image          = "#%ImgID%"
+
+        create/
+
+End/ Picturebox
+
+
+
+
+
+

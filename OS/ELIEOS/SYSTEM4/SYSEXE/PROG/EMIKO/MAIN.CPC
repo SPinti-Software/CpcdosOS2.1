@@ -1,0 +1,142 @@
+rem/ VERSION_EMIKO = 1.0
+rem/ AUTHOR_EMIKO = Guillaume Deroy
+rem/ Simulation Tamagotchi Elie Game Engine
+FIX/ EMIKO_VER = 1.4.3
+
+fenetre/ main
+	.titre 		= "Emiko"
+	.px		= "100"
+	.py 		= "100"
+	.tx 		= "774"
+	.ty             = "435"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "005,000,98"
+	.CouleurFond	= "245,238,205"
+	.Icone		= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/OS/elie.png"
+	.event = ""
+	@#emiko_main creer/
+fin/ fenetre
+
+
+
+picturebox/ emiko_is_here
+	.Handle			= "%emiko_main%"
+	.Parametres		= "IMGAUTO:2"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "774"
+	.ty		        = "435"
+	.Image			= "OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/menuemik.png"
+	rem/ .opacite		= "150"
+	rem/.event			= ""
+	creer/
+Fin/ Picturebox
+
+
+
+
+TEXTEBLOC/ version
+	.Handle = "%emiko_main%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Version: %EMIKO_VER%"
+	.PX = "2"
+	.PY = "400"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ author
+	.Handle = "%emiko_main%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Author: Guillaume Deroy"
+	.PX = "2"
+	.PY = "410"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ copyright
+	.Handle = "%emiko_main%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Meaxy Computer (c) 2020"
+	.PX = "2"
+	.PY = "420"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+
+
+Bouton/ new
+	.Handle			= "%emiko_main%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "100"
+	.PY				= "191"
+	.tx				= "170"
+	.ty				= "28"
+	rem/ .opacite		= "100"
+	.texte			= "New Game"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_RDYW.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+FONCTION/ new.Click()
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV1.EGS
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV2.EGS
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV3.EGS
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV4.EGS
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/MASTER.EGS
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/NAME.EGS
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV1.EGS = 65
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV2.EGS = 85
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV3.EGS = 70
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/GAMESAV4.EGS = 80
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/MASTER.EGS = FALSE
+EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/EMIKO.CPC
+FERMER/ main
+
+FIN/ FONCTION
+
+Bouton/ load
+	.Handle			= "%emiko_main%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "100"
+	.PY				= "241"
+	.tx				= "170"
+	.ty				= "28"
+	rem/ .opacite		= "100"
+	.texte			= "Load Game"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_RDYW.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+FONCTION/ load.Click()
+txt/ hello
+@#SAUV OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/MASTER.EGS
+
+SI/ "%SAUV%" == "FALSE" alors:
+     Message/ No save found! /Titre: Elie Office System /Erreur:1 /Type:0
+SINON:
+        SI/ "%SAUV%" == "TRUE" alors:
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/EMIKO.CPC
+        FERMER/ main
+       FIN/ SI
+fin/ SI
+
+fin/ fonction
+
+
+
+
+
+
+
+
+
+

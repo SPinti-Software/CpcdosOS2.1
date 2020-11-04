@@ -1,0 +1,14 @@
+
+@#ACCOUNT OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/ELIEXT/LCKSCR/lock.cfg
+
+SI/ "%ACCOUNT%" == "DESACTIVER" alors:
+        CMD/ /PID:%PID_LOGIN_SCR% exe/ & OS/ELIEOS/SYSTEM4/ELIEXT/EUSER/neuser.cpc
+		fermer/ /PID:%PID_DOCK%
+        fermer/ /PID:%PID_DESKTOP%
+SINON:
+	SI/ "%ACCOUNT%" == "ACTIVER" alors:
+        CMD/ /PID:%PID_LOGIN_SCR% exe/ & OS/ELIEOS/SYSTEM4/ELIEXT/EUSER/euser.cpc
+		fermer/ /PID:%PID_DOCK%
+        fermer/ /PID:%PID_DESKTOP%    
+	Fin/ SI
+Fin/ SI 

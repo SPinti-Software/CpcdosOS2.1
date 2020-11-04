@@ -1,0 +1,15 @@
+// USER
+CCP/ /SET.LEVEL = 3
+
+// ---- Cursor ----
+
+// [FR] Le curseur graphique de chargement
+// [EN] Graphic loading cursor
+SET/ CPC_GUI.LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
+
+
+
+
+
+
+

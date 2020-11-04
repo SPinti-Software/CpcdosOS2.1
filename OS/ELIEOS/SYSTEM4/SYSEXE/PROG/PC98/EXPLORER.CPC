@@ -1,0 +1,119 @@
+
+
+FIX/ mydesk_POSX = /C((%CPC.SCR.X% / 2) - (600 / 2))
+
+
+fenetre/ my_desk
+	.titre 			= "Elie Explorer"
+	.px				= "%mydesk_POSX%"
+	.py				= "180"
+	.tx				= "600"
+	.ty				= "284"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "127,127,127"
+	.event			= ""
+	@#Handle_menu creer/
+Fin/ fenetre
+
+@#test REP/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX
+
+TEXTEBLOC/ contenu
+	.Handle = "%Handle_menu%"
+	.PARAMETRES = "COL:1, BORD:1"
+	.TEXTE = "%test%"
+	.PX = "0"
+	.PY = "22"
+        .tx = "600"
+        .ty = "262"
+        .CouleurFond = "211,211,211"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+
+fix/ /s test
+
+FIX/ search = \#NULL
+
+Textebox/ zone_search
+	.handle			= "%Handle_menu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "45"
+        .PY                             = "0"
+	.TX				= "518"
+	.TY				= "20"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+        .texte          = "EXEMZ/JEUX"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+Bouton/ home
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "39"
+	.ty				= "21"
+	rem/ .opacite		= "100"
+	.texte			= "home"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ home.Click()
+TXT/ home
+   @#home REP/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%home%"
+                         creer/
+                fin/ TEXTEBLOC
+                 textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "EXEMZ/JEUX"
+		 Fin/ textbox
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S recherche
+   FIX/ /S home
+FIN/ fonction
+
+
+Bouton/ go
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "563"
+	.PY				= "0"
+	.tx				= "37"
+	.ty				= "21"
+	rem/ .opacite		= "100"
+	.texte			= "Go!"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+fonction/ go.Click()
+                 textebox/ /modif:zone_search
+			 @#recherche .texte
+		 Fin/ textbox
+   @#custom REP/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/%recherche%
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%custom%"
+                         creer/
+                fin/ TEXTEBLOC
+      actualiser/ contenue
+      actualiser/ my_desk
+   FIX/ /S custom
+   FIX/ /S recherche
+FIN/ fonction
+
+

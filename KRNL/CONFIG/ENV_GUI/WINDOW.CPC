@@ -1,0 +1,30 @@
+// USER
+CCP/ /SET.LEVEL = 3
+
+// [FR] Bordure de la fenetre
+// [EN] Window border
+FIX/ CPC_GUI.WINDOW.BORDER = 1
+
+// [FR] Transparence par defaut des fenetres
+// [EN] Windows transparency by default
+FIX/ CPC_GUI.WINDOW.ALPHA = 255
+
+
+
+// [FR] Couleur de la fenetre
+// [EN] Window color
+FIX/ CPC_GUI.WINDOW.RGB = 240,240,240
+
+// [FR] Couleur de fond de la fenetre
+// [EN] Windows shadow color background
+FIX/ CPC_GUI.WINDOW.BACKGROUND_RGB = 190,190,190
+
+
+// GUI Config files
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_scr.cpc
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_ico.cpc
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_titl.cpc
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_shdw.cpc
+
+
+

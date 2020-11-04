@@ -1,0 +1,94 @@
+[This directory provided by James Soutter <J.K.Soutter1@lboro.ac.uk>]
+
+                       The DJGPP Cross Compiler
+                       ------------------------
+
+
+1. What is DJGPP: [from http://brennan.home.ml.org/djgpp/]
+
+   DJGPP is a port of GNU GCC to the DOS environment. (It stands for
+   DJ's Gnu Programming Platform, if it has to stand for something, but
+   it's best left ambiguous.)
+
+
+2. Who created/worked on DJGPP: [from http://brennan.home.ml.org/djgpp]
+
+   DJGPP was done primarily by DJ Delorie. Charles W. Sandmann is another
+   major contributor, and there are many others.
+                    
+                    
+3. Using the cross compiler:
+
+   a.  Compile your program as normal but use "dos-gcc" rather than "gcc"
+       or your regular compiler.
+      
+           make clean
+           make CC=dos-gcc
+           
+   b.  If the last stage in the compile was "dos-gcc -o prog ..." then you
+       should find a DOS binary "prog.exe" in the current directory.
+         
+   c.  Copy "prog.exe" to your DOS machine/directory/floppy along with
+       CWSDPMI.EXE (stored with this README).  If you are already using a
+       DPMI server (like windows) then CWSDPMI.EXE is not required but can
+       be included anyway.
+       
+   d.  Run your program as "prog" under DOS and be amazed.
+      
+   e.  A few functions are not supported by the DJGPP library.  "dos-gcc"
+       defines the symbol "GO32".  Use it to mark regions of code that
+       are DJGPP specific.
+       
+           #if ! defined (GO32)
+           newSpace = mmap(0, pagesize, PROT_READ | PROT_WRITE, MAP_PRIVATE,
+                              devZeroFile, 0);
+           #else
+           newSpace = malloc(pagesize);
+           #endif
+           
+
+   f.  By default your program is allocated a fixed 256k stack.  Very
+       recursive programs you may require a bigger stack.  Use the tool
+       "dos-stubedit" to change the stack size.  Type "dos-stubedit -h"
+       for help.
+       
+       
+4. Reading the documentation:
+
+   The libc library used in DJGPP is described in "info/libc.inf".
+   To read this file use the "info" program from the "texinfo"
+   distribution.  E.g.
+
+           info -f info/libc.inf
+    
+     
+5. How do I get DJGPP: [from DJGPP Mini-FAQ]
+
+   FTP:    ftp://ftp.simtel.net/pub/simtelnet/gnu/djgpp/
+           ftp://ftp.ibp.fr/pub/simtelnet/gnu/djgpp/
+           ftp://ftp.bhp.com.au/pub/simtelnet/gnu/djgpp/
+           (see http://www.delorie.com/djgpp/getting.html for a complete list)
+   CDROM:  contact gnu@prep.ai.mit.edu for cd-rom sales information
+   USMAIL: Contact dj@delorie.com for information
+
+
+6. More information on DJGPP: [from DGJPP Mini-FAQ]
+
+   The full FAQ:  FTP: v2/faq202b.zip in any djgpp distribution (above)
+                  WWW: http://www.delorie.com/djgpp/v2faq/
+   WWW Home Page: http://www.delorie.com/djgpp/
+   Newsgroup:     news:comp.os.msdos.djgpp (preferred over the mailing list)
+   Mailing list:  djgpp-announce@ and djgpp@delorie.com
+                  (c.o.m.d and djgpp@ are tied together)
+                  Digests: djgpp-digest-daily@ and djgpp-digest-weekly@
+                  subscription add/drop requests to listserv@
+                  mailing list problems to djgpp-request@
+   Mail Archives: http://www.delorie.com/djgpp/mail-archives/ (searchable)
+   
+   To unsubscribe (substitute djgpp-announce for djgpp if desired)
+           $ mail listserv@delorie.com
+           Subject:
+           unsubscribe djgpp
+           ^D
+
+

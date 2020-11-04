@@ -1,0 +1,14 @@
+; Dos Navigator Quick run configuration file
+
+;Ctrl-Shift-F1
+>1
+echo Type Exit to return Dos Navigator....
+COMMAND.COM
+
+
+;Ctrl-Shift-F2
+; Run command in the separate OS/2 session.
+>[2
+dir
+pause
+

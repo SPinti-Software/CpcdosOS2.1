@@ -1,0 +1,5 @@
+; Dos Navigator Editor configuration file
+
+pas:bp !.!
+C,cpp:bc !.!
+doc, txt:d:\me\me !.!

@@ -1,0 +1,31 @@
+Window/ wintest
+
+        .title          = "test fermeture fenetre"
+        .parameters     = ""
+        .px             = "100"
+        .py             = "80"
+        .sx             = "150"
+        .sy             = "50"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .TitleColor     = "255,200,100"
+        .BackColor      = "255,255,255"
+        .events         = "%_EXE_PATH_%"
+
+        create/
+
+End/ Window
+
+
+
+Function/ Wintest.WindowClosing()
+	msgbox/ Window in closing...
+End/ function
+
+Function/ Wintest.WindowClosed()
+	msgbox/ Window is closed !
+End/ function
+
+
+
+

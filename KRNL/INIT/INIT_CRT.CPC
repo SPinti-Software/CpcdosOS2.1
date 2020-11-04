@@ -1,0 +1,118 @@
+// [FR] Ce fichier permet de declarer les fonction CpcdosC+ publique interne a Cpcdos!
+//  ces fonctions sont liees au CRT du noyau.
+// [EN] This file allow to declare internale public CpcdosC+ functions.
+//  This functions are in kernel CRT
+
+Declare/ INIT_CRT() : LEVEL(5)
+
+Function/ INIT_CRT()
+
+	
+	// [FR] Declaration au niveau KERNEL
+	// [EN] Declaration to KERNEL level
+	ccp/ /fix.level = 5
+
+
+	// [FR] ----- MANIPULATION DE CHAINES DE CARACTERES -------
+	// [EN] ----- STRING MANIPULATIONS -----
+
+	// [FR] Permet de chercher la position d'un ou plusieurs caracteres
+	// [EN] Allow to find string position
+	declare/ CPC.INSTR(Source, Compare)				: level(5)
+	declare/ CPC.INSTR(Debut, Souce, Compare)		: level(5)
+	
+	// [FR] IDEM, mais a partir de la fin. (REVerse)
+	// [EN] IDEM, but from end of file
+	declare/ CPC.INSTRREV(Source, Compare)			: level(5)
+	declare/ CPC.INSTRREV(Souce, Compare, Debut)		: level(5)
+
+	// Permet de renvoier un nombre specifie de caracteres (RELATIF = Depuis "Position_Depart")
+	declare/ CPC.MID(Source, Debut)					: level(5)
+	declare/ CPC.MID(Source, Debut, Fin)				: level(5)
+
+
+	// Permet de renvoyer un nombre specifie de caracteres (ABSOLU = Depuis le 1er caractere de "Source")
+	declare/ CPC.MIDA(Source, Debut)				: level(5)
+        declare/ CPC.MIDA(Source, Debut, Fin)                           : level(5)
+
+        // Permet de repeter un caractere un nombre de fois
+        declare/ CPC.STR(Caractere, nombre)                             : level(5)
+
+	// Permet d'obtenir la taille d'une chaine de caracteres
+	declare/ CPC.LEN(Texte)						: level(5)
+	declare/ CPC.TAILLE(Texte)						: level(5)
+
+	// Permet de convertir les caracteres en MAJuscules
+	declare/ CPC.MAJ(Texte)						: level(5)
+	// et eb MINuscules
+	declare/ CPC.MIN(Texte)						: level(5)
+
+	// Permet de renvoyer le signe d'un nombre (0:negatif 1:positif)
+	declare/ CPC.SIGNE(Valeur)						: level(5)
+	declare/ CPC.SIGN(Valeur)						: level(5)
+
+	// ----- CONVERSIONS NUMERIQUES -------
+
+	// Permet de convertir en entier (Supprime la virgule)
+	declare/ CPC.ENTIER(Valeur)					: level(5)
+	declare/ CPC.INT(Valeur)						: level(5)
+	declare/ CPC.INTEGER(Valeur)					: level(5)
+
+	// Permet de FRACtionner la valeur pour recuperer les chiffres APRES la virgule
+	declare/ CPC.FRAC(Valeur)						: level(5)
+
+	// Permet de convertir une valeur (&B) Binaire ou (&O) Octale ou (&H) Hexa --> en decimale
+	declare/ CPC.VAL(Texte)						: level(5)
+
+	// Permet de convertir une valeur ASCII en CARactere ASCII
+	declare/ CPC.CHR(Valeur)						: level(5)
+	declare/ CPC.CAR(Valeur)						: level(5)
+	declare/ CPC.CARACTERE(Valeur)					: level(5)
+
+	// Permet de convertir un caractere ASCII en Valeur ASCII
+	declare/ CPC.ASC(Valeur)						: level(5)
+	declare/ CPC.ASCII(Valeur)						: level(5)
+
+	// Permet de convertir une valeur en valeur HEXADECIMALE
+	declare/ CPC.HEX(Valeur)						: level(5)
+
+	declare/ CPC.HEXA(Valeur)						: level(5)
+	declare/ CPC.HEXADECIMAL(Valeur)				: level(5)
+	declare/ CPC.HEXADECIMALE(Valeur)				: level(5)
+
+	// Permet de convertir en valeur absolue
+	declare/ CPC.ABS(Valeur)						: level(5)
+
+	// ----- FONCTIONS MATHEMATIQUES -------
+
+	declare/ CPC.LOG(Valeur)						: level(5)
+	declare/ CPC.EXP(Valeur)						: level(5)
+	declare/ CPC.SQR(Valeur)						: level(5)
+	declare/ CPC.RAC(Valeur)						: level(5)
+	declare/ CPC.COS(Valeur)						: level(5)
+	declare/ CPC.SIN(Valeur)						: level(5)
+	declare/ CPC.TAN(Valeur)						: level(5)
+	declare/ CPC.ACOS(Valeur)						: level(5)
+	declare/ CPC.ASIN(Valeur)						: level(5)
+	declare/ CPC.ATAN(Valeur)						: level(5)
+	declare/ CPC.ATANR(ValeurY, ValeurX)			: level(5)
+
+	// ----- AUTRES FONCTIONS INTERNE -------
+
+	// Tester l'existence d'un fichier
+	declare/ CPC.FICHIER_EXISTE(Chemin)			: level(5)
+	declare/ CPC.FILE_EXIST(Chemin)				: level(5)
+
+	// Obtenir la taille d'un fichier
+	declare/ CPC.TAILLE_FICHIER(Chemin)			: level(5)
+	declare/ CPC.FILE_SIZE(Chemin)					: level(5)
+
+	// Lire TOUT le contenu d'un fichier
+	declare/ CPC.LIRE_FICHIER(Chemin)				: level(5)
+	declare/ CPC.READ_FILE(Chemin)					: level(5)
+
+
+	// Execution des programmes DOS avec "DOS/"
+	EXE/ & %CPC.REP.KRNL.INIT%\DOS.CPC
+
+Fin/ Fonction

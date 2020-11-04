@@ -1,0 +1,43 @@
+// OS
+CCP/ /SET.LEVEL = 4
+
+// [FR] Chemin jusqu'a la console graphique
+// [EN] gui console path
+SET/ CPC_GUI.CONSOLE = %CPC.REP.KRNL%/CONFIG/ENV_GUI/console.cpc
+
+// [FR] Mode d'ecran de la console par defaut. Consultez le manuel pour la commande 'SYS/ /ECRAN' (PAR DEFAUT)
+// [EN] Default console screen mode. (BY DEFAULT)
+SET/ SCR_MODE = 19
+
+// [FR] Resolution d'ecran (PAR DEFAUT)
+// [EN] Screen resolution (BY DEFAULT)
+SET/ SCR_RES = 800x600
+SET/ SCR_BIT = 16
+
+// [FR] Couleur arriere plan
+// [EN] Background color
+SET/ SCR_COLOR = 050,150,250
+
+// USER
+CCP/ /SET.LEVEL = 3
+
+// [FR] Fond d'ecran (PAR DEFAUT)
+// [EN] Background image (BY DEFAULT)
+SET/ SCR_IMG = OS\MEDIA\abs_blue.PNG
+
+// [FR] Affichage de l'image (0:Remplir (avec debordage), 1:Ajuste (sans debordage), 2:Adapte (deforme), 3:Vignettes, 4:Brute Centre, 5:Brute)
+// [EN] Image displaying (0:Fill, 1:Ajusted, 2:Adapted, 3:Mozaic, 4:Center raw, 5:Raw)
+SET/ SCR_IMG_MODE = 0
+
+
+// [FR] Couleur des textes en general
+// [EN] General color text
+FIX/ CPC_GUI.TEXT_RGB = 020,020,020
+
+// [FR] Couleur en general
+// [EN] General colors
+FIX/ CPC_GUI.RGB = 190,190,190
+
+
+
+

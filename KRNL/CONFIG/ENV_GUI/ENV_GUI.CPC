@@ -1,0 +1,41 @@
+
+// Variables niveau OS
+ccp/ /fix.niveau = 4
+fix/ OS_GUI = OS/MEDIA/GUI
+
+// USER
+CCP/ /SET.LEVEL = 3
+
+
+// [FR] Configuration GUi
+// [EN] GUI configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/gui_std.cpc
+
+// [FR] Configuration curseurs graphiques
+// [EN] Config graphic cursors
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/cursor.cpc
+
+// [FR] Configuration des fenetres
+// [EN] Window configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/window.cpc
+
+
+// [FR] Configuration du bouton
+// [EN] Button configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/button.cpc
+
+// [FR] Configuration du textebox
+// [EN] Textbox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/txtbox.cpc
+
+// [FR] Configuration du checkbox
+// [EN] checkbox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/checkbox.cpc
+
+
+// [FR] Configuration du msgbox
+// [EN] Msgbox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/msgbox.cpc
+
+
+

@@ -1,0 +1,678 @@
+
+ccp/ /fix.niveau = 2
+CCP/ /Optimisation = 1
+
+fenetre/ background
+	.titre 			= "Wallpaper settings"
+	.px				= "100"
+	.py				= "100"
+	.tx				= "730"
+	.ty				= "580"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "085,095,140"
+	.event			= ""
+	@#backgrnd_Fenetre creer/
+Fin/ fenetre
+
+
+picturebox/ font
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "730"
+	.ty				= "590"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/OS/BACKFONT/test.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp1
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "20"
+	.PY				= "20"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/elieos.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp2
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "260"
+	.PY				= "20"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/origin.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp3
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "20"
+	.PY				= "200"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cuty.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp4
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "260"
+	.PY				= "200"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cpcdos.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp5
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "20"
+	.PY				= "380"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/blue.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp6
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "260"
+	.PY				= "380"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/impress.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ wallpp7
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "500"
+	.PY				= "20"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/sky.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+
+picturebox/ wallpp8
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "500"
+	.PY				= "200"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/mountain.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+
+picturebox/ wallpp9
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "500"
+	.PY				= "380"
+	.tx				= "200"
+	.ty				= "120"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/railroad.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+Bouton/ app_pic1
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "80"
+	.PY				= "150"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ app_pic2
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "320"
+	.PY				= "150"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ app_pic3
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "80"
+	.PY				= "335"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ app_pic4
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "320"
+	.PY				= "335"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ app_pic5
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "80"
+	.PY				= "515"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ app_pic6
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "320"
+	.PY				= "515"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+Bouton/ app_pic7
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "560"
+	.PY				= "150"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+Bouton/ app_pic8
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "560"
+	.PY				= "335"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+Bouton/ app_pic9
+	.Handle			= "%backgrnd_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "560"
+	.PY				= "515"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Apply"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+FONCTION/ wallpp1.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/elieos.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/elieos.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION/
+
+FONCTION/ wallpp2.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/origin.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/origin.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION/
+
+FONCTION/ wallpp3.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cuty.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cuty.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION/
+
+FONCTION/ wallpp4.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cpcdos.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cpcdos.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION/
+
+FONCTION/ wallpp5.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/blue.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/blue.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION/
+
+FONCTION/ wallpp6.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/impress.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/impress.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION
+
+FONCTION/ wallpp7.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/sky.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/sky.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION
+
+FONCTION/ wallpp8.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/mountain.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/mountain.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION
+
+FONCTION/ wallpp9.Click()
+		   
+fenetre/ background
+	.titre 			= "Preview of: OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/railroad.png"
+	.px				= "150"
+	.py				= "150"
+	.tx				= "600"
+	.ty				= "500"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "120,200,200"
+	.event			= ""
+	@#view_Fenetre creer/
+Fin/ fenetre
+
+picturebox/ imgtosee
+	.Handle			= "%view_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "600"
+	.ty				= "500"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/railroad.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+FIN/ FONCTION
+
+FONCTION/ app_pic1.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/elieos.png
+
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic2.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/origin.png
+actualiser/ /image
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic3.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cuty.png
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic4.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/cpcdos.png
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic5.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/blue.png
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic6.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/impress.png
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic7.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/sky.png
+
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic8.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/mountain.png
+
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION
+
+FONCTION/ app_pic9.Click()
+
+SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg = OS/ELIEOS/SYSTEM4/ADVANCE/GUI/BCKGRND/railroad.png
+
+IUG/ /CONSOLE
+SYS/ /OS:Office
+@#FOND OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/BCKGRND/bckgrnd.cfg
+FIX/ SCR_IMG = %FOND%
+IUG/
+FIX/ /S FOND
+FIN/ FONCTION

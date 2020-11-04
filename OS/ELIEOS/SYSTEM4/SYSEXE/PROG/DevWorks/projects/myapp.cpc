@@ -1,0 +1,75 @@
+
+
+
+fenetre/ APP_EXEC_MIDLET
+	.titre                  = "My first App !"
+	.px				= "100"
+	.py				= "100"
+	.tx				= "420"
+	.ty				= "263"
+	.Opacite 		= "255"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond = "150,000,220"
+	.event			= ""
+	@#first_app creer/
+Fin/ fenetre
+
+
+
+
+Textebloc/ Mon_Textebloc
+	.Handle			= "%first_app%"
+	.Parametres		= "BORD:1 IMGAUTO:1 COL:1"
+	.Texte 			= "Hello!%CPC.CRLF%I'm textblock!%CPC.CRLF%Handle fenetre:%first_app%"
+	.PX				= "5"
+	.PY				= "5"
+	.CouleurFond	= "200,255,240"
+	.CouleurTexte	= "250,100,100"
+	rem/ .tx				= "100"
+	rem/ .ty				= "20"
+	creer/
+Fin/ Textebloc
+
+
+
+Bouton/ Mon_Bouton3
+	.Handle			= "%first_app%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "180"
+        .PY                             = "120"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Hello!"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_PPOR.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+picturebox/ Image2
+	.Handle			= "%first_app%"
+	.Parametres		= "IMGAUTO:0"
+	.PX				= "10"
+	.PY				= "10"
+	.tx				= "200"
+	.ty				= "200"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/Ultima.png"
+	.opacite		= "100"
+	rem/.event			= "OS/TEST.CPC"
+	creer/
+Fin/ Picturebox
+
+
+
+FONCTION/ Mon_Bouton3.Click()
+
+Message/ Bonjour! /Titre: Elie Office System /Erreur:1 /Type:0
+
+FIN/ FONCTION
+
+
+
+
+

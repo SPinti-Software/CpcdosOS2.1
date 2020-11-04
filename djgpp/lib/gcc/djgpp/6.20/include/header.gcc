@@ -1,0 +1,4 @@
+avx512ifmavlintrin.h avx512ifmavlintrin.h2
+avx512vbmivlintrin.h avx512vbmivlintrin.h2
+avx512vldqintrin.h avx512vldqintrin.h2
+avx512vlintrin.h avx512vlintrin.h3

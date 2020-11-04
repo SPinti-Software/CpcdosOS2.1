@@ -1,0 +1,1 @@
+-O0 -std=c++14 -march=i686 -DNDEBUG -m32 -fpermissive -DCpcDos -I .

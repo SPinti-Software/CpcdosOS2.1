@@ -1,0 +1,2 @@
+llvm-tblgen -help
+pause

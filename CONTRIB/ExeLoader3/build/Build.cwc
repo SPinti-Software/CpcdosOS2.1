@@ -1,0 +1,5 @@
+;Build cpp
+-c ../src/ -o obj/cpp_{_sPlatform}_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError -I ../ -I ../include/
+>
+;Generate executable
+-o obj/cpp_{_sPlatform}_{_sOpt}/ -#To _out/{_sPlatform}_{_sOpt}/ExeLoader.* -lgdi32

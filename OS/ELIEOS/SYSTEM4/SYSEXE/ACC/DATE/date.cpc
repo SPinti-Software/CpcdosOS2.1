@@ -1,0 +1,21 @@
+fenetre/ DATE_ELIE
+                .titre                 = "Date"
+		.px				= "2"
+		.py				= "21"
+		.tx				= "150"
+		.ty				= "30"
+		rem/.Opacite 		= "100"
+		.Parametres		= "TYPE:0"
+		.CouleurFond	= "203,136,210"
+		@#date_screen creer/
+Fin/ fenetre
+
+TEXTEBLOC/ date
+	.Handle = "%date_screen%"
+	.PARAMETRES = "COL:0, BORD:0, UDP:1"
+	.TEXTE = "${CPC.DATE}"
+	.PX = "20"
+	.PY = "3"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC

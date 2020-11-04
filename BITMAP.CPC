@@ -1,0 +1,56 @@
+rem/ bitmap render test
+
+Window/ bitmap_test
+
+        .title          = "Bitmap CPU render test"
+        .parameters     = ""
+        .px             = "100"
+        .py             = "50"
+        .sx             = "500"
+        .sy             = "400"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .TitleColor     = "000,000,000"
+        .BackColor      = "255,255,255"
+        .events         = ""
+
+        @#window_handle create/
+
+End/ Window
+
+
+Picturebox/ render
+
+        .handle         = "%window_handle%"
+        .parameters     = "UPD:0"
+        .px             = "10"
+        .py             = "10"
+        .sx             = "480"
+        .sy             = "320"
+        .image          = ""
+
+        create/
+
+End/ Picturebox
+
+declare/ Change_ptr(Address) : LEVEL(5)
+
+function/ Change_ptr(Address)
+
+        txt/ Change_ptr() --> %address%
+
+        // Modify image by bitmap address
+        Picturebox/ /modif:Render
+                .image = "@%Address%"
+                create/
+        End/ Picturebox
+
+        txt/ [OK]
+
+End/ Function
+
+
+
+
+
+

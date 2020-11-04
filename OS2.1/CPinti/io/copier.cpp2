@@ -1,0 +1,183 @@
+/*	
+	======================================
+	==      CPinti ---> Input/Output    ==
+	==                           Copie  ==
+	======================================
+	
+	Developpe entierement par Sebastien FAVIER
+	
+	Description
+		Module de copie CPinti Core(tm) pour Cpcdos OSx.
+	
+	Creation 
+		02/10/2017
+	
+
+	Mise a jour
+		06/10/2017
+		
+
+*/
+#include <memory>
+#include <iostream>
+#include <cstring>
+
+#include <math.h>
+
+#include "io.h"
+#include "CPinti.h" // Doevents
+#include "func_cpi.h" // Comparer_Temps 
+
+// #include "CPC_WPR.h" // Shell cpcdosC+
+extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, int ID);
+ 
+namespace NP_cpinti_io
+{
+
+	bool cpinti_io::Copier_Fichier(std::string Source, std::string Destination, int Priorite, std::string VAR_Progression, std::string VAR_Octets, std::string VAR_OctetsParSec)
+	{
+		// Cette methode permet de copier un fichier source a une destination
+		
+		// Priorite = 0	: Copie par defaut a priorite automatisee (selon la charge du CPU)
+		// 			= 1	: Copie normale (50%)
+		// 			= 2	: Copie prioritaire, priorise plus le thread actuel (70%)
+		//			= 3 : Copie a section critique (Bloque tous les autre threads et priorise a 100%)
+		
+		// Lire tout le contenu d'un fichier uniquement
+		// Retourne :
+		//	Si ok = Le contenu texte du fichier
+		//	Sinon = 0
+		
+		// Definit les attributs temporaires		
+		int CompteurDoevents = 0;
+		bool RETOUR = false;
+		
+		if(Priorite == 0)
+		{
+			Priorite = 1;
+		}
+
+		// Ouvrir le fichier SOURCE
+		std::ifstream Instance_Fichier_SOURCE;
+		Instance_Fichier_SOURCE.open (Source, std::ifstream::in | std::ifstream::binary);
+
+		// Ouvrir le fichier DESTINATION
+		std::ofstream Instance_Fichier_DESTINATION;
+		Instance_Fichier_DESTINATION.open(Destination, std::ofstream::binary);
+
+
+		// Tester
+		if (Instance_Fichier_SOURCE && Instance_Fichier_DESTINATION)
+		{
+			// Tester si le fichier est bien ouvert
+			if(Instance_Fichier_DESTINATION.is_open())
+			{
+
+				std::string _Commande_CpcdosCP = "";
+				std::stringstream valeurs;
+				
+				unsigned int TailleFichier = Taille_Fichier(Source);
+				
+				
+				unsigned int NombreOctets = 0;
+				unsigned int NombreOctetsParSec = 0;
+				unsigned int TempsPasse = 0;
+
+				clock_t	TempsDebut;
+				clock_t	TempsFin;
+
+				char _output_ = '\0';
+				while (Instance_Fichier_SOURCE.get(_output_)) 
+				{ 
+					if(CompteurDoevents >= 1024)
+					{
+						CompteurDoevents = 0;
+						
+						// Mettre a jour les variables CpcdosC+ si il y a leur variable correspondantes
+						
+						/** PROGRESSION EN POURCENTAGE **/
+						if(!VAR_Progression.empty())
+						{
+							valeurs.clear();
+							valeurs.str(std::string());
+							
+							valeurs << ((double) NombreOctets / (double) TailleFichier) * 100;
+							
+							_Commande_CpcdosCP = "FIX/ " + VAR_Progression + " = /F:CPC.INT(" + valeurs.str() + ")";
+							cpc_CCP_Exec_Commande(_Commande_CpcdosCP.c_str(), 5);
+						}
+						
+						/** NOMBRE D'OCTETS COPIES **/
+						if(!VAR_Octets.empty())
+						{
+							valeurs.clear();
+							valeurs.str(std::string());
+							
+							valeurs << NombreOctets;
+							_Commande_CpcdosCP = "FIX/ " + VAR_Octets + " = " + valeurs.str();
+							cpc_CCP_Exec_Commande(_Commande_CpcdosCP.c_str(), 5);
+						}
+						
+						TempsFin = clock();
+
+						TempsPasse = (unsigned int) ((TempsFin - TempsDebut)/CLOCKS_PER_SEC);
+						
+						if(TempsPasse > 1)
+						{
+							TempsDebut = clock();
+							
+							/** NOMBRE D'OCTETS PAR SECONDES **/
+							if(!VAR_OctetsParSec.empty())
+							{
+								valeurs.clear();
+								valeurs.str(std::string());
+								
+								valeurs << NombreOctetsParSec;
+								NombreOctetsParSec = 0;
+								
+								_Commande_CpcdosCP = "FIX/ " + VAR_OctetsParSec + " = " + valeurs.str();
+								cpc_CCP_Exec_Commande(_Commande_CpcdosCP.c_str(), 5);
+							}
+						}
+						
+						doevents(0);
+
+					} else
+						CompteurDoevents++;
+					
+					NombreOctetsParSec++;
+					NombreOctets++;
+					
+					Instance_Fichier_DESTINATION << _output_;
+
+				}
+				
+				// OK
+				RETOUR = true;
+			}
+			else
+			{
+				// PROBLEME
+				RETOUR = false;
+			}
+		}
+		else
+		{
+			// Fichier non disponible
+			RETOUR = false;
+		}
+		
+		// Fermer les instances
+		Instance_Fichier_DESTINATION.close();
+		Instance_Fichier_SOURCE.close();
+		
+		return RETOUR;
+	}
+
+}
+
+
+
+
+
+

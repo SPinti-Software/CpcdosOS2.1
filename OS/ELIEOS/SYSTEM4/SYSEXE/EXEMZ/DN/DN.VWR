@@ -1,0 +1,10 @@
+; Dos Navigator Viewer configuration file
+
+ans:type !.!
+rip:*rip !.!
+gif,jpg:QPEG !.!
+bmp,pcx,tif,img,vgl,RLE:cshow !.!+
+fli,flc,tga:vgraf !.!
+ico:icoview.exe !.! >nul
+pkt:pktview.exe !.!
+ANS:TYPE !.!

@@ -1,0 +1,32 @@
+
+
+ccp/ /fix.niveau = 3
+fix/ DejaRezise = 0
+
+Picturebox/ /MODIF:1015154654165416534165
+	.px = "30"
+	.py = "30"
+	
+	.tx = "130"
+	.ty = "70"
+	
+	creer/
+fin/ Picturebox
+
+
+rem/ fenetre/ /MODIF:MENU_BARRE
+	rem/ .titre 			= "Cacahouette!"
+	rem/ .px			= "50"
+	rem/ .py			= "50"
+	rem/ .Parametres		= "TYPE:4 CTN:0 BORD:1 OMBRE:10"
+	rem/ creer/
+rem/ Fin/ fenetre
+
+
+rem/ fenetre/ /MODIF:APP2
+	rem/ .titre 			= "Helloouu!"
+	rem/ .CouleurTitre	= "255,100,100"
+	rem/ .py			= "100"
+	rem/ creer/
+rem/ Fin/ fenetre
+

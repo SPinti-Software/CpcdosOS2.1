@@ -1,0 +1,178 @@
+﻿/////////////////////////////////////////////////////
+//// Bloc Notes Elie Office System Version 0.5.2 ////
+//// Creer par Guillaume deroy                   ////
+//// 1 janvier 2019 V0.1                         ////
+//// update 12 janvier 2019 V0.4.5               ////
+//// update 14 avril 2019 v0.5.1                 ////
+//// update 19 avril 2019 v0.5.2                 ////
+//// update 04 decembre 2019 v0.6.3              ////
+//// Require CPCDOS Beta 1.2 or higher           ////
+/////////////////////////////////////////////////////
+
+ccp/ /fix.niveau = 2  
+
+fenetre/ elie_pad
+	.titre 			= "DevWorks IDE v1.8.7"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "600"
+	.ty = "530"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "211,211,211"
+	.event = ""
+	@#elie_note creer/
+fin/ fenetre
+
+
+TEXTEBLOC/ nom_de_fichier
+	.Handle = "%elie_note%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Program name:"
+        .PX = "227"
+	.PY = "9"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ Contenu = \#NULL
+
+Textebox/ zone_texte
+	.handle			= "%elie_note%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+	.PX				= "0"
+	.PY				= "52"
+	.TX				= "600"
+	.TY				= "478"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%Contenu%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+bouton/ btn_fichier
+	.Handle			= "%elie_note%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "94"
+	.ty				= "31"
+	.Texte	= "Build"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_WTCY.png"
+	.event			= "%_exe_path_%=MouseClick"
+	creer/
+Fin/ bouton
+
+bouton/ btn_new
+	.Handle			= "%elie_note%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "95"
+	.PY				= "0"
+	.tx				= "70"
+	.ty				= "31"
+	.Texte	= "New"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_WTCY.png"
+	.event			= "%_exe_path_%=MouseClick"
+	creer/
+Fin/ bouton
+
+bouton/ btn_open
+	.Handle			= "%elie_note%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "166"
+	.PY				= "0"
+	.tx				= "62"
+	.ty				= "31"
+	.Texte	= "Open"
+	//.opacite		= "255"
+     .Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_WTCY.png"
+	.event			= "%_exe_path_%=MouseClick"
+	creer/
+Fin/ bouton
+
+FIX/ filename = \#NULL
+
+Textebox/ file_data
+	.handle			= "%elie_note%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "363"
+        .PY                             = "7"
+	.TX				= "200"
+	.TY				= "20"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%filename%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+
+FONCTION/ zone_texte.KeyPress(touche_pressee)
+
+	
+	 si/ "%touche_pressee%" = " " alors:
+		 textebox/ /modif:zone_texte
+			 @#Contenu .texte
+			 .texte = ""
+			 creer/
+		 Fin/ textbox
+		
+	 fin/ si
+
+Fin/ Fonction
+
+
+fonction/ btn_fichier.MouseClick()
+                 
+         textebox/ /modif:file_data
+			 @#filename .texte
+		 Fin/ textbox
+
+                 textebox/ /modif:zone_texte
+			 @#Contenu .texte
+		 Fin/ textbox
+
+ CMD/ /THREAD    ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/projects/%filename% = %Contenu%
+  
+    Message/ Creation of the project completed! /Titre: Elie Office System /Erreur:1 /Type:0
+	
+fin/ fonction
+
+
+FONCTION/ btn_new.MouseClick(arg1)
+
+		 textebox/ /modif:zone_texte
+			 @#Contenu .texte
+			 .texte = ""
+			 creer/
+		 Fin/ textbox
+
+Fin/ Fonction
+
+fonction/ btn_open.MouseClick()
+                
+         textebox/ /modif:file_data
+			 @#filename .texte
+		 Fin/ textbox
+
+  @#Contenu OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/projects/%filename%
+ 
+          textebox/ /modif:zone_texte
+             .texte "%Contenu%"
+			 creer/
+         Fin/ textbox
+  
+  
+fin/ fonction
+
+
+
+
+
+
+

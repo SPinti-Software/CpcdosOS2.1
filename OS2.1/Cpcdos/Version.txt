@@ -1,0 +1,1926 @@
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.3         *** 
+	***       01 Novembre 2020 For public     ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+	
+
+	#################
+	#### En bref ####
+	#################
+
+		--> 21	Ajouts de divers fonctionnalités.
+		--> 15	corrections importantes.
+		--> 4	optimisations.
+		--> 10	corrections et modifications mineures.
+
+		--> Gain de stabilité : +2%
+		--> Note de stabilité : 13/20
+
+		--> Gain de performances : +2%
+		--> Note de performances : 13/20
+
+		--> Probabilités de crash
+				Réseau	: 10% (Plus stable!)
+				SHELL	: 12%
+				GUI		: 8%
+				3D		: 2%
+				I/O		: 28%
+				Win32	: 30%
+				GENERAL	: 30%
+			
+			
+	#############################
+	##### Cpcdos OSx kernel #####
+	#############################
+	
+		[AJOUTS]
+		- [NOYAU] Ajout de l'utilitaire de mise a jour du kernel à distance depuis notre serveur de depot officiel cpcdos.net
+					+ Ce qui permet de mettre à jour le noyau depuis la console. Et participer aux version Hot-Releases. (+ Ajout des statistiques)
+		- [NOYAU] Ajout du module de décompression des fichiers .ZIP
+		
+		- [GUI] Ajout de la console graphique. Utilisable depuis GUI/ /CONSOLE+  ou  GUI/ /LC+
+					+ Vous pouvez creer votre propre console. Voir KRNL/CONFIG/GUI_ENV/CONSOLE.CPC et la variable CPC_GUI.CONSOLE dans GUI_STD.CPC --> A modifier DANS VOTRE OS !
+		- [GUI] Ajout des controlbox d'agrandissement et rétrécissement des fenêtres.
+		- [GUI] Ajout du rétrécissement lors d'un déplacement d'une fenêtre agrandie.
+		- [GUI] Ajout de l'updater d'objets. (Qui sert à actualiser périotiquement l'heure, cpu, ram etc...)
+		
+		- [CPCDOSC+] Ajout du support des fichiers compressés format ZIP. Via la commande decompresser/  ou  decompress/
+		- [CPCDOSC+] Ajout des commande de mises a jours 
+						SYS/ /UPDATE 				pour verifier l'existence d'une nouvelle mise a jour.
+						SYS/ /UPDATE-NEWS			pour afficher les dernières nouveautés
+						SYS/ /UPDATE-GET 			pour obtenir la derniere mise a jour (Package)
+						SYS/ /UPDATE-INSTALL 		pour installer le package téléchargé.
+						SYS/ /UPDATE-GET-INSTALL 	pour télécharger ET installer la derniere mise à jour.
+		- [CPCDOSC+] Ajout de la commande qui permet d'afficher ou d'identifier votre machine lors de mises a jours ou crashs.
+						SYS/ /NETID {votre pseudo} 
+		- [CPCDOSC+] Ajout de l'évenements "resize(valeur)". Lors ce que l'utilisateur clique sur agrandir/retrecir la fenêtre
+						L'argument %valeur% si true = la fenetre s'agrandie. false = la fenêtre est retrecie
+		- [CPCDOSC+] Ajout de l'evenement "KeyEnter(texte)" Lors ce que l'utilisateur presse la touche ENTRER
+		- [CPCDOSC+] Ajout de la commande SYS/ /VERSION pour afficher la version "Build" actuelle.
+		- [CPCDOSC+] Ajout du support de la GUI pour la commande de recuperation et positionnement du curseur POS/ ou LOC/
+		- [CPCDOSC+] Ajout des proprietes des fenetres :
+						--> "MOVE:0" ou "MOVE:1" si la fenêtre est déplacable ou non.
+						--> "SIZ:1" ou "SIZ:0"  si la fenetre est sizable manuellement
+						--> "SIZBTN:1" ou "SIZBTN:0" si la fenetre comporte le bouton d'angrandisseement et retrecissement
+						--> "REDUC:1" ou "REDUC:0" si a fenetre est reductable dans la barre des taches ou non
+						--> "CLOSE:1" ou "CLOSE:0" si la fenetre est fermable ou non
+		- [CPCDOSC+] Ajout de la propriete des boutons "BORD:0" et "BORD:1"
+		- [CPCDOSC+] Possibilité de créer un tableau dimensionné avec comme syntaxe ".."
+						Exemple : set/ MyArray[0..12] = Hello
+		- [CPCDOSC+] Ajout des variables pour les touches fonction mappés
+						F1, F2, F3, F4, F5, F6, F7, F8, F9, F11, F12.
+						F10 etant temporairement réservée pour la console.
+		- [CPCDOSC+] Ajout des operateur d'incrementation ++ et de decrementation --
+						Exemple : set/ MyValue++
+		- [CPCDOSC+] Ajout du mode 2 CCP/ /OPTIMISATION = 2
+						ce qui permet de gagner x2 des performances du CpcdosC+ en temporisant
+						le fichier .CPC. Attention cela peut generer des micro-freezes a long terme sur la GUI.
+		- [CPCDOSC+] Ajout du parametre qui permet de reset la black list des fonction d'evenements graphique introuvables 
+						gui/ /reset-blacklist-events
+		- [CPCDOSC+] Ajout du parametre qui permet d'afficher la liste des fonctions graphiques introuvables et bloques!
+						gui/ /display-blacklist-events
+		- [CPCDOSC+] Ajout de la fonction CPC.STR(chr,count) qui permet de répliquer x fois un caractere
+						Exemple : txt/ /f:CPC.STR(A,8)
+						Affiche : AAAAAAAA
+		- [CPCDOSC+] Ajout des parametres GUI/ /CONSOLE+  ou  /LC+ pour executer une console en mode GUI.
+		
+
+		- [BOOTSCREEN] Ajout des parametres suivants :
+						- Degradé sombre
+							cpc_sys.boot.bootscreen.darkening (0:Désactivé, 1:Au début seulement, 2:A la fin seulement, 3:Les deux)
+						- Opacité des frames
+							cpc_sys.boot.bootscreen.frames_opacity (64 --> 255)
+							
+		- [ERREUR] Ajout de l'avertissement AVT_83 (Voir manuel)
+						
+
+		[CORRECTIONS]
+		- [KERNEL] Correction d'un bug lors de l'utilisation de la commande CMD/ /THREAD /F:VotreFonction(). Qui utilisais le thread parent pour s'exécuter.
+		- [KERNEL] Ajout du KRNL_ID lors de la  création d'un thread (Absent depuis 3 ans!.. Miracle!)
+		- [KERNEL] Correction de petit "freeze" de l'affichage des secondes due a une mauvaise periode de 
+					rafraichissement du RTC. (Nombre d'accès à l'interruption BIOS 0x70).
+		- [KERNEL] Suppression des referencements de memoire du shell pouvant faire crasher hasardeusement le systeme.
+		- [KERNEL] Correction d'un crash provoqué par la lecture de fichier vides.
+		- [KERNEL] Correction des crashs provoques par la demande de creation de repertoires au-delas de 255 caracteres.
+		
+		- [MEMORY] Corrections des bugs (x4) dans le gestionnaire des bitmaps. Lors ce qu'un bitmap fait l'objet d'une erreur, il retourne NULL & -1
+					Mais les routines continuent leur exécution alors que le pointeur est NULL et finir par crasher bien plus tard.
+		- [MEMORY] Correction d'un crash dans le duplicat de la bitmap causé par un excès d'ID. (Meaxy 18-OCT-202)
+					
+		- [SHELL] Correction d'une boucle infinie provoqué lors de l'optimisation du code CpcdosC+ et qu'il n'y avait absolument rien à optimisé
+					l'optimiseur était bloqué dans une boucle à atteindre la fin du fichier. Bug trouvé par Jordan le 12-AVRL-2020
+					
+		- [GUI] Correction du textbox qui affiche un "-1" quand il n'y a pas de caractères.
+		- [GUI]	(UT) Amélioration de l'updater d'objets (UPD:1) pour l'affchage de l'heure et autres elements.
+					+ Correction d'interference OS ID.
+		- [CPCDOSC+] Correction d'un bug lors d'un ping/ ou download/ si vous définissez l'OS ID via SYS/ /OS:OSname
+		- [CPCDOSC+] Correction de la commande 'Write/' & 'Ecrire/'.
+		- [CPCDOSC+] Correction des plantages hasardeux de CCP/ /Optimization = 1
+		- [CPCDOSC+] Correction d'un crash pouvant etre provoqué lors de la mise a jour du systeme avec un ancien fichier temporaire
+						pouvant faire interférence. (Solution : Suppression du fichier temporaire avant update)
+	
+		[MODIFICATIONS]
+		- [NOYAU] Modification du nom de variable CPC_GUI.WINDOW.TITLE_TY par CPC_GUI.WINDOW.TITLE_SY
+				+ Modification du nom de variable dans KRNL/CONFIG/ENV_GUI/WIN_TITL.CPC
+
+		- [GUI] Textebox : Le curseur paraitra blanc quand la couleur du fond sera foncée
+		- [GUI] Optimisation : Desormais, tous les objets graphiques où leur fonctions d'evenements est introuvable, l'appel de fonction sera
+				mise dans une black list. Ce dernier permet d'augmenter la réactivité des interactions graphiques, et évite de chercher et tenter
+				d'appeler des fonctions évènements qui n'existent pas. Afin de reset la black list il suffit d'utiliser la commande 
+				gui/ /reset-blacklist-events
+				et afficher la liste des evenements bloques
+				gui/ /display-blacklist-events
+				
+		- [DEBUG] Bloquage des interruptions lors de l'ecriture du log sur support physique.
+					--> Optimisation du temps d'écriture (+10%)
+					--> Suppression d'un crash
+		- [DEBUG] Suppression du message "Cette version ne peut interpreter les fonction. Pour le moment ;-)"
+					Provoqué par un retour de fonction en console.
+					
+		- [CPCDOSC+] Desactivation du parametre /APPBIN de la commande ecrire/ et Write/ 
+					--> Attente refonte module I/O
+		
+		
+
+
+	#######################
+	##### CPinti Core #####
+	#######################
+	
+			
+		[CORRECTIONS]
+		- [CORE] Bloquage du sheduler des threads zombies qui ne repondent plus.
+		- [CORE] Correction d'un crash hasardeux lors de l'arret du noyau.
+		- [CORE] Correction d'un bug qui considirait le dernier thread en vie (lors d'un shutdown) comme etant un thread zombie
+					et était automatiquement banni du scheduler, et donc le système n'avait le temps de shutdown. Et restait bloqué comme un con...
+		- [IO] Correction des crashs provoqués par un path de fichier incluant des caractères interdits. (Desormais controlés et reformalisés par Cpcdos)
+		
+		- [NETWORK] Correction d'un crash due au a une mauvaise gestion de telechargement de fichiers par bloc TCP.
+		- [NETWORK] Correction d'un bug de téléchargement de fichiers binaires. (qui avaient la taille de 10 octets)
+		
+		[AJOUT]
+		
+		
+		[MODIFICATIONS]
+		- [NETWORK] Optimisation de la vitesse de téléchargement. Avant bloqué à 200Ko/s, maintenant 800Ko/s pour cette version. Augmentation de la limitation pour la prochaine update.
+		- [DEBUG] OPTIMISATION Bloquage de l'appel de fonction des informations de debugage si non activée.
+		- [CORE] Affichage des informations de la pile d'appel (stack trace -3) lors d'un crash identifiable.
+
+		
+		
+
+	#######################
+	##### Bugs connus #####
+	#######################
+	
+		0) SOURIS QUI S'AFFOLE : C'est un bug du driver dos qui partage le même buffer. La solution :
+			Re-provoquer l'erreur : En remplissant du buffer en faisant la même chose... mais plus exagéré.
+			--> Sur la GUI de Cpcdos, il faut rester appuyer sur une touche du clavier tel que "S" par exemple, et tenter de caller le mieux possible 
+				la souris en bas a gauche pendant 1 à 3 secondes (ça dépend de la vitesse des timers de machines) , insistez 3, 4 fois et vous retrouvez la souris!
+			
+		1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+		  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+			Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+			!!! Cette limitation pour le développement est temporaire!!!
+			
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
+			 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
+				Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
+				pour supprimer manuellement la variable et ses données en memoire.
+			
+		2) Entracelage PNG non supporté.
+			
+		3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+			v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+			fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+			
+			Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+			votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+			jamais en veille/Mode economie.
+			
+			La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+		
+			
+		4) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+			utilisés en haut de la console.
+		
+		5) Plantage du systeme au changement de bit de couleurs en console avec un OS ayant 1 fenêtre ou plus.
+		
+		6) Plantage du système si l'utilisateur exécute une instance d'OpenGL / GZE en 16 ou 24 bits.
+			TEMPORAIREMENT, il faut impérativement utiliser le 32 bits de couleurs en cas de rendu 3D.
+			Ceci est causé par le blittage RGBA du buffer provenant du moteur qu'il faut convertir a chaud
+			si ce dernier ne crée par de buffer 16 ou 24 bits.
+
+		7) Freeze avec une image rectangulaire au niveau du curseur lors du retour sur la GUI.
+		
+		8) Satistiques du trafic réseau non actualisées
+		
+		9) Quelques bugs d'exécution des commandes copier/, supprimer/, renommer/, dossier/
+		
+		10) L'ecriture d'une machine a Cpcdos en debug RS232 (Port com) ne fonctionne qu'en lecture
+			SYS/ /DEBUG /COM1 = 2
+
+
+-----------------------------------------------------------------------------------------------------------	
+
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.2         *** 
+	***        08 Avril 20 For public         ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+	
+
+	#################
+	#### En bref ####
+	#################
+
+		--> 7	Ajouts de divers fonctionnalités.
+		--> 10	corrections importantes.
+		--> 2	optimisations.
+		--> 10	corrections et modifications mineures.
+
+		--> Gain de stabilité : +2%
+		--> Note de stabilité : 13/20
+
+		--> Gain de performances : +0%
+		--> Note de performances : 13/20
+
+		--> Probabilités de crash
+				Réseau	: 6%
+				SHELL	: 15%
+				GUI		: 8%
+				3D		: 2%
+				I/O		: 28%
+				GENERAL	: 30%
+			
+			
+	#############################
+	##### Cpcdos OSx kernel #####
+	#############################
+	
+		[CORRECTIONS]
+		- [RESEAU] Correction des corruptions des fichiers binaire télechargés.
+		- [RESEAU] Correction du serveur par defaut. Qui sera le serveur passif TCP avec deux buffers (Input/Output)
+		- [RESEAU] CORRECTION BUG CONNU N°8 : Syntaxe de variables Cpcdos confondues avec le code Java-Script/PHP lors du téléchargement des pages WEB.
+		- [TELNET] Correction du mode serveur TELNET, désormais utilisable depuis.
+		- [TELNET] CORRECTION BUG CONNU N°6 : Plantage du système a l'utilisation de la commande "demarrer/" "start/ depuis une instance TELNEL (Putty...)
+		- [TELNET] CORRECTION BUG CONNU N°13 : Crash lors de l'arret de l'OS + noyau avec une commande TELNET. (Putty...)
+		- [CPCDOSC+] Correction du mode serveur CCP.
+		- [CPCDOSC+] Correction de la commande 'COPIER/' 'COPY/'. Désormais fonctionnel et multi-threaded.
+		- [CPCDOSC+] Correction des crashs provoqués lors de l'écriture d'un fichier dans un dossier inexistant. Notament avec la commande 'ecrire/' & 'write/'.
+		- [SYSTEME] Correction des crashs si on ouvre un fichier alors qu'il s'agit le nom d'un dossier.
+		- [SYSTEME] Ajustation de l'utilisation du CPU (En amelioration!)
+		- [SYSTEME] Correction d'une corruption de memoire aléatoire durant l'allocation des chaines de caracteres. L'octet '0' en fin de chaine 
+					était hors mémoire.
+		- [GUI] Correction d'un bug d'interaction utilisateur qui donnait FOCUS à la précédente fenêtre (à l'arrière plan)
+				en cliqant simplement sur la barre de titre de la fenêtre focus.
+		- [GUI] Amélioration du textebox.
+				* Typing curseur clignotant lors d'attente d'édition. (Typing cursor --> Curseur de texte)
+				* Placer et déplacer le typing curseur à l'aide des touches directionnelles du clavier ou de la souris.
+					!! C'est pas encore parfait pour la souris !!
+				* Ecrire du texte en multi-ligne.
+				* Supprimer depuis la touche backspace
+				* Bouton FIN et DEBUT pour deplacer le typing cursor..
+		[AJOUTS]
+		- [WIN32] Ajout du support d'allocation mémoire TLS par thread.
+				--> TlsAlloc(), TlsGetValue() et TlsSetValue().
+		- [CPCDOSC+] Ajout des l'évenements lors ce que la fenêtre est fermé par l'utilisateur ou le système.
+				-->  .WindowClosing et .WindowClosed
+		- [CPCDOSC+] Ajout de la commande 'Actualiser/' et 'Refresh/' en anglais.
+					Cette commande permet d'actualiser graphiquement un objet, une fenetre, l'arriere plan ou absolument tout!
+					Utile afin de combler volontairement d'eventuels artefacts ou defauts graphiques de vos OS.
+		- [CPCDOSC+] Ajout de la possbilité d'actualiser les elements graphiques des objets via le parametre 'UPD:1' puis ${VARIABLE} dans la propriété '.text'
+						BUG VISUEL CONNU -> Pas de back&front-buffer, donc écrasement des pixels sur empilations graphiques.
+		- [CPCDOSC+] Ajout des variables dynamiques CPC.SECONDS et CPC.SECONDES
+		- [CPCDOSC+] OUVRIR/ & OPEN/
+					 * Ajout du paramètre "/LIGNE:" "/LINE:" pour récupérer le contenu d'un fichier à une ligne précise.
+					 * Ajout du paramètre "/TEXTE:" "/TEXT:" pour récupérer le contenu d'un fichier à une ligne précise qui contient la séquences de caractères.
+
+	
+		[MODIFICATIONS]
+		- [RESEAU] OPTIMISATION : Ecriture flux réseau en téléchargement dans une fichier est géré par le module réseau.
+		- [GUI] Correction du bloc gris dans les msgbox.
+		- [GUI] Proprieté "COL:1" appliqué par defaut sur les objets.
+		- [SHELL] Modification des messages d'informations a propos de la commande GUI/.
+		
+		
+
+
+	#######################
+	##### CPinti Core #####
+	#######################
+	
+			
+		[CORRECTIONS]
+		- [IO] Correction du module de copie de fichier + corruption memoire hasardeuse.
+		- [IO] Correction crash d'ouverture de dossier en mode fichier.
+				Le testeur de presence fichiers renvoyait la valeure TRUE, même sur les dossiers.
+		- [SERVEUR] Correction des modules réseau pour le support TELNET et CCP.
+		- [SERVEUR] Correction du flux de caractees ASCII random envoyés en trop.
+		- [CLIENT] Correction des problèmes de buffer overflow lors de la 1ere séquence de caracteres ASCII envoyé.
+		- [WIN32] Correction des fuites de mémoires dans le loader.
+		
+		[AJOUT]
+		- [CLIENT] Support des fichiers binaires HTTP.
+		- [WIN32] Ajout des fonctionnalités suivantes :
+					- Fonction TlsFree()
+					- LeakChecker
+					- ManagedAlloc
+		
+		- [SERVEUR] Notification de coupure du serveur aux client connectés.
+					+ Déconexion de tous les clients connectés.
+		
+		
+		[MODIFICATIONS]
+		- [LLVM] Clang/LLVM réactivé pour cette version.
+		- [WIN32] Nettoyage du code phase 1
+		- [RESEAU] OPTIMISATION : Support d'ecriture du flux reseau dans un fichier temporaire.
+		
+		
+
+	#######################
+	##### Bugs connus #####
+	#######################
+	
+		0) SOURIS QUI S'AFFOLE : C'est un bug du driver dos qui partage le même buffer. La solution :
+			Provoquer le remplissement du buffer en faisant la même chose... mais plus exagéré.
+			--> Sur la GUI de Cpcdos, il faut rester appuyer sur une touche du clavier tel que "S" par exempl, et tenter de caller le mieux possible 
+				la souris en bas a gauche pendant 1 à 3 secondes (ça dépend de la vitesse des timers de machines) et le problème est résolu!
+			
+		1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+
+		  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+			Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+			!!! Cette limitation pour le développement est temporaire!!!
+			
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
+			 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
+				Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
+				pour supprimer manuellement la variable et ses données en memoire.
+			
+		2) BUGS de l'entracelage PNG au format BITMAP brute (+Canal alpha retenu) décallé par la
+			composante des dernires bits du RGBA 24 & 32 bits.
+			En mode j'ai rien compris TRADUCTION : Image PNG 24 & 32 bits avec entracelage 
+			est affiché tout en décallé, comme s'il y avait des pixels en plus. VOILA ;-)
+			
+		3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+			v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+			fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+			
+			Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+			votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+			jamais en veille/Mode economie.
+			
+			La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+		
+			
+		4) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+			utilisés en haut de la console.
+		
+		5) Plantage du systeme au changement de bit de couleurs en console avec un OS ayant 1 fenêtre ou plus.
+		
+		6) Plantage du système si l'utilisateur exécute une instance d'OpenGL / GZE en 16 ou 24 bits.
+			TEMPORAIREMENT, il faut impérativement utiliser le 32 bits de couleurs en cas de rendu 3D.
+			Ceci est causé par le blittage RGBA du buffer provenant du moteur qu'il faut convertir a chaud
+			si ce dernier ne crée par de buffer 16 ou 24 bits.
+
+		7) Freeze avec une image rectangulaire au niveau du curseur lors du retour sur la GUI.
+		
+		8) Satistiques du trafic réseau non actualisées
+		
+		9) Quelques bugs d'exécution des commandes copier/, supprimer/, renommer/, dossier/
+		
+		10) L'ecriture d'une machine a Cpcdos en debug RS232 (Port com) ne fonctionne qu'en lecture
+			SYS/ /DEBUG /COM1 = 2
+
+
+-----------------------------------------------------------------------------------------------------------	
+
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.1         *** 
+	***  25 Juillet 2019 For Ultima testers   ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+	
+
+	#################
+	#### En bref ####
+	#################
+
+		--> 10	Ajouts de divers fonctionnalités.
+		--> 29	corrections importantes.
+		--> 4	optimisations. (Refonte non comptabilisé)
+		--> 10	corrections et modifications mineures.
+
+		--> Gain de stabilité : +40%
+		--> Note de stabilité : 14/20
+
+		--> Gain de performances : +35%
+		--> Note de performances : 13/20
+
+		--> Probabilités de crash
+				Réseau	: 5%
+				SHELL	: 12%
+				GUI		: 5%
+				3D		: 1%
+				I/O		: 30%
+				GENERAL	: 15%
+			
+			
+	#############################
+	##### Cpcdos OSx kernel #####
+	#############################
+	
+		[CORRECTIONS]
+		- [CPCDOSC+] Correction des crashs lors de l'execution d'une fonction dans un nouveau thread depuis 
+		   la commande "CMD/".
+		- [CPCDOSC+] Correction d'un crash du shell lors de la lecture de la ligne "FIN/ BarreProgression".
+		- [CPCDOSC+] Correction d'un crash provoqué par ce qu'on indique un mauvais nom d'OS
+		- [DEBUG] Correction des problemes d'affichage des lignes "surbrillantes" en mode d'ecran superieur a 0.
+		- [SHELL] Correction du problème de chargement du 2eme et 3eme OS due a un OSid qui etait egale
+		          a '0' durant le chargement de l'OS.
+		- [SHELL] Correction sur le OSid qui etait fixé sur le bank-kernel (OSid:8) après avoir créer un thread à la console.
+		- [GUI] Correction du problème d'affichage vidéo lors de la restauration d'un OS en exécution arrière plan.
+				 Le bug etait présent pour la plus part des intel avec le GPU intégré, la vidéo s'affichait uniquement
+				 sous le curseur graphique. La solution était de fermer le processus SCI (Et ses threads) de l'OS courant dés
+				 que ce dernier est mis en arrière plan. Et puis re-créer le processus SCI et les threads dés la restauration de l'OS.
+		- [GUI] Correction des crashs provoqués par l'absence du pointeur bitmap du fond d'ecran.
+		- [GUI] Correction des crashs provoqués par l'absence du pointeur bitmap de la barre de titre.
+		- [GUI] Correction des crashs provoqués par l'absence du pointeur buffer bitmap de la barre de titre.
+		- [GUI] Correction des crashs provoqués par l'absence du pointeur bitmap de survole de boutons.
+		- [GUI] Correction de crashs lors de l'initialisation de la GUI durant un PING.
+				 La solution est de bloquer le scheduler durant ce moment d'initialisation.
+		- [GUI]	Correction des problemes d'interferences des proprietes entre le checkbox et la progressbar.
+		- [GUI] Correction des crashs provoqués lors du changement des bits de couleur. Ceci était la cause du gestionnaire de mémoire
+				qui ne rechargeait plus automatiquement les ressources graphiques comme prévu.
+		- [GUI] Correction plantage dessin en console, bloquage des routines de dessins et fermeture des threads vidéos lors ce que la GUI se ferme.
+		- [GUI] Correction plantage du thread de la GUI lors de l'arret du PC.
+		- [GUI] Correction de l'impossibilité d'interagir avec le premier objet graphique indexé dans une fenêtre.
+		- [NOYAU] CORRECTION BUG CONNU N°6
+			"ISR du moniteur bloqué malgré le signal irq(0) lorsque vous utiliser une commande réseau (Client/, Serveur/, Ping/) et un scren mode supérieur à 0
+			--> Conseillé, exécuter au moins 1 fois une commande réseau en utilisant le mode d'affichage 0
+			SYS/ /SCREEN 0
+			ping/ 127.0.0.1"
+		- [NOYAU] Correction crash du gestionnaire de memoire lors du rechargement des ressources graphiques après le changement
+					du bit de couleurs.
+		- [WIN32] Correction des bugs provoqués par la fonction C 'fgets()'
+		
+		[AJOUTS]
+		- [SYSTEME] Support OpenGL / GZE (Avancement 30%).
+				Full compatible VirtualBox, Intel Pentium 4, Celeron, i3, i5, i7, AMD A5, A6, A7, A8.
+				Il est possible d'executer une infinité d'instance d'OpenGL ou GZE.
+				Les performances reste donc à l'égard du PC hôte.
+		- [DEBUG] Ajout du numero de thread (TID) dans les lignes de debuggage ayant la date.
+		- [NETWORK] Ajout de l'argument /NONET ou /NONETWORK qui permet de desactiver les modules reseaux
+		- [BOOT] Ajout du module boot screen animé. Il est possible d'inclure une sequence d'images PNG, JPG, BMP
+				 avec un nombre de frames et un bouclage. Ce module est indépendant du module SCI, donc aucune 
+				 initialisation des objets graphiques.
+				 + Ajout (obligatoire) du fichier "OS/{Votre OS}/BOOT/config.cpc"
+				 + Ajout (optionnel) des images sequentielles de boot
+		- [GUI]	Ajout du sablier qui indique la charge du CPU du module Shell/CpcdosC+ (Le plus gourmand)
+		- [GUI] Ajout des fonctionnalités de blittage dynamique multi-threaded depuis un tableau de pixels (bitmap).
+		- [CPCDOSC+] Ajout des fonctions Before_DOS() After_DOS() afin de gerer l'avant et l'apres execution 
+				des programmes dépendant DOS via la commande "DOS/", t-elle que la résolution d'écran.
+				--> voir KRNL/INIT/DOS.CPC
+		- [CPCDOSC+] Nouvelle option pour la propriété ".image" du picturebox. Il est possible de définir une adresse
+				mémoire avec "@0xMonAdress" MAIS maintenant il est aussi possible de préciser un numéro ID bitmap
+				en mémoire RAM avec "#NumeroBitmap". Cette option réduit les possibilités de crashs. En effet, il est 
+				possible de préiser n'importe quoi comme adresse mémoire et augmenter les probabilités de crashs, alors 
+				qu'un numéro de bitmap, est déjà une image structuré validé. Un message d'erreur apparait si le numéro n'existe pas.
+				Il est donc conseillé d'utiliser les #BitmapID plutôt d'une @dresse mémoire.
+		- [CPCDOSC+] SYS/ /BITMAP --> Ajout des parametres
+				- /GET /PtrByHandle --> Permet d'obtenir le pointeur bitmap depuis son numéro d'handle.
+				- /GET /IDbyHandle --> Permet d'obtenir l'ID bitmap depuis son numéro d'handle.
+		- [CPCDOSC+] EXE/ --> Ajout de l'argument /Win32 {programme.exe} qui a le même effet que /PE {programme.exe}..
+		- [CPCDOSC+] SYS/ --> Ajout de l'argument /Listvar qui permet de lister toutes les variables aux niveau choisis.
+		- [WIN32] Support de fonctions standard 
+					memcmp(), stricmp(), _stricmp, memmove(), fgets(), fputs(), rand(), setbuf(), fseek(), ftell(), fflush(),
+					fprintf(), sprintf(), strcat(), strchr(), strcpy(), strncmp(), strtok(), strtol(), time()
+					trrchr(), srand(), strrchr(), exit(), cexit(), (Onexit() et atexit() [PARTIELLEMENT])
+				 + Fonctions kernel
+					EnterCriticalSection(), LeaveCriticalSection(), DeleteCriticalSection(), InitializeCriticalSection()
+					setjmp(), longjmp()
+
+
+	
+		[MODIFICATIONS]
+		- [NOYAU] Re-adaptation du noyau selon la nouvelle version de CPinti Core.
+		- [NOYAU] Creation d'un thread dédié à l'affichage vidéo du SCI.
+		- [NOYAU] Optimisation : Suppression des l'itérations nulles lors de la recherche des variables non indexée
+					de niveaux 1, 2, 3, 4, et 5.
+		- [SYSTEME] Ajustation de l'estimation de la charge CPU.
+		- [DEBUG] Optimistion : Diminution des nombre d'acces a l'interruptions RTC 0x70 
+		- [DEBUG] Suppression : Argument /NODBGCPC et /NODBGCPINTI qui est remplacé par /NODBG ou /SANSDBG
+		- [DEBUG] Ajustement  : /NODGB ou /SANSDBG masque les lignes au demarrage du noyau.
+		- [CPCDOSCP] Optimisation de la repartition des taches.
+		- [GUI]	Portage des fonctionnalités de drawing des objets dans le module 'bitmap_memory'
+				Ce qui permet un meilleur contrôle et la gestions des pointeurs de buffers puis
+				de la video.
+		
+
+
+	#######################
+	##### CPinti Core #####
+	#######################
+			
+		[CORRECTIONS]
+		- [NOYAU] RECRITURE complete. (x17 corrections)
+		
+		[AJOUTS]
+		
+		
+		[MODIFICATIONS]
+		- [NOYAU] RECRITURE complete.
+			* Réecriture d'un nouveau gestionnaire multitache.
+			* Réecriture du gestionnaire de threads/processus.
+				Optmisations pour les prochaines updates en attendant les retours.
+			* Réecriture du module PING.
+			* Réecriture du module Client TCP.
+			* Réecriture du module Serveur TCP.
+		- [SYSTEME] Ajustation de l'estimation de la charge CPU. ( A revoir pour la prochaine update )
+		
+		
+
+	#######################
+	##### Bugs connus #####
+	#######################
+			
+		1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+
+		  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+			Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+			!!! Cette limitation pour le développement est temporaire!!!
+			
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
+			 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
+				Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
+				pour supprimer manuellement la variable et ses données en memoire.
+			
+		2) BUGS de l'entracelage PNG au format BITMAP brute (+Canal alpha retenu) décallé par la
+			composante des dernires bits du RGBA 24 & 32 bits.
+			En mode j'ai rien compris TRADUCTION : Image PNG 24 & 32 bits avec entracelage 
+			est affiché tout en décallé, comme s'il y avait des pixels en plus. VOILA ;-)
+			
+		3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+			v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+			fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+			
+			Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+			votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+			jamais en veille/Mode economie.
+			
+			La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+		
+			
+		4) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+			utilisés en haut de la console.
+			
+		5) Plantage du système a l'utilisation de la commande "demarrer/" depuis une instance TELNET
+		
+		6) Plantage du systeme au changement de bit de couleurs en console avec un OS ayant 1 fenêtre ou plus.
+		
+		7) Plantage du système si l'utilisateur exécute une instance d'OpenGL / GZE en 16 ou 24 bits.
+			TEMPORAIREMENT, il faut impérativement utiliser le 32 bits de couleurs en cas de rendu 3D.
+			Ceci est causé par le blittage RGBA du buffer provenant du moteur qu'il faut convertir a chaud
+			si ce dernier ne crée par de buffer 16 ou 24 bits.
+			
+		8) Syntaxe de variables Cpcdos confondues avec le code Java-Script/PHP lors du téléchargement 
+			des pages WEB.
+			
+		9) Freeze avec une image rectangulaire au niveau du curseur lors du retour sur la GUI.
+		
+		10) Satistiques du trafic réseau non actualisées
+		
+		11) Quelques bugs d'exécution des commandes copier/, supprimer/, renommer/, dossier/
+		
+		12) L'ecriture d'une machine a Cpcdos en debug RS232 (Port com) ne fonctionne qu'en lecture
+			SYS/ /DEBUG /COM1 = 2
+
+-----------------------------------------------------------------------------------------------------------	
+
+
+
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.0         *** 
+	***      1er Février 2017 For PUBLIC      ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+
+
+			#################
+			#### En bref ####
+			#################
+
+	--> 6	Ajouts de divers fonctionnalités.
+	--> 2	corrections importantes.
+	--> 1	optimisations.
+	--> 5	corrections et modifications mineures.
+
+	--> Gain de stabilité : +8%
+	--> Note de stabilité : 11/20
+
+	--> Gain de performances : +5%
+	--> Note de performances : 11/20
+
+	--> Probabilités de crash
+			Réseau	: 40%	(demarrage d'un OS en TELNET)
+			SHELL	: 18%	(Execution hors contexte via 'ALLER/ & GOTO/' dans un 'SI/ & IF/')
+			GUI		: 20%	(Selon la machine hôte)
+			I/O		: 5%	(Selon la machine hôte)
+			GENERAL	: 51% 	(Selon la machine hôte)
+			
+
+	--> Crashs/bugs connus
+			1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+
+			  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+				Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+				car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+				!!! Cette limitation pour le développement est temporaire!!!
+				
+			  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
+				 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
+					Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
+					pour supprimer manuellement la variable et ses données en memoire.
+				
+			2) BUGS de l'entracelage PNG au format BITMAP brute (+Canal alpha retenu) décallé par la
+				composante des dernires bits du RGBA 24 & 32 bits.
+				En mode j'ai rien compris TRADUCTION : Image PNG 24 & 32 bits avec entracelage 
+				est affiché tout en décallé, comme s'il y avait des pixels en plus. VOILA ;-)
+				
+			3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+				v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+				fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+				
+				Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+				votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+				jamais en veille/Mode economie.
+				
+				La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+			
+			4) Boucles bloquantes dans les executables Win32 et LLVM
+				Oui c'est normal, la section critique est activée lors de l'execution de ces
+				fichier. La raison est qu'on bloque la préemption pour des problèmes de ... Crash.
+				On cherche encore..
+				
+			5) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+				utilisés en haut de la console.
+				
+			6) Plantage du système a l'utilisation de la commande "demarrer/" depuis une instance TELNET
+			
+			7) ISR du moniteur bloqué si vous utiliser une commande réseau (Client/, Serveur/, Ping/) et un scren mode supérieur à 0
+				--> Conseillé, exécuter au moins 1 fois une commande réseau en utilisant le mode d'affichage 0
+				SYS/ /SCREEN 0
+				ping/ 127.0.0.1
+			
+			
+			#############################
+			##### Cpcdos OSx kernel #####
+			#############################
+			
+	- Cpcdos	: AJOUT d'un gestionnaire de BITMAP (Gros bloc de mémoire)
+					Capable d'allouer, copier, modifier, supprimer, recharger à la source
+					
+	- Cpcdos	: AJOUT du garbage collector pour les BITMAPS non référencés
+					Vous pouvez l'enclancher avec la commande 
+					SYS/ /Bitmap /GC        ou      SYS/ /BITMAP /GarbageCollector
+					
+	- Cpcdos	: AJOUT du support JPG, JPEG, JFIF, MJPEG.
+					Le format MJPEG est réservé aux trames vidéo qui n'est pas encore disponible.
+					
+					/!\ ATTENTION : L'entrasselage progressive JPG n'est pas supportée /!\
+					
+	- Cpcdos	: AJOUT de l'affichage des informations CPU enregistrés, au demarrage.
+					+ Possibilite de recuperer l'etat du CPU depuis le CpcdosC+ :
+						SSE, SSE2, SSE3, SSE4, SSE4A, FPU, CPUID, VME, 3DNOW, 3DNOW2, APIC,
+						MMX, RDTSCP, PAE, Multi-core, Multi-Processeur, Famille, modele,
+						Vendor, nom
+					+ Depuis l'APM : Etat, RealMode, ProtectMode(16/32), CPU IDLE/BUSY
+						Etat du Power Management + Devices, Version, Signature.
+					---> Voir variables d'environnements dans le manuel
+					
+	- Cpcdos	: AJOUT de la possibilité de contrôler la console Cpcdos depuis un port COM série RS232.
+						
+	- GUI		: CORRECTION/OPTIMISATION de l'interface graphique --> Gestionnaire BITMAP.
+				  Les objets suivants ne se préoccuperons plus des pointeurs BITMAP
+					- PictureBox
+					- ProgressBar
+					- CheckBox
+					- TextBox
+					- Fenetre
+					
+				  Tout sera géré depuis le gestionnaire de BITMAP, ce qui évite en cas 
+				  de buffer overflow, d'écraser plusieurs bloc de code depuis un BITMAP gigantesque.
+				  Le gestionnaire de BITMAP qui gère des données gigantesque est isolé du reste.
+				  --> Meilleure stabilitée, moins de crashs GUI.
+				  
+	- GUI		: CORRECTION des problèmes liés au mode d'affichage du fond d'écran (Centré, Ajusté, et vignettes)
+				  
+	- GUI 		: CORRECTION CRASH Changement du profondeur de couleur à chaud durant l'exécution d'un OS avec 
+					plusieurs fenêtres & boutons.
+				  
+	- CpcdosC+	: CORRECTION de la commande Fermer/ qui ne prennait pas en compte le handle, TID de
+					- TextBox
+					- ProgressBar
+					- CheckBox
+	
+	- CpcdosC+	: CORRECTION/REECRITURE de la commande FIX/ /Q, FIX/ /TOUCHE et FIX/ /ATOUCHE
+							Correspondance anglaise :  FIX/ /Q, FIX/ /KEY    et FIX/ /WKEY
+					Qui crashait le système car /ATOUCHE et /Q crée un nouveau thread "CONSOLE" bloquant et sans
+					 interface.
+					 mais ce thread utilisait des anciennes methodes d'allocations memoire (Oubli de notre part)
+					 Donc on a décidé de réecrire sa totalitée au propre et tout refonctionne ;)
+					
+	- CpcdosC+	: AJOUT du parametre SYS/ /BITMAP qui permet de gérer le gestionnaire de memoire BITMAP
+					SYS/ /BITMAP				--> Affiche le nombre de bloc de BITMAP alloués
+					SYS/ /BITMAP /LISTE			--> Affiche une liste détaillée des BITMAP alloués
+													 Avec leur id, nom, handle, Fichier source, offset mémoire, taille... (/SIZE en anglais)
+					SYS/ /BITMAP /TAILLE		--> Affiche la taille totale de tous les BITMAPS en octets. (/SIZE en anglais)
+					SYS/ /BITMAP /RECHARGER		--> Supprime toutes les références BITMAP + Objets des elements
+													 graphiques de la GUI. Cette opération enclenche automatiquement
+													 le rechargement des images GUI à la source. Peut demander quelques
+													 secondes de chargement au disque. (/RELOAD en anglais)
+					
+	- CpcdosC+	: AJOUT du parametre IUG/ /LC ou /CONSOLE (GUI/ en anglais) qui permet de réduire l'interface graphique
+					et ouvrir la console. (LC : Ligne de Commandes).
+					
+	
+			#######################
+			##### CPinti Core #####
+			#######################
+			
+	- Core		: Isolation mémoire du gestionnaire BITMAP.
+	- Reseau	: ICMP -> CORRECTION du calcul du temps qui était basé sur le temps de 
+							la trame entrante, et non la trame sortante.
+	- Reseau	: ICMP -> OPTIMISATION de la charge CPU durant l'attente d'une réponse
+							si la machine distante ne répond pas.
+					
+
+-----------------------------------------------------------------------------------------------------------	
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 PREVIEW 1        *** 
+	***        Decembre 2017 For PUBLIC       ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+
+
+			#################
+			#### En bref ####
+			#################
+
+	--> 14	ajouts de divers fonctionnalités.
+	--> 3	corrections importantes.
+	--> 1	optimisations.
+	--> 10	corrections et modifications mineures.
+
+	--> Gain de stabilité : +5%
+	--> Note de stabilité : 11/20
+
+	--> Gain de performances : +3%
+	--> Note de performances : 12/20
+
+	--> Probabilités de crash
+			Réseau	: 30%	(Connexions & déconnexions répété du Client TCP/UDP)
+			SHELL	: 18%	(Execution hors contexte via 'ALLER/ & GOTO/' dans un 'SI/ & IF/')
+			GUI		: 40%	(Selon la machine hôte)
+			I/O		: 5%	(Selon la machine hôte)
+			GENERAL	: 51% 	(Selon la machine hôte)
+			
+
+	--> Crashs/bugs connus
+			1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+
+			  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+				Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+				car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+				!!! Cette limitation pour le développement est temporaire!!!
+				
+			  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
+				 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
+					Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
+					pour supprimer manuellement la variable et ses données en memoire.
+				
+			2) CRASH Changement du profondeur de couleur à chaud durant l'exécution d'un OS avec 
+				plusieurs fenêtres & boutons  (Instable)
+				
+			3) BUGS de l'entracelage PNG au format BITMAP brute (+Canal alpha retenu) décallé par la
+				composante des dernires bits du RGBA 24 & 32 bits.
+				En mode j'ai rien compris TRADUCTION : Image PNG 24 & 32 bits avec entracelage 
+				est affiché tout en décallé, comme s'il y avait des pixels en plus. VOILA ;-)
+				
+			4) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+				v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+				fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+				
+				Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+				votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+				jamais en veille/Mode economie.
+				
+				La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+			
+			5) Boucles bloquantes dans les executables Win32 et LLVM
+				Oui c'est normal, la section critique est activée lors de l'execution de ces
+				fichier. La raison est qu'on bloque la préemption pour des problèmes de ... Crash.
+				On cherche encore..
+			
+			
+			#############################
+			##### Cpcdos OSx kernel #####
+			#############################
+			
+	- CPCDOS	: AJOUT de la possibilité d'exécuter plusieurs OS Cpcdos en parallèle !
+					Ce système regénère une nouvelle KeyID (les 5 et 9eme octet) via
+					 un simple OS ID différent des autres. Par l'architecture logique et intrinsèque 
+					 du kernel prévu à cet effet, Cpcdos va automatiquement allouer un nouveau bloc 
+					 de mémoire séparé du reste pour chaque instance d'OS.
+					Toute la partie graphique, interaction utilisateur, code et variables seront 
+					 donc séparé et indépendant des autres OS. Impossible donc d'interférer entre OS.
+					
+					Exemple, Ici on va demarrer 3 OS installés :
+						demarrer/ MonOS
+						demarrer/ Mon2emeOS
+						demarrer/ Mon3emeOS
+					Switcher l'instance du shell/Console en selectionnant un OS par son nom :
+						SYS/ /OS:MonOS
+							.. Les commandes suivantes executes concernera 'MonOS' ..
+						SYS/ /OS:Mon3emeOS
+							.. Les commandes suivantes executes concernera 'Mon3emeOS' ..
+							
+					Puis pour lancer la GUI de l'OS courant, vous pouvez tapez tout simplement "GUI/"
+					Si vous voulez lancer la GUI d'un autre OS SANS SWITCHER, tapez "GUI/ /OS:NomDeL'autreOS"
+					
+					LIMITATION : Pour cette version, vous pourrez lancer que 7 OS en même temps.
+									C'est déjà pas mal hein.. Les performances entre OS semble correctes. 
+									Et c'est le début d'une nouvelle génération de Cpcdos ! :)
+	
+	- GUI		: AJOUT du CheckBox.
+	
+	- GUI		: AJOUT de la barre de progression.
+	
+	- GUI		: AJOUT du Msgbox. (Fonction interne en CpcdosC+)
+					exemple : 
+						/F:GUI.Msgbox(Mon Texte,MonTitre,1)
+					Et retourne le numero de handle de la fenetre
+	
+	- GUI		: MODIFICATION de la gestion de l'opacité de la fenêtre.
+					Ajout du paramètre AlphaMode pour choisir le mode de transparence
+					via la propriété .OPACITE (ou .ALPHA en anglais)
+					0	= Tout transparent
+					1	= Transparent pour le conteneur graphique uniquement
+					2	= Transparent pour la barre de titre uniquement
+					Ajout de l'élaircissment de l'ombre si l'opacite est diminuée
+					
+	- GUI		: CORRECTION des crashs provoqués par le "TYPE:1"
+	
+	- GUI		: CORRECTION d'un bug qui dés-indexe les précédentes fenêtres.
+
+	
+	- CPCDOSC+	: AJOUT de la commande SYS/ /ARRETER (/SHUTDOWN en anglais) pour arrêter le système.
+					ATTENTION : Ne fonctionne que sur les BIOS APM v1.2+
+	
+	- CPCDOSC+	: AJOUT de la commande SYS/ /VEILLE (/STANDBY en anglais) pour mettre en veille le système.
+					ATTENTION : Ne fonctionne que sur les BIOS APM v1.2+	
+
+	- CPCDOSC+	: AJOUT de la commande SYS/ /REDEMARRER (/RESTART en anglais) pour redemarrer le système.
+					ATTENTION : Ne fonctionne pas sur certaines série d'intel
+					            de 4eme génération et plus.
+								
+	- CPCDOSC+	: AJOUT du parametre IUG/ /OS:MonOS pour afficher la GUI d'un autre OS en exécution.
+	
+	- CPCDOSC+	: AJOUT du paramètre SYS/ /OS:MonOS pour switcher à chaud l'instance courant sur un autre
+					OS en exécution.
+	
+	- CPCDOSC+	: AJOUT de la commande REP/  (ou DIR/ en anglais) equivalent au DIR de windows ou LS de linux
+					pour lister le contenu de répertoires avec la possibilité d'utiliser un filtre.
+					+ AJOUT des arguments /F /D /A /L pour stocker le contenu du repertoire dans un tableau pour vos programmes
+					        et affichage breve des informations avec /B
+					
+	- CPCDOSC+	: MODIFICATION de la commande anglaise ".ALPHA" en ".OPACITY"
+	
+	- CPCDOSC+	: MODIFICATION des variables lors de l'execution d'un fichier .CPC
+					%_EXE_PATH_%	--> Chemin jusqu’à l'exécutable
+					%_EXE_PATH_F_%	--> Folder(dossier) courant où est exécuté le fichier
+					%_EXE_PID_%		--> PID du programme exécuté
+					%_EXE_TID_%		--> TID du programme exécuté
+					%_EXE_DATE_%	--> Date d'exécution du programme
+
+	- CPCDOSC+	: CORRECTION de la commande anglaise "TextBlock/" qui n'était pas reconnue par le SHELL
+	
+	- CPCDOSC+	: CORRECTION de la propriétée anglaise .TitleColor" qui était confondue avec .Title
+	
+	- CPCDOSC+	: MODIFICATION de l'espacement entre les lignes du TexteBloc et TexteBox.
+	
+	- CPCDOSC+	: CORRECTION des arguments de fonctions qui retournait toujours une chaine en majuscules.
+	
+	- CPCDOSC+	: CORRECTION IMPORTANTE de crash provoques dans la memoire stack du premier processus
+					systeme qui executait une commande du SHELL provoquait de manière intrinseque
+					un buffer overflow gigantesque (corruption de la stack) et le crash survenait bien plus tard.
+					Donc bug très difficile a trouver. Mais corrigé après 3 semaines d'archanements.
+
+					
+	- CPCDOSC+
+	  SHELL		: CORRECTION de l'appel de fonction qui fonctionnait même étant commentée avec // REM/ ou ' et ''
+					+ Optimisation de la lecture des fichiers non pré-compilé. Désormais les commentaires,
+					  ne seront plus affichés dans le debug.
+
+					  
+	- WRAPPER 	: Correction des fonctons
+					- cpc_cpinti_sleep_us()
+					- cpc_cpinti_sleep_ms()
+					- cpc_cpinti_sleep_sec()
+					- cpc_cpinti_Obtenir_Temps_ms()
+					Qui ne fonctionnait pas pour la plus part des développeurs SDK
+
+	- CPCDOS 	: MODIFICATION, vous devez impérativement ajouter la commande suivante dans votre OS.CPC :
+					EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
+				  Ce qui va permettre de charger en memoire un "profil" graphique pour UNE instance d'un OS (Variables niveau 3).
+				  Il est impératif que chaque OS devra charger ce fichier! Sauf s'il s'agit d'un OS sans GUI.
+				  
+	- CPCDOS	: AJOUT du support indépendant BIOS APM (Advanced Power Management) v1.0, et v1.0+
+					pour la gestion d'alimentation (Processeur, USB, PCI...)
+					Dont la mise en veille, arrêt du PC et reboot.
+					(100% INDEPENDANT du DOS grosse avancée majeure ! :D)
+	
+			#######################
+			##### CPinti Core #####
+			#######################
+			
+	- ALL 		: Revue partielle du code C++ selon les normes strictes du ISO/C++17.
+					--> Corrections de quelques bugs mineurs trouvés.
+				
+	- Core		: AJOUT du support BIOS APM v1.0, et v1.0+
+					
+
+-----------------------------------------------------------------------------------------------------------	
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***     Cpcdos OS2.0.5 Alpha 4.0 T8        *** 
+	***  12 Novembre 2017 For ultima testers   ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+
+		Il s'agit de la dernière update avant le déploiement officielle SILENCIEUSE. Il y aura 1 seule mise à jour 
+			probablement d'ici Janvier 2018 pour les ultima testers en "Alpha 4.0 T9 FINAL".
+		La sortie OFFICIELLE de Cpcdos est prévu pour le 1er février 2018, soit 3 ans après la dernière update 
+			de Cpcdos OS2.0.5 Alpha 3.9 du 1er février 2015.
+
+
+			#################
+			#### En bref ####
+			#################
+
+	--> 18	ajouts de divers fonctionnalités.
+	--> 6	corrections importantes.
+	--> 2	optimisations.
+	--> 7	corrections et modifications mineures.
+
+	--> Gain de stabilité : +5%
+	--> Note de stabilité : 12/20
+
+	--> Gain de performances : +8%
+	--> Note de performances : 11/20
+
+	--> Probabilités de crash
+			Réseau	: 30%	(Connexions & déconnexions répété du Client TCP/UDP)
+			SHELL	: 20%	(Execution hors contexte via 'ALLER/ & GOTO/' dans un 'SI/ & IF/')
+			GUI		: 40%	(Selon la machine hôte)
+			I/O		: 5%	(Selon la machine hôte)
+			GENERAL	: 55% 	(Selon la machine hôte)
+			
+
+	--> Crashs/bugs connus
+			1) CRASH Changement du profondeur de couleur à chaud durant l'exécution d'un OS avec 
+				plusieurs fenêtres & boutons  (Instable)
+			2) BUGS de l'entracelage PNG au format BITMAP brute (+Canal alpha retenu) décallé par la
+				composante des dernires bits du RGBA 24 & 32 bits.
+				En mode j'ai rien compris TRADUCTION : Image PNG 24 & 32 bits avec entracelage 
+				est affiché tout en décallé, comme s'il y avait des pixels en plus. VOILA ;-)
+			3) BUGS si vous lancez plusieurs OS en même temps, l'interface graphique est mélangée
+				avec les autres OS en exécution, mais pas le code ;) Patientez pour la prochaine update!
+				
+
+			#############################
+			##### Cpcdos OSx kernel #####
+			#############################
+			
+	- CPCDOSC+	: CORRECTION de la commande TELECHARGER/ (ou DOWNLOAD/) qui provoquait une erreur 400 (Bad Request) sur certains serveurs web.
+					Le paquet réseau était mal formé.
+
+	- CPCDOSC+	: AJOUT de la commande COPIER/ (ou COPY/ en anglais) qui vous permet de copier un fichier
+					d'une source à une destination.
+						Exemple : 
+							Copier/ MonFichier.log, MonDossier/MonFichier.log
+						
+					Vous pouvez aussi récupérer l'état de la copie (Pourcentage, Octets copiés et octets par secondes)
+					Les 3 arguments peuvent être utilisés sur la même ligne !
+					Pour tester les valeurs sur la console, vous devez exécuter cette commande sur un autre thread
+					 autrement le thread courant est bloqué sur la copie en cours jusqu'à la fin.. ahha.. lol.. c'est pas drôle..
+						Exemple COMPLET : 
+							CMD/ /thread Copier/ Source.exe, Destination.exe /Progression:Pourcentage /Octets:Taille /OctetsParSecondes:Vitesse
+					
+						Et durant la copie (d'un gros fichier), tapez ces lignes :
+							txt/ Progression %Pourcentage% \%         <--- Affiche le pourcentage en cours
+							txt/ Total %Taille%                       <--- Affiche le nombre d'octets copies
+							txt/ Vitesse %Vitesse%                    <--- Affiche le nombre d'octets écrit par secondes
+							txt/ Vitesse /c(%Vitesse% / 1024)         <--- Affiche le nombre de kilo-octets écrit par secondes
+							txt/ Vitesse /c(%Vitesse% / (1024*1024))  <--- Affiche le nombre de mega-octets écrit par secondes
+						
+						Bon oui pour cette version votre CPU prend chère, la prochaine update vous pourrez choisir les priorites
+						
+					--> Bientot pour les dossier ;)
+
+	- CPCDOSC+	: AJOUT de la commande DOSSIER/ (ou folder/ en anglais) qui vous permet de créer un dossier ou un arbre de répertoires
+					Exemple
+						Créer un dossier relatif :
+							Dossier/ MonDossier
+						Créer un dossier dans un lecteur :
+							Dossier/ D:\MonDossier
+						Créer une séquence de nouveaux dossiers
+							Dossier/ MonDossier1/Dossier2/Dossier3
+					
+	- CPCDOSC+	: AJOUT de la commande RENOMMER (ou rename/ en anglais) qui vous permet de renommer un fichier
+					Exemple :
+						Renommer/ MonFichier.cpc, NouveauNom.cpc
+						
+					Ou relatif à un répertoire :
+						Renommer/ MonDossier/MonFichier.cpc, NouveauNom.cpc
+					
+					--> Bientot pour les dossier ;)
+					
+	- CPCDOSC+	: AJOUT de la commande SUPPRIMER/ (Ou delete en anglais) qui vous permet de supprimer un fichier.
+					Exemple :
+						Supprimer/ MonFichier.txt
+						Supprimer/ Mondossier/MonFichier.txt
+					
+					--> Bientot pour les dossier ;)
+
+	- CPCDOSC+	: AJOUT du parametre /PROCESSUS pour la commande SYS/ afin vous donner la possibilité de créer
+					votre propre nouveau processus qui héberge vos threads, code avec un nouveau PID également généré.
+					Exemple :
+						Créer 1 processus nommé 'Tata'
+							SYS/ /PROCESSUS Tata
+						Idem, mais en récupérant le numero de PID
+							@#MonPID Sys/ /Processus Toto
+							Txt/ %MonPID%
+
+	- CPCDOSC+	: AJOUT de la possibilité de récupérer le contenu d'une propriété graphique (Fenetre, bouton, picturebox...)
+					Tout comme le fameux "@#" pour récupérer le résultat d'une commande !
+					
+					Par exemple si vous voulez récupérer le TITRE d'une fenêtre existante et y stocker dans la variable %TOTO% :
+						Fenetre/ /MODIF:MA_Fenetre
+							@#Toto	.Titre
+						Fin/ Fenetre
+					
+					Si vous voulez récupérer la position X et Y, et pourquoi pas l'image source d'un picturebox existant :
+						Picturebox/ /MODIF:MonPicturebox
+							@#Position_X .PX
+							@#Position_Y .PY
+							@#Image .Image
+						Fin/ Picturebox
+						
+						Vos variables %Position_X% %Position_Y% et %Image% seront à votre portée ;-)
+						
+	- CPCDOSC+	: AJOUT de la possibilité d'exécuter une commande (ou fichier) et vos threads dans un nouveau processus hote.
+					Exemple avec un numero de PID:765:
+						Exécuter un fichier
+							CMD/ /PID:765 EXE/ MonFichier.CPC
+						Créer un serveur TCP
+							CMD/ /PID:765 Serveur/ /TCP:1234
+						Exécuter l'OS loader dans un nouveau procesus
+							CMD/ /PID:765 Demarrer/
+				
+					Et le gestionnaire des tâches va se débrouiller tout seul pour créer les threads nécéssaire. Les threads
+					seront intégralement hébergés par le processus spécifié. Si vous tuez le processus, tous les threads
+					hébergés seront également détruits. Il est également important de séparer les grosses opérations
+					dans des processus différents . Comme les serveurs, interface graphique, menus, rendu 3D etc..
+					
+
+	- CPCDOSC+	: AJOUT de la possibilité de fermer une fenêtre ou des objets graphiques via la commande FERMER/
+					Ex : 
+					Fermer/ NomFenetre
+					Fermer/ NomObjet
+					Fermer/ /handle 123
+					Fermer/ /CleID 123456789 (ou /KeyID)
+					Fermer/ /PID 123
+					Fermer/ /TID 123
+					
+					Au niveau de la syntaxe vous pouvez utiliser /PID:123 /PID 123 /PID=123 peut importe! Et pareil pour
+						handle, tid et CleID
+					ATTENTION: Pour le moment aucune sécuritée est appliquée pour les procesus système, si vous les fermez
+						vous risquerez de bloquer le système, fermer la console et ne plus pouvoir interagir...
+					
+	- CPCDOSC+	: AJOUT de la possibilité de préciser le nom de l'OS à démarrer parmis la liste puis le fichier OS.LST.
+					Exemple :
+					Demarrer/ MonOS
+					Si le nom de l'OS n'est pas précisé, Cpcdos démarrera le premier OS de la liste.
+					
+					** BUG de 'KEYID' PRESENT **
+					Si vous démarrez plusieurs OS, les KEYID de l'OS et USER seront jumeaux et donc aucune séparation mémoire
+					aucune séparation graphique... Cela risque de créer un mélange graphique de plusieurs instances 
+					d'OS dans 1 seul, ou d'un crash si les OS changent les variables d'environnement.
+					--> Bug en correction pour la prochaine update.
+
+	- CPCDOSC+	: AJOUT/MODIFICATION des variables lors de l'execution d'un fichier .CPC
+					%_EXE_PROG_%	--> Chemin jusqu’à l'exécutable
+					%_EXE_PROG_C%	--> Répertoire Courant où est exécuté le fichier
+					%_PID_PROG_%	--> PID du programme exécuté
+					%_TID_PROG_%	--> TID du programme exécuté
+					%_DATE_PROG_%	--> Date d'exécution du programme
+
+
+	- CPCDOSC+	: CORRECTION de la syntaxe anglaise ".SX" et ".SY" qui ne fonctionnait pas.
+
+	- CPCDOSC+	: CORRECTION de la fonction CPC.ENTIER qui était confondu avec la fonction CPC.SIGNE
+
+	- CPCDOSC+	: CORRECTION d'un bug interne lors d'utilisation de variables après l'utilisation d'une commande graphique
+					qui remplaçait le numéro de TID par celui de l'objet graphique en cours d'opération.
+					Ce bug concernait également le gestionnaire des tâches à niveau des sections critiques.
+
+	- GUI		: AJOUT du TexteBox. Non terminé (A les mêmes proprietes qu'un textebloc)
+					+ MODIF ou EDIT --> Editable ou non
+					+ MULTILIGNES ou MULTILINE --> Textebox multi-lignes ou non.
+					A SAVOIR : Il faut qu'il soit focus pour pouvoir ecrire au clavier.
+					Et qu'il n'est POUR LE MOMENT pas possible de naviguer le curseur dans le texte sans devoir supprimer.
+
+	- GUI		: CORRECTION du Textebloc qui s'initialisait avec la taille X du précédent objet initialisé.
+
+	- GUI		: CORRECTION/AJOUT du support multi-lignes du TexteBloc (Et aussi textebox
+
+	- GUI		: CORRECTION (PART 1) des crashs lors du changement de la profondeur de couleur durant l'exécution
+					d'un OS.
+
+	- SHELL		: AJOUT de la precision des nom evenementielle. Preciser ou non les noms des fonctions d'evenements.
+					-> Ce qui permet de gagner un gain de performances de quelques millisecondes en demandant au SHELL 
+						de chercher UNIQUEMENT les noms d'evenements voulus, via la propriété .EVENEMENT = "".
+						
+						Exemple avec un bouton et comme unique évenement "MouseClick" et "KeyPress" :
+						Bouton/ MonBouton
+							.blabla     = "blabla"
+							.EVENEMENT  = "dossier/fichier.cpc=MouseClick,KeyPress"
+						Fin/ Bouton/
+						Ce qui permet de chercher et exécuter uniquement l'evenements 'MouseClick', 'KeyPress' et pas les autres.
+						
+	- CPCDOS	: MODIFICATION du comportement du noyau lors ce qu'il y a 0 processus en exécution (ou en pause).
+					--> Désormais la présence de 0 processus déclenche un arrêt du noyau au propre.
+						Ce qui évite de laisser le système gelé en boucle.
+	- CPCDOS	: AJOUT du support de debuggage par les port COM1, 2, 3 ou 4. (En experimentation!)
+
+	- CPCDOS	: AJOUT de l'argument du demarrage du noyau /LOG pour forcer a logger les activites de Cpcdos dans DEBUG.LOG
+						+ /LOGALL pour logger absolument tout (CPintiCore y compris)
+						
+	- CPCDOS	: MODIFICATION MAJEURE 
+					--> Chaque instance d'objets et d'objets graphiques sont identifiés par un numéro 'handle'.
+						Chaque fenetre generent désormais un numero de handle qu'il faudra associer à un objet graphique.
+						Chaque fenetre sont associé à un PID (Processus) Qui eux héberge leur thread exécutif.
+
+	- SYSTEME	: CORRECTION de la profondeur de couleurs 24bits confondu avec le 32bits après le changement de résolution d'écran.
+
+
+			#######################
+			##### CPinti Core #####
+			#######################
+					
+	- SHELL		: CORRECTION du probleme d'execution du shell CpcdosC+ en C++.
+
+	- TACHES	: AJOUT des fonctions de récupération des nom de processus
+
+	- I/O		: AJOUT du module de copie de fichier avec les satistiques récupérable depuis le CpcdosC+
+					- Progression en Pourcentage
+					- Nombre d'octets copiés
+					- Nombre d'octets écrits par secondes
+					
+	- I/O		: Separation des bloc de code au propre (Fichier)
+					- Lecture
+					- Ecriture
+					- Presence
+					- Taille
+					- Copie
+					- Suppression
+					
+
+-----------------------------------------------------------------------------------------------------------	
+
+
+	= = = = = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T7         *** 
+	*** 25 Juillet 2017 For ultima testers  ***
+	= = = = = = = = = = = = = = = = = = = = = =
+
+	
+					#############################
+					##### Cpcdos OSx kernel #####
+					#############################
+	
+	- GUI		: AJOUT du support du textebloc ( Pas le textebox! ;) )
+	- GUI		: AJOUT du support du bouton graphique.
+	- GUI		: AJOUT du support de modification des proprietes graphiques (Fenetres, Picturebox)
+	- GUI		: CORRECTION d'un bug qui provoquait le changement de taille d'un picturebox selon la position de la fenetre.
+	- GUI		: AJOUT d'une trace dans le log si le driver de la souris n'est pas presente.
+					Si la IRQ à l'interruption 33h/0005h ne retourne pas de valeurs.
+	- GUI		: MODIFICATION du nom de variable %SCR_FOND% qui sert de fond d'écran à %SCR_IMG%
+	- GUI		: AJOUT de 6 modes d'affichage du fond d'écran modifiable depuis la variable %SCR_IMG_MODE%
+					0 : Remplir l'écran (PAR DEFAUT)
+					1 : Image ajusté à l'écran 
+					2 : Adapté à l'écran (peut deformer l'image)
+					3 : Vignettes
+					4 : Image brute centré
+					5 : Image brute
+
+	- GUI		: AJOUT/Possibilite de personnaliser son environnement graphique depuis le fichier 
+					KRNL/CONFIG/ENV_GUI.CPC
+	- GUI		: AJOUT de l'ombre et de ses proprietes
+	- GUI		: AJOUT de la propriete TYPE pour les fenetres.
+					Type 0 : (PAR DEFAUT) Fenetre normale. (Barre de titre, conteneur visible, bitmap barre de titre)
+					Type 1 : Fenetre sans conteneur visible.
+					Type 2 : Fenetre sans bitmap de titre.
+					Type 3 : Fenetre Sans bitmap de titre et sans conteneur visible.
+					Type 4 : Fenetre sans barre de titre.
+					Type 5 : Fenetre Sans barre de titre et sans conteneur visible.
+					
+					PS : Type 4 et 5 sont l'idéale pour créer des barres des tâches/menus pour les OS...
+					
+	- GUI		: AJOUT des proprietes ICONE et environnement graphique personnalisables depuis EV_GUI.CPC.
+					--> Ce qui permet de personnaliser la position, taille des icones representant l'application.
+						Changer l'epaisseur de la barre de titre et l'emplacement du titre etc...
+
+	- GUI		: AJOUT du support evenementielle sur la fenetre, picturebox
+						- MonObjet.Click() 				--> Pression sur nimporte quel bouton de la souris
+						- MonObjet.Click(MaVariable) 	--> IDEM, %MaVariable% contiendra le numéro du bouton actuellement presse (1:gauche, 2:Droit, 3:les deux...)
+						- MonObjet.MouseClick() 		--> Relachement de nimporte quel bouton de la souris
+						- MonObjet.MouseClick(MaVariable) --> IDEM, %MaVariable% contiendra le numéro du bouton préssé (1:gauche, 2:Droit, 3:les deux...)
+						- MonObjet.MouseEnter()			--> Des que la souris ENTRE dans l'objet graphique
+						- MonObjet.MouseMove() 			--> Survole l'objet graphique
+						- MonObjet.MouseLeave()			--> Des que la souris QUITTE l'objet graphique
+						- MonObjet.KeyPress()			--> Pression d'une touche sur un objet graphique préalablement "focus"
+						- MonObjet.KeyPress(MaVariable)	--> %MaVariable% contiendra la touche préssée
+
+	- GUI		: CORRECTION du support du format PNG.
+	
+	- CPCDOSC+	: CORRECTION du parametre /SRVINFO de la commande TELECHARGER/ qui ne transmettait pas 
+					la commande http 'HEAD'.
+					
+	- CPCDOSC+	: SYS/ --> AJOUT des parametres :
+					/OS 		: Affiche l'OS en cours d'execution
+					/OS /UPDATE	: Met a jour la liste les OS installés
+					/OS /LISTE	: (ou list) Permet de lister les OS installés
+					/OS /NB		: Affiche le nombre d'OS installés
+					
+	- CPCDOSC+	: CORRECTION de la sensibilité de la case des noms de fonctions déclarés dans des fichiers externes.
+	
+	- CPCDOSC+	: AJOUT de l'argument /MODIF: dans les initialisateur des proprietes graphique.
+					Ceci permet de modifier les proprietes graphiques d'une fenetre ou d'un objet deja existant.
+					Ex: 
+					Fenetre/ /MODIF:MA_Fenetre
+						.Propropriete = "blabla"
+						...
+						...
+					Fin/ fenetre
+					
+					Attention le nom "MA_Fenetre" ne pourra être utilisé uniquement si le processus executant cette commande
+						correspond au même PID que cette propriete. C'est une petite couche de securite!
+						Autrement si vous avez un PID différent que le processus qui héberge la propriété, il faudra ecrire le 
+						KeyID complet de l'instance au lieu du nom. (Pour modifier une propriete dans un autre processus)
+					
+					#######################
+					##### CPinti Core #####
+					#######################
+					
+					
+	- Zlib		:  CORRECTION de la fonction inflate_fast() pour Cpcdos !
+
+	
+-----------------------------------------------------------------------------------------------------------	
+
+
+	= = = = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T6.5     *** 
+	***  12 Mai 2017 For ultima testers   ***
+	= = = = = = = = = = = = = = = = = = = = =
+	
+					#################
+					#### En bref ####
+					#################
+	
+	--> 15	ajouts de divers fonctionnalités.
+	--> 12	corrections importantes.
+	--> 2	optimisations.
+	--> 7	corrections et modifications mineures.
+	
+	--> Gain de stabilité : +20%
+	--> Note de stabilité : 14/20
+	
+	--> Gain de performances : +60%
+	--> Note de performances : 12/20
+	
+	--> Probabilités de crash
+			Réseau	: 30%	(Connexions & déconnexions répété du Client TCP/UDP)
+ 			SHELL	: 10%	(Execution hors contexte de 'ALLER/ & GOTO/' dans un 'SI/ & IF/')
+			GUI		: 1%	(Non déterminé)
+			I/O		: 5%	(Selon la machine hôte)
+			GENERAL	: 45% 	(Selon la machine hôte)
+			
+
+					#############################
+					##### Cpcdos OSx kernel #####
+					#############################
+
+	- SHELL		: AJOUT du support des sections critiques COMPATIBLE CpcdosC+.
+					De manière personnalisée, elle permet de rendre "prioritaire" une séquence de lignes de codes sans 
+					qu'il soit interrompu par un thread du processus courant ou une interruption du type IRQ (sauf clavier/souris). 
+					Ce qui a indirectement avantage doubler la vitesse d'exécution du code mais peut provoquer des "mini-freeze"
+					puisse que les thread gérant l'écran sont aussi bloqués.
+	- SHELL		: AJOUT du support des deux types de chemins d'accès. Tpe UNIX '/' et Windows '\'. (Mixage possible)
+					Exemples : 	Unix 	: OPEN/ C:/Dossier/Dossier2/MonFichier.txt
+								Windows	: OPEN/ C:\Dossier\Dossier2\MonFichier.txt
+								Les deux: OPEN/ C:\Dossier/Dossier2/MonFichier.txt (Correction automatisée)
+	- SHELL 	: CORRECTION d'un bug qui causait des comportements indetermines/crashs lors d'appels de fonctions.
+	- SHELL 	: CORRECTION d'un bug dans les niveaux de publicite des fonctions CpcdosC+.
+	- SHELL 	: CORRECTION de la "double lecture" des lignes vides et qui doublait les numero de lignes.
+	- SHELL		: Suppression des messages d'erreurs s'il y a des lignes vides/espaces ou tabulations en trop.
+	- SHELL		: AJOUT des notions de tableaux. Exemple : 
+					FIX/ MonTableau[5] = Coucou
+					TXT/  1) Contenu : %MonTableau[5]%
+					FIX/ Index = 5
+					FIX/ MonTableau[%Index%] = Ca va ?
+					Txt/  2) Contenu : %MonTableau[Index]%
+					
+	- SHELL 	: OPTIMISATION de la vitesse d'execution des fichiers executable .CPC. (Ratio +50% à 70% !!! :-D)
+	- SHELL		: CORRECTION du problème d'envoi si la trame comportait le signe '=' sur les 8 premiers octets.
+	- SHELL		: Suppression du message "Recherche en mode standard" encombrant lors d'un debugage en boucle.
+					Elle s'affiche seulement une seule fois jusqu'a la prochaine recherche. Ce message s'affiche
+					uniquement quand le fichier exécutable CpcdosC+ à été lancé sans l'options d'optimisation.
+
+	- CPCDOSC+	: Commande "CLIENT/ /RECEVOIR" renvoit "#DECO" si le serveur a fermé la connexion.
+					Pratique pour afficher un message ou fermer un programme client par exemple.
+					Exemple :
+						@#Donnees Client/ /recevoir:5
+						si/ "%donnees%" == "#DECO" alors:
+							txt/ Le serveur a fermé la connexion!
+							stop/
+						sinon:
+							Txt/ Requete recue : %Donnees%
+						fin/ si
+	- CPCDOSC+	: CORRECTION du paramètre "\#PAUSE"
+					Pour rappel, il permet de faire défiler ligne par ligne, les informations qui dépasse la taille
+					de l'écran. ESPACE:Faire Défiler, ENTRER:Tout afficher, ECHAP:Arreter.
+					Exemple : 
+						HELP/ \#PAUSE
+						OPEN/ MonGrosFichier.txt \#PAUSE
+	- CPCDOSC+	: La commande Serveur/ renvoie désormais '1' s'il a bien été crée.
+					Vous pouvez donc vérifier la création des serveurs dans vos programmes comme ceci :
+					@#Resultat Serveur/ /tcp:1234
+					si/ "%Resultat%" = "1" alors:Txt/ Ok ! Sinon:Txt/ Oups probleme.
+	- CPCDOSC+	: AJOUT du mode serveur "ECHO". Ce qui permet de créer un serveur d'Echo.
+					Il sert à renvoyer toutes requêtes TCP ou UDP reçues, à TOUS les clients connectés.
+					Ce qui est beaucoup plus rebuste, plus rapide que de "simuler" un serveur d'Echo en CpcdosC+.
+	- CPCDOSC+	: Comme cité plus haut, le support des sections critiques permet de concentrer le SHELL un bout de code définit
+					par le développeur. Comme ceci :
+					CCP/ /DEBUT_SECTION_CRITIQUE
+					... code Cpcdosc+ prioritaire ...
+					... code Cpcdosc+ prioritaire ...
+					... code Cpcdosc+ prioritaire ...
+					CCP/ /FIN_SECTION_CRITIQUE
+	- CPCDOSC+	: AJOUT du generateur de tableaux. Exemple :
+					Generer un tableau vide, de 2 à 42 : FIX/ MonTableau[2 a 42]
+					Generer un tableau avec "123", de 2 à 42 : FIX/ MonTableau[2 a 42] = 123
+	- CPCDOSC+	: CORRECTION de la séquence de commande "SYS/ /DEBUG" qui activait le debug sans afficher l'etat.
+	- CPCDOSC+ 	: SI/ : CORRECTION de la condition N= et != qui faussait les resultats de manière aleatoire.
+					+ CORRECTION bug de la premiere operande vide qui etait toujours vraie (SI/ "" = ......)
+					+ AJOUT de la condition '==' qui a la même fonctionnalitée que le '=' tout simplement.
+	- CPCDOSC+	: FIX/ : AJOUT des parametres
+					- /TOUCHE ou /KEY qui permet de recuperer une touche du clavier dans le buffer SANS attendre.
+					- /ATOUCHE ou /WKEY idem, mais attend que l'utilisateur aie tape au clavier.
+	- CPCDOSC+	: AJOUT de la variable %CPC.SCR.CONS.X% et %CPC.SCR.CONS.Y% qui contient le nombre de caracteres possible X et Y.
+					( Il s'agit de la taille X ou Y de l'ecran divisé par 8)
+	- CPCDOSC+	: AJOUT de nouvelles fonctions :
+				- INSTRREV()				: Obtenir la position d'un ou plusieurs caractères DEPUIS LA FIN.
+				- LEN()/TAILLE() 			: Obtenir la taille d'une chaine de caracteres.
+				- MAJ()/MIN() 				: Convertir en MAJuscules / MINuscules.
+				- SIGNE()/SIGN() 			: Obtenir le signe d'un nombre.
+				- ENTIER()/INT()/INTEGER	: Convertir en nombre entier (Sans virgule).
+				- FRAC()					: FRACtionner un chiffre a virgule (Juste apres virgule)
+				- VAL()						: Convertir un nombre Binaire/octal/hexa en decimale
+				- CHR()/CAR()/CARACTERE()	: Convertir une valeur en caractere ASCII.
+				- ASC()/ASCII()				: Convertir un caractere ASCII en valeur.
+				- HEX()/HEXA()/
+					HEXADECIMAL()
+					HEXADECIMALE()			: Convertir un valeur en hexadecimal.
+				- ABS()						: Obtenir la valeur ABSolue d'une valeur.
+				- LOG,() EXP(), RAC(), COS(), SIN(), TAN(), ACOS(), ASIN(), ATAN(), ATANR()
+				- FICHIER_EXISTE()	
+					FILE_EXIST()			: Tester l'existence d'un fichier.
+				- TAILLE_FICHIER()
+					FILE_SIZE()				: Retourner la taille d'un fichier.
+				- LIRE_FICHIER()
+					READ_FILE()				: Lire le contenu d'un fichier.
+	- CPCDOSC+	: AJOUT dedu paramètre \#NON-FN et \#NO-FN qui permet d'interdire l'exécution d'une fonction si
+					le paramètre /F:MaFonction() est présent. par exemple :
+					txt/ Toto /f:CPC.MID(Coucou,3)
+					Affiche: Toto cou
+					et
+					txt/ Toto /f:CPC.MID(Coucou,3)\#NON-FN
+					Affiche: Toto /f:CPC.MID(Coucou,3)
+	- CPCDOSC+	: AJOUT de retour de valeur si la connexion CLIENT/ ou SERVEUR/ a reussi (1) ou non (0)
+	
+	- SYSTEME
+	 & CPCDOSC+
+	 & CONSOLE	: AJOUT des statistiques de la carte reseau.
+					- Activite % en general 		--> %CPC.SYS.NET.ACT%
+					- Nombre de paquets recus 		--> %CPC.SYS.NET.REC%
+					- Nombre de paquets envoyes 	--> %CPC.SYS.NET.ENV% ou %CPC.SYS.NET.SND%
+					- Nombre de machines connectes (1 si client) --> %CPC.SYS.NET.CLT%
+
+	- SYSTEME	: CORRECTION de l'argument /NOGUI ou /NONIUG fonctionne a nouveau.
+	- SYSTEME	: AJOUT du mode ECHO pour la creation de serveur TCP/UDP.
+	- SYSTEME	: CORRECTION de l'écran noir après un StopK/
+	- SYSTEME	: CORRECTION du changement de résolution d'écran en utilisant la commande SYS/ /MENU /DEBUG = 1
+	- SYSTEME	: CORRECTION de la plus part des problemes de buffer overflow, dont ceux de la memoire utilisateur des variables
+					CpcdosC+. 
+	- SYSTEME	: CORRECTION des problèmes de correspondances des niveau de privacité au niveau des arguments de fonction avec un
+					niveau différent de l'appelant. (Correspondances des KeyID du premier stack)
+	- SYSTEME	: CORRECTION des problèmes d'empilations (STACK) hazardeuse des KeyID des variables CpcdosC+.
+	- SYSTEME	: AJUSTEMENT de la charge du CPU en %.
+	
+
+					#######################
+					##### CPinti Core #####
+					#######################
+
+	- SOCKET	: AJOUT d'un gestionnaire de priorites dynamique.
+					Ceci a pour but de modifier dynamiquement les priorites du thread
+					 selon le nombre de clients connectes et l'activite (Paquets recu/envoyes)
+					Par exemple s'il y a aucun client est actif ou connecte, alors le thread du
+					 serveur fonctionnera a une vitesse reduite pour augmenter les autres.
+	- SOCKET	: Optimisation de la préemption des tâches selon les priorités.
+	- SERVEUR	: AJOUT de la gestion du serveur d'ECHO. (Mode choisis depuis le CpcdosC+)
+					Renvoie directement TOUTES les trames TCP/UDP à TOUTES les machines connectes.
+	- CLIENT	: CORRECTION du numero ID qui était une fois sur ...10 NULE.
+	- I/O		: OPTIMISATION de la lecture de fichiers et la preemption des taches en cours.
+					Les threads executant le module de lecture et ecriture sur support USB, Disques, et COM
+					seront interrumpu de 100 micro-secondes tout les flux de 1024 octets lues ou enregistré dans le buffer.
+					Ce qui permet de gagner 10% de performances sur l'ensemble du systeme durant une lecture d'un fichier.
+	- CORE		: REECRITURE du "sleep". Plus stable et plus précis!
+	- CORE		: Réajustement de la charge du CPU en %. Réévaluation re-effectué au démarrage de la console.
+	
+-----------------------------------------------------------------------------------------------------------	
+
+	
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T6   *** for ultima testers
+	***     11 mars 2016              ***
+	= = = = = = = = = = = = = = = = = = =
+	
+	INFO: La GUI n'a pas ete mise a jour. GZE a temporairement ete desactive.
+			Retenez que cette Update T6 à été réécrite pour une meilleure stabilité
+			et d'AJOUT de quelques fonctions utiles.
+	
+	##### Cpcdos OSx kernel #####
+	- Réecriture du noyau Cpcdos OSx.
+	- Chaque OS, utilisateur, processus, threads et bloc de mémoire sont identifié via une emprunte 
+		numérique de 36bits. Ceci est géré par Cpcdos. Ce qui accoit la sécurité et la 
+		facilité de gestion.
+	- Réecriture du shell CpcdosC+
+	- Réecriture de l'interprêteur de commandes CpcdosC+.
+		+ Autocomplétion des syntaxes via la touche TAB
+		+ Défilement séquentiel des informations écran via \#PAUSE
+		+ Serveur TELNET
+	- SERVEUR/ et CLIENT/ possibilité de bloquer le thread jusqu'a recetiption (ou pendant un lapse de temps)
+		Exemple : Client/ /recevoir:6 /attendre
+	
+	et encore ....
+	
+	##### CPinti Core for Cpcdos OSx #####
+
+	- Réecriture du gestionnaire des processus et threads et son ordonnancement multi-thread.
+	- Réecriture du gestionnaire de mémoire, du stack inversé et revue de la mémoire HEAP.
+	- Revue de la machine virtuel LLVM (D'autres optimisation en vue)
+	- Réecriture parcielle du chargeur Win32.
+	- Réecriture du composant de gestion des sockets reseau
+		+ Beaucoup plus stable !!
+	- Réecriture partiel du serveur TCP/UDP.
+		+ Serveur TELNET
+	- Réecriture partiel du Client TCP/UDP.
+	
+	et encore ....
+	
+-----------------------------------------------------------------------------------------------------------	
+
+	
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T5   *** for ultima testers
+	***     1 Octobre 2016            ***
+	= = = = = = = = = = = = = = = = = = =
+	
+	INFO: Nous prevoyons de reecrire l'ordonnanceur des taches / multi threading
+			en vue de sa faiblesse au point de vue des boucles bloquantes 
+			que vous pouvez faire en Clang/LLVM C++ et en CWC C++ (Win32).
+		  Une reecriture partielle de Cpcdos / CPinti Core sera alors annoncée.
+		
+	##### Cpcdos OSx kernel #####
+	- GUI		: Premiere version de l'interface graphique (Fenetre & picturebox uniquement)
+					+ Possibilité de pointer le picturebox sur une bitmap en ARGB.
+	- Cpcdos 	: CORRECTION du bloquage de la console apres 2 instances du wrapper C++.
+	- Cpcdos 	: Amelioration de l'execution du LLVM et du ExeLoader.
+					+ Exeloader: printf() désormais lié au debug de CPinti Core (Console).
+									Bientôt possible depuis la console Cpcdos!
+	- Cpcdos	: Optimisation de la vitesse de traitement syntaxique des commandes CpcdosC+ du moteur CC+.
+	- Cpcdos	: /!\ Coupure temporaire de la routine d'interruption ISR pour problemes stabilite. Voir INFO /!\ 
+	- Cpcdos	: Wrapper C++ désormais exécuté dans un autre thread si l'instance à été exécuté depuis
+					un processus parent dont son PID est égale à '0' (Comme la console)
+					Ce qui évite de bloquer votre console pendant l'exécution d'une fonction.
+					
+					Si le PID est superieur à '0' alors l'instance bloquera le thread parent le temps
+					de son exécution. Afin de palier à ce bloquage, vous pouvez exécuter l'instance
+					depuis un autre thread grâce à la commande
+						cmd/ /thread {VotreCommande}
+						
+	- Cpcdos	: Amelioration du printf() + le CR LF sur la console graphique provenant des executable Win32PE.
+	- Cpcdos	: Autres petites optimisations et CORRECTIONs mineures du noyau.
+	
+	- CpcdosC+	: CORRECTION du crash de la commande "STOPK/". Elle utilise temporairement le signal SIGABRT.
+	- CpcdosC+	: CORRECTION des bugs des numero PIB binaire qui étaient hazardeusement NULL
+					+ CORRECTION d'un bug qui bloquait l'accès aux variables _EXE_PROC_, _PID_PROC_, _PIDB_PROC_ au niveau 2.
+	- CpcdosC+	: CORRECTION de bugs concernant la commande "PING/".
+					-> Transition des réponses serveur corrigé!
+					-> Charge étrangement lourde du CPU corrigé!
+					-> Bugs de transimission de paquets ICMP "en parallèle" corrigé!
+	- CpcdosC+ 	: "Rassemblement" de tout "fichier executable" dans la commande "EXE/"
+					-> Executer fichier LLVM 		: EXE/ /LLVM {Fichier .BC ou .LL}
+					-> Executer fichier Win32 PE 	: EXE/ /PE {Fichier .EXE}
+					-> Executer fichier Cpcdos	 	: EXE/ {Fichier .CPC}.
+	- CpcdosC+	: CORRECTION du problème de syntaxe quand il y avait un espace ou une tabulation avant le fameux "@#".
+	
+	- CpcdosC+	: POO > AJOUT des notions de "Fonctions". Possibilité de créer une fonction CpcdosC+.
+					+ Arguments de fonctions.
+					+ Retour de valeur.
+					+ Appelle de fonction du noyau Cpcdos.
+
+	- GZE 3D	: Optimisations + Rendu fenêtré --> multi-thread ET multi-instanciable!
+	
+	- CpcdosSDK : AJOUT de nouvelles fonctions + reecritures des exemples.
+	
+	##### CPinti Core for Cpcdos OSx #####
+	- CORRECTION (+optimisation du CPU) du PING qui avait de serieux probleme de transition des paquets ICMP.
+		Ce dernier avait 1 fois sur 2 la même ICMP_ID pour les trames envoyés simultanément,
+		voir en parallèle donc la dernière réponse était rejeté, pensant que cela était un RESET ou un effet d'echo entre routeurs.
+		Et en plus de cela, il receptionnait mal les réponses des serveur distant de plus de 60ms de réponse.
+		Ce problème à été corrigé après de nombeuses heures de recherches! ;)
+	- Mise a jour du loader Win32 PE
+		-> CORRECTION de bugs.
+		-> Toutes fonction printf() natif relié au debug de CPinti Core (Console).
+		-> 99% fonctionnel avec du code independant. (Exemple avec GZE.EXE).
+	- CORRECTION + Optimisation des problemes d'instances de fonction CPinti Core.
+	- Autres petites optimisations et CORRECTIONs mineures.
+		
+-----------------------------------------------------------------------------------------------------------	
+
+
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T4   *** for ultima testers
+	***    15 Juillet 2016            ***
+	= = = = = = = = = = = = = = = = = = =
+		
+	- Cpcdos	: ** Optimsation ultime et reecriture particelle du noyau **
+				  **  et de la communication avec CPinti Core.            **
+				  ** ** ** ** ** ** ** **  **  ** ** ** ** ** ** ** ** ** **
+
+	- Cpcdos	: AJOUT du moteur de rendu graphique 3D, GZE.
+	- Cpcdos	: AJOUT de la fonction de récupération de la mémoire RAM.
+	- Cpcdos	: Optimisation graphique du menu info de la console.
+					+ Suppression des effets de scintillements.
+	- Cpcdos	: CORRECTION de bugs des variables au niveau 2 dans le moteur CpcdosC+.
+	- CpcdosC+	: Commande SYS/ AJOUT des parametres "/ECRAN" ou "/SCREEN"
+					Exemple :
+					Lister les resolutions d'ecran disponibles en 16 bits (16, 24, 32)
+					 SYS/ /ECRAN /LISTE 16 ou SYS/ /SCREEN /LIST 16
+					Tester une resolution
+					 SYS/ /ECRAN /TEST 1024x768x16 ou SYS/ /SCREEN /TEST 1024x768x16
+	- CpcdosC+	: Commande SI/ AJOUT de 2 nouveaux operateurs
+					~= 			: Contient
+					!~= ou N~=	: Ne contient pas
+					Exemples :
+						Tester si la chaine "1234567890" contient "4"
+						 si/ "1234567890" ~= "4" alors:Txt/ ok!
+						Tester si la chaine "Bonjour tout le monde" ne contient pas "z"
+						 Si/ "Bonjour tout le monde!" !~= "z" alors:Txt/ ok!
+	- CpcdosC+	: CORRECTION commande telecharger/. Désormais si aucun protocole
+					(http, ftp..) n'est specifié, un message d'avertissement AVT_061 se produira.
+					(Remerciement a Esteban)
+	- CpcdosC+	: Commande CCP/ /FIX.NIVEAU (ou /SET.LEVEL) peut afficher le niveau en cours.
+					Exemple :
+					CCP/ /FIX.NIVEAU = 4
+					@#Toto CCP/ /FIX.NIVEAU
+					txt/ Le niveau est de %Toto%.
+	- CpcdosC+	: AJOUT de la commande d'execution de fonction C/C++ wrapped
+					via le SDK de Cpcdos OSx.
+					SYS/ /WRP {Numero de FunctionID}
+	- CpcdosC+	: AJOUT du parametre \#NON-VAR  ou  \#NO-VAR (A METTRE EN FIN DE LIGNE)
+					qui permet de ne pas lire la variable. Exemple :
+					Txt/ Contenu est %TOTO% \#NON-VAR
+					Affiche : Contenu est %TOTO% 
+	- CpcdosC+	: AJOUT de la commande ECRIRE/  ou  WRITE/
+					Qui permet d'écrire directement dans un fichier
+					exemple:
+					 Ecrire/ Dossier\Fichier.txt = Coucou! Ca va ?
+	
+	##### CPinti Core for Cpcdos OSx #####
+	- Réecriture complete de CPinti Core du C++98 (1998) en C++14 (2014)
+		+ Utilisation des pointeurs intelligents RAII de GCC 5.1
+		+ Réecriture de la fonction de lecture de fichiers en C++14
+		+ Réecriture complete de la partie reseau (Serveur TCP, client TCP, ping ICMP)
+		+ Réecriture du gestionnaire de threads
+		+ Réecriture de la routine d'interruption ISR
+		+ Réecriture de la séquence de d'initialisation (x10 plus rapide)
+	- Fonctions externes desormais wrappable via un SDK de Cpcdos.
+	- AJOUT d'un debug centralisé pour CPinti Core
+		+ Reecriture des messages avec l'inclusion de la langue Anglophone
+			pour le debuggage.
+	- AJOUT d'une LLVM (Low-Level-Virtual-Machine) pour executer du code JIT native
+	  compilé depuis CLANG (C/C++). (Format .LL ou .BC)
+	
+
+-----------------------------------------------------------------------------------------------------------	
+
+		
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T4   *** for ultima testers
+	***    12 Février 2016            ***
+	= = = = = = = = = = = = = = = = = = =
+	
+	- Moteur CCP: CORRECTION du bug 'AVT_008' comme quoi la variable 'existe pas' si on tape une commande du type:
+					SI/ "%" = "%" alors: ...
+					 ou 
+					SI/ "%" = "%%" alors: ...
+					(Remerciements au contributeur Esteban)
+					
+	- Moteur CCP: AJOUT des exception des NOMS DE VARIABLES (Commande FIX/ ou resultat @#)
+					Seul les caracteres autorises sont :
+						-> A, B, C, D, E, F, G, H, I, J, K, L, M, O, P, Q, R, S, T, U, V, W, X, Y, Z
+						-> a, b, c, d, e, f, g, h, i, j, k, l, m, o, p, q, r, s, t, u, v, w, x, y, z
+						-> 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+						-> _, ., -, $, /, \, (, ), [, ], ~, &, #, ^, @
+	
+	- CpcdosC+	: AJOUT du parametre /TEMP dans la commande TELECHARGER/
+					Possibilité de choisir 
+					--> le dossier de destination (garde le nom de fichier d'origine. Ou 'index.htm' si non définit)
+					--> le nom de fichier destination (Garde le dossier cible TEMP\NET)
+					--> le dossier ET le dossier de destination
+				  Vous pouvez choisir un dossier temporaire permanant en manipulant la variable %CPC_TEMP.NET%
+					(Remerciements au contributeur Esteban)
+	
+	
+-----------------------------------------------------------------------------------------------------------	
+
+	
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T3   *** for ultima testers
+	***    03 Février 2016            ***
+	= = = = = = = = = = = = = = = = = = =
+	
+	
+	- Moteur CCP/ 
+	  CpcdosC+	: AJOUT d'un nouveau parametre dans la commande CCP/
+	  				  /Optimisation    ou    /Optimization en anglais
+					Cette commande active l'analyse du fichier de commande avant son execution,
+					 afin de chercher d'eventuels optimisations. En moyenne, avec ce parametre,
+					 vous gagnez un gain de +20% a +50% de performances sur la lecture de vos programmmes.
+					Exemple:
+						Activer l'optimisation:
+							CCP/ /Optimisation = 1
+						Desactiver l'optimisation:
+							CCP/ /Optimisation = 0
+
+	- Moteur CCP: CORRECTION d'un bug provoqué au niveau 5 des variables si plus de 6 variables sont enregistrés.
+	
+	- CpcdosC+	: Possibilité de faire des "algorithmes calculatoire en ligne".
+					Ce qui permet de faire plusieurs opérations arithmétiques sur 1 ligne. 
+					Comme sur vos calculatrices!! :)
+					Il suffit d'utiliser le /C(VotreCalcul)
+					
+					Exemple 1:
+						txt/ /c(4 * (8 * 12.8964) + 23 / 0.5)
+					Renvoie:
+						458.6848
+						
+					Exemple 2:	
+						fix/ toto = 123
+						fix/ toto = /c(%toto% * 2)
+						txt/ Valeur de toto = %toto%
+					renvoie:
+						Valeur de toto = 246
+						
+					Problemes remarqués: Soustractions des nombres négatifs renvoie un mauvais résultat.
+											--> En CORRECTION pour la prochaine MàJ
+
+	- CpcdosC+	: AJOUT du parametre /SRVINFO ou /+SRVINFO dans la commande TELECHARGER/
+					Ceci donne la possibilité de dissocier les informations du serveur
+					Exemple :
+						Telecharger/ http://MonsiteWeb.com/toto.html
+							--> Telecharge uniquement le contenu de toto.html
+						Telecharger/ /SRVINFO http://MonsiteWeb.com/toto.html
+							--> Telecharge uniquement les information du serveur (HEAD http command)
+						Telecharger/ /+SRVINFO http://MonsiteWeb.com/toto.html
+							--> Télécharge les informations du serveur ET le contenu du fichier (Association)
+					
+	- CpcdosC+ 	: AJOUT de la commande POS/ (ou LOC/ en anglais) pour positionner
+					votre curseur console. (Type en 8x8). (Type font graphiques pour la prochaine version!)
+					
+					Exemple : 
+						Positionne a la position 34 en X
+							POS/ x:34
+						Positionne a la position 14 en Y
+							POS/ y:14
+						Positionne a la position 34 en X et 15 en Y
+							POS/ x:12 y:15
+						Positionne a la position 23 en Y et 56 en X
+							POS/ y:23 x:56
+							
+	- CpcdosC+	: AJOUT de la commande SI/ ou IF/ pour executer du code sous une condition.
+					Exemple mono ligne:
+						SI/ "5" = "5" alors:Txt/ Ok!
+							--> Renvoie : Ok!
+						Si/ "8" = "6" alors:Txt/ Ok! Sinon:txt/ Faux..
+							--> Renvoie : Faux..
+					Exemple multi ligne:
+						Si/ "5" = "5" alors:
+							txt/ Ok!
+							txt/ C'est le bon resultat!
+						sinon:
+							txt/ Faut!
+							txt/ c'est le mauvais!
+						fin/ si
+							--> Renvoie : Ok! C'est le bon resultat!
+						
+						Si/ "5" > "8" alors:
+							txt/ Ok!
+						sinon:
+							si/ "8" > "5" alors:
+								Txt/ Ah! 8 est plus grand que 5!
+							fin/ si
+						fin/ si
+							--> Renvoie : Ah! 8 est plus grand que 5!
+
+-----------------------------------------------------------------------------------------------------------	
+
+	= = = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T2.1 *** for ultima testers
+	***  28 decembre 2015             ***
+	= = = = = = = = = = = = = = = = = = =
+	
+	- Moteur CCP: TRES GROSSE CORRECTION de bugs non exploités. (21h->2h du mat!)
+					-> Niveau de privacité 1 et 2 ne fonctionnaient pas correctement.
+					-> Problème acces en ecriture d'une variable niveau supérieur.
+					-> CCP/ /CHANGE:[Variable] qui acceptait les valeurs #NULL
+	
+	- Moteur CCP: Optimisation acces test/ecriture/lecture de varibles CpcdosC+.
+
+	- Cpcdos	: Optimisation temps priorite des threads --> Reseau CPinti.
+	- Cpcdos	: CORRECTION des bugs mineures.
+	
+	- CpcdosC+	: CORRECTION probleme affichage du message d'avertissement de variable introuvable.
+	
+##### CPinti Core for Cpcdos OSx #####
+	
+	- Réseau	: CORRECTION CRASH: Limitation à 1024 octets (+entete) par paquets TCP Serveur et client. (Problème temporaire)
+					+ CORRECTION de crash en cas de "spoil" de la part d'un serveur. (1/5 crash possible)
+	- Réseau	: Optimisation du code + changement temps de priorite des threads (Gain de 1% à 5% gagné).
+	
+	
+	# Remerciement à Esteban, Diderot (et ses 13 clients TCP) et Léo pour leur participation aux crash tests.
+
+-----------------------------------------------------------------------------------------------------------
+
+	= = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T2 *** for ultima testers
+	*** 26 decembre 2015            ***
+	= = = = = = = = = = = = = = = = = =
+
+	- Pilote réseau : AJOUT du support des carte réseaux de séries 2015 et antérieur.
+				-  Realtek 8168 10/100M Gigabit Ethernet PCI.
+				-  Realtek 8111 10/100M Gigabit Ethernet PCI.
+
+	- Cpcdos	: Optimisation du démarrage du noyau. (Gain gagné:20%)
+
+	- Cpcdos	: CORRECTION des bugs mineures. Et fuites de mémoire intempestives lors des instances
+				de nouveaux threads.
+
+	- Cpcdos	: AJOUT d'arguments de démarrage de Cpcdos.
+				- /DOSBOX			--> Mode dosbox (Pilote souris interne, pas de support réseau)
+				- /NONET ou /SANSRESEAU 	--> Sans support réseau.
+				- /NODBG ou /SANSDBG 		--> Masquer les informations de démarrage (Plus propre ? )
+				- /CPINTICOREDBG 		--> Démarre directement le mode debug+console de CPintiCore
+				- /CCP:"Commande CpcdosC+ "	--> Exécuter une commande CpcdosC+ après l’initialisation.
+
+				Exemple sous DOS:
+					KRNL32.BAT /CCP:"TXT/ Coucou !"
+					KRNL32.BAT /SANSDBG
+					...
+
+	- Console	: CORRECTION du bug graphique lors de la navigation dans l'historique des commandes.
+				avec la police activée. (Toujours en amélioration)
+
+	- Console	: CORRECTION du curseur volant. (Decallage provoque par un autre thread utilisant le curseur)
+
+	- Console	: Optimisation de l'activité du thread.
+
+	- CpcdosC+ 	: AJOUT de la variable %CPC.REP% (REPertoire) ou %CPC.DIR% (DIRectoty) qui contient
+				le chemin d'acces du noyau. Cette variable peut servir comme repertoire de base
+				pour vos programmes. 
+				** Exemples **
+					exe/ %CPC.REP%\Dossier\Programme.cpc
+					exe/ %CPC.REP%\..\dossier\programme.cpc --> Possibilité de remonter des repertoires '..'
+					txt/ Vos polices d'ecritures sont dans le dossier : %CPC.REP%\fonts
+
+	- CpcdosC+ 	: AJOUT de la commande "CCP/ /pause:TempsEnMillisecondes" pour mettre en pause
+				un thread pendant un temps définit en milliseconde (Micro-seconde possible)
+
+	- CpcdosC+ 	: AJOUT de la commande "CCP/ /Change:VARIABLE" pour bloquer le thread en cours
+				jusqu'à que VARIABLE change de contenu.
+
+	- CpcdosC+	: Possibilité d'afficher le caractere pourcent '%' sans qu'il soit pris en compte tant que
+				encapsulateur du nom de variable. Pour ceci vous devez mettre \% et il sera remplacé par %
+
+	- CpcdosC+	: AJOUT du parametre de reformatage d'une commande si une variable contient une autre variable à lire.
+				\#REFORMAT-VAR ou \#VAR-REFORMAT ou \#REFORMATER-VAR ou \#VAR-REFORMATER
+
+	- CpcdosC+  	: AJOUT de parametre dans SYS/ /DEBUG /CpintiCore = [0 à 2]
+				0 : Désactiver le mode console debug CPinti Core.
+				1 : Activer le mode console debug CPinti Core.
+				2 : Activer le mode console CPinti Core uniquement.
+
+	- CpcdosC+	: AJOUT des parametres dans SERVEUR/ pour créer/connecter un serveur TCP
+				/client Gestion de clients :
+					/client {Machine/IP}:{Port} --> se connecter à un serveur TCP
+					/client /set:{Numero de PID} Blabla.. --> Envoyer "Blabla.."
+					/client /get:{Numero de PID} --> Recupérer les données reçu.
+				/tcp:[port] /set:0 Envoyer en broadcast
+						:>0 Envoyer à 1 client précis.
+				/tcp:[port] /get (En révision)
+				/tcp:[port] /mode:VAR --> Methode par variable (Par defaut)
+
+				** Exemples **
+					Serveur/ /tcp:2316 --> Crée un serveur TCP port '2316'
+					Serveur/ /client 127.0.0.1:2316 --> Se connecte à notre serveur.
+										Exemple de PID recu '56789'
+
+					Serveur/ /client /set:56789 Hello! --> Envoyer "Hello" au PID 56789
+										qui LUI est connecté au serveur.
+
+					Serveur/ /client /get:56789 --> Receptionner les donnees du serveur
+					Serveur/ /client /stop:56789 --> Se deconnecter du serveur
+					Serveur/ /stop:2316 --> Arreter le serveur TCP.
+
+	- Moteur CCP	: CORRECTION du crash si on entre uniquement des '%'
+				# Merci à Ronsgeek!
+				[Sujet: 14/11/2015 "CRASH DE CPCDOS !!! (YEAH)"]
+
+	- Moteur CCP	: Optimisation générale du moteur. (Gain gagné:10%)
+				+ Optimisation acces lecture des variables CpcdosC+
+		
+	- IUG/PNG	: Optimisation de la lecture des fichiers images PNG. (Gain gagné:10%)
+
+	- IUG/Police	: CORRECTION du problème d'affichage après désactivation de la police 
+				# Merci à Angels74!
+				[Sujet: 07/11/2015 "Bug d'affichage lors de la désactivation de polices"].
+
+	- IUG/Police	: AJOUT de deux polices d'écriture
+				- Cloudy
+				- Chiller 
+
+##### CPinti Core for Cpcdos OSx #####
+
+	- CPintiCore: Code désormais compilé avec GCC 5.3
+	- CPintiCore: Optimisation générale du coeur. (Gain performances gagné:30%)
+	- CPintiCore: CORRECTION de quelques fuites de mémoires.
+	- CPintiCore: Réecriture et optimisation du gestionnaire de création et exéution de threads.
+	- CPintiCore: Amélioration de l'affichage des informations de débuggage.
+
+	- Réseau	: Optimisation/CORRECTION générale des fonctions réseaux et instances.
+	- Réseau	: CORRECTION des crash du serveur TCP.
+	- Réseau	: AJOUT des fontionnalités client TCP.
+	- Réseau	: CORRECTION (Réecriture COMPLETE) du protocole ICMP pour ping des machines.
+
+	- IO		: Optimisation de la lecture des fichiers. (Gain gagné:60%)
+
+-----------------------------------------------------------------------------------------------------------
+	
+	= = = = = = = = = = = = = = = = = =
+	*** Cpcdos OS2.0.5 Alpha 4.0 T1 *** for ultima testers
+	*** 06 novembre 2015            ***
+	= = = = = = = = = = = = = = = = = =
+	
+	<< Première sortie pour les Ultima testers >>
+	
+	
+	
+	
+Autres :
+- Optimiser le zoom du logo selon les perfs du systeme [OK]
+'	- Creer une fonction qui donne une note (Calcul../Calcul../Graphisme/..) [OK]
+'	- Probleme commande si il y a un espace " " il AJOUTe un espace dans les parametres [OK]
+'	- 05-09-2015 : 	Reecriture complete de io.C et desormais prorement instanciable + desallocation memoire   - init.c AJOUTer le debug texte [OK]
+'	- Execution a partir d'un label / No ligne [OK]
+'	- Rendre le serveur TCP/client multi-instanciable et destructable + buffer

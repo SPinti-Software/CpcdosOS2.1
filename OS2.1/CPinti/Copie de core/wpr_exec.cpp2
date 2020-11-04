@@ -1,0 +1,145 @@
+/*	
+	======================================
+	==     CPinti ---> Execution wrappé ==
+	======================================
+	
+	Developpe entierement par Sebastien FAVIER
+
+	Description
+		Module d'execution des fonctions de CPinti Core avec
+		 support RAII pour une allocation/desallocation propre
+		 horodatee et logee depuis le debogeur
+	
+	Creation 
+		19/10/2016
+
+
+	Mise a jour
+		16/10/2018
+		
+	16-10-2018	: Adaption 2.1 beta 1.1
+	07-12-2017	: AMELIORATION du code en suivant une procedure sticte de GCC
+	06-10-2017	: Ajout de Copier_Fichier.
+	23-08-2017	: Ajout de cpinti_get_nom_thread() & cpinti_get_nom_processus() pour recuperer les noms des threads&Processus
+	08-05-2017	: Ajout des arguments d'entre pour les threads crees
+	13-02-2017	: Finitions du serveur & client
+	02/01/2017 	: Ajout Entrer/Fin Section Critique
+	16/01/2017	: Ajout CPinti checker + ajustements
+	
+*/
+#include <memory>
+
+#include "debug.h"
+#include "cpinti.h" // inclut taches.h
+
+#include "func_cpi.h"
+
+#include "threads.h"
+#include "taches.h"
+
+#include "socket.h"
+#include "ping.h"
+#include "serveur.h"
+#include "client.h" 
+ 
+#include "io.h"
+
+#include "heap.h"
+ 
+
+/****** H E A P ******/
+
+namespace mesa_3d
+{
+	// extern int __mesa_main();
+	
+	class wrp_cpc_mesatest
+	{
+		public:
+		wrp_cpc_mesatest();
+	};
+	
+	wrp_cpc_mesatest::wrp_cpc_mesatest()
+	{
+		// __mesa_main();
+	}
+	
+}
+
+namespace cpinti
+{
+
+	int  __CpintiCore_CpcdosOSx__::cpinti_testOpenGL()
+	{
+		// std::shared_ptr<mesa_3d::wrp_cpc_mesatest> 
+					// Mesa_Instance (new mesa_3d::wrp_cpc_mesatest());
+		return 1;
+	}
+	
+	int __CpintiCore_CpcdosOSx__::cpinti_testExeLoader(const char* chemin)
+	{
+		fStartExeLoader(chemin);
+		return 1;
+	}
+	
+	
+	
+	int __CpintiCore_CpcdosOSx__::cpinti_WRAPPER(int FunctionID, double _CLE_, int ARG_1, unsigned int ARG_2, const char* ARG_3, const char* ARG_4, const char* ARG_5)
+	{
+		// Cette fonction va permettre d'executer une FunctionID compile dans CONTRIB
+		// 	FunctionID		: Numero de la fonction
+		// 	PID				: Numero de processus parent
+		
+		// Retourne -1 : Erreur memoire
+		// 			 0 : Fichier non disponible
+		//			 1 : Fichier present
+		
+		
+		int Resultats = 0;
+		std::string FunctionID_STR  = cpinti::Func_Cpinti::to_string(FunctionID);
+		
+		cpinti_dbg::CPINTI_DEBUG("Creation d'une instance du wrapper CPinti Core... ", 
+					 "Creating CPinti Core wrapper... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_WRAPPER()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+						
+		std::unique_ptr<Wrapper_Cpcdos::__SYS_cpcdos__WRAPPER_> Instance_Wrapper_Cpcdos(new Wrapper_Cpcdos::__SYS_cpcdos__WRAPPER_);
+		
+		if (Instance_Wrapper_Cpcdos != NULL)
+		{
+			
+			
+			std::string ADR = "0x" + cpinti::Func_Cpinti::to_string((unsigned int) &Instance_Wrapper_Cpcdos);
+			std::string SIZ = cpinti::Func_Cpinti::to_string((int) sizeof(Instance_Wrapper_Cpcdos));
+			cpinti_dbg::CPINTI_DEBUG("[OK] --> Allocation offset:" + ADR + " taille:" + SIZ + " octets.", "[OK] --> Allocation offset:" + ADR + " size:" + SIZ + " bytes.", 
+							"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+			
+			cpinti_dbg::CPINTI_DEBUG("Lancement de l'instance...", "Instance execution...", 
+										"", "", Ligne_saute, Alerte_action, Date_sans, Ligne_r_normal);		
+							
+			Resultats = Instance_Wrapper_Cpcdos->Wrapper_Cpcdos_OSx_CPinti_Core(FunctionID, _CLE_, ARG_1, ARG_2, ARG_3, ARG_4, ARG_5);
+			
+			// Afficher le resultat dans le debug
+
+			std::string Resultats_STR = cpinti::Func_Cpinti::to_string(Resultats);
+		
+			cpinti_dbg::CPINTI_DEBUG("Code de retour '" + Resultats_STR + "'", 
+									"Retourned code '" + Resultats_STR + "'",  
+									"", "cpinti_WRAPPER()~FunctionID:" + FunctionID_STR,
+									Ligne_saute, Alerte_validation, Date_sans, Ligne_r_normal);
+					
+			return Resultats;
+
+		}
+		else
+		{
+			
+			cpinti_dbg::CPINTI_DEBUG("Memoire insuffisante.", "Enough memory.", "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			return -8; // Memoire insuffisante
+		} 
+		return 0;
+	} /* WRAPPER_CPCDOS */
+	
+
+	
+}

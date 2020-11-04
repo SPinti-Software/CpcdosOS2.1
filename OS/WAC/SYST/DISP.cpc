@@ -1,0 +1,8 @@
+REM/ --------------------------------------------------------------
+REM/    ***Lancement de toutes le propriétés système de WacOS***   
+REM/                             --
+REM/               ***Made BY : HERMAN Adrien***
+REM/ --------------------------------------------------------------
+
+REM/ Propriétés des utilisateurs
+EXE/ & %HOST_OS%/SYST/UTL.cpc          

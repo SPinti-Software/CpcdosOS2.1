@@ -1,0 +1,11 @@
+ren src\lib\Analysis An
+ren src\lib\Transforms\InstCombine IC
+ren src\lib\Transforms\Instrumentation Ins
+ren src\lib\Transforms\ObjCARC OC 
+ren src\lib\Transforms\Vectorize Vec 
+ren src\lib\Transforms Tf
+ren src\lib\CodeGen CG
+ren src\lib\DebugInfo Dbg
+ren src\lib\Target Tg
+ren src\lib\Analysis An
+ren src\lib\ExecutionEngine EE

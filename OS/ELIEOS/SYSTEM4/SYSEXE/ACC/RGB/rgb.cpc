@@ -1,0 +1,109 @@
+
+FIX/ startcolor = 255,255,255
+
+fenetre/ RGB_ELIE
+                .titre                 = "RGB color panel"
+		.px				= "2"
+		.py				= "21"
+		.tx				= "194"
+		.ty				= "95"
+		rem/.Opacite 		= "100"
+		.Parametres		= "TYPE:0"
+		.CouleurFond	= "%startcolor%"
+		@#rgb_run creer/
+Fin/ fenetre
+
+
+picturebox/ version_menu
+	.Handle			= "%rgb_run%"
+	.Parametres		= "IMGAUTO:2"
+	.PX			= "0"
+	.PY			= "78"
+	.tx			= "150"
+	.ty		        = "17"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_GRA3.png"
+	rem/ .opacite		= "150"
+	rem/.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ Picturebox
+
+
+
+TEXTEBLOC/ date
+	.Handle = "%rgb_run%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Enter value:"
+	.PX = "3"
+	.PY = "80"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ colorcode = \#NULL
+
+Textebox/ rgb_data
+	.handle			= "%rgb_run%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "0"
+        .PY                             = "59"
+	.TX				= "150"
+	.TY				= "17"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%colorcode%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+fix/ changer = \#NULL
+
+Textebox/ colorchanger
+	.handle			= "%rgb_run%"
+	.parametres 	= "EDIT:0 COL:1 MULTILINES:1"
+        .PX                             = "0"
+        .PY                             = "0"
+	.TX				= "194"
+	.TY				= "56"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%changer%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+Bouton/ rgb_change
+	.Handle			= "%rgb_run%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "152"
+	.PY				= "58"
+	.tx				= "40"
+	.ty				= "36"
+	rem/ .opacite		= "100"
+	.texte			= "Go"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_GRA2.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ rgb_change.Click()
+
+          textebox/ /modif:rgb_data
+			 @#Contenu .texte
+		 Fin/ textbox
+		 
+		 textebox/ /modif:colorchanger
+			 .CouleurFond	= "%Contenu%"
+			 creer/
+		 Fin/ textbox
+
+		 ACTUALISER/ RGB_ELIE
+		 
+
+FIN/ FONCTION
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+
+
+@#LAUNCH OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/ELIEXT/GUI/launch.cfg
+@#PASSWORD OUVRIR/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/ELIEXT/USERS/password.cfg
+         textebox/ /modif:PASSWORD_DATA
+			 @#DATAPASSWORD .texte
+			 .texte = "%DATAPASSWORD%"
+			 creer/
+		 Fin/ textbox
+SI/ "%DATAPASSWORD%" == "%PASSWORD%" alors:
+         CMD/ /PID:%PID_DESKTOP% exe/ & %LAUNCH%
+           fermer/ /PID:%PID_LOGIN_SCR%  
+SINON:
+	SI/ "%DATAPASSWORD%" N= "%PASSWORD%" alors:
+        msgbox/ Wrong password! /TITRE:Erreur! /ERREUR:4 /TYPE:0
+	Fin/ SI
+Fin/ SI 

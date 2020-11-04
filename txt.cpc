@@ -1,0 +1,2 @@
+fix/ /q contenu=OK
+txt/ %contenu%

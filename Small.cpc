@@ -1,0 +1,24 @@
+// Small - petit jeu en 2D developpe par SPinti Software pour les systemes Cpcdos OSx
+
+cls/
+txt/
+Txt/   ==========================================
+Txt/   =  S M A L L  F O R  C P C D O S  O S x  =
+Txt/   ==========================================
+txt/     by SPinti Software
+txt/
+txt/   Created 16-03-2017
+txt/   Updated 30-03-2017
+txt/ 
+
+// Fortement recommande !
+//  Permet la pre-compilation + nettoyage des fichiers CPC executes afin
+//  d'avoir une vitesse d'execution plus optimisee. Mais met plus de temps
+//  a se lancer la premiere fois (Logique, il optimise PUIS lance apres)
+CCP/ /OPTIMISATION = 1
+
+// Pause d'une seconde
+ccp/ /pause:1000
+
+// On execute le menu principal
+exe/ SMALL\Main.cpc

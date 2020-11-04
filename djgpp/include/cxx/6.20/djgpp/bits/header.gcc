@@ -1,0 +1,7 @@
+c++allocator.h cxxallocator.h
+c++config.h cxxconfig.h
+c++io.h cxxio.h
+c++locale.h cxxlocale.h
+extc++.h extcxx.h
+stdc++.h stdcxx.h
+stdtr1c++.h stdtr1cxx.h

@@ -1,0 +1,24 @@
+﻿
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
+
+CCP/ /FIX.NIVEAU = 4
+
+FIX/ SCR_IMG = OS/MEDIA/Earth.PNG
+
+FIX/ SCR_RES = 1024x768
+
+
+FIX/ HOST_OS = OS\WAC
+
+FIX/ MA_VARIABLE = 123_WAC
+
+REM/ Démarrer l'interface graphique
+IUG/
+
+REM/ Exécution des paramètres système
+EXE/ & %HOST_OS%/SYST/DISP.cpc                          
+
+REM/ Barre des tâches 
+EXE/ & %HOST_OS%/BARRE/BAR.cpc           
+

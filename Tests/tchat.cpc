@@ -1,0 +1,302 @@
+// T'chat
+// By SPinti Software
+// FREE CODE !!!!!!!
+// CREATED 26-OCT-2020
+// UPDATED 01-NOV-2020
+
+
+ccp/ /set.niveau = 3
+
+// Main server
+set/ SERVER = deposit.cpcdos.net
+
+// ---- Don't touch ----
+set/ SERVER_APP = NULL
+set/ Username = NULL
+set/ IS_CONNECTED = false
+set/ Thread_ID = NULL
+// ---------------------
+
+// Number displayed lines from server
+set/ NB_LINES = 20
+
+// Window size
+set/ Win_Size_X = 620
+set/ Win_Size_Y = 260
+
+ccp/ /set.niveau = 2
+
+window/ Tchat_GUI
+	.title				= "T'chat GUI"
+	.px					= "240"
+	.py					= "300"
+	.sx					= "%Win_Size_X%"
+	.sy					= "%Win_Size_Y%"
+	.Opacity			= "255"
+	.Parameters			= "TYPE:0 SIZ:0 SIZBTN:0"
+	.WindowColor		= "050,100,100"
+	.TitleColor			= "255,255,255"
+	.BackColor			= "050,150,220"
+	.Icon				= "%OS_GUI%/ICO_DEF.png"
+	.event				= "%_exe_path_%"
+	@#window create/
+end/ window
+
+// ----------------------------
+
+button/ btn_connection
+	.handle				= "%window%"
+	.px					= "5"
+	.py					= "5"
+	.sx					= "120"
+	.sy					= "20"
+	.parameters			= ""
+	.text				= "Get instance"
+	.event				= "%_exe_path_%=MouseClick"
+	create/
+end/ button
+
+textbox/ txt_user
+	.handle				= "%window%"
+	.parameters			= ""
+	.px					= "140"
+	.py					= "5"
+	.sx					= "100"
+	.sy					= "20"
+	.BackColor			= "255,255,255"
+	.TextColor			= "000,000,000"
+	.text 				= "%OS_NAME%"
+	create/
+end/ textbox
+
+textblock/ txtk_etat
+	.handle				= "%window%"
+	.px					= "260"
+	.py					= "5"
+	.sx					= "160"
+	.sy					= "16"
+	.parameters			= ""
+	.BackColor 			= "200,050,050"
+	.text				= "No connected."
+	create/
+end/ button
+
+// Dialog textbox sizes
+ccp/ /set.level = 3
+set/ dialog_size_X = /C(%Win_Size_X% - 10)
+set/ dialog_size_Y = /C(%Win_Size_Y% - 70))
+ccp/ /set.level = 2
+
+textbox/ dialog
+	.handle				= "%window%"
+	.parameters			= "MULTILINE:1 EDIT:0"
+	.px					= "5"
+	.py					= "28"
+	.sx					= "%dialog_size_X%"
+	.sy					= "%dialog_size_Y%"
+	.BackColor			= "255,255,255"
+	.TextColor			= "000,000,000"
+	.text 				= "Free t'chat CPC program.%CPC.CRLF%For dialog between OS ;-)"
+	create/
+end/ textbox
+
+// ----------------------------
+
+// Sender textbox sizes
+ccp/ /set.level = 3
+set/ sender_size_X = /C(%Win_Size_X% - 10)
+set/ sender_size_Y = 30
+
+set/ sender_pos_Y = /C((28 + %dialog_size_Y% + 5)
+ccp/ /set.level = 2
+
+textbox/ sender
+	.handle				= "%window%"
+	.parameters			= "MULTILINE:1 EDIT:1"
+	.px					= "5"
+	.py					= "%sender_pos_Y%"
+	.sx					= "%sender_size_X%"
+	.sy					= "%sender_size_Y%"
+	.BackColor			= "255,255,255"
+	.TextColor			= "000,000,000"
+	.text 				= ""
+	.event				= "%_exe_path_%=KeyEnter"
+	create/
+end/ textbox
+
+
+// ----------------------------
+
+function/ thread_getdialog()
+	// This thread function able to getting dialog from server
+	
+	// All operation will be privated
+	ccp/ /set.level = 1
+
+	:LOOP:
+	
+	// Pause
+	ccp/ /pause 500
+	
+	// If we disconnect, we will stop this thread. 'IN PEACE'
+	if/ "%IS_CONNECTED%" == "false" then: goto/ END
+
+	// If is connected, getting informations from server
+	if/ "%IS_CONNECTED%" == "true" then:
+		
+		// Download dialog text
+		download/ %SERVER_APP%?command=receive&lines=%NB_LINES%
+		ccp/ /pause 2500
+		
+		// Open temp file
+		@#dialogue open/ %CPC_TEMP.NET%/%SERVER%/apps/online/private/tchat.php
+		
+		// Display raw text in dialog textbox
+		textbox/ /modif:dialog
+			.text = "%dialogue%"
+			create/
+		end/ textbox
+	end/ if
+	
+	goto/ LOOP
+	
+	:END:
+	
+end/ function
+
+
+// ----------------------
+// ===== GUI EVENTS =====
+// ----------------------
+
+
+Function/ btn_connection.MouseClick()
+	// We get t'chat instance from server
+	ccp/ /set.level = 3
+	
+	// During connection
+	textblock/ /modif:txtk_etat
+		.text 		= "Attempt to connect..."
+		.BackColor 	= "050,150,200"
+		create/
+	end/ textblock/
+	
+	// Download path of 'tchat' application
+	download/ http://%SERVER%/apps/link.php?app=tchat
+	
+	// Wait
+	ccp/ /pause 1000
+	
+	// Read results
+	@#SERVER_APP open/ %CPC_TEMP.NET%/%SERVER%/apps/link.php
+	
+	// If result content "tchat.php" string, it's ok!
+	if/ "%SERVER_APP%" ~= "tchat.php" then:
+	
+		// Change variable state
+		set/ IS_CONNECTED = true
+		
+		// Indicate that we connected in green
+		textblock/ /modif:txtk_etat
+			.text 		= "Connected !"
+			.BackColor 	= "050,200,100"
+			create/
+		end/ textblock/
+		
+		// Get username from textbox
+		textbox/ /modif:txt_user
+			@#Username .text
+		end/ textbox
+		
+		// Execute thread_getdialog() on another thread in loop
+		cmd/ /thread /F:thread_getdialog()
+	
+	else:
+	
+		// Change variable state
+		set/ IS_CONNECTED = false
+		
+		// Indicate that we connected in green
+		textblock/ /modif:txtk_etat
+			.text 		= "No connected..."
+			.BackColor 	= "200,050,050"
+			create/
+		end/ textblock/
+	end/ if
+end/ function
+
+Function/ sender.KeyEnter(texte)
+	// If user press ENTER key
+	ccp/ /set.level = 1
+	
+	// If connected, you can send messages
+	if/ "%IS_CONNECTED%" == "true" then:
+		download/ %SERVER_APP%?command=send&username=%username%&message=%texte%
+	end/ if
+	
+	// Empty textbox
+	textbox/ /modif:sender
+		.text = ""
+		create/
+	end/ textbox/
+	
+End/ Function
+
+
+Function/ Tchat_GUI.Windowclosing()
+	// If user close window
+
+	// Stopping "peace" the thread, without forcing, because i'm sympathic developper :D
+	SET/ IS_CONNECTED = false
+	
+End/ Function
+
+
+Function/ Tchat_GUI.Resize(sizeup)
+	// If user change window size
+
+	// Getting size informationsof window
+	window/ /modif:Tchat_GUI
+		@#Win_Size_X .sx
+		@#Win_Size_Y .sy
+	end/ window
+	
+	// Re-calculate sizing
+	set/ dialog_size_X = /C(%Win_Size_X% - 10)
+	set/ dialog_size_Y = /C(%Win_Size_Y% - 70))
+
+	textbox/ /modif:dialog
+		.sx					= "%dialog_size_X%"
+		.sy					= "%dialog_size_Y%"
+		create/
+	end/ textbox
+
+	// Re-calculate sizing
+	set/ sender_size_X = /C(%Win_Size_X% - 10)
+	set/ sender_size_Y = 30
+
+	set/ sender_pos_Y = /C((28 + %dialog_size_Y% + 5)
+
+	textbox/ /modif:sender
+		.py					= "%sender_pos_Y%"
+		.sx					= "%sender_size_X%"
+		.sy					= "%sender_size_Y%"
+		create/
+	end/ textbox
+	
+End/ function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

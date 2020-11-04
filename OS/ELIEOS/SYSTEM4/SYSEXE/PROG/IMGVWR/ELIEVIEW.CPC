@@ -1,0 +1,28 @@
+
+fenetre/ mjpgviewer
+	.titre 			= "Elie Viewer"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "595"
+	.ty = "490"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "005,000,98"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#pics creer/
+fin/ fenetre
+
+
+picturebox/ yummyvideo
+	.Handle			= "%pics%"
+	.Parametres		= "UPD:1 IMGAUTO:2"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "595"
+	.ty		        = "490"
+	.Image			= "OS/ELIEOS/MySpace/Videos/test.mjpg"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ picturebox

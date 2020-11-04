@@ -1,0 +1,869 @@
+FIX/ menuprog_POSX = /C(%CPC.SCR.X% - 310)
+FIX/ TAILLE_Y_PROG = /C(%CPC.SCR.Y% - 40)
+FIX/ OPT_Y = /C(%TAILLE_Y_PROG% - 45)
+FIX/ LINE_Y = /C(%TAILLE_Y_PROG% - 69)
+FIX/ LABEL_Y = /C(%TAILLE_Y_PROG% - 81)
+
+fenetre/ menu_prog
+	.titre 			= "Menu"
+	.px				= "%menuprog_POSX%"
+	.py				= "0"
+	.tx				= "310"
+	.ty				= "%TAILLE_Y_PROG%"
+    .Opacite 		= "155"
+	.Parametres		= "TYPE:4 CTN:1 OMBRE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurTitre	= "000,000,000"
+	.CouleurFond	= "155,155,155"
+	.event			= ""
+	@#prog_menu creer/
+Fin/ fenetre
+
+
+
+TEXTEBLOC/ nom_de_fichier
+	.Handle = "%prog_menu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "YukiStart"
+        .PX = "120"
+	.PY = "15"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ nom_de_fichier
+	.Handle = "%prog_menu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "_______________________________"
+        .PX = "30"
+	.PY = "35"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ nom_de_fichier
+	.Handle = "%prog_menu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "_______________________________"
+        .PX = "30"
+	.PY = "%LINE_Y%"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+fix/ labellaa = \#NULL
+
+TEXTEBLOC/ labella
+	.Handle = "%prog_menu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "%labellaa%"
+        .PX = "120"
+	.PY = "%LABEL_Y%"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+picturebox/ note
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "10"
+	.PY			= "55"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/YUKINOTE/yukinote.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ emiko
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "110"
+	.PY			= "55"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/EMIKO/emiko.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ calcu
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "210"
+	.PY			= "55"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/CALC/calc.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ thallium
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "10"
+	.PY			= "155"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/THALLIUM/thallium.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ folder
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "110"
+	.PY			= "155"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/FOLDER/folder.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ opengl
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "210"
+	.PY			= "155"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/GL/opengl.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ terminal
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "10"
+	.PY			= "255"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/CPCCMD/console.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ downloader
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "110"
+	.PY			= "255"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/DWNLOAD/download.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ efu
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "210"
+	.PY			= "255"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/EFU/efu.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ rgb
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "10"
+	.PY			= "355"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/RGB/rgb.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ chatclt
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "110"
+	.PY			= "355"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/ELIECHAT/elieclt.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ chatsrv
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "210"
+	.PY			= "355"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/ELIECHAT/eliesrv.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+picturebox/ yukibasic
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "10"
+	.PY			= "455"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/BASIC/basic.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ dev
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "110"
+	.PY			= "455"
+	.tx			= "90"
+	.ty		        = "90"
+	.Image			= "OS/ELIEOS/SYSTEM4/ADVANCE/GUI/ICONS/DEV/dev.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+
+rem/ option barre du bas
+
+
+picturebox/ logout
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "14"
+	.PY			= "%OPT_Y%"
+	.tx			= "35"
+	.ty		        = "35"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/logout.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ shutdown
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "54"
+	.PY			= "%OPT_Y%"
+	.tx			= "35"
+	.ty		        = "35"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/shutdown.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ restart
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "94"
+	.PY			= "%OPT_Y%"
+	.tx			= "35"
+	.ty		        = "35"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/restart.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ setting
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "134"
+	.PY			= "%OPT_Y%"
+	.tx			= "35"
+	.ty		        = "35"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/setting.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+picturebox/ closem
+	.Handle			= "%prog_menu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "174"
+	.PY			= "%OPT_Y%"
+	.tx			= "35"
+	.ty		        = "35"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/OS/close.png"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=MouseEnter,Click,MouseLeave"
+	creer/
+Fin/ picturebox
+
+FONCTION/ logout.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Logout"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ logout.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+
+fonction/ logout.Click()
+EXE/ & OS/ELIEOS/SYSTEM4/ELIEXT/EUSER/exec.cpc
+fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ setting.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Settings"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ setting.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+fonction/ setting.Click()
+    EXE/ & OS/ELIEOS/SYSTEM4/DESKTOP/YUKIMODE/sety.cpc
+    fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ shutdown.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Shutdown"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ shutdown.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ shutdown.Click()
+SYS/ /ARRETER
+FIN/ fonction
+
+FONCTION/ restart.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Restart"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ restart.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ restart.Click()
+SYS/ /RESTART
+fin/ fonction
+
+FONCTION/ closem.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Close YukiStart"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ closem.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ closem.Click()
+fermer/ menu_prog
+fin/ fonction
+
+rem/ fonction menu
+
+FONCTION/ note.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "ElieNotes"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ note.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ note.Click()
+ EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/ELIENOTE/ELIENOTE.cpc
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ yukibasic.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "PC-98/DOS"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ yukibasic.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ yukibasic.Click()
+ EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.CPC
+ fermer/ menu_prog
+ fin/ fonction
+ 
+ FONCTION/ emiko.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Emiko"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ emiko.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+fonction/ emiko.Click()
+ EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/EMIKO/MAIN.cpc
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ calcu.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "ElieCalc"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ calcu.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+fonction/ calcu.Click()
+ EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/ELIECALC/calcu.cpc
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ thallium.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Elie Web Tool"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ thallium.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+fonction/ thallium.Click()
+EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/THALLIUM/THALLIUM.CPC
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ folder.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Elie Explorer"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ folder.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+fonction/ folder.Click()
+EXE/ & OS/ELIEOS/SYSTEM4/DESKTOP/ELIEMODE/desk.cpc
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ opengl.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "OpenGL test"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ opengl.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+fonction/ opengl.Click()
+ EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/OPENGL/OPENGL.CPC
+ fermer/ menu_prog
+fin/ fonction
+
+FONCTION/ terminal.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Elie Console"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ terminal.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+FONCTION/ terminal.Click()
+    EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/ELIETERM/elieterm.cpc
+    FERMER/ menu_prog
+FIN/ FONCTION
+
+FONCTION/ downloader.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "File downloader"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ downloader.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+FONCTION/ downloader.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/DOWNLOAD/download.cpc
+    FERMER/ menu_prog
+FIN/ FONCTION
+
+FONCTION/ efu.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Elie File Utility"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ efu.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+FONCTION/ efu.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/EFU/efu.cpc
+	fermer/ menu_prog
+FIN/ FONCTION
+
+FONCTION/ rgb.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "RGB color panel"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ rgb.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+FONCTION/ rgb.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/RGB/rgb.cpc
+	fermer/ menu_prog
+FIN/ FONCTION
+
+FONCTION/ chatclt.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "ElieIM Client"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ chatclt.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+
+FONCTION/ chatclt.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/ELIECHAT/eliechat.cpc
+    FERMER/ menu_prog
+FIN/ FONCTION
+
+FONCTION/ chatsrv.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "ElieIM Server"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ chatsrv.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+FONCTION/ chatsrv.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/ELIECHAT/eliechts.cpc
+    FERMER/ menu_prog
+FIN/ FONCTION
+
+
+FONCTION/ dev.MouseEnter()
+	
+		textebloc/ /modif:labella
+			.texte			= "Elie DevWorks"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+	
+FIN/ FONCTION
+
+FONCTION/ dev.MouseLeave()
+	
+	textebloc/ /modif:labella
+			.texte			= ""
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ menu_prog
+
+	
+FIN/ FONCTION
+
+FONCTION/ dev.Click()
+	EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/devworks.cpc
+    FERMER/ menu_prog
+FIN/ FONCTION
+
+
+

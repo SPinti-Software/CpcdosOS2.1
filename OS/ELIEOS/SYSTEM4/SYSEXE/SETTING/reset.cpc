@@ -1,0 +1,39 @@
+///////////////////////////////////////
+//// Lancer l'environnement 16 bit ////
+//// MeaxyDOS   Version 0.1        ////
+//// Fichier Aide.com pour info    ////
+///////////////////////////////////////
+
+Fenetre/ mxdos
+	.titre 			= "Reset ElieOS"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "390"
+	.ty = "100"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "195,195,195"
+	.event = ""
+	@#dos_sys creer/
+fin/ fenetre
+
+TEXTEBLOC/ id_cpu
+	.Handle = "%dos_sys%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "To reset ElieOS use"
+	.PX = "20"
+	.PY = "3"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ id_cpu2
+	.Handle = "%dos_sys%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "the installation CD"
+	.PX = "20"
+	.PY = "13"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC

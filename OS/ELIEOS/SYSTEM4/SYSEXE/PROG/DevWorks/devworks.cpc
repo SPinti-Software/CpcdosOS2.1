@@ -1,0 +1,76 @@
+
+
+
+fenetre/ dev_directory
+	.titre = "Elie DevWorks"
+	.px = "100"
+	.py = "100"
+	.tx = "275"
+	.ty = "87"
+	.CouleurFenetre = "000,027,255"
+	.CouleurFond = "255,255,255"
+	@#devy_handle creer/
+Fin/ fenetre
+
+
+bouton/ devIDE
+	.Handle			= "%devy_handle%"
+	.Parametres		= "IMGAUTO:2"
+	.px	= "5"
+	.py = "1"
+	.tx	= "85"
+	.ty	= "85"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/ELIENOTE/elienote.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ bouton
+
+
+
+bouton/ files
+	.Handle			= "%devy_handle%"
+	.Parametres		= "IMGAUTO:2"
+	.px = "95"
+	.py = "1"
+	.tx = "85"
+	.ty = "85"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/FILEMNGR/explorer.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ bouton
+
+
+bouton/ exec
+	.Handle			= "%devy_handle%"
+	.Parametres		= "IMGAUTO:2"
+	.px = "185"
+	.py = "1"
+	.tx = "85"
+	.ty = "85"
+	//.opacite		= "255"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ELIENOTE/exec.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ bouton
+
+
+fonction/ devIDE.Click()
+	exe/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/IDE/devide.cpc
+Fin/ fonction
+
+fonction/ files.Click()
+	exe/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/ListFile/list.cpc
+Fin/ fonction
+
+fonction/ exec.Click()
+	exe/ & OS/ELIEOS/SYSTEM4/SYSEXE/PROG/DevWorks/RunProg/run.cpc
+Fin/ fonction
+
+
+
+
+
+
+

@@ -1,0 +1,71 @@
+rem/ ...
+
+FONCTION/ MonTexteBox.KeyPress(touche_pressee)
+
+	
+	rem/ si/ "%touche_pressee%" = "%CPC.CR%" alors:
+		rem/ textebox/ /modif:MonTexteBox
+			rem/ @#Contenu .texte
+			rem/ .texte = ""
+			rem/ creer/
+		rem/ Fin/ textbox
+		
+		rem/ cmd/ %Contenu%
+		
+	rem/ fin/ si
+
+Fin/ Fonction
+
+FONCTION/ MonTexteBox.KeyPress()
+
+Fin/ Fonction
+
+
+FUNCTION/ Mon_Bouton3.Click(bouton)
+
+        Msgbox/ Hello! :)
+
+End/ Function
+
+
+FUNCTION/ Mon_Bouton2.Click(bouton)
+	
+        exe/ & GZE.CPC
+
+End/ Function
+
+
+FUNCTION/ Mon_Bouton.Click(bouton)
+	
+        Exe/ & OpenGL.CPC
+
+End/ Function
+
+
+FONCTION/ APP1.MouseMove()
+
+	txt/ Oh ! La souris a bouge dans la fenetre APP 1 !
+
+FIN/ FUNCTION
+
+
+FONCTION/ APP1.MouseLeave()
+
+	txt/ Oh ! La souris a QUITTE la fenetre APP 1 !
+
+FIN/ FUNCTION
+
+
+FONCTION/ APP1.Clic()
+
+	txt/ Oh ! J'ai clique dans la fenetre!
+
+FIN/ FUNCTION
+
+
+FONCTION/ Image1.Clic()
+
+	txt/ CLIC sur Image1 de la terre !!
+	
+Fin/ fonction 
+

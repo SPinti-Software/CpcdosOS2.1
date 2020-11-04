@@ -1,0 +1,32 @@
+rem/ blabla...
+
+
+FONCTION/ BTN_CRAFTYOS.MouseEnter()
+	
+		// Afficher l'image en surbrillance
+		Picturebox/ /modif:BTN_CRAFTYOS
+			.Image			= "%OS_GUI%/BTN_CFTL.PNG"
+			creer/
+		Fin/ Picturebox
+	
+FIN/ FONCTION
+
+FONCTION/ BTN_CRAFTYOS.MouseLeave()
+	
+	// Remettre l'image normale
+	Picturebox/ /modif:BTN_CRAFTYOS
+		.Image			= "%OS_GUI%/BTN_CFT.PNG"
+		creer/
+	Fin/ Picturebox
+
+	
+FIN/ FONCTION
+
+FONCTION/ BTN_CRAFTYOS.Click()
+	
+	// Executer la fonction
+	/F:Afficher_Menu_CFT()
+	
+Fin/ Function
+
+

@@ -1,0 +1,48 @@
+# Copyright (C) 2015 DJ Delorie, see COPYING.DJ for details
+
+# Standalone makefile for building dxe3gen and dxe3res for unixish hosts
+
+CROSS_PREFIX= i586-pc-msdosdjgpp-
+CROSS_CC    = $(CROSS_PREFIX)gcc
+CROSS_AR    = $(CROSS_PREFIX)ar
+CROSS_AS    = $(CROSS_PREFIX)as
+CROSS_LD    = $(CROSS_PREFIX)ld
+CROSS_STRIP = $(CROSS_PREFIX)strip
+
+CC = gcc
+
+all: dxe3gen dxegen dxe3res
+
+%.o : %.S
+	$(CROSS_CC) -c $<
+
+.o.h:
+	$(CROSS_STRIP) --strip-unneeded $<
+	./bin2h.exe $< $(basename $<) $@
+
+init1.h: init1.o bin2h.exe
+init2.h: init2.o bin2h.exe
+init3.h: init3.o bin2h.exe
+init4.h: init4.o bin2h.exe
+init5.h: init5.o bin2h.exe
+fini1.h: fini1.o bin2h.exe
+fini2.h: fini2.o bin2h.exe
+fini3.h: fini3.o bin2h.exe
+fini4.h: fini4.o bin2h.exe
+fini5.h: fini5.o bin2h.exe
+
+dxe3gen: dxe3gen.c init1.h init2.h init3.h init4.h init5.h fini1.h fini2.h fini3.h fini4.h fini5.h
+	$(CC) -O2 -Wall -DDXE_LD=\"$(CROSS_LD)\" -DDXE_CC=\"$(CROSS_CC)\" -DDXE_AR=\"$(CROSS_AR)\" -DDXE_AS=\"$(CROSS_AS)\" dxe3gen.c -o $@
+
+dxegen: dxe3gen
+	ln -s dxe3gen dxegen
+
+dxe3res: dxe3res.c
+	$(CC) -O2 -Wall dxe3res.c -o $@
+
+bin2h.exe: ../utils/bin2h.c
+	$(CC) ../utils/bin2h.c -o $@
+
+clean:
+	rm -f *.o *.h bin2h.exe dxegen dxe3gen dxe3res
+

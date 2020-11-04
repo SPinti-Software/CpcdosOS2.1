@@ -1,0 +1,11 @@
+﻿#include "Lib_Demo/Lib_Demo.h"
+#include "Lib_Demo/MainEntry.h"
+#include "Lib_Demo/MainInterface.h"
+#include "Lib_Demo/Screen/DemoRoll.h"
+extern "C" int IniLib_Lib_Demo(){
+Lib_Demo::zpLib = Lib_Demo::NewLib();
+Lib_Demo::MainEntry::NewClass();
+Lib_Demo::MainInterface::NewClass();
+Lib_Demo::Screen::DemoRoll::NewClass();
+return 1;
+}

@@ -1,0 +1,455 @@
+rem/ emulateur PC-98 sous ElieOS
+
+
+
+fenetre/ pc98_emu
+	.titre 			= "PC-98/DOS"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "595"
+	.ty = "490"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "005,000,98"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#dos_emu creer/
+fin/ fenetre
+
+
+
+fix/ labellaa = \#NULL
+
+TEXTEBLOC/ labella
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "%labellaa%"
+        .PX = "400"
+	.PY = "154"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Launch game manually zone"
+        .PX = "245"
+	.PY = "130"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Path to your .BAT to launch your game"
+        .PX = "245"
+	.PY = "199"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "EX: C:\TH01\LDR.BAT (the real path "
+        .PX = "245"
+	.PY = "209"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "is mounted to C:)"
+        .PX = "245"
+	.PY = "219"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Drive to mount in emulator USE letters after"
+        .PX = "242"
+	.PY = "260"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "d, First field enter the letter EX: e (for"
+        .PX = "242"
+	.PY = "270"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "mounting) and in the second your real drive"
+        .PX = "242"
+	.PY = "280"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ gamezone
+	.Handle = "%dos_emu%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "D:\ and finally click on DOS file manager"
+        .PX = "242"
+	.PY = "290"
+        .COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ scriptname = \#NULL
+
+Textebox/ file_name
+	.handle			= "%dos_emu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "250"
+        .PY                             = "236"
+	.TX				= "200"
+	.TY				= "20"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%scriptname%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+FIX/ vdrive = \#NULL
+
+Textebox/ dosdrivemount
+	.handle			= "%dos_emu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "250"
+        .PY                             = "310"
+	.TX				= "75"
+	.TY				= "20"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%vdrive%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+FIX/ drive = \#NULL
+
+Textebox/ drivemount
+	.handle			= "%dos_emu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "250"
+        .PY                             = "340"
+	.TX				= "75"
+	.TY				= "20"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%drive%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+picturebox/ restart
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2 COL:0"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "595"
+	.ty		        = "130"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/header.png"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ picturebox
+
+
+
+
+Bouton/ touhoufst
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "130"
+	.tx				= "240"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/th01.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ touhoufst.Click()
+       CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT
+       CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/main.bat = C:\TH01\LDR.BAT
+		 
+       CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	   fermer/ pc98_emu
+fin/ fonction
+
+
+Bouton/ touhousnd
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "202"
+	.tx				= "240"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/th02.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ touhousnd.Click()
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/main.bat = C:\TH02\LDR.BAT
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	   fermer/ pc98_emu
+fin/ fonction
+
+
+Bouton/ touhoutr
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "274"
+	.tx				= "240"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/th03.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ touhoutr.Click()
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/main.bat = C:\TH03\LDR.BAT
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	   fermer/ pc98_emu
+fin/ fonction
+
+
+
+
+Bouton/ touhouqtr
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "346"
+	.tx				= "240"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/th04.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ touhouqtr.Click()
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/main.bat = C:\TH04\LDR.BAT
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	   fermer/ pc98_emu
+fin/ fonction
+
+
+Bouton/ touhoucnq
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "418"
+	.tx				= "240"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/th05.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ touhoucnq.Click()
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/main.bat = C:\TH05\LDR.BAT
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	   fermer/ pc98_emu
+fin/ fonction
+
+
+Bouton/ dostest
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "245"
+	.PY				= "145"
+	.tx				= "75"
+	.ty				= "40"
+	rem/ .opacite		= "100"
+	.texte			= "DOS"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/Buttons/BTN_RED.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ dostest.Click()
+       
+		textebloc/ /modif:labella
+			.texte			= "DOS"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ pc98_emu
+fin/ fonction
+
+
+Bouton/ 98dos
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "325"
+	.PY				= "145"
+	.tx				= "75"
+	.ty				= "40"
+	rem/ .opacite		= "100"
+	.texte			= "PC-98"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/Buttons/BTN_RED.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ 98dos.Click()
+       textebloc/ /modif:labella
+			.texte			= "PC-98"
+			creer/
+		Fin/ textebloc
+		actualiser/ labella
+		actualiser/ pc98_emu
+fin/ fonction
+
+
+Bouton/ ldr_editor
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "384"
+	.PY				= "418"
+	.tx				= "72"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.texte			= ""
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/batide.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ ldr_editor.Click()
+ exe/ & %HOST_OS%/SYSTEM4/SYSEXE/PROG/PC98/IDE.CPC
+fin/ fonction
+
+
+Bouton/ salut
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "240"
+	.PY				= "418"
+	.tx				= "72"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/dosfile.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ salut.Click()
+ textebox/ /modif:dosdrivemount
+			@#virtualdrive .texte
+		Fin/ textebox
+		 textebox/ /modif:drivemount
+			@#realdrive .texte
+		Fin/ textebox
+CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/LDR.BAT
+		 CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/LDR.BAT = Z: %CPC.CRLF%MOUNT %virtualdrive% %realdrive% %CPC.CRLF% C: %CPC.CRLF% DN.COM %CPC.CRLF% EXIT
+		 CMD/ /THREAD supprimer/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ%CPC.CRLF%c:%CPC.CRLF%autoexec.bat
+ dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/TOOL.BAT
+fin/ fonction
+
+
+Bouton/ cpcfile
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "312"
+	.PY				= "418"
+	.tx				= "72"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/ICONS/PC98/cpcfile.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ cpcfile.Click()
+exe/ & %HOST_OS%/SYSTEM4/SYSEXE/PROG/PC98/EXPLORER.CPC
+fin/ fonction
+
+
+
+Bouton/ custom_launch
+	.Handle			= "%dos_emu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "456"
+	.PY				= "418"
+	.tx				= "72"
+	.ty				= "72"
+	rem/ .opacite		= "100"
+	.texte			= "Launch"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/Buttons/BTN_RED.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ custom_launch.Click()
+textebloc/ /modif:labella
+			@#ARCH .texte
+		Fin/ textebloc
+SI/ "%ARCH%" == "DOS" alors:
+txt/ test
+          textebox/ /modif:file_name
+			@#DATA .texte	
+		Fin/ textebox
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT = %DATA%
+		 CMD/ /THREAD supprimer/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf
+		  CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ%CPC.CRLF%c:%CPC.CRLF%autoexec.bat
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+SINON:
+	SI/ "%ARCH%" == "PC-98" alors:
+	txt/ test
+	    textebox/ /modif:file_name
+			@#filename .texte
+		Fin/ textebox
+		 CMD/ /THREAD ecrire/ /BINAPP OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/JEUX/MAIN.BAT = %filename%
+		 CMD/ /THREAD supprimer/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf
+		 CMD/ /THREAD ecrire/ OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/PC98/dosbox.conf = %CPC.CRLF%[dosbox]%CPC.CRLF%machine=pc98%CPC.CRLF%%CPC.CRLF%[dos]%CPC.CRLF%umb=false%CPC.CRLF%%CPC.CRLF%[autoexec]%CPC.CRLF%config -set cpu cycles=50000%CPC.CRLF%mount c C:\CPCDOS\OS\ELIEOS\SYSTEM4\SYSEXE\EXEMZ\JEUX%CPC.CRLF%c:%CPC.CRLF%main.bat
+		 dos/ OS/ELIEOS/SYSTEM4/SYSEXE/PROG/PC98/PC98.BAT
+	Fin/ SI
+Fin/ SI 
+
+
+fin/ fonction

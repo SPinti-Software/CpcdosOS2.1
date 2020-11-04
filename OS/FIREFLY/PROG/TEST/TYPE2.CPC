@@ -1,0 +1,21 @@
+Fenetre/ Type2
+	.Titre					= "TYPE2"
+	.Parametres				= "TYPE:2"
+	.PX						= "200"
+	.PY						= "200"
+	.TX						= "200"
+	.TY						= "200"
+	.CouleurFond			= "050,050,050"
+@#Hello creer/
+Fin/ Fenetre
+
+
+Textebloc/ Write
+	.Handle					= "%Hello%"
+	.PX						= "10"
+	.PY						= "10"
+	.TX						= "80"
+	.TY						= "80"
+	.Texte 					= "Textebloc"
+creer/
+Fin/ Textebloc

@@ -1,0 +1,50 @@
+
+
+:system.create.elienote:
+EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/ACC/ELIENOTE/elienote.cpc
+stop/
+
+:system.diskpart:
+DOS/ C:/CPCDOS/OS/ELIEOS/SYSTEM4/SYSEXE/EXEMZ/XFDISK/DISKPART.BAT
+
+:system.ui.info:
+TXT/ ELIEOS %OS_VERSION%
+
+:system.logout:
+TXT/ blablabla
+
+:load.system.pc98:
+txt/ pc98
+
+:load.system.dos:
+txt/ DOS
+
+:help:
+txt/ help
+
+:set.system.ui.yukigui:
+txt/ yo
+
+:set.system.ui.eliegui:
+txt/ allo
+
+:eliext.sys.backup:
+txt/ eliechat
+
+:eliext.ver:
+txt/ ElieXT 3.0
+
+:system.stop.kernel:
+txt/ eliechat
+
+:system.share.srv:
+message/ test
+stop/
+
+:version:
+txt/ ElieOS %OS_VERSION%
+
+:exit:
+fermer/ CPC_CMD
+
+

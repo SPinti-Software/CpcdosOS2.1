@@ -1,0 +1,15 @@
+@echo off
+del Core\*.c
+del Core\*.asm
+del Debug\*.c
+del Debug\*.asm
+del CpcdosCP\*.c
+del CpcdosCP\*.asm
+del GUI\*.c
+del GUI\*.asm
+del Network\*.c
+del Network\*.asm
+del *.a
+del *.asm
+del *.c
+echo OK

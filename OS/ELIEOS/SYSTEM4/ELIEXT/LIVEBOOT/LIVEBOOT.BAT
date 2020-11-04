@@ -1,0 +1,14 @@
+@echo off
+
+rem CPCDOS Live test
+
+XMSDSK 262144 R: /Y
+
+XCOPY C:\ /S /E R:\ /C
+
+R:
+
+cd cpcdos
+
+
+C:\CPCDOS\OS\ELIEOS\SYSTEM4\ELIEXT\LIVEBOOT\EXECLIVE.BAT

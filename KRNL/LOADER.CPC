@@ -1,0 +1,31 @@
+// [FR] Ce code permet d'enclancher le chargement des modules APRES les avoirs declares depuis Declare.CPC
+// [EN] This code allow to execute modules (AFTER to have declared from declare.cpc)
+
+// Par SPinti Software
+//  Created 11/09/2016
+//  Updated 24/JUIL/2019
+
+
+TXT/
+TXT/ =========================================
+TXT/ =        Executing modules bases        =
+TXT/ =========================================
+TXT/
+
+
+TXT/ * Global variables ... /#R
+/F:INIT_ENV()
+TXT/ [OK]
+txt/ 
+
+
+TXT/ * kernel runtimes ... /#R
+/F:INIT_CRT()
+TXT/ [OK]
+txt/ 
+
+
+
+
+
+

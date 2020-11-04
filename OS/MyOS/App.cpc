@@ -1,0 +1,224 @@
+
+fenetre/ APP1
+        .titre                  = "My first window !"
+	.px				= "100"
+	.py				= "100"
+	.tx				= "420"
+	.ty				= "263"
+        .Opacite                        = "100"
+        .Parametres                     = "TYPE:0 ALPHAMODE:0"
+        .CouleurFenetre                 = "050,050,100"
+        .CouleurTitre                   = "255,255,255"
+        .CouleurFond                    = "150,000,220"
+        .Icone                          = "%OS_GUI%/ICO_DEF.png"
+        rem/ .ImgTitre                  = "IMG_TITRE.PNG"
+        .event                          = "%HOST_OS%/TEST.CPC"
+	@#Handle_Fenetre creer/
+Fin/ fenetre
+
+
+Textebloc/ Mon_Textebloc
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "BORD:1 IMGAUTO:1 COL:1"
+	.Texte 			= "Hello!%CPC.CRLF%I'm textblock!%CPC.CRLF%Handle fenetre:%Handle_Fenetre%"
+	.PX				= "5"
+	.PY				= "5"
+	.CouleurFond	= "200,255,240"
+	.CouleurTexte	= "250,100,100"
+	rem/ .tx				= "100"
+	rem/ .ty				= "20"
+	creer/
+Fin/ Textebloc
+
+Bouton/ Mon_Bouton
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "130"
+	.PY				= "20"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+        .texte                  = "OpenGL test"
+	.Image			= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.event			= "%HOST_OS%/TEST.CPC=MouseClick,MouseLeave"
+	creer/
+Fin/ Bouton
+
+Bouton/ Mon_Bouton2
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "180"
+	.PY				= "80"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+        .texte                  = "GZE test"
+	.Image			= "%OS_GUI%/Buttons/BTN_PPOR.png"
+	.event			= "%HOST_OS%/TEST.CPC"
+	creer/
+Fin/ Bouton
+
+Bouton/ Mon_Bouton3
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "180"
+        .PY                             = "120"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Hello!"
+	.Image			= "%OS_GUI%/Buttons/BTN_PPOR.png"
+	.event			= "%HOST_OS%/TEST.CPC"
+	creer/
+Fin/ Bouton
+
+
+picturebox/ Image2
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:0"
+	.PX				= "10"
+	.PY				= "10"
+	.tx				= "200"
+	.ty				= "200"
+	.Image			= "%OS_GUI%/Ultima.png"
+	.opacite		= "100"
+	.event			= "OS/TEST.CPC"
+	creer/
+Fin/ Picturebox
+
+fenetre/ APP2
+	.titre 			= "Application test 2"
+	.px				= "200"
+	.py				= "150"
+	.tx				= "400"
+	.ty				= "226"
+        .Opacite                        = "190"
+        .Parametres                     = "TYPE:0 ALPHAMODE:1"
+        .CouleurFenetre                 = "050,050,100"
+        .CouleurTitre                   = "120,120,210"
+        .CouleurFond                    = "100,240,100"
+        .Icone                          = "%OS_GUI%/ICO_CFT.png"
+        rem/ .ImgTitre                  = "IMG_TITRE.PNG"
+        .event                          = ""
+	@#Handle_Fenetre creer/
+Fin/ fenetre
+
+
+
+rem/ sys/ /debug = 2
+
+picturebox/ Image3
+	.Handle			= "%Handle_Fenetre%"
+	
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "300"
+	.ty				= "126"
+	.opacite		= "200"
+	.CouleurFond	= "255,010,010"
+	.CouleurTexte	= "000,255,000"
+	.Texte 			= "Blabla - handle parent %Handle_Fenetre%"
+	.Image			= ""
+	.event			= ""
+	creer/
+Fin/ Picturebox
+
+Imagebox/ Image4
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "10"
+	.PY				= "10"
+	.tx				= "250"
+	.ty				= "200"
+	.opacite		= "200"
+	.Image			= "%OS_GUI%/CFT_FD.PNG"
+	.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ Imagebox
+
+
+Textbox/ MonTexteBox
+	.handle			= "%handle_fenetre%"
+        .parametres             = "EDIT:1 MULTILINE:0"
+        .PX                     = "50"
+        .PY                     = "50"
+        .TX                     = "200"
+        .TY                     = "15"
+        .CouleurFond            = "255,255,255"
+        .CouleurTexte           = "000,000,000"
+	.texte			= "EDIT me !"
+        // .event                  = "%HOST_OS%/test.cpc"
+	Creer/
+Fin/ Textebox
+
+Checkbox/ MonCheckbox
+	.handle 			= "%Handle_Fenetre%"
+	.Texte				= "Coche moi!"
+	.Valeur				= "1"
+	.Parametres			= "COL:0"
+	.CouleurFond		= "255,255,255"
+	.CouleurTexte		= "000,000,000"
+	.PX					= "100"
+	.PY					= "80"
+	.TX					= "10"
+	.TY					= "10"
+	
+	.evenement			= "%_exe_path_%=CLICK"
+	Creer/
+Fin/ checkBox
+
+
+Checkbox/ MonCheckbox
+	.handle 			= "%Handle_Fenetre%"
+	.Texte				= "La aussi !"
+	.Valeur				= "1"
+	.Parametres			= "COL:0"
+	.CouleurFond		= "255,255,255"
+	.CouleurTexte		= "000,000,000"
+	.PX					= "100"
+	.PY					= "100"
+	.TX					= "10"
+	.TY					= "10"
+	
+	.evenement			= "%_exe_path_%=CLICK"
+	Creer/
+Fin/ checkBox
+
+
+Checkbox/ MonCheckbox
+	.handle 			= "%Handle_Fenetre%"
+	.Texte				= "Et moi !!"
+	.Valeur				= "1"
+	.Parametres			= "COL:0"
+	.CouleurFond		= "255,255,255"
+	.CouleurTexte		= "000,000,000"
+	.PX					= "100"
+	.PY					= "120"
+	.TX					= "10"
+	.TY					= "10"
+	
+	.evenement			= "%_exe_path_%=CLICK"
+	Creer/
+Fin/ checkBox
+
+
+Textbox/ MonTexteBox
+	.handle			= "%handle_fenetre%"
+        .parametres             = "EDIT:1 MULTILINE:1 COL:1"
+        .PX                     = "150"
+        .PY                     = "150"
+        .TX                     = "200"
+        .TY                     = "60"
+        .CouleurFond            = "255,255,255"
+        .CouleurTexte           = "050,100,250"
+        .texte                  = "Multiligne TEST"
+	Creer/
+Fin/ Textebox
+
+
+
+
+
+

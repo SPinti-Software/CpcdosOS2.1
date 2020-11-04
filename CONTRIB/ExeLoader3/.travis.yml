@@ -1,0 +1,19 @@
+language: cpp
+sudo: required
+dist: bionic
+
+os:
+  - linux
+
+before_install:
+  - sudo apt update
+  - sudo apt install unzip wget
+  - sudo apt install git autoconf autotools-dev automake coreutils
+  - sudo apt install linuxdoc-tools bison perl flex sed libx11-dev libxext-dev
+  - sudo apt install libslang2-dev xfonts-utils libgpm-dev libasound2-dev
+  - sudo apt install libsdl2-dev ladspa-sdk libfluidsynth-dev libao-dev
+  - sudo apt install libvdeplug-dev binutils-dev
+  - build/setup_linux.sh
+
+script:
+  - build/build.sh

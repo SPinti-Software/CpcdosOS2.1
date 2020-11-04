@@ -1,0 +1,39 @@
+// [FR] Ce fichier va permettre d'afficher le boot screen de l'OS
+// [EN] This file will able to display OS boot screen
+
+
+CCP/ /SET.LEVEL = 5
+
+
+// [FR] 0:Desactive / 1:Active  le screen boot
+// [EN] 0:Disable   / 1:Enable  screen boot
+set/ cpc_sys.boot.bootscreen.gui = 1
+
+
+// [FR] Resolution d'ecran
+// [EN] Screen resolution
+set/ cpc_sys.boot.bootscreen.scr_res = 1280x720
+
+
+// [FR] Nombre d'images par secondes (IPS)
+// [EN] Number frames per seconds (FPS)
+set/ cpc_sys.boot.bootscreen.fps = 1
+
+
+// [FR] Nombre d'images max
+// [EN] Max number frames
+set/ cpc_sys.boot.bootscreen.size = 10
+
+
+// [FR] Numero d'image de commencement
+// [EN] Starting image number
+set/ cpc_sys.boot.bootscreen.begin = 0
+
+
+// [FR] Numero d'image de bouclage
+// [EN] Looping image number
+set/ cpc_sys.boot.bootscreen.loop = 0 
+
+
+
+

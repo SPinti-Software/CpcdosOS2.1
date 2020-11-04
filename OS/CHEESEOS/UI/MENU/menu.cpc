@@ -1,0 +1,149 @@
+// cheeseMenu (for developper and Sourix Desktop)
+
+// colorCode = 255,193,102
+
+
+set/ posy = /C(%CPC.SCR.Y% - 422)
+
+
+window/ menuWindow
+    .title = ""
+    .parametres = "IMGAUTO:2 TYPE:4 CTN:1 OMBRE:0"
+    .px = "0"
+    .py = "%posy%"
+    .sx = "300"
+    .sy = "400"
+    .WindowColor = "225,225,225"
+    .TitleColor = "000,000,000"
+    .BackColor = "000,000,000"
+    .Icone = ""
+    .ImgTitre = ""
+    @#menuwin_ref create/
+end/ window
+
+picturebox/ menuBackground
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:2"
+    .px = "0"
+    .py = "0"
+    .sx = "301"
+    .sy = "401"
+    .Image = "OS/CHEESEOS/UI/MENU/GRAPH/backgrd.png"
+    create/
+end/ picturebox
+
+button/ applicationsButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "5"
+    .py = "45"
+    .sx = "290"
+    .sy = "40"
+    .text = ""
+    .BackColor = "255,193,102"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/UI/MENU/GRAPH/app_btn.png"
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+button/ documentsButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "5"
+    .py = "100"
+    .sx = "290"
+    .sy = "40"
+    .text = ""
+    .BackColor = "255,193,102"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/UI/MENU/GRAPH/doc_btn.png"
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+button/ settingsButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "5"
+    .py = "265"
+    .sx = "290"
+    .sy = "40"
+    .text = ""
+    .BackColor = "255,193,102"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/UI/MENU/GRAPH/stg_btn.png"
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+button/ exitButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "20"
+    .py = "355"
+    .sx = "60"
+    .sy = "20"
+    .text = "Exit"
+    .BackColor = "255,056,056"
+    .TextColor = "000,000,000"
+    .Image = ""
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+button/ aboutButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "120"
+    .py = "355"
+    .sx = "60"
+    .sy = "20"
+    .text = "About"
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = ""
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+button/ alimentationButton
+    .handle = "%menuwin_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "220"
+    .py = "355"
+    .sx = "60"
+    .sy = "20"
+    .text = "Alim."
+    .BackColor = "255,193,102"
+    .TextColor = "000,000,000"
+    .Image = ""
+    .event = "%_exe_path_%=Click"
+    create/
+end/ button
+
+function/ applicationsButton.Click()
+    exe/ & OS/CHEESEOS/SYS_APPS/APPS/apps.cpc
+    fermer/ menuWindow
+end/ function
+
+function/ alimentationButton.Click()
+    exe/ & OS/CHEESEOS/SYS_APPS/ALIM/alim.cpc
+    fermer/ menuWindow
+end/ function
+
+function/ settingsButton.Click()
+    exe/ & OS/CHEESEOS/SYS_APPS/SETTINGS/welcome.cpc
+    fermer/ menuWindow
+end/ function
+
+function/ exitButton.Click()
+    fermer/ menuWindow
+end/ function
+
+function/ alimentationButton.Click()
+    exe/ & OS/CHEESEOS/SYS_APPS/ALIM/alim.cpc
+    fermer/ menuWindow
+end/ function
+
+

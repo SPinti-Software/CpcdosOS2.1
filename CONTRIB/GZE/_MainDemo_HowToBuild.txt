@@ -1,0 +1,17 @@
+//How to compile MainDemo
+//Open Command Prompt in this folder (cmd.exe)
+//Put your compilater 'bin' folder in the 'Path' of your 'Environement Variables', here we use mingw32, but you can replace it by anything
+//Enter these commands (Copy/Paste all to cmd.exe):
+//---- Only one file method ----
+mingw32-g++.exe @MainDemo.args -x c++ -c MainDemo_BuildAll.cpp  -o MainDemo.o
+mingw32-g++.exe -o MainDemo.exe MainDemo.o
+
+//----- Grouped file method ----
+mingw32-g++.exe @MainDemo.args -x c++ -c _Lib/GZE/Lib_GZ/_GzCpp.gcpp -o 1.o
+mingw32-g++.exe @MainDemo.args -x c++ -c _Lib/GZE/Lib_GZ/_GzNa.gcpp -o 2.o
+mingw32-g++.exe @MainDemo.args -x c++ -c _Lib/GZE/Lib_GZ/Rc/RcEngine/_RcEngine.gcpp -o 3.o
+mingw32-g++.exe @MainDemo.args -x c++ -c _Lib/GZE/SubLib_System/Lib_GZ_CpcDos/_GzCpcDos.gcpp -o 4.o
+mingw32-g++.exe @MainDemo.args -x c++ -c _Lib/GZE/SubLib_System/Lib_GZ_OpenGL/_GzOpenGL.gcpp -o 5.o
+mingw32-g++.exe @MainDemo.args -x c++ -c Lib_Demo/_Demo.gcpp -o 6.o
+mingw32-g++.exe -o MainDemo.exe 1.o 2.o 3.o 4.o 5.o 6.o 
+

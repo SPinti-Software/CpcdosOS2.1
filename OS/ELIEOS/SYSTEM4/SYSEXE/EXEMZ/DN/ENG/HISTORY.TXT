@@ -1,0 +1,1207 @@
+°°±²º The Dos Navigator: history since v1.30  º²²²±±±±±±±°°°°°°°°°°°°°°°°
+
+  [ş] Important note
+  [+] New feature
+  [-] Bug fix
+  [*] Bug fix and/or improvement
+
+
+   Version 1.51
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+[ş] Dos Navigator is now FREEWARE.
+
+
+
+   Version 1.50 Build 002: changes since Build 000
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+
+[-] Fixed a bug with UUEncode, that could corrupt the configuration file.
+
+[-] Fixed a bug with adding dummy empty lines to the end of descripytion files.
+
+
+
+
+   Version 1.50: changes since 1.42
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+
+   Global
+    ßßßßßß
+
+[!] DN is now using extended (AT) keyboard so this version is not possible
+      to run on old machines...
+
+[!] Code is optimized for 286+ CPU, so now works slightly faster, but is not
+      able to run on 8086-based computers.
+
+
+
+   New HotKeys
+    ßßßßßßßßßßß
+
+[+] 'Hotkey Overview' topic added to 'Help on Help'
+
+[*] Ctrl-K toggles descriptions in file panel.
+
+[*] Ctrl-Y toggles full display mode in file panel.
+
+[*] Alt-F11 runs Navigator Link.
+
+[*] Shift-F11 opens Spreadsheet.
+
+[*] Ctrl-F11 runs CD Player.
+
+[*] Alt-G in editor - 'goto line number'.
+
+[*] Quick Dirs came back in Tree Panel.
+
+
+
+   UU Decode / Encode
+    ßßßßßßßßßßßßßßßßßß
+
+[+] "Recover Broken Files" option.
+
+[+] Can process LowNoizeUUE.
+
+[-] Fixed bug with decoding binary files and single-line sections.
+
+[-] Prefix 'table' is now processing without troubles.
+
+[-] Fixed bug with encoding on large sections (>700 lines)
+
+
+
+   Viewer
+    ßßßßßß
+
+[+] Possible to edit fields while viewing DBF-files (by pressing F4 on field).
+
+[*] Date in DBF Viewer is shown accordingly to Country setup.
+
+[*] Shift+F2 hotkey for saving changes in Hex mode in Viewer and Disk Editor.
+
+[-] Some bugs in DBF Viewer causing Share Violation and 'forgetting'
+    temporary files in the TEMP directory.
+
+[-] Structure of empty database files is displayed without dropping to
+      hex-view mode.
+
+[-] Fixed bug, caused crashes while viewing files with more than 128 tab
+      characters in a row.
+
+[-] While Tracking Viewing History, file could be truncated (by another
+      process), and DN tried to achieve unexisted data beyong end-of-file,
+      displaying "dirty memory dump".
+
+[-] Fixed crash when trying to scroll down emty file by mouse.
+
+[-] Fixed bug with loosing last character on line while scrolling up
+      UNIX-style text files (0A as a new-line character).
+
+[-] Bug in when wrapping lines with Tabs.
+
+[-] Fixed percent calculation while searching substrings.
+
+
+
+   Editor
+    ßßßßßß
+
+[!] Confirmation about modifing files with Read-Only attribute is now asked.
+
+[+] "Optimal Fill" in local editor options.
+
+[+] Tab size in Editor Setup.
+
+[*] Alt-G hotkey came back - 'goto line number'.
+
+[*] Improved speed of Vertical Block Sorting.
+
+[*] It is now possible to save large blocks in editor
+
+[*] Autobrackets facility is working only if the cursor character is space
+    or the cursor is beyond the end of the current line.
+
+[-] Bug with moving block in "freshly" edited line.
+
+[-] Heap memory blocks have not been allocated correctly - it caused
+      memory losses.
+
+[-] The first line of text file might have been lost while loading within
+      invalid XMS/EMS environment.
+
+[-] Fixed autowrap - DeltaX allways corresponds to Left Side.
+
+[-] AutoWrap/AutoIndent local and global setting might have been ignored.
+
+[-] Fixed bug with calling 'Undo' by clicking the menu item.
+
+[-] The following block commands came back:
+       Mode    ³ Ctrl-B V
+       Justify ³ Ctrl-B J
+       Rigth   ³ Ctrl-B R
+       Left    ³ Ctrl-B L
+       Center  ³ Ctrl-B ‘
+    (Ctrl-B called ASCII table before)
+
+
+   Archives
+    ßßßßßßßß
+
+[+] Size of '..' entry indicates the total amount of bytes of all files in
+      current archive directory.
+
+[*] Speed of reading archives improved.
+
+[*] "Archiver Setup" dialog box (Options|Archives) now have displayed on its
+      title the name of archiver currently being setting up.
+
+[-] Fixed multiple-volumed ARJ archives reading.
+
+[-] Fixed bug, which caused to determine wrongfully some files as ZOO or ARC
+      archives.
+
+[-] TDRs being extracted from archive for viewing no more stay in temp dir
+      unerased.
+
+[-] Options|Archives|Current archiver setup did not work properly - it
+      was always tuning ARJ's settings, instead of "Archive Type" checkbox
+      value of "Archive Files" dialog.
+
+[-] RAR archives with dot-ended directory names (e.g. 'DN.\*.*', created
+      using 'rar a -r dn dn.' command) are now viewing OK.
+
+[-] Fixed "Swap when unpack/del/test" option in archiver setup. Now an
+      archiver can be safely called without swapping DN (but in shorter
+      memory space), and it significally improves the speed of archives
+      processing.
+
+[-] Turning on QuickView on open archive, and extracting a file, caused
+      system crash, until desktop file was not erased from elsewhere.
+
+[-] After extracting files from an open archive, or executing DOS commands,
+      archive date ('..' entry) became undefined.
+
+[-] Fixed percent calculation of large files in archive viewer.
+
+
+
+
+   File Manager / Panels & Drives
+    ßßßßßßßßßßßßßßßßßßßßßßßßßßßßßß
+
+[+] File|Unpack diskette images (Ctrl-I).
+
+[+] "Do not kill descriptions" option added to Options|File Manager|Setup
+      dialog box. It's now possible to control whenever the descritions
+      should be preserved or removed from "descript.ion"-like files, when
+      the descripted panel elements (files/directories) are removed by
+      Erase/Move operation.
+
+[+] Shift-Enter works on TEMP/List panels as well as on Find one.
+
+[+] Seconds are now used in time comparing, also DN would not be confused
+      with dates in 21'th sectury.
+
+[+] Added Ctrl+R hotkey for re-reading tree.
+
+[+] Del key for removing directories from Tree Panel (if appropriate option
+    is set).
+
+[*] It is now possible to call Directory Tree dialogue from Archive/Find/
+    Branch/Temp file panel.
+
+[*] File Manager: it's not possible to drop a directory to itself
+    (if confirmation of mouse operations is switched off).
+
+[*] Full-new 'Advanced Filter' (Alt-Del) logic.
+
+[*] 'All drives' option of FileFind doesn't scan CD-Drives when not
+      necessary as well as floppies.
+
+[*] The dot does not appear after directory name when dropping it to cmdline
+      by pressing Ctrl+[Shift]+Enter.
+
+[*] Directories history can be obtained also from archive/find/temp drive
+      panel.
+
+[-] "Long Descriptons" in info panel disappeared after rereading (Ctrl-L) or
+      changing "Columns Setup" (Alt-K) or "Description Mode" (Ctrl-K).
+
+[-] Long descriptions are taken considerably to contens of Options|
+      File Manager|Setup field, unlike 'files.bbs', hardcoded into previous
+      versions.
+
+[-] File manager did not operate huge numbers (>2^31) - now fixed due to
+      large drives and archives/TDRs.
+
+[-] Confirmation about launching AUTOEXEC.BAT no more asked from FileFind
+      panel.
+
+[-] DN could not operate with files, which has percent characters
+      in its names - bug in earlier versions took these characters as
+      string format specifiers.
+
+[-] Fixed bug with reading empty root directories (e.g. formatted diskettes).
+      In some cases it could corrupt the heap.
+
+[-] Fixed bugs, caused system crashes and memory losses of 'Change Directory'
+      Tree Dialog (Alt-T).
+
+[-] Bug with dragging files with tilda characters in the name.
+
+[-] Quick file rename with Alt-F6 doesn't lose file descriptions anymore
+    (if the description was visible during renaming).
+
+[-] Weird bug with cursor appearing in both panels after a disk error.
+
+[-] Directories descriptions are no longer forgotten in the source directory
+    during copy/rename operation.
+
+[-] Fixed bug with Copy / "Refresh old files".
+
+[-] Was unable to call Copy/Move and some other dialogs just after making list
+    file.
+
+
+   Miscellaneous
+    ßßßßßßßßßßßßß
+
+[+] Long time operations (loading files for edit, scanning drive trees,
+      directory branching and sizing) can be cancelled by pressing ESC key.
+
+[+] 'Multilanguage' critical errors.
+
+[+] Options|Configuration|Startup|TimeSlicing Options
+      [ ] DOS Idle (Int28)     Ä  periodically returns to DOS remainings of
+           time intervals by calling Int28. This option alone is compatible
+           with timeslicing mechanism of previous versions of DN.
+      [ ] Sleep when inactive  Ä  when it is nothing to do, and no key
+           pressed during several seconds, DN falls asleep.
+
+[+] Options|Configuration|System Setup|Options|Flush disk buffers - if set on,
+      DN forces File System Manager to flush immediately all write-back
+      buffers after copying/erasing files
+
+[+] Options|Configuration|System Setup|Options|Advanced copy
+      [ ] When this options is set off, DN doesn't use EMS/XMS memory
+            for filecopy buffering (the only conventional - all amount).
+            It always copies only one file at a time - doesnt open
+            a next file for reading before finished writing the current one.
+
+[+] "Autodetermine" checkbox in Make List File dialog. If this option is set
+      "on", every call to this dialog will make to determine the necessaty
+      of paths (and set "Store path names in list files" automatically).
+      Considered path names are useful only on Branch/Find/Temp-Drives,
+      instead of a similar diskdrive panel. If "Autodetermine" option is set
+      "off", the value of "Store path names" checkbox is not set
+      automatically when calling dialog, but is preserving since last call.
+
+[+] Screen Grabber now handles PgUp/PgDn and Home/End keys. Movement /
+      resizement scale is also affected by Ctrl key.
+
+[*] Semicolon is used as comment character in .MNU file.
+
+[*] Improved speed of copying files.
+
+[*] Empty field of "Temporary Directory" (Options|Configuration|System Setup)
+      is treated as a value of %TEMP% (or %TMP%) environment variable.
+
+[*] DN doesn't allocate more than 8 MB RAM for copy buffer to avoid
+      unnecessary virtual memory swapping under multitasking envoronment.
+
+[*] Branch, FileFind and Archive Viewers are now able to use
+      EMS/XMS/SwapFiles, so their file storage possibities are expanded.
+
+[*] Workaround for a bug of OS2 Warp 4 (Merlin) gammas - turn off
+      Options|Configuration|System Setup|Options|Advanced copy - it will slow
+      down copying and erasing, but will prevent system traps while erasing
+      subdirectories.
+
+[*] Windows 95 doesn't try to switch windowed session to full screen
+      every time when DN examines VESA-BIOS presence on startup.
+
+[*] Validating file creation date in 'Change File Attributes' dialog.
+
+[*] When Screen Mode is changed, the clock is now properly positioned.
+
+[*] Disk Formatter: Volume Label length is now correct (11 characters).
+
+[*] Formatter and File Search windows are now shown in Window Manager.
+
+[-] Fixed bugs with displaying copy gauges on large files (>~30Mb).
+
+[-] Improved speed of erasing files. Earlier were doing it not so fast
+      because of always trying to clear ReadOnly attribute before erasing
+      file, even if this flag was absent.
+
+[-] Value of "Options|Configuration|System Setup|Disable XMS/EMS usage"
+      checkbox have been ignored in earlier versions - now fixed.
+
+[-] Fixed calculator's "power" operation.
+
+[-] Bugs with numbers beginning with '.' in Calculator and Spreadsheet.
+
+[-] Fixed traps, appeared in calculator when character data was passed to
+      function's argument, e.g. "EXP(A)".
+
+[-] After modifying spreadsheets (WKZ) panel still left unrefreshed until
+      pressing Ctrl-R.
+
+[-] Now now DN asks to overwrite before copying (F5/F6) read-only files
+      too - bug in earlier versions overwrote them without any confirmation,
+      unlike normal files.
+
+[-] Button width in message boxes now corresponds to caption width to prevent
+      wrapping in international builds.
+
+[-] Reanimator and Environment editor windows did not answered on Ctrl-F5
+      keyboard combination (Size/Move Window command).
+
+[-] "!\" and "!/" extension specifiers are now parsed normally, without
+      a last character loss.
+
+[-] Answering 'Cancel' on confirmation to save modified file before
+      running external program or archive swapping, caused crash. Now fixed.
+
+[-] When the amount of available extended/expanded memory was not
+      enough to allocate overlays completly, DN halted with fatal error. Now
+      in this case it leaves overlays on disk, but uses extended/expanded
+      memory for other needs.
+
+[-] Fixed problems with Advanced Format Dialog Box disposing.
+
+[-] Terminal window resizing painted background with an invalid color.
+
+[-] Redial timeout in autodialer is now working.
+
+[-] Scrollback buffer overflow did not handled correctly and could
+      hang the system.
+
+[-] Printer Setup | Ending string value was ignored, it was always taken from
+      Initial string.
+
+[-] DN could not change the descriptions of TDR's with ReadOnly attribute,
+      which is default for this type of files.
+
+[-] Fixed problems, caused memory losses on TDR processing.
+
+[-] Fixed displaying of tilda character in file name of copy dialog boxes.
+
+
+
+   Navigator Link
+    ßßßßßßßßßßßßßß
+
+[!] Navigator Link allows to access remote computer by a common file panel.
+    The following features are implemented: Create/Remove directories,
+    Copy, View and Erase files.
+
+    Navigator Link uses its own communication protocol, a kind of Niagara(tm)
+    block transfer protocol, developed by RIT.
+
+    Advantages:
+
+    - block streaming mode:
+        Navigator Link works seamlessly in server/slave mode and doesn't take
+        full CPU time during link session. Using of FOSSIL interface allows
+        you to work via packet transport protocols (ipx/spx, tcp/ip) and other 
+        hardware (parallel port), if you have an appropriate FOSSIL driver.
+        We left FOSSIL-driver writing for third-parties yet...
+    - bi-directional mode and true full duplex:
+        Both machines linked by DN have equal rights on each other's drives,
+        and both can work with remote simultaneously.
+    - advanced errror correction:
+        Navigator Link uses double-level selective reject method, so it works
+        even on high-noise lines.
+    - real-time data compression:
+        Link allows to transfer text files and directory data twice faster
+        on the same line. The compression works more efficient than modems'
+        internal compression methods.
+
+
+
+   Version 1.42: changes since 1.41
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+  Interface
+  ~~~~~~~~~
+  [+] Ctrl arrows are now working in InputLines
+  [+] Editor and viewer histories tracking (<Alt-PgUp> and <Alt-PgDn>
+      respectively
+  [+] It's possible to move beetwen marked items by <Arrow Left> or
+      <Arrow Right> in all history lists except InputLines histories
+  [*] ASCII table by <Ctrl-P> (<Ctrl-B>) in InputLines came back
+
+  Editor
+  ~~~~~~
+  [-] Search by whole bug words in editor
+
+  File Manager
+  ~~~~~~~~~~~~
+  [+] Ctrl-Shift-Arrows work for Drive Lines, it doesn't matter that
+      Command Line contains a string or not
+  [+] A## and R## are now treated as archives (# = 0,1,2,...,9)
+  [+] (AltF1/2) if you hold Shift key when select a drive, the panel will be
+      selected
+  [+] Directory history (manageable by same way as other histories) by
+      Alt-Backspace from a file panel
+  [+] Go to upper directory with BS option
+  [*] Tag Character selection came back
+  [*] Descriptions are now copied to the file with descriptions already
+      presented in the destination directory
+  [*] Filenames in description files are now stored in the upper case
+  [-] Space is no longer added before first file name when store file
+      names in the Clipboard from a file panel
+  [-] Shift-Enter wasn't going to correct place if there was an archive opened
+      in the inacitve panel
+
+  File Viewer
+  ~~~~~~~~~~~
+  [+] XLat tables usage in Viewer by <Shift-F6>. *.XLT files
+      (placed in XLT subdirectory) have following structure:
+        <byte1><xlated byte1>..<byteN><xlated byteN>
+       eg:
+       with XLT file containing
+           A!B!C! i.e. (hex dump): 41 21 42 21 43 21
+        you will see letters A,B,C replaced by symbol "!"
+
+  Terminal
+  ~~~~~~~~
+  [+] Possibility to set Data Flow Control for a communication port
+  [-] Some bugs in the terminal (ANSI emulation, video mode changing)
+  [-] Bug in the terminal scrollback buffer which was causing scrolling
+      stops, lines duplicating and sometimes even system crashes
+
+  CD Player
+  ~~~~~~~~~
+  [-] Mixer came back
+
+  Spreadsheet
+  ~~~~~~~~~~~
+  [-] Bug with formulas ajustment after a deleting/inserting operation
+
+   Version 1.41: changes since 1.40
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+  [ş] Bugfix release, there are no major improvements, but a lot of wierd bugs
+      were fixed
+
+  Some details:
+  ~~~~~~~~~~~~~
+  [-] Palette/blinking bugs: after video mode change, screen savers etc.
+      palette and blinking settings weren't affect
+  [-] System hung after connect when a number was dialled from thew phonebook
+  [-] Random color pallete for typeless files when Sort Mode was by type
+  [-] It wasn't possible to install Help file
+  [-] Uppercase of vertical blocks wasn't working properly
+  [-] Multiply operations bug with archivers which aren't supporting
+      filelist (there weren't spaces beetwen file names)
+  [*] Autohide command line feature is improved: if the command line
+      is empty, it's now shown after switching back to File Manager
+  [+] "In-place" rename possibity by [Alt-F6] in File Panel
+  [+] "Store viewer position" option
+
+  Build 002:
+
+  [-] [Alt-Enter] wasn't functional in File Panel
+
+  Build 003:
+
+  [-] Bugs with cutting desktop windows caused by auto hide Command Line
+  [-] Bug in Editor when loading files with CR at the end
+  [+] ForceCR, ForceLF and ForceCRLF for specified files in DN.HGL for
+      forcing Line dividing style
+
+
+   Version 1.40: changes since 1.39
+  ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+  [ş] Perfomance is very improved
+  [ş] A couple of big and small bugs squashed
+
+  Miscellaneous (interface)
+  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  [+] Advanced history maintenance - now the history doesn't depends
+      from Desktop file and it's possible to keep only strings you need
+      after restart of DN
+  [+] Use system Clipboard option in System setup for sharing Navigator's
+      Clipboard with Windows.
+  [+] <Interface Setup> options added:
+         [Command line autohide] for hiding command line when Editor, Viewer
+                                 etc. are active
+         [Block Insert cursor]   for big cursor in Insert mode (Editor,
+                                 Input lines)
+         [Store editor position] to store last Editor window position and
+                                 use it when new Editor window is opened
+  [+] Time-meter command prompt - {C:\} for counting a command execution time
+  [+] Command prompt switcher: Shift-Alt-/ changes command prompt to previous
+      mode
+  [+] '/P<filename>' command line parameter to force load palette from file.
+  [-] Bug with floating Trashcan
+  [-] VESA SVGA modes wasn't functional
+  [*] Corrected time-slicing under Windows
+  [+] All Point-And-Shoot (extensions) operations, external viewers/editors
+      and Quick Run programs are searching their data in appropriate
+      local directory files first (and only in case of a failure they are
+      using DN directory files).
+  [+] If Shift is pressed when click on Options|Extention file edit,
+        Options|Quick Run file edit, Options|Editors, Options|Viewers
+        menu items local will be got as file to edit.
+
+  File Manager
+  ~~~~~~~~~~~~
+  [+] Sorting speed improved
+  [+] Counting directory length in ARVID archives
+  [+] Possibility for FTN nodes with Bink Style outbound to put
+      tagged files for particular FTN address:
+          1. Add "/FIDO=<addr>,<outdir>" string as a mask to
+             Files with descriptions filter,
+             eg: "files.bbs;descript.ion;/fido=2:469/38,R:\FL\OUT"
+          2. Tag files to be sent and then choose Panel|Make list file
+          3. Input <send flag><address> in File Name and clear Action
+             (or put #!\!.! if you want to kill the files after send).
+             Send Flag is one character meaning type of attachment:
+                 '/' for hold
+                 '+' for crash
+                 '%' for normal
+  [+] Copying speed improved
+  [-] Bug with skip command in file copying
+
+  Text Editor
+  ~~~~~~~~~~~
+  [+] Line Draw mode - [F4]
+  [+] Reversed search command [Alt-F7]
+  [-] Block uppercase wasn't managing first and last words properly
+  [-] Some bugs in Search/Replace
+  [*] "Wizards" submenu changed to "Misc"
+
+  File Viewer
+  ~~~~~~~~~~~
+  [+] Search back option
+  [+] Reversed search command [Alt-F7]
+  [-] Search always begun from the begin of a file.
+
+  Terminal
+  ~~~~~~~~
+  [+] FOSSIL and INT 14h support
+  [+] Scrollback buffer on [Alt-B] or [Shift-]
+  [+] Connect Sound option in Terminal Setup for making terrible sounds
+      for wake you up after getting a connection from autodialler
+  [+] Controls in capture option for preventing (if desired) showing
+      control ANSI/Avatar escape sequences in caputre
+  [+] Beep after more than 30 sec file transfer in Beep after copy is set
+  [-] Bug in reading modem status procedure which caused loosing bytes
+  [-] Some bugs in ANSI emulation
+  [-] Bug with CD detection while transfers
+  [-] Auto Zmodem download wasn't work sometimes
+  [-] Only ANSI+Avatar and TTY emulation wasn't functional
+
+  Reanimator
+  ~~~~~~~~~~
+  [+] Copy command when view file to be reanimated. It's possible to save
+      the data to another location
+
+
+
+  Version 1.39 (4 October '95 ) - difference between version 1.38 Beta
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+  [ş] Registration procedure was optimized.
+
+ Copy
+ ~~~~
+  [*] Copy procedure was significantly optimized to speed up copying
+      a lot of files.
+
+ Text Editor
+ ~~~~~~~~~~~
+  [+] Added ability to exchange with Windows Clipboard
+      Ctrl-Q C - Copy block to Windows Clipboard
+      Ctrl-Q V - Paste block from Windows Clipboard
+  [-] Fixed problem with empty lines inserting
+  [-] Fixed problem with Replace All when New Text was the same
+      as Text to find
+
+ File Panel
+ ~~~~~~~~~~
+  [-] Tag Character now can be transparent.
+      ( to reflect tagging of Hidden and System files )
+
+ Archives Setup
+ ~~~~~~~~~~~~~~
+  [*] Compression setup for RAR was optimized
+
+ General
+ ~~~~~~~
+  [-] Fixed bug with Direct Disk Access setup for floppy drives
+
+
+  Version 1.38 Beta (1 August '95 ) - difference between version 1.37 Beta
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+  [ş] New Cool CD-player
+  [ş] Fixed major bug with  Copy/Move in Append/Overwrite mode from
+      v1.37 Beta.
+
+ File Copy
+ ~~~~~~~~~
+  [*] All files being copied from CD-ROM will not have Read Only
+      attribute if 'Clear Read-Only from CD' is set in 'Drives Access'
+  [*] Settings in file copy dialog will not be stored in configuration file.
+  [*] Added ability to use File Split on any drive.
+  [*] Now Combine mode will check for files created with use
+      'Binary splitting' and will perform normal Copy operation
+      on such file(s).
+
+  [-] Now Copy/Move will report message 'Access Denied' if target file
+      is blocked ( opened by another process in multitasking system ).
+      In cases mentioned above user will be asked to continue or abort
+      Copy process.
+
+ Utilities
+ ~~~~~~~~~
+  [+] New cool look'n'feel CD-player. Fully mouseable. Play tracks by
+      order option is now available. User can store play track order
+      and CD-player will load and use it later. Now it's become possible
+      to describe each CD and track for later display by CD-player.
+  [+] UUdecode/UUencode supports *NIX-style ASCII text format.
+
+  [-] There is no requirement to press [ESC] after Screen Grabber.
+  [-] Format: Information window was not removed after format
+      has been terminated with some errors.
+  [-] DBFView will not trash desktop file.
+
+ Text Editor
+ ~~~~~~~~~~~
+  [+] Added compatibility with *NIX-style ASCII text files.
+      Now any text file will be saved in the source format.
+      There is a new option 'New editor' in
+      Options|Configuration|Editor\Viewers to define new text file format.
+  [+] Alt-[ selected block upper case
+      Alt-] selected block lower case
+      Alt-\ capitalize words in selected block
+  [+] New Submenus: Block and Wizards
+
+  [-] In Editor AutoBrackets now function correctly at the end of line.
+  [-] Text was not updated after last Search/Replace operation in
+      All mode with Prompt on replace
+  [-] Ctrl-Del work if size of marked block is more than 64k
+
+ Internal viewer
+ ~~~~~~~~~~~~~~~
+ [+] <ASCII> button in Find
+
+ [-] Fixed a bug caused an Exception in Hex-mode Input line
+ [-] Fixed a bug caused an Exception when ScrollBar Indicator is
+     dragging by a mouse.
+ [-] if a .DBF file has non-DBF(Database) structure then it view by
+     Internal viewer.
+
+ General
+ ~~~~~~~
+  [+] Command separator "||" will not be used when 4DOS.COM has been
+      detected. ( 4DOS.COM users can use "^" instead, because "||" is
+      reserved in 4DOS.COM )
+  [+] Ability to choose different help file language in DN Install
+  [+] There is a new option in System Setup to clear keyboard buffer upon
+      program start.
+
+  [+] There is a option to disable global VGA palette usage in System Setup.
+
+  [*] Configuration menu was changed.
+      System Setup was changed.
+      Startup setup was removed.
+      Added Drives access...  and  Directories...
+  [*] 'Test Direct Disk Access' will not change Disk Access options in
+      configuration file
+
+  [-] Commands history was not functioning when Command line was off.
+  [-] Problem with changing Mouse cursor  has been fixed.
+  [-] Comment lines will not be copied from DN.XRN into  *.bat
+  [-] Bug in VGA-Palette ( problem with TSENG video BIOS )
+
+  Version 1.37 Shareware (13 July 1995) - changes since 1.35
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+  [ş] Demo keys are not supported any more
+  [ş] Support for .TDR files - directories of Arvid streamer
+  [ş] UU Encode\Decode files opportunity is added
+  [ş] New option for Compare directories command 'Compare contents'
+  [ş] Setup VGA-palette
+  [ş] EMS/XMS usage in text editor
+  [ş] Compatibility with MS Windows (Win 3.x, Win'95, NT)
+  [ş] Significant improvements in user interface
+  [ş] PowerPack for Dos Navigator
+
+ File Panel
+ ~~~~~~~~~~
+  [+] Select files by [Spacebar]
+      (Options|File Manager|Setup|[X] SPACE toggles selection)
+  [+] Delete selected files by [DEL] and file under cursor with [Shift-DEL]
+      (Options|File Manager|Setup|[X] DEL erases file(s))
+  [+] Mark selected files not only with color but also with user selected
+      char like 'û' (Options|File Manager|Setup|Tag character)
+  [+] New command: Panel|Directory Branch... [Ctrl-H]
+  [+] Directory tree dialog full path of directory, number of files in it and
+      total size of files are shown
+  [+] Insert key autorepeat under plain DOS. Will not work under OS/2
+  [+] New command Manager|Show\hide inactive panel [Ctrl-P]
+  [+] New command File|Edit|Edit file description  [Alt-Ins]
+  [+] Directories are shown in Capital letters, files are shown in small letters
+      according to Configuration|Country support. Info Panel shows "real"
+      filenames
+  [+] It is possible to set information fields, shown on Manager|Info [Ctrl-L]
+      Options|File Manager|Information panel...
+  [+] Option to define the type of left panel of new file manager
+      (Options|File Manager|New Manager defaults)
+  [+] It is possible to establish the filter of names of the files in the
+      file panel
+      (Panel|Advanced filter...  [(Shift)Alt-Del])
+  [+] Checking for media type: Hard Drive, Floppy, CD-ROM, SUBSTed drive,
+      Network drive, etc.
+  [+] New file selection options:
+      <Shift> <+>       - select files with extension different from current
+                        (only for files)
+      <Shift> <->       - unselect files with extension different from current
+                        (only for files)
+      <ALT> <+>         - select files with same name as file under cursor
+      <ALT> <->         - unselect files with same name as file under cursor
+      <ALT><Shift> <+>  - select files with name different from current one
+      <ALT><Shift> <->  - unselect files with name different from current one
+  [+] Directory Tree supports QuickDirs and DriveLine for drive changing
+  [+] New option for Compare directories command 'Compare contents'
+  [+] Command 'Compare directories' can be invoked by [Ctrl-C]
+  [+] Settings in file copy dialog will be stored in configuration file
+
+  [-] CapsLock status was not restored after using [CapsLock+Character] for
+      incremental search
+  [-] Dragging a name of the file using Drag-and-drop to the self is ignored
+
+  [-] The situation of divider of the right and left panel of the manager
+      was not saved at change of a video mode
+  [-] The incremental search in file panel does not corresponded with a
+      horizontal scroller in description column if it is present
+  [-] Clock and CD-Player does not draw on User Screen
+
+ Utilities
+ ~~~~~~~~~
+  [+] Internal UUencoder/UUdecoder.
+        'Filetime' instruction and advanced checksum.
+         Ability to manage the different files hashed to section.
+  [+] Double click of the mouse on Trashcan will popup Reanimator.
+  [+] Clock will display current date if [Shift] or [Ctrl] key
+      are holden down.
+  [+] Format system disk: If command processor is not 'command.com'
+      then actual command processor will be copied and stored
+      in newly created  config.sys on floppy disk.
+  [+] Phone book - new functions: <Sort> <Search> <Import> <Dupe>
+
+
+  [*] In the Phone book the items in the groups are now organized
+      by a principle of directories and files. Pressing [Enter] on item
+      results in automatic start of a Call-back
+      (The format of a database DN.PHN was not changed).
+  [*] Improvements in Reanimator interface. More correct prognosis is made for
+      directories reanimation. This procedure with 'average' prognosis
+      may lead to errors in old versions of DN. Now only directories with
+      'good' prognosis can recovered.
+
+  [-] Number of bugs in calculator corrected; New logical functions and
+      functions of the relations introduced.
+
+  [-] TrashCan will not hide under File Managers.
+  [-] Trashcan was not saved in .DSK
+  [-] Phone field in the Phone Book had maximal length of 20, so one could not
+      fit some long international numbers. Now phone field has length of 100
+      characters.
+
+
+ Text Editor
+ ~~~~~~~~~~~
+  [+] Size of editable file now only limited by free EMS/XMS memory and
+      total number of strings (<30,000)
+      (Options|Configuration|Editor/Viewer...|Use XMS/EMS memory.)
+  [+] It is possible to set a direction of search
+      Forward/Backward and the origin of search Entire scope/From cursor
+  [+] 'Save All' command
+  [+] New editor mode
+      Options|Configuration|Editor/Viewer...|[ ] Cursor through tabs.
+      Accordingly it is possible to specify TabSize (Step of tabulation).
+
+  [*] Option Internal Editor [X] in Options|Configuration|Editor/Viewer...
+      will assign Internal Editor on [F4] and External on [Alt-F4].
+      Otherwise   Internal Editor on [Alt-F4] and External on [F4].
+  [*] New Ruler will popup when second mouse button is holden down.
+  [*] AutoBrackets worked only if next character was not letter/digit
+  [*] Attributes of the file before editing are saved at editing of the
+      texts and descriptions (Date and time vary).
+
+  [-] Sometimes editor did not saved its options upon exit.
+  [-] 'Replace all' process indicator
+
+ Internal Viewer
+ ~~~~~~~~~~~~~~~
+  [+] New search option - 'Whole words only'
+  [+] Vertical slider can be dragged by mouse
+
+  [*] File attributes are not changed after editing it
+      (Date and time are changed)
+
+  [-] Sharing Violation error under Quick View was fixed
+
+ File Copy
+ ~~~~~~~~~
+  [+] It is now possible to forbid the request of a destination directory
+      during Drag-and-drop files, and the copying within the limits
+      of one directory is ignored.
+      Options|Configuration|Confirmations...[X] Drag-and-drop destination.
+  [+] All files being copied from CD-ROM will not have Read Only attribute
+
+  [-] If the DOS command APPEND was started, occurred routing of the copied
+      files from appointed directories in a directory, indicated in
+      Append, if the files with similar names already existed in these
+      directories. Accordingly, anything it was impossible to copy FROM
+      these directories. It is especially disastrous had an effect for
+      the OS/2 users.
+
+  [-] Read-Only files does not removed under local network (Novell Netware).
+
+ Colors setup
+ ~~~~~~~~~~~~
+  [+] Ability to change VGA-palette and to save it into .PAL file.
+      You can use this palette in DN and in all programs called
+      from DN (Options|Configuration|Startup...|[X] Restore VGA palette...)
+  [+] There was the opportunity conveniently to set up colors for
+      Black-and-White and Monochrome monitors and to save them in config
+  [+] There was the opportunity to use "factory" Color\BW\Mono palettes,
+      which are stored not in .PAL (external palettes), but in the program.
+      Options|Colors...|Default color scheme
+  [+] Mixing of RGB colors is forbidden for VGA-palette setup on
+      Black-and-White and Monochrome monitors
+  [+] In PowerPack is included a program DNPAL.EXE to additional
+      manipulations with VGA palettes
+
+  [*] There were corrected many of color setup. Now the colors of many
+       interface elements can being set up in Options|Colors...
+
+  [*] Option 'Enable blinking' added to colors setup
+  [*] All external palettes are stored in directory called COLORS\
+
+  [-] Now 'black on black' selection in Colors setup works correctly
+
+ Archives
+ ~~~~~~~~
+  [*] ARCHIVE ONE FILE - default archive name will be the same as a current
+      file name
+      ARCHIVE SELECTED FILES - default archive name will be the same as a
+      current directory name
+
+  [-] Fixed bug in .LHA, .ICE, .LZH archives handling
+  [-] Fixed bug in .ARJ archive creation
+
+ General
+ ~~~~~~~
+  [+] Support of fast start of external applications is entered. The
+      structure, describing appropriate .BAT or .CMD files, is stored in
+      the file DN.XRN, which owes is in a user directory of DOS Navigator
+      Options|Quick run file edit...
+  [+] Option for fast executing external programs. Information describing
+      corresponding .BAT and .CMD files is stored in DN.XRN  in DN directory.
+  [+] It is possible to establish the overlay buffer size for optimization of
+      conventional memory:
+      Options|Configuration|Startup...|Overlay buffer size
+  [+] 'Fast command execution' will be turned off under Windows 3.x
+      ( Under Windows 3.x this option will not work )
+  [+] Under OS/2 [Alt-/] will change command prompt
+      (DOS, OS/2-FullScreen, OS/2-Windowed sessions).
+      System prompts is defined in DNL-resource (PowerPack)
+  [+] New option Options|Configuration|Startup|Exit on inactivity hour
+  [+] New command: File|Execute DOS command...  [Alt-F6]
+  [+] Ability to enter characters from range #10..#13 in all input lines.
+      Also [Ctrl-B] and [Ctrl-P] call ASCII table for more comfortable input
+  [+] Compatibility with MS Windows is improved. Now SysInfo detects type
+      of Windows((Win 3.x, Win'95, NT)) and DN gives back TimeSlice to it.
+  [+] It is made automatic switching-off Direct Disk Access under OS/2 and
+      Windows, but also on Network, Subst, CD-ROM, DoubleSpace, Stacker and
+      other drives:
+      Options|Configuration|System Setup...|[X] Test Direct Disk Access.
+  [+] [Shift+Ctrl+Ins]  -  copy command string to Clipboard
+  [+] In all filename lists (Input FileName, Reanimator) mouse support and
+      incremental file search implemented.
+  [+] New option for Drives Access config - verify writes.
+      When destination panel is on drive and 'verify writes' is on for this
+      drive then in Copy dialog option 'verify writes' will be turned on too.
+
+  [*] New Install utility
+  [*] 'Disable XMS usage' and 'Disable EMS usage' in System setup
+  [*] Many options, dialog boxes and menu are ordered...
+
+  [*] DOS Command separator in Command line was changed. Now in side of
+       ";" is used "||"
+  [*] All external ScreenSavers should be stored in directory called  SSAVERS\
+
+  [-] After changing video mode, clock moved to upper right corner.
+  [-] Screen cursor is not hide in external editor.
+  [-] Problems with a registering DN on Network or HPFS386 drives
+  [-] Not all memory was released under DN, leading to Exception after some
+      hours of work.
+  [-] Sometimes desktop file was trashed.
+  [-] When creating temporary batch files for executing programs from user
+      menu, filename could reach 9 characters ($$dn100$$.bat)
+  [-] Corrected bug which let only 3 character extensions to be proceeded
+      in 'Extension file'. 2,1 and 0 character length extensions are also
+      supported now.
+
+
+  Version 1.35 Shareware (1 February 1995) - changes since 1.33
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+A lot of bugs have been fixed it is just wasting of time to describe all of
+them, only major changes here:
+
+ General
+ ~~~~~~~
+ [+] Install utility
+ [+] Possibility to load overlays into XMS/EMS memory (optionally)
+ [+] CD-ROM player.
+ [+] DOS environment viewer/editor.
+ [+] DOS NAVIGATOR checks on loading if it is already loaded and
+     then shows warning message.
+ [*] Now DN.COM creates flag file in startup directory ( or in DNSWP
+     directory ) to prevent overwriting swap file by DN from different
+     sessions under multitasking.
+ [+] FILES value automatically expands if FILES < 20
+ [+] Clearing keyboard buffer upon startup and exiting from externals.
+ [+] -Mask in Filter excludes specified files e.g. : *.*;-*.bak
+     N.B. If you want to use -FileSpec in filter, you have to specify
+     filter from which FileSpec will be excluded (for example, *.*)
+ [+] Possibility to hide Command Line (for XTree-like interface).
+ [+] Batch-file launching from the Command Line has been improved:
+
+     you can use %1 parameter for name of the current file from the
+     currently active File Panel.
+ [+] Added 'Preserve directory' option in Startup for forced changing
+     directory to last active directory in active File Panel.
+
+ File Copy
+
+ ~~~~~~~~~
+  [*] We hope all terrible bugs have been removed here.
+  [+] 'Beep after complete operation' for Copy if the operation time was
+      longer than 30 sec (set in Options|Configuration|Interface)
+  [*] Directory attributes are preserved.
+
+ Editor
+ ~~~~~~
+ [+] Persistent blocks.
+ [+] AutoBrackets function
+ [+] Overwrite Blocks mode (for non-persistent blocks only)
+ [+] Extra highlight options on specific extensions (See HighLit.DOC)
+ [+] Editor macros for different filespec. (See HighLit.DOC)
+ [+] Mark single word           - Ctrl+K T
+         Copy block             - Ctrl+K C
+         Move block             - Ctrl+K V
+         Delete block           - Ctrl+K Y
+         Hide/display block     - Ctrl+K H
+         Print block            - Ctrl+K P
+         Move to begin of block - Ctrl+Q B
+         Move to end of block   - Ctrl+Q K
+         Exit to menu bar       - Ctrl+K Q
+         Mark line              - Ctrl+K L
+
+ Internal Viewer
+ ~~~~~~~~~~~~~~~
+ [+]  Dump mode (like in XTree)
+ [+]  Zero, ASCII and Extended ASCII Filters (Switching by F6)
+ [+]  Grid for HEX mode
+ [+]  Go to address command
+ [-]  Bugs with cursor positioning in search (HEX mode)
+
+ File Manager
+ ~~~~~~~~~~~~
+  [+] Create several directories from Make Directory dialog using ';'
+      e.g. 1;2;3;4;5 creates five subdirectories with appropriate
+      names in current directory
+  [+] Shift-Enter in Find Panel seeks this file in inactive panel of FM
+  [+] F3 on directory = [ALT][G]
+  [+] F4 on directory = [ALT][E]
+  [+] Full path for current directory in the Directory dialog box.
+  [+] Ctrl keys difference (see Options|Configuration|Interface):
+      when Left Ctrl is held down, left Panel Drive Line will be
+      activated if Ctrl-Arrow pressed and Right Ctrl - for Right Panel.
+  [+] Alt keys difference for Quick Dirs: if you press Left Alt - number
+      then Left File Panel of File Manager will change current directory
+      accordingly number and same for Right Alt and Right File Panel.
+  [+] If "Display selected files info" is not set in the Panel Setup,
+      current file information will be replaced with information about
+      selected files if some files are selected (in other words, it will
+      work like in The Norton Commander).
+  [+] Make List File command has been improved: added macros '!:' for
+      drive, '!/' for file path without backslash . Also it is possible
+      to use ';' for multiply commands (e.g. print !.!;del !.!;pause).
+      Use ';;' for ';'.
+  [+] DirInfo (Directory Information) file handling in the Information Panel.
+
+ Point-and-shoot (run on extension)
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  [+] It is possible to specify several extensions for one command block now.
+      e.g. pcx,bmp,tif{win !.!}
+  [+] Use ]] for specifying ] symbol in DOS command (inside command block),
+      }} for }, )) for )
+
+  Version 1.33 Shareware (31 october 1994) - changes since 1.32
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+1. Copy/Move algorithm has been totally changed.
+2. Added possibility to Rename files with matching names when File Copy.
+3. Added Recurse directories options in the Copy Dialog Box to store
+   or remove recursively directory structure.
+4. Statistics for Read and Write in the File Copy window have been separated.
+5. Fixed Terminal Grab procedure (Ctrl-Ins, Shift-Ins).
+6. Fixed some bugs in Autodialer.
+7. Fixed cursor positioning in Disk Editor.
+8. Fixed bug with Quick Directory changing from an archive.
+9. It is possible to re-read archives by Alt-R.
+10. Some bugs in Country support have been fixed.
+11. Added Duplicate command in the Text Editor - F4.
+12. Some bugs in the User Menu have been fixed.
+13. ^V in the Command Line is switching Insert/Overstrike mode.
+14. ^Del in the File Panel removes selected files from the current list
+    (files aren't physically removed from disk).
+15. Entering in directories from TEMP: or FIND: drives in
+    "Enter opens directory" mode is possible by ^PgDn keystroke.
+16. It is possible to calculate power in the Calculator.
+17. FOSSIL support has been removed from the Communication Dialog,
+    but it has been replaced by IRQ and Port(hex) values.
+18. ZModem has been corrected - file recovery is functioning now.
+19. Fixed bug with '$' sign in the command line.
+20. File Search by file contents has been fixed.
+
+  Version 1.32 Shareware (4 August 1994) - changes since 1.31
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+1. HPFS conflicts with Direct Disk Access bug - fixed
+2. Added internal Screen Grabber to place grabbed images into Clipboard
+   of SmartPad(TM). Instead of having all those loose bits of paper
+   cluttering your desk, just pop up SmartPad(TM) anywhere in Dos Navigator
+   with ALT-Q, make a few notes and then carry on with what you were doing.
+3. Fixed bug with deleting directory from Tree Panel.
+4. Removed separate Tree Window - Select Directory Dialog is called instead.
+   After selecting File manager with Tree panel will be opened.
+5. Terminal recompiled with new libraries - I hope that some bugs in the
+   protocols were fixed, also Compuserve B+ protocol added.
+6. History strings in Terminal added.
+7. Terminal Screen Grabber added - (by Ctrl-Ins pressing) - you can place
+   screen into String History or into SmartPad(TM) Clipboard.
+8. Added FOSSIL support in terminal - see Communications Dialog.
+
+  Version 1.31 Shareware (June 22, 1994) - changes since 1.30
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+1. Added "Quick directory change" function. It is possible to change
+   directory to another (which is used frequently) by pressing Alt-n,
+   where n is digit (1-9). Use Alt+Shift+0 to get "Quick change" list.
+   To store current  directory into "Quick change" list use
+   Ctrl+Alt+Shift+n (n from 1 to 9).
+2. It is possible to change directory while quick search:
+   just type directory name with backslash.
+3. Editor:
+    Ctrl-[ word upper case (Use Ctrl-Shift-[ to upcase whole line)
+    Ctrl-] word lower case (Use Ctrl-Shift-] to lowcase whole line)
+    Ctrl-\ capitalize word (Use Ctrl-Shift-\ to capitalize all words in line)
+4. Added File Panel Hotkeys explanations in Help.
+5. Many bugs fixed (I don't remember all):
+   - if drive A: is not ready and A: is active, DN freezes session at start.
+   - if DoubleSpace is loaded, DN turn floppy drives on at every start
+   - DN couldn't set attributes for read-only file
+   - Directories in RAR 1.50 archives was displayed as files too.
+   - working with empty Phone Book directories hangs system up.
+   - Memo fields messes up when changing cursor position in Phone Book.
+   - Disk Format: format terminated if bad sector was detected.
+   - disk drive wasn't accessible after non-standard (for example, 800k)
+     formatting if external diskette extender was loaded.
+6. It is possible to use environment variables DNCFG and DNDSK to set
+   specific names for configuration (DNxxxxxx.CFG) and desktop (DNxxxxxx.DSK)
+   files. For example:
+   SET DNCFG = _OS2
+   means that DN will be using file DN_OS2.CFG as configuration file.
+   This feature provides to make user and OS specific configurations
+   for DN.
+
+
+  Version 1.30 Shareware (June 1, 1994) - changes since 1.25
+ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+1. Calculator was changed. Copy button allows to copy result of evaluation in Clipboard according to
+  'Copy as'.
+   For hexadecimal, octal, and binary numbers you can use all possible
+   combinations which existing in different programming languages
+   e.g.  0x23AF=$23AF=23AFh, 01234=1234o, 0b100101=100101b
+2. It is possible to put selected files from file panel into
+   Clipboard by pressing Ctrl+Ins.
+   Also you may use Shift+Ins in Command line to get string from Clipboard.
+3. Copy algorithm was changed. Now DN can use all available EMS/XMS memory.
+4. Now it is possible to copy in non-existing subdirectories - these
+   directories will be automatically created. Also you can create
+   a new subdirectory using this method.
+   E.g. - you want to copy files in directory C:\MYDIR\MYSUBDIR1\MYSUBDIR2.
+   But directory C:\MYDIR doesn't exist (and its subdirectories too).
+   Don't worry - just type C:\MYDIR\MYSUBDIR1\MYSUBDIR2\ in "Copy to"
+   dialog box.
+5. OS/2 support:
+   ş Alt+'/' - switch to OS/2 command prompt mode. All files (except
+     archivers and viewers used internally) and commands will be
+     executed by OS/2 command processor.
+   ş if NumLock was highlighted when OS/2 session has been started,
+     session will be paused after its execution by system command "pause"
+6. QuickView and Autochange Directory in file panel was corrected.
+7. User menu interface was changed:
+   ş User menu is shown with all inheritances like as PullDown menu
+   ş If User menu not found in current directory, DN will find out
+     User menu in upper directories.
+   ş It is possible to switch between Local/Global User Menu while
+     User Menu is executed.
+   ş It is possible to start edit User Menu after call to it.
+   ş Empty line after Menu Item header means Menu separator
+     in Menu box.
+   ş Macros changed:
+          !  - Name of file in active file panel
+          $  - Name of file in passive file panel
+          .! - Extension of file in active File Panel
+          .$ - Extension of file in passive File Panel
+          !\ - Directory of file in active File Panel
+          $\ - Directory of file in passive File Panel
+          !/ - Directory of file in active File Panel (without backslash)
+          $/ - Directory of file in passive File Panel (without backslash)
+          !: - Drive of file in active File Panel
+          $: - Drive of file in passive File Panel
+
+
+          You can use these macros in Menu item names.
+
+          %1 - Name of list of selected files in active File Panel
+          %2 - Name of list of selected files in passive File Panel
+          %3... - User parameters
+8. Added Windows-style File Open dialog.
+9. Added TAR support
+10. "Refresh old files" radio button added in File Copy/Move dialog.
+11. Working with archives:
+     ş "Copy to archive" function.
+     ş Extract archive without entering in it.
+12. Working with descriptions: editing (by pressing Alt-INS),
+    copying, moving
+   NOTE: For registered users only !
+13. Added RAR 1.50 support
+14. Text editor:
+     ş sorting lines by selected vertical block containing (Alt-T)
+     ş it is possible to calculate sum of numbers in vertical block and
+       put it into Clipboard (Alt-Ins)
+15. File Find:
+     ş Search for a single file mask speeded up.
+     ş Added "Advanced search" function to set time, size intervals and
+       required attributes for files to find.
+16. Pressing Right mouse button while dialog box is executed = pressed
+    default dialog boxes push button.
+17. It is possible to read file lists such as files with descriptions
+    and *.?lo (Alt-V in file panel).
+18. Added "View DN Team" command in About dialog box
+19. Added new Diskette Format.
+    (Advanced options are available for registered users only)

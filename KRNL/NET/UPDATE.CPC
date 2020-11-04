@@ -1,0 +1,187 @@
+
+// [FR] Programme de mise a jour du noyau.
+// [EN] Kernel updater program.
+
+// [FR] Cette fonction permet de connaitre la derniere version en ligne.
+// [EN] This update, allow to know last on line update.
+
+
+set/ deposit_server = deposit.cpcdos.net
+
+ccp/ /set.level = 1
+
+colorf/ 15
+colorb/ 1
+txt/ [UPDATE] Checking kernel update to the %deposit_server%
+colorb/ 0
+colorf/ 7
+
+
+set/ DirPath = %cpc_temp.net%/%deposit_server%
+
+// [FR] Recuperer l'URL de la derniere version
+// [EN] Getting last URL version
+download/ http://%deposit_server%/update.php?command=update
+
+ccp/ /pause 1000
+
+// [FR] Recuperer l'URL telecharge
+// [EN] Getting URL
+@#_URL open/ %DirPath%/update.php
+
+
+// [FR] Verifier la presence d'une URL dans le fichier
+// [EN] Check URL presence in file
+set/ http_present = /F:cpc.instr(%_URL%,http://)
+if/ "%http_present%" < "1" then:
+	colorf/ 4
+	txt/ [ERROR] Problem during update checking
+        colorf/ 7
+	return/
+end/ if
+
+// [FR] Recuperer le numero de version date
+// [EN] getting dated version number
+set/ version_pos_deb = /F:cpc.instrrev(%_URL%,/)
+set/ version = /f:cpc.mid(%_URL%,%version_pos_deb%)
+set/ version_pos_fin = /f:cpc.mid(%version%,_)
+set/ version = /f:cpc.mid(%version%, 1, %version_pos_fin%)
+
+colorf/ 15
+colorb/ 2
+txt/ [UPDATE] New update found! (%version%)
+colorb/ 0
+colorf/ 7
+
+colorf/ 15
+colorb/ 1
+txt/ [UPDATE] Downloading new version in progress...
+colorb/ 0
+colorf/ 7
+
+ccp/ /set.level = 2
+
+set/ VAR_Progress = 0
+set/ VAR_Speed = 0
+set/ VAR_Bytes = 0
+set/ VAR_Socket = 0
+
+ccp/ /set.level = 1
+
+// [FR] Telecharger ZIP
+// [EN] Download ZIP
+CMD/ /thread[MAX] download/ %_URL% /Progression:VAR_Progress /BytesBySec:VAR_Speed /Bytes:VAR_Bytes /socket:VAR_Socket
+txt/ [UPDATE] Type 'c' to cancel.
+txt/
+
+
+@#py pos/ y
+set/ py = /c(%py% - 1)
+
+set/ key = 0
+:LOOP:
+ccp/ /pause 1000
+
+pos/ x:1
+pos/ y:%py%
+
+set/ Speed = /C(%VAR_Speed% / 1024)
+set/ Speed = /F:CPC.INT(%Speed%)
+
+set/ Bytes = /C(%VAR_Bytes% / 1024)
+set/ Bytes = /F:CPC.INT(%Bytes%)
+
+set/ /key key
+
+txt/ [UPDATE] Socket:%VAR_Socket% - Downloading : %VAR_Progress%%  Speed:%Speed% ko/s  Bytes:%Bytes% ko
+
+if/ "%key%" == "c" then:Goto/ CANCEL
+if/ "%VAR_progress%" < "100" then: Goto/ LOOP
+:CANCEL:
+// sys/ /debug = 2
+// sys/ /debug /cpinticore = 1
+client/ /send:%VAR_Socket% #STOP
+
+ccp/ /set.level = 1
+
+// [FR] Recuperer le nom du package
+// [EN] Getting package name
+set/ FileName_pos = /F:cpc.instrrev(%_URL%,/)
+set/ FileName_pos = /C(%FileName_pos% + 1)
+
+set/ FileName = /F:cpc.mid(%_URL%,%FileName_pos%)
+
+// [FR] Si la taille est superieure a 1 ko
+// [EN] If size is upper to 1 kb
+set/ size_zip = /F:cpc.file_size(%DirPath%/versions/%FileName%)
+if/ "%size_zip%" > "1000" then:
+
+	colorf/ 15
+	colorb/ 2
+	txt/ [UPDATE] Downloaded!
+	colorb/ 0
+	colorf/ 7
+
+else:
+	colorf/ 4
+	txt/ Problem during update archive file, please try again.
+	colorf/ 7
+	return/
+end/ if
+
+txt/ [UPDATE] Do you want to (re)install update ? (y/n)
+set/ /q question
+
+set/ question = /F:cpc.maj(%question%)
+if/ "%question%" != "Y" then:
+	colorf/ 15
+	txt/ Ok, deleting data...
+	colorf/ 7
+	// DELETE DATA HERE
+	return/
+end/ if
+
+colorb/ 1
+colorf/ 15
+txt/ [UPDATE] Extracting data ...
+colorb/ 0
+colorf/ 7
+
+folder/ temp/install
+
+// [FR] Extraire l'archive dans le dossier temporaire
+// [EN] Extract archive to temp directory
+txt/
+txt/ ------------------------
+decompress/ %DirPath%/versions/%FileName% .
+txt/ ------------------------
+txt/
+colorf/ 15
+colorb/ 2
+txt/ [UPDATE] Extracted!
+colorf/ 15
+colorb/ 1
+txt/ [UPDATE] Cleaning files...
+colorb/ 0
+colorf/ 7
+txt/
+txt/ [UPDATE] You must restart cpcdos for applying update.
+txt/ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

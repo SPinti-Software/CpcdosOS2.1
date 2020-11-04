@@ -1,0 +1,439 @@
+fenetre/ affichage
+	.titre 			= "Display setting"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "700"
+	.ty = "435"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "245,238,205"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#screen_os creer/
+fin/ fenetre
+
+
+TEXTEBLOC/ resolution
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Resolution"
+	.PX = "130"
+	.PY = "10"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ dispo
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Here are the resolutions available under ElieOS"
+	.PX = "145"
+	.PY = "30"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ bits
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Number of colors"
+	.PX = "130"
+	.PY = "225"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ bits
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "16 Bits: 65 536 colors"
+	.PX = "145"
+	.PY = "255"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ bits
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "24 Bits: 16,7 millions of colors"
+	.PX = "145"
+	.PY = "265"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+TEXTEBLOC/ bits
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "32 Bits: more than 4 billion colors"
+	.PX = "145"
+	.PY = "275"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+fix/ analy = \#NULL
+
+TEXTEBLOC/ analysedata
+	.Handle = "%screen_os%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "%analy%"
+	.PX = "105"
+	.PY = "400"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+FIX/ filename = \#NULL
+
+Textebox/ file_data
+	.handle			= "%screen_os%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "135"
+        .PY                             = "90"
+	.TX				= "200"
+	.TY				= "15"
+	.CouleurFond	= "188,188,188"
+	.CouleurTexte	= "000,000,000"
+    .texte          = "%filename%"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+picturebox/ resolution
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX			= "10"
+	.PY			= "10"
+	.tx			= "115"
+	.ty		        = "115"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/SETTING/resol.png"
+	rem/.opacite		= "150"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+picturebox/ bits
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX			= "10"
+	.PY			= "225"
+	.tx			= "115"
+	.ty		        = "115"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/ICONES/SETTING/bits.png"
+	rem/.opacite		= "150"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+Bouton/ 1024_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "15"
+	.PY				= "135"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1024 x 768"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 1152_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "135"
+	.PY				= "135"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1152 x 864"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 1280_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "255"
+	.PY				= "135"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1280 x 1024"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 1400_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "375"
+	.PY				= "135"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1400 x 1050"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 1600_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "495"
+	.PY				= "135"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1600 x 1200"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+Bouton/ 1856_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "15"
+	.PY				= "175"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1856 x 1392"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 1920_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "135"
+	.PY				= "175"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "1920 x 1080"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 16_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "15"
+	.PY				= "350"
+	.tx				= "80"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "16 Bits"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 24_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "135"
+	.PY				= "350"
+	.tx				= "80"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "24 Bits"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ 32_Bouton
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "255"
+	.PY				= "350"
+	.tx				= "80"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "32 Bits"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ analyse435
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "15"
+	.PY				= "395"
+	.tx				= "90"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Analyser"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+FONCTION/ analyse435.Click()
+txt/ os
+@#SCREEN sys/ /liste /ecran 24
+
+TEXTEBLOC/ /modif:analysedata
+                         .TEXTE = "%SCREEN%"
+                         creer/
+                fin/ TEXTEBLOC
+				FIX/ /S SCREEN
+FIN/ FONCTION
+
+Bouton/ customresol
+	.Handle			= "%screen_os%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "340"
+	.PY				= "85"
+	.tx				= "60"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Set"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+FONCTION/ customresol.Click()
+TEXTEBOX/ /modif:file_data
+                @#Contenu .texte
+                         creer/
+                fin/ TEXTEBOX
+	CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = %Contenu%
+	FIX/ /S Contenu
+	IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+FIN/ FONCTION
+
+FONCTION/ 1024_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1024x768
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 1152_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1152x864
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 1280_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1280x1024
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 1400_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1400x1050
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 1600_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1600x1200
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+
+FONCTION/ 1856_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1856x1392
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 1920_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/RESOL/resol.cfg = 1920x1440
+IUG/ /CONSOLE
+SYS/ /OS:Office
+SYS/ /STOPK
+DOS/ KRNL32.BAT
+IUG/
+//
+FIN/ FONCTION
+
+FONCTION/ 16_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg = 16
+IUG/ /CONSOLE
+SYS/ /OS:office
+FIX/ SCR_BIT = 16
+SYS/ /SCREEN 19
+iug/
+FIN/ FONCTION
+
+FONCTION/ 24_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg
+
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg = 24
+IUG/ /CONSOLE
+SYS/ /OS:office
+FIX/ SCR_BIT = 24
+SYS/ /SCREEN 19
+iug/
+FIN/ FONCTION
+
+FONCTION/ 32_Bouton.Click()
+CMD/ /THREAD supprimer/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg
+CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/BITS/bits.cfg = 32
+IUG/ /CONSOLE
+SYS/ /OS:office
+FIX/ SCR_BIT = 32
+SYS/ /SCREEN 19
+iug/
+FIN/ FONCTION

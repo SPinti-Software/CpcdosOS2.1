@@ -1,0 +1,1 @@
+-std=c++17 -O0 -Wl,--stack=0x1000000 -Wl,--heap=0x1000000 -ffast-math -march=i486 -DNDEBUG -m32 -s -fpermissive -DCpcDos -Isrc\include -IHostConfig -Isrc\lib\Tg\X86 -Isrc\lib\ExecutionEngine -Isrc\rt\lib\builtins -I_Demo

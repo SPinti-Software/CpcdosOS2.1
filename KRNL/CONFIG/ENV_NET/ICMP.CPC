@@ -1,0 +1,10 @@
+// USER
+CCP/ /SET.LEVEL = 5
+
+// [FR] Message du ping personnalisable (PAR DEFAUT)
+// [EN] Personalisable ping message (BY DEFAULT)
+SET/ CPC_SYS.NET.ICMP = <Pas d'SE/No OS> [Cpcdos OS%CPC.VER.MAJ% %CPC.VER.MIN% %CPC.VER.DATE%]
+
+
+
+

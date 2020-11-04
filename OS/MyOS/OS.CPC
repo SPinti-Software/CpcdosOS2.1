@@ -1,0 +1,66 @@
+
+// Charger le profil graphique PAR DEFAUT (Obligatoire)
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
+
+// Background image
+fix/ SCR_IMG = OS/MEDIA/abs_blue.jpg
+
+// Et APRES vous pouvez charger le votre
+
+set/ SCR_RES = 1024x768
+set/ SCR_BIT = 24
+
+ccp/ /fix.niveau = 4
+
+
+// **************************************************
+// ** [EN] Operating system informations           **
+// ** [FR] Informations du systeme d'exploitation  **
+// **************************************************
+
+FIX/ OS_NAME = MyOS
+FIX/ OS_Author = S.F
+FIX/ OS_Compagny = SPinti Software
+FIX/ OS_Created = 15-07-2017
+FIX/ OS_Updated = 16-11-2017
+
+
+// ***************************************************
+// ** [EN] Operating system configuration           **
+// ** [FR] Configuration du systeme d'exploitation  **
+// ***************************************************
+
+FIX/ HOST_OS = OS/MyOS
+FIX/ GUI_OS = %HOST_OS%/MEDIA/GUI
+
+
+// ******************************************************
+// ** [EN] Starting Graphic User Interface             **
+// ** [FR] Demarrer l'interface utilisateur graphique  **
+// ******************************************************
+GUI/
+
+
+// ----------------------------------------------------------- //
+//                  ------ C O D E ------                      //
+// ----------------------------------------------------------- //
+
+// Creer un nouveau processus nomme '_MENUS_'
+@#PID_Menu_Accueil SYS/ /processus _MENUS_
+
+// Creer un 2eme nouveau processus nomme '_APP_'
+@#PID_APP SYS/ /processus _APP_
+
+
+
+// Executer barre.CPC dans le processus "_MENUS_" via son PID
+CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
+
+// Executer app.cpc dans le processus "_APP_" via son PID
+CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
+
+
+exe/ test.cpc
+
+
+

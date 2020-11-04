@@ -1,0 +1,144 @@
+REM/ [FR] Cette fonction permet de telecharger un fichier http depuis Cpcdos (Syntaxes CpcdosC+ ANGLAISES)
+REM/ [EN] This function allow to download http file from Cpcdos (ENGLISH CpcdosC+ Syntax)
+
+REM/ By Sebastien FAVIER
+REM/ 06 Mars 2017
+REM/ Mise a jour 12 Mars 2020
+
+// [FR] Declarer cette fonction dans le NIVEAU 5 (Kernel) que tous les programmes puissent l'utiliser
+// [EN] Declare this function in the LEVEL 5 (KERNEL) for all programs can use this.
+Declare/ http_get(IPaddress, Port, request, header, Redirection, VAR_PROGRESSION, VAR_SPEED, VAR_BYTES, VAR_SOCKET) : LEVEL(5)
+
+// [FR] Surcharge (Plus simplifiee)
+// [EN] Overload (More simplified)
+Declare/ http_get(IPaddress, Port, request) : LEVEL(5)
+
+
+
+FUNCTION/ http_get(IPaddress, Port, request, header, Redirection, VAR_PROGRESSION, VAR_SPEED, VAR_BYTES, VAR_SOCKET)
+
+	// [FR] Cette fonction permet d'envoyer une requete HTTP a un serveur
+        // [EN] This function allow to send HTTP request to a httpp server
+
+                                                                  
+	ccp/ /fix.niveau = 1
+                                               
+	// [FR] Se connecter au serveur grace a l'adresse IP et le numero de port
+	// [EN] Connect to the server with IP address and port number
+
+	@#http_TID_Number Client/ /TCP:%IPaddress%:%Port%
+
+
+	// [FR] Verifier si la connexion a ete etablie
+	// [EN] Verify if connection has been etablished
+
+	if/ "%http_TID_Number%" > "0" then:
+
+		// [FR] Envoyer la trame
+		// [EN] Sending data
+
+		// [FR] Indiquer qu'on souhaite enregistrer le flux en LIVE
+		// [EN] Indicate that we want DIRECTLY write stream
+                Client/ /send:%http_TID_Number% #CFG_TMPFILE %Redirection%
+
+                if/ "%VAR_PROGRESSION%" != "" Then: Client/ /send:%http_TID_Number% #CFG_VAR_POURCENT %VAR_PROGRESSION%
+                if/ "%VAR_SPEED%" != "" Then: Client/ /send:%http_TID_Number% #CFG_VAR_SPEED %VAR_SPEED%
+                if/ "%VAR_BYTES%" != "" Then: Client/ /send:%http_TID_Number% #CFG_VAR_SIZE %VAR_BYTES%
+                if/ "%VAR_SOCKET%" != "" Then: Client/ /send:%http_TID_Number% #CFG_VAR_SOCKET %VAR_SOCKET%
+
+                // [FR] Attendre que le module client recoit la commande
+                // [EN] Waiting client module receive this command
+                // ccp/ /pause:2000
+
+		Client/ /send:%http_TID_Number% %request%
+
+		// [FR] Attendre la reception pendant 5 secondes MAX
+		// [EN] Waiting data during 5 seconds MAX
+
+		@#Results Client/ /receive:%http_TID_Number% /Wait 5000
+
+
+		// [FR] Verifier si on a des donnees
+		// [EN] Verify is we have data
+
+		if/ "%Results%" = "" then:
+
+			// *** PROBLEM ***
+			txt/ <Pas de donnees/No data>
+			return/ txt/ <Pas de donnees/No data>
+			stop/
+		else:
+			// *** OK ***
+
+			// [FR] Supprimer les infos reseaux
+			// [EN] Delete network informations                                
+			SET/ PositionHTTP = /F:CPC.INSTR(%Results%,=HTTP/)
+			SET/ PositionHTTP = /C(%PositionHTTP% + 1)
+			SET/ Results = /F:CPC.MID(%Results%,%PositionHTTP%)
+
+
+			if/ "%header%" = "false" then:
+				// [FR] Supprimer l'entete
+				// [EN] Delete the head                               
+
+				// [FR] Obtenir la position des doubles CRLF
+				// [EN] Getting double CRLF position
+				SET/ PositionCRLF = /F:CPC.INSTR(%Results%,%CPC.CRLF%%CPC.CRLF%)
+
+
+				// [FR] Additionner de + 4
+				// [FR] Add + 4
+				SET/ PositionCRLF = /C(%PositionCRLF% + 4)
+
+
+				// [FR] Recuperer les donnees apres CE "double CRLF"
+				// [EN] Getting data after THIS "double CRLF"
+				SET/ Results = /F:CPC.MID(%Results%,%PositionCRLF%)
+			End/ if
+
+			// [FR] Ecrire le resultat dans un fichier
+			// [EN] Writing results in a file
+			if/ "%Redirection%" != "" then:
+
+				// [FR] Verifier si le fichier est un retour binaire
+				// [EN] Verify if is a binary file
+				SET/ BinaryFile = /F:CPC.MID(%Results%,1,64)
+				SET/ BinaryFilePos = /F:CPC.INSTR(%BinaryFile%,#BINARY FILE#)
+				
+				if/ "%BinaryFilePos%" > "0" then:
+					// [FR] Le fichier est deja enregistre
+					// [EN] File is alreary wrotte
+					return/ txt/ Binary file downloaded to '%Redirection%'
+					stop/
+				else:
+					// [FR] On supprime le precedent fichier (si existant)
+					// [EN] We delete previous file (if exist)
+					delete/ %Redirection%
+
+					// [FR] On ecrit tout dans le fichier
+					// [EN] We write any on file
+					WRITE/ /BIN %Redirection%=%Results%
+					return/ txt/ 
+				fin/ if
+			else:
+				return/ txt/ %Results%
+			end/ if
+
+			stop/
+		end/ if
+	sinon:
+
+		txt/ ERROR <Impossible d'etablir la connexion/Unable to etablish connection>
+		retour/ txt/ ERROR <Impossible d'etablir la connexion/Unable to etablish connection>
+	end/ if
+
+END/ FUNCTION
+
+
+Function/ http_get(IPaddress, Port, request)
+	// [FR] C'est la meme fonction, mais avec des arguments plus... simplifies! ;)
+	// [EN] It's the same function, but with simplified arguments ;)
+
+	return/ /F:http_get(IPaddress, Port, request, FALSE, NULL)
+
+End/ Function

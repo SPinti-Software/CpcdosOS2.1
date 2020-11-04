@@ -1,0 +1,182 @@
+// cheeseOS Settings - Resolution Setting page
+
+
+sys/ /debug = 2
+
+ccp/ /set.level = 4
+
+set/ sizeXWindow = 800
+set/ sizeYWindow = 600
+
+set/ posxWindow = /C(%CPC.SCR.X% / 2) - (%sizeXWindow% / 2)
+
+set/ posyWindow = /C(%CPC.SCR.Y% / 2) - (%sizeYWindow% / 2)
+
+window/ screenSettingWindow
+    .title = "Screen Resolution"
+    .parametres = "TYPE:4 CTN:1 BORD:0"
+    .px = "%posxWindow%"
+    .py = "%posyWindow%"
+    .sx = "%sizeXWindow%"
+    .sy = "%sizeYWindow%"
+    .WindowColor = "000,000,000"
+    .TitleColor = "000,000,000"
+    .BackColor = "000,000,000"
+    .ImgTitre = ""
+    .Icon = ""
+    @#settingScreenWindow_ref create/
+end/ window
+
+picturebox/ screenBackground
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:1"
+    .px = "0"
+    .py = "0"
+    .sx = "801"
+    .sy = "601"
+    .Image = "OS/CHEESEOS/SYS_APPS/SETTINGS/GRAPH/BACKGRD/scrres.png"
+    create/
+end/ picturebox
+
+button/ optionOneButton
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:1"
+    .px = "5"
+    .py = "205"
+    .sx = "190"
+    .sy = "190"
+    .text = ""
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/SYS_APPS/SETTINGS/GRAPH/BUTTONS/scrres/1024768.png"
+    .event = "OS/CHEESEOS/SYS_APPS/SETTINGS/scrres.cpc=Click"
+    create/
+end/ button
+
+button/ optionTwoButton
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:1"
+    .px = "200"
+    .py = "205"
+    .sx = "190"
+    .sy = "190"
+    .text = ""
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/SYS_APPS/SETTINGS/GRAPH/BUTTONS/scrres/12801024.png"
+    .event = "OS/CHEESEOS/SYS_APPS/SETTINGS/scrres.cpc=Click"
+    create/
+end/ button
+
+button/ optionThreeButton
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:1"
+    .px = "410"
+    .py = "205"
+    .sx = "190"
+    .sy = "190"
+    .text = ""
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/SYS_APPS/SETTINGS/GRAPH/BUTTONS/scrres/1280720.png"
+    .event = "OS/CHEESEOS/SYS_APPS/SETTINGS/scrres.cpc=Click"
+    create/
+end/ button
+
+button/ optionFourButton
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:1"
+    .px = "605"
+    .py = "205"
+    .sx = "190"
+    .sy = "190"
+    .text = ""
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = "OS/CHEESEOS/SYS_APPS/SETTINGS/GRAPH/BUTTONS/scrres/19201080.png"
+    .event = "OS/CHEESEOS/SYS_APPS/SETTINGS/scrres.cpc=Click"
+    create/
+end/ button
+
+button/ exitButton
+    .handle = "%settingScreenWindow_ref%"
+    .parametres = "IMGAUTO:0"
+    .px = "10"
+    .py = "550"
+    .sx = "190"
+    .sy = "40"
+    .text = "Exit / Quitter"
+    .BackColor = "198,198,198"
+    .TextColor = "000,000,000"
+    .Image = ""
+    .event = "OS/CHEESEOS/SYS_APPS/SETTINGS/scrres.cpc=Click"
+    create/
+end/ button
+
+// functions
+
+function/ optionOneButton.Click()
+    // sys/ /debug = 2
+    supprimer/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    cmd/ /thread ecrire/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg = 1024x768
+    IUG/ /CONSOLE
+    SYS/ /OS:CHEESEOS
+    @#SCREEN_RESOLUTION ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    set/ SCR_RES = %SCREEN_RESOLUTION%
+    iug/
+    fermer/ taskbar
+    exe/ & OS/CHEESEOS/UI/TASKBAR/taskbar.cpc
+    fermer/ screenSettingWindow
+    exe/ & OS/CHEESEOS/SYS_APPS/SETTTINGS/scrres.cpc
+end/ function
+
+function/ optionTwoButton.Click()
+    // sys/ /debug = 2
+    supprimer/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    cmd/ /thread ecrire/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg = 1280x1024
+    IUG/ /CONSOLE
+    SYS/ /OS:CHEESEOS
+    @#SCREEN_RESOLUTION ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    set/ SCR_RES = %SCREEN_RESOLUTION%
+    iug/
+    fermer/ taskbar
+    exe/ & OS/CHEESEOS/UI/TASKBAR/taskbar.cpc
+    fermer/ screenSettingWindow
+    exe/ & OS/CHEESEOS/SYS_APPS/SETTTINGS/scrres.cpc
+end/ function
+
+function/ optionThreeButton.Click()
+    // sys/ /debug = 2
+    supprimer/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    cmd/ /thread ecrire/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg = 1280x720
+    IUG/ /CONSOLE
+    SYS/ /OS:CHEESEOS
+    @#SCREEN_RESOLUTION ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    set/ SCR_RES = %SCREEN_RESOLUTION%
+    iug/
+    fermer/ taskbar
+    exe/ & OS/CHEESEOS/UI/TASKBAR/taskbar.cpc
+    fermer/ screenSettingWindow
+    exe/ & OS/CHEESEOS/SYS_APPS/SETTTINGS/scrres.cpc
+end/ function
+
+function/ optionFourButton.Click()
+    // sys/ /debug = 2
+    supprimer/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    cmd/ /thread ecrire/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg = 1920x1080
+    IUG/ /CONSOLE
+    SYS/ /OS:CHEESEOS
+    @#SCREEN_RESOLUTION ouvrir/ OS/CHEESEOS/SYSTEM/CONFIG/SCR_RES/config.cfg
+    set/ SCR_RES = %SCREEN_RESOLUTION%
+    iug/
+    fermer/ taskbar
+    exe/ & OS/CHEESEOS/UI/TASKBAR/taskbar.cpc
+    fermer/ screenSettingWindow
+    exe/ & OS/CHEESEOS/SYS_APPS/SETTTINGS/scrres.cpc
+end/ function
+
+function/ exitButton.Click()
+    fermer/ screenSettingWindow
+end/ function
+
+

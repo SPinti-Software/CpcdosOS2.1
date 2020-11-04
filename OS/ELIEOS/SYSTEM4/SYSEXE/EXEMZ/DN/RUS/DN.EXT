@@ -1,0 +1,161 @@
+; Dos Navigator Extension configuration file
+
+; ~~~~~~~~~~~~~~~~~~~~~~~   Archivers    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ice ( lha x !.! *.* )
+ice ( have !.!)
+arj ( arj x -v !.! )
+zip ( pkunzip -d !.! )
+ha  ( ha e !.! )
+rar ( unrar x !.! )
+lzh ( lha x !.!)
+
+; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~   Misc   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+doc{ dv !.!}
+wav{ ps.exe /db /q !.!}
+enw{ ps.exe /db /q !.!}
+voc{ ps.exe /db /q !.!}
+snd{ ps.exe /db /q !.!}
+cmf{ cplay.exe !.!}
+mid{ cplay.exe !.!}
+pcx{ pv !.! }
+jpg{ pv !.! }
+gif{ pv !.! }
+bmp{ pv !.! }
+pkt{ pktview !.!}
+UUE{ UUDECODE !.!}
+*  [   >1 ~A~ll pack to Archive
+       >2 To ~H~a
+       < Введите имя архива
+       <=Archive
+       ha a %3 *.*
+       >2 To ~Z~ip
+       < Введите имя архива
+       <=Archive
+       pkzip -ex -z <c:\arc\arj.scr %3 *.* c:\arc\misha_s.txt
+       >2 To ~A~rj
+       < Введите имя архива
+       <=Archive
+       arj a -jm -e -i2 -zc:\arc\arj.scr %3 *.* c:\arc\misha_s.txt
+       >2 To ~R~ar
+       < Введите имя архива
+       <=Archive
+       rar a -m5 -mm1024 %3 *.*
+
+       >1 ~O~ne pack to Archive
+       >2 !.! to ~H~a
+       < Введите имя архива
+       <=Archive
+       ha a %3 !.!
+       >2 !.! to ~Z~ip
+       < Введите имя архива
+       <=Archive
+       pkzip -ex -z <c:\arc\arj.scr %3 !.! c:\arc\misha_s.txt
+       >2 !.! to ~A~rj
+       < Введите имя архива
+       <=Archive
+       arj a -jm -e -i2 -zc:\arc\arj.scr %3 !.! c:\arc\misha_s.txt
+       >2 !.! to ~P~klite
+       < Введите имя архива
+       <=Archive
+       pklite !.exe %3
+       >2 !.! to ~W~wpack
+       WWPACK P !.exe
+       >2 !.! to ~R~ar
+       < Введите имя архива
+       <=Archive
+       rar a -m5 -mm1024 %3 !.!
+       >1
+
+       >1 ~U~npack file
+
+       >2 View file ~i~nfo
+       unp.exe i !.!
+       >2 ~U~npack file
+
+       >3 Via UN~P~
+       unp.exe !.! !.xxx
+
+       >3 Via ~X~T
+       xt.exe !.!
+
+       >3 Via UP~C~
+       upc.com !.!
+
+       >3 Via C~U~P
+       cup.exe !.! !.xxx
+
+       >3 Via T~S~UP
+       tsup.exe !.! !.xxx
+
+       >3 Via UUP
+       uup.exe !.! !.xxx
+
+       >1 ~I~nsert Banner
+       >2 ~I~n !.!
+       banner.exe !.! c:\arc\arj.scr
+       >2 In all ~Z~ip-archive
+       banner.exe *.zip c:\arc\arj.scr
+       >2 In all ~A~rj-archive
+       banner.exe *.arj c:\arc\arj.scr
+
+       >2 Insert PTF in Ar~j~
+       arj a -jm -e -i2 !.! c:\arc\misha_s.txt
+       >2 Insert PTF in Zi~p~
+       pkzip -ex !.! c:\arc\misha_s.txt
+
+       >1 Assemble~r~
+       >2 Assembling and linking ~C~OM file
+        @echo off
+        @echo █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+        @echo █ Assembling and linking COM file... █
+        @echo █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+        @d:\lang\asm\tasm !
+        @d:\lang\asm\tlink /t/x !.obj
+        @del !.obj
+        >2 Assembling and linking ~E~XE file
+        @echo off
+        @echo █▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█
+        @echo █ Assembling and linking EXE file... █
+        @echo █▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█
+        @d:\lang\asm\tasm !
+        @d:\lang\asm\tlink /x !.obj
+        @del !.obj
+        >2 ~A~ssemble only
+        @d:\lang\asm\tasm ! /m2
+        ]
+ANS{
+        anvi.exe !.!
+   }
+
+; ~~~~~~~~~~~~~~~~   Programming  Languages   ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+c  {    tc !.!}
+prj{    tc !.!}
+pas( E:\bp\bin\turbo ! )
+
+; ~~~~~~~~~~~~~~~~~~~~~~~   Music    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+mod,m15,cda,ult,mtm,s3m,ptm,669,dmf,okt,xm { D:\MUSIC\CP\cp.exe !.! }
+
+;  ??? <открывающий символ> ............
+;                        команды ДОСа или
+;                        описание меню  (для Alt-Enter)
+;                        ......... <закрывающий символ>
+;
+;    Здесь ??? - конкретное расширение, открывающий и закрывающий
+; символы должны соответствовать одной из комбинаций клавиш -
+; Enter - '{' и '}', Shift-Enter - '(' и ')', Alt-Enter - '[' и ']'.
+                                                                     
+;    Для обозначения имени запускаемого файла используйте '!', имени
+; с расширением - '!.!', каталога запускаемого файла - '!\'. Чтобы
+; указать символ '!', используется '!!'.
+                                                                     
+;    Для задания в команде DOS ] следует использовать ]]
+; (внутри командного блока), }} для }, )) для ).
+                                                                     
+;    DOS Navigator обрабатывает неограниченное количество расширений.
+                                                                     
+;    Возможна установка запуска одного командного блока для нескольких
+; расширений. Например: pcx,bmp,tif{cshow !.!}
+

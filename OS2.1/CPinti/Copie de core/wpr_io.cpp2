@@ -1,0 +1,286 @@
+/*	
+	======================================
+	==       CPinti ---> wrapper I/O    ==
+	======================================
+	
+	Developpe entierement par Sebastien FAVIER
+
+	Description
+		Module permettant l'acces aux fonctionnalites 
+		 d'ecriture, lecture des fichiers sur support
+	
+	Creation 
+		19/10/2016
+
+
+	Mise a jour
+		19/10/2018
+		
+	16-10-2018	: Adaption 2.1 beta 1.1
+	07-12-2017	: AMELIORATION du code en suivant une procedure sticte de GCC
+	06-10-2017	: Ajout de Copier_Fichier.
+*/
+#include <memory>
+
+#include "debug.h"
+#include "cpinti.h" // inclut taches.h
+
+#include "func_cpi.h"
+
+#include "threads.h"
+#include "taches.h"
+
+#include "socket.h"
+#include "ping.h"
+#include "serveur.h"
+#include "client.h" 
+ 
+#include "io.h"
+
+#include "heap.h"
+
+namespace cpinti
+{
+	int __CpintiCore_CpcdosOSx__::cpinti_Fichier_Existe(const char* Chemin)
+	{
+		// Cette fonction va permettre de savoir si un fichier existe
+		// Chemin 	= Chemin d'acces au fichier
+		
+		// Retourne -1 : Erreur memoire
+		// 			 0 : Fichier non disponible
+		//			 1 : Fichier present
+		
+	
+		
+		bool Resultats = 0;;
+		std::string Chemin_STR = std::string(Chemin);
+		
+		cpinti_dbg::CPINTI_DEBUG("Test existance fichier '" + Chemin_STR + "' (static cpinti_io)... ", 
+					 "File existance test '" + Chemin_STR + "' (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Fichier_Existe()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+						
+		Resultats = NP_cpinti_io::cpinti_io::Fichier_Existe(Chemin_STR);
+		if(Resultats == true)
+			cpinti_dbg::CPINTI_DEBUG("Fichier disponible.", 
+				 "File present.", "", "",
+					Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+		else
+			cpinti_dbg::CPINTI_DEBUG("Fichier non present.", 
+				 "File not avaiable.", "", "",
+					Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+						
+		return Resultats;
+	} /* FICHIER EXISTE */
+	
+	double __CpintiCore_CpcdosOSx__::cpinti_Taille_Fichier(const char* Chemin)
+	{
+		// Cette fonction va permettre de recuperer la taille d'un fichier
+		// Chemin 	= Chemin d'acces au fichier
+		
+		// Retourne -1 : Erreur memoire
+		// 			 0 ou 0> : Taille du fichier
+		
+		
+		double Resultats = 0;
+		std::string TailleFichier_STR;
+		std::string Chemin_STR = std::string(Chemin);
+		
+		cpinti_dbg::CPINTI_DEBUG("Recuperation taille fichier '" + Chemin_STR + "' (static cpinti_io)... ", 
+					 "Getting file size '" + Chemin_STR + "' (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Fichier_Existe()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+						
+		Resultats = NP_cpinti_io::cpinti_io::Taille_Fichier(Chemin_STR);
+		
+		TailleFichier_STR = cpinti::Func_Cpinti::to_string(Resultats);
+		
+		cpinti_dbg::CPINTI_DEBUG("[OK] Taille :" + TailleFichier_STR + " octet(s)", 
+					"[OK] Size :" + TailleFichier_STR + " byte(s)", 
+					"", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+		
+		return Resultats;
+	} /* TAILLE FICHIER */
+	
+	double __CpintiCore_CpcdosOSx__::cpinti_Lire_Fichier_complet(const char* Chemin, const char* Mode, char* _DONNEES)
+	{
+		// Cette fonction va permettre de lire le contenu complet d'un fichier
+		// Chemin 	= Chemin d'acces au fichier
+		// Mode		= Mode le lecture
+		// _DONNEES = Contenu du fichier a retourner
+		
+		// Retourne -1 : Erreur memoire
+		// 			 0 ou 0> : OK
+	
+
+		double Resultat_int;
+		std::string Resultats;
+		std::string TailleFichier_STR;
+		std::string Chemin_STR = std::string(Chemin);
+		std::string Mode_STR = std::string(Mode);
+		
+		cpinti_dbg::CPINTI_DEBUG("Debut lecture de fichier '" + Chemin_STR + "' (static cpinti_io)... ", 
+					 "Starting reading file '" + Chemin_STR + "' (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Lire_Fichier_complet()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+		
+						
+		if(NP_cpinti_io::cpinti_io::Lire_Fichier_complet(Chemin_STR, Mode_STR, Resultats) == true)
+		{
+			double Taille_Fichier = static_cast<double>(Resultats.size());
+
+			TailleFichier_STR = cpinti::Func_Cpinti::to_string(Taille_Fichier);
+			cpinti_dbg::CPINTI_DEBUG("[OK] " + TailleFichier_STR + " octet(s) lu(s)", 
+						"[OK] " + TailleFichier_STR + " byte(s) readed", 
+						"", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+
+			for(unsigned int boucle = 0; boucle <= Taille_Fichier; boucle++)
+				_DONNEES[boucle] = Resultats[boucle];
+
+			Resultat_int = Taille_Fichier;
+		}
+		else
+		{
+			cpinti_dbg::CPINTI_DEBUG("Problemes durant la lecture du fichier", "Problem during file reading", "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			Resultat_int = -1;
+		}
+		
+		return Resultat_int;
+	} /* LIRE FICHIER COMPLET */
+	
+	double __CpintiCore_CpcdosOSx__::cpinti_Ecrire_Fichier_complet(const char* Chemin, const char* _DONNEES, int Mode)
+	{
+		// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
+		// Chemin 	= Chemin d'acces au fichier
+		// _DONNEES = Contenu a ecrire
+		// Mode		= Mode le lecture
+		// 
+		
+		// Retourne -1 : Erreur memoire
+		// 			 0 ou 0> : OK
+	
+		double Resultat_int;
+		std::string Resultats;
+		
+		std::string Chemin_STR = std::string(Chemin);
+		std::string _DONNEES_STR = std::string(_DONNEES);
+		double TailleFichier = (double) _DONNEES_STR.length();
+		
+		cpinti_dbg::CPINTI_DEBUG("Debut d'ecriture du fichier (static cpinti_io)... ", 
+					 "Starting writing file (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Ecrire_Fichier_complet()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+		
+						
+		if(NP_cpinti_io::cpinti_io::Ecrire_fichier(Chemin_STR, _DONNEES_STR, Mode) == true)
+		{
+
+			std::string TailleFichier_STR = cpinti::Func_Cpinti::to_string(TailleFichier);
+			cpinti_dbg::CPINTI_DEBUG("[OK] " + TailleFichier_STR + " octet(s) ecrit(s)", 
+						"[OK] " + TailleFichier_STR + " byte(s) written", 
+						"", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+
+			Resultat_int = TailleFichier;
+		}
+		else
+		{
+			cpinti_dbg::CPINTI_DEBUG("Problemes durant l'ecriture du fichier", "Problem during file writing", "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			Resultat_int = -1;
+		}
+		
+		return Resultat_int;
+	} /* LIRE FICHIER COMPLET */
+	
+	bool __CpintiCore_CpcdosOSx__::cpinti_Supprimer_Fichier(const char* Chemin, bool Securise, int NombrePasses)
+	{
+		// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
+		// Chemin 		= Chemin d'acces au fichier
+		// Securise 	= Ecrire des ZEROS avant de supprimer de l'index (Suppression complete et plus longue)
+		// NombrePasses	= Nombre de passes d'ecriture de ZEROS en plus. (Par defaut = 0)
+		
+		// Retourne TRUE : OK
+		// 			FALSE: Probleme
+	
+		int Resultat_int;
+		
+		std::string Chemin_STR = std::string(Chemin);
+		std::string NombrePasses_STR = cpinti::Func_Cpinti::to_string(NombrePasses);
+		
+		if(Securise == false)
+			cpinti_dbg::CPINTI_DEBUG("Suppression du fichier '" + Chemin_STR + "' (static cpinti_io)... ", 
+					 "Deleting file '" + Chemin_STR + "' (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Supprimer_Fichier()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+		else
+			cpinti_dbg::CPINTI_DEBUG("Suppression securise du fichier '" + Chemin_STR + "' avec " + NombrePasses_STR + " passes (static cpinti_io)... ", 
+					 "Deleting file '" + Chemin_STR + "' with " + NombrePasses_STR + " passes (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Supprimer_Fichier()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+		
+						
+		if(NP_cpinti_io::cpinti_io::Supprimer_Ficher(Chemin_STR, Securise, NombrePasses) == true)
+		{
+
+			cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", "", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+
+			return true;
+		}
+		else
+		{
+			cpinti_dbg::CPINTI_DEBUG("Problemes durant la suppression du fichier", "Problem during deleting file", "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			return false;
+		}
+		
+		return Resultat_int;
+		
+	} /* SUPPRIMER FICHIER */
+	
+	bool __CpintiCore_CpcdosOSx__::cpinti_Copier_Fichier(const char* Source, const char* Destination, int Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
+	{
+		// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
+		// Chemin 		= Chemin d'acces au fichier
+		// Securise 	= Ecrire des ZEROS avant de supprimer de l'index (Suppression complete et plus longue)
+		// NombrePasses	= Nombre de passes d'ecriture de ZEROS en plus. (Par defaut = 0)
+		
+		// Retourne TRUE : OK
+		// 			FALSE: Probleme
+	
+		int Resultat_int;
+		
+		std::string Source_STR 				= std::string(Source);
+		std::string Destination_STR 		= std::string(Destination);
+		
+		std::string VAR_Progression_STR 	= std::string(VAR_Progression);
+		std::string VAR_Octets_STR 			= std::string(VAR_Octets);
+		std::string VAR_OctetsParSec_STR 	= std::string(VAR_OctetsParSec);
+		
+	
+		cpinti_dbg::CPINTI_DEBUG("Copie du fichier depuis '" + Source_STR + "' a '" + Destination_STR + "' (static cpinti_io)... ", 
+					 "Copy file from '" + Source_STR + "' to '" + Destination_STR + "' (static cpinti_io)... ",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Copier_Fichier()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+						
+		cpinti_dbg::CPINTI_DEBUG("Indicateurs: Progression '" + VAR_Progression_STR + "' Octets copies '" + VAR_Octets_STR + "' octets par secondes '" + VAR_OctetsParSec_STR + "'", 
+						"Indicators: Progression '" + VAR_Progression_STR + "' Copied bytes '" + VAR_Octets_STR + "' bytes by sec '" + VAR_OctetsParSec_STR + "'",
+						"__CpintiCore_CpcdosOSx__", "cpinti_Copier_Fichier()",
+						Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
+
+						
+		if(NP_cpinti_io::cpinti_io::Copier_Fichier(Source_STR, Destination_STR, Priorite, VAR_Progression_STR, VAR_Octets_STR, VAR_OctetsParSec_STR) == true)
+		{
+
+			cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", "", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
+
+			return true;
+		}
+		else
+		{
+			cpinti_dbg::CPINTI_DEBUG("Problemes durant la copie du fichier", "Problem during copy file", "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			return false;
+		}
+		
+		return Resultat_int;
+		
+	} /* COPIER FICHIER */
+}
+

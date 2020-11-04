@@ -1,0 +1,36 @@
+fenetre/ Ma_Fenetre
+	.titre 		= "Ma premiere application"
+	.px		= "100"
+	.py		= "20"
+	.tx		= "250"
+	.ty		= "150"
+	.Opacite 	= "100"
+	.Parametres	= ""
+	.CouleurFenetre	= "050,050,250"
+	.CouleurTitre	= "255,255,255"
+	.CouleurFond	= "255,255,050"
+	.event		= ""
+	@#Handle_Fenetre creer/
+Fin/ fenetre
+
+bouton/ Mon_Bouton
+	.Handle		= "%Handle_Fenetre%"
+	.Parametres	= "IMGAUTO:2"
+	.PX		= "20"
+	.PY		= "20"
+	.tx		= "100"
+	.ty		= "30"
+	.opacite	= "255"
+    .texte		= "Clic moi!"
+	.Image		= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.evenement	= "%_EXE_PATH_%"
+	creer/
+Fin/ Bouton
+
+Fonction/ Mon_Bouton(Click)
+
+	msgbox/ Hello ! :-)
+	
+Fin/ Fonction
+
+

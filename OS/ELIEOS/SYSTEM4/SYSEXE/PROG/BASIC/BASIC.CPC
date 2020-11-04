@@ -1,0 +1,14 @@
+
+fenetre/ thallium_main_window
+	.titre 			= "YukiBasic 79"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "800"
+	.ty = "600"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "155,155,155"
+	.event = ""
+	@#elie_note creer/
+fin/ fenetre

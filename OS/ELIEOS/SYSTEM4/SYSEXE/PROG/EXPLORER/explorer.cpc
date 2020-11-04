@@ -1,0 +1,280 @@
+
+FIX/ mydesk_POSX = /C((%CPC.SCR.X% / 2) - (600 / 2))
+
+
+fenetre/ my_desk
+	.titre 			= "Yuki Explorer"
+	.px				= "%mydesk_POSX%"
+	.py				= "180"
+	.tx				= "600"
+	.ty				= "284"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "127,127,127"
+	.event			= ""
+	@#Handle_menu creer/
+Fin/ fenetre
+
+@#test REP/ C:/CPCDOS/OS/YukiOS/MySpace
+
+TEXTEBLOC/ contenu
+	.Handle = "%Handle_menu%"
+	.PARAMETRES = "COL:1, BORD:1"
+	.TEXTE = "%test%"
+	.PX = "75"
+	.PY = "22"
+        .tx = "525"
+        .ty = "262"
+        .CouleurFond = "211,211,211"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+fix/ /s test
+
+FIX/ search = \#NULL
+
+Textebox/ zone_search
+	.handle			= "%Handle_menu%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINES:1"
+        .PX                             = "45"
+        .PY                             = "0"
+	.TX				= "518"
+	.TY				= "20"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+        .texte          = "C:/CPCDOS/OS/YukiOS/MySpace/"
+	.event			= "%_exe_path_%=KeyPress"
+    Creer/
+Fin/ Textebox
+
+
+Bouton/ mydocs
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "1"
+	.PY				= "65"
+	.tx				= "73"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "MyDocs"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ mydocs.Click()
+txt/ docs
+   @#docs REP/ C:/CPCDOS/OS/office/MyDesk/MyDocs
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%docs%"
+                         creer/
+                fin/ TEXTEBLOC
+                textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/MyDocs"
+		 Fin/ textbox
+ FIX/ /S recherche
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S docs
+fin/ fonction
+
+Bouton/ mypics
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "1"
+	.PY				= "100"
+	.tx				= "73"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "MyPics"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ mypics.Click()
+txt/ mypics
+   @#pics REP/ C:/CPCDOS/OS/office/MyDesk/MyPics
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%pics%"
+                         creer/
+                fin/ TEXTEBLOC
+               textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/MyPics"
+		 Fin/ textbox
+ FIX/ /S recherche
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S pics
+fin/ fonction
+
+Bouton/ download
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "1"
+	.PY				= "135"
+	.tx				= "73"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Download"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ download.Click()
+txt/ download
+   @#down REP/ C:/CPCDOS/OS/office/MyDesk/Download
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%down%"
+                         creer/
+                fin/ TEXTEBLOC
+                textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/Download"
+		 Fin/ textbox
+ FIX/ /S recherche
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S down
+fin/ fonction
+
+
+Bouton/ mywall
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "1"
+	.PY				= "170"
+	.tx				= "73"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "MyWallpp"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ mywall.Click()
+txt/ wallpaper
+   @#wallpp REP/ C:/CPCDOS/OS/office/MyDesk/MyWallpp
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%wallpp%"
+                         creer/
+                fin/ TEXTEBLOC
+                textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/MyWallpp"
+		 Fin/ textbox
+ FIX/ /S recherche
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S wallpp
+fin/ fonction
+
+Bouton/ mymusics
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "1"
+	.PY				= "205"
+	.tx				= "73"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "MyMusics"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ mymusic.Click()
+txt/ music
+   @#music REP/ C:/CPCDOS/OS/office/MyDesk/MyMusics
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%music%"
+                         creer/
+                fin/ TEXTEBLOC
+                textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/MyMusics"
+		 Fin/ textbox
+ FIX/ /S recherche
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S music
+fin/ fonction
+
+
+Bouton/ home
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.tx				= "39"
+	.ty				= "21"
+	rem/ .opacite		= "100"
+	.texte			= "home"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ home.Click()
+TXT/ home
+   @#home REP/ C:/CPCDOS/OS/office/MyDesk
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%home%"
+                         creer/
+                fin/ TEXTEBLOC
+                 textebox/ /modif:zone_search
+			 @#recherche .texte
+                         .texte "C:/CPCDOS/OS/office/MyDesk"
+		 Fin/ textbox
+      actualiser/ contenue
+      actualiser/ zone_search
+      actualiser/ my_desk
+   FIX/ /S recherche
+   FIX/ /S home
+FIN/ fonction
+
+
+Bouton/ go
+	.Handle			= "%Handle_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "563"
+	.PY				= "0"
+	.tx				= "37"
+	.ty				= "21"
+	rem/ .opacite		= "100"
+	.texte			= "Go!"
+	.Image			= "%HOST_OS%/SYSTEM4/ADVANCE/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+fonction/ go.Click()
+                 textebox/ /modif:zone_search
+			 @#recherche .texte
+		 Fin/ textbox
+   @#custom REP/ %recherche%
+                TEXTEBLOC/ /modif:contenu
+                         .TEXTE = "%custom%"
+                         creer/
+                fin/ TEXTEBLOC
+      actualiser/ contenue
+      actualiser/ my_desk
+   FIX/ /S custom
+   FIX/ /S recherche
+FIN/ fonction
+
+
+
+

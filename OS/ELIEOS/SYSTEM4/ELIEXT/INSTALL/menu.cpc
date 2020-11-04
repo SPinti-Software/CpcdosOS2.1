@@ -1,0 +1,38 @@
+
+
+fenetre/ APP2
+	.titre 			= "Icone"
+	.px				= "43"
+	.py				= "58"
+	.tx				= "50"
+	.ty				= "50"
+    rem/.Opacite                        = "190"
+    .Parametres                     = "TYPE:4 CTN:1 OMBRE:0"
+    .CouleurFenetre                 = ""
+    .CouleurTitre                   = ""
+    .ImgTitre		= "%HOST_OS%/setxt/MEDIA/GUI/BUTTONS/BTN_GRA3.png"
+    .CouleurTitre   = "000,000,000"
+	.Icone			= "OS/office/setxt/MEDIA/GUI/ICONES/OS/elie.png"
+        .event                          = ""
+	@#win_menu creer/
+Fin/ fenetre
+
+
+
+picturebox/ dsk_utility
+	.Handle			= "%win_menu%"
+	.Parametres		= "IMGAUTO:2"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "50"
+	.ty		        = "50"
+	.Image			= "%HOST_OS%/setxt/MEDIA/GUI/ICONES/DSKUTIL/diskutil.png"
+	rem/.opacite		= "150"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+FONCTION/ dsk_utility.Click()
+	EXE/ & %HOST_OS%/setxt/exec/diskutility.cpc
+FIN/ FONCTION
+

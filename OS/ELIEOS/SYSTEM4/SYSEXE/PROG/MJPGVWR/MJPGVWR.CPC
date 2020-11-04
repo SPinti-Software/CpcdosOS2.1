@@ -1,0 +1,43 @@
+
+rem/fix/ taille_y_video = blabla
+rem/fix/ taille_x_video = blabla
+
+
+fenetre/ mjpgviewer
+	.titre 			= "Elie MJPG Viewer"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "595"
+	.ty = "490"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "005,000,98"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#mjpg creer/
+fin/ fenetre
+
+
+
+rem/ barre menu
+
+rem/ zone video
+
+rem/@#VIDEO OUVRIR/ blabla.mjpg
+
+
+picturebox/ yummyvideo
+	.Handle			= "%mjpg%"
+	.Parametres		= "UPD:1"
+	.PX			= "0"
+	.PY			= "0"
+	.tx			= "595"
+	.ty		        = "490"
+	.Image			= "OS/ELIEOS/MySpace/Videos/test.mjpg"
+	rem/.opacite		= "100"
+	.event			= ""
+	creer/
+Fin/ picturebox
+
+
+actualiser/ mjpgviewer

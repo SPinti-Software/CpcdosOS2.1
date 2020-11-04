@@ -1,0 +1,21 @@
+Fenetre/ Type1
+    .Titre					= "TYPE1"
+	.Parametres				= "TYPE:1"
+	.PX						= "200"
+	.PY						= "200"
+	.TX						= "200"
+	.TY						= "200"
+	.CouleurFond			= "050,050,050"
+@#Hi creer/
+Fin/ Fenetre
+
+
+Picturebox/ jsp
+	.Handle					= "%Hi%"
+	.PX						= "10"
+	.PY						= "10"
+	.TX						= "80"
+	.TY						= "80"
+	.Image					= "OS/FIREFLY/GUI/DOOM.png"
+creer/
+Fin/ Picturebox

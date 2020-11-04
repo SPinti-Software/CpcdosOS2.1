@@ -1,0 +1,7 @@
+﻿#include "Lib_GZ_Lite/Lib_GZ_Lite.h"
+#include "Lib_GZ_Lite/Sys/OpDebug.h"
+extern "C" int IniLib_Lib_GZ_Lite(){
+Lib_GZ_Lite::zpLib = Lib_GZ_Lite::NewLib();
+Lib_GZ_Lite::Sys::OpDebug::NewClass();
+return 1;
+}

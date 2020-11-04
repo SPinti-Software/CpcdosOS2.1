@@ -1,0 +1,10 @@
+// Create TELNET Server in another process
+
+// Create a new process
+@#PID_Telnet sys/ /process PROCESS_TELNET
+
+// Execute telnet server thread in this process
+CMD/ /PID:%PID_Telnet% Server/ /tcp:23 /Mode:telnet
+
+
+//

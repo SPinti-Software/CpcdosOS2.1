@@ -1,0 +1,362 @@
+
+
+fenetre/ account_wd
+	.titre 			= "User settings"
+	.px				= "100"
+	.py				= "100"
+	.tx				= "420"
+	.ty				= "225"
+	rem/ .Opacite 		= "100"
+	.Parametres		= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "245,238,205"
+	.event			= ""
+	@#account_Fenetre creer/
+Fin/ fenetre
+
+@#FSTNAME OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/fstname.cfg
+@#LASTNAME OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/lastname.cfg
+@#USERNAMED OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/username.cfg
+
+
+
+TEXTEBLOC/ firstname
+	.Handle = "%account_Fenetre%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "First name : %FSTNAME%"
+	.PX = "3"
+	.PY = "24"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ lastname
+	.Handle = "%account_Fenetre%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Last name : %LASTNAME%"
+	.PX = "3"
+	.PY = "44"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ username
+	.Handle = "%account_Fenetre%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Username : %USERNAMED%"
+	.PX = "3"
+	.PY = "64"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ yesorno
+	.Handle = "%account_Fenetre%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "Activate user account?"
+	.PX = "3"
+	.PY = "170"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+
+TEXTEBLOC/ info
+	.Handle = "%account_Fenetre%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = "To change the Username and password, %CPC.CR%enter your password and click change"
+	.PX = "3"
+	.PY = "110"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+@#AVATAR OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/avatar.cfg
+
+picturebox/ logologin
+	.Handle			= "%account_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "310"
+	.PY				= "10"
+	.tx				= "100"
+	.ty				= "100"
+	.Image			= "%AVATAR%"
+	rem/.opacite		= "100"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Picturebox
+
+fonction/ logologin.Click()
+
+       exe/ OS/ELIEOS/SYSTEM4/SYSEXE/SETTING/avatar.cpc
+        fermer/ account_wd
+		
+fin/ fonction
+
+FIX/ MDP  = \#NULL
+
+Textbox/ zonepass
+	.handle			= "%account_Fenetre%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINE:1"
+	.PX				= "5"
+	.PY				= "145"
+	.TX				= "230"
+	.TY				= "15"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+	.texte			= "%MDP%"
+	.event			= "%_exe_path_%"
+	Creer/
+Fin/ Textebox
+
+Bouton/ change_user
+	.Handle			= "%account_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "240"
+	.PY				= "140"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Change"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ oui
+	.Handle			= "%account_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "8"
+	.PY				= "188"
+	.tx				= "74"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Yes"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+Bouton/ non
+	.Handle			= "%account_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "91"
+	.PY				= "188"
+	.tx				= "75"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "No"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+
+
+FONCTION/ change_user.Click()
+
+
+txt/ sekerity hehe
+
+@#PASSWORD OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/password.cfg
+         textebox/ /modif:zonepass
+			 @#DATAPASSWORD .texte
+			 creer/
+		 Fin/ textbox
+SI/ "%DATAPASSWORD%" == "%PASSWORD%" alors:
+
+EXE/ & OS/ELIEOS/SYSTEM4/SYSEXE/SETTING/accutil.cpc
+fermer/ account_wd
+
+SINON:
+	SI/ "%DATAPASSWORD%" N= "%PASSWORD%" alors:
+        msgbox/ Wrong Password! /TITRE:Erreur! /ERREUR:4 /TYPE:0
+	Fin/ SI
+Fin/ SI 
+
+
+	
+fin/ fonction
+
+
+
+FONCTION/ oui.Click()
+
+
+
+fenetre/ elie_security
+	.titre 			= "Safety first!"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "370"
+	.ty = "85"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#file_utility creer/
+fin/ fenetre
+
+
+TEXTEBLOC/ to_link
+	.Handle = "%file_utility%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = " Password"
+	.PX = "2"
+	.PY = "10"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+fix/ DATA1 = \#NULL
+
+Textbox/ dataefu1
+	.handle			= "%file_utility%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINE:1"
+	.PX				= "5"
+	.PY				= "25"
+	.TX				= "360"
+	.TY				= "15"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+	.texte			= "%DATA1%"
+	.event			= "%_exe_path_%"
+	Creer/
+Fin/ Textebox
+
+
+Bouton/ copier_Bouton
+	.Handle			= "%file_utility%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "260"
+	.PY				= "45"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Activate"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ copier_Bouton.Click()
+txt/ sekerity hehe
+
+@#PASSWORD OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/password.cfg
+         textebox/ /modif:dataefu1
+			 @#DATAPASSWORD .texte
+			 creer/
+		 Fin/ textbox
+SI/ "%DATAPASSWORD%" == "%PASSWORD%" alors:
+                         
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/account.cfg
+          CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/USERS/account.cfg = ACTIVER
+          CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/lock.cfg
+          CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/USERS/lock.cfg = ACTIVER
+          Message/ Account activated! /Titre: Elie Office System /Erreur:1 /Type:0
+
+SINON:
+	SI/ "%DATAPASSWORD%" N= "%PASSWORD%" alors:
+        msgbox/ Wrong Password! /TITRE:Erreur! /ERREUR:4 /TYPE:0
+	Fin/ SI
+Fin/ SI 
+
+FIX/ /S DATAPASSWORD
+FIX/ /S PASSWORD
+	
+fin/ fonction
+
+FIN/ FONCTION
+
+FONCTION/ non.Click()
+
+
+fenetre/ elie_security
+	.titre 			= "Safety first!"
+	.px				= "100"
+	.py 			= "100"
+	.tx 			= "370"
+	.ty = "85"
+	// .opacite 	= "100"
+	.parametres 	= "TYPE:0"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurFond	= "245,238,205"
+	.event = ""
+	@#file_utility creer/
+fin/ fenetre
+
+
+TEXTEBLOC/ to_link
+	.Handle = "%file_utility%"
+	.PARAMETRES = "COL:0, BORD:0"
+	.TEXTE = " Password"
+	.PX = "2"
+	.PY = "10"
+	.COULEURTEXTE = "000,000,000"
+	CREER/
+FIN/ TEXTEBLOC
+
+fix/ DATA1 = \#NULL
+
+Textbox/ dataefu1
+	.handle			= "%file_utility%"
+	.parametres 	= "EDIT:1 COL:1 MULTILINE:1"
+	.PX				= "5"
+	.PY				= "25"
+	.TX				= "360"
+	.TY				= "15"
+	.CouleurFond	= "255,255,255"
+	.CouleurTexte	= "000,000,000"
+	.texte			= "%DATA1%"
+	.event			= "%_exe_path_%"
+	Creer/
+Fin/ Textebox
+
+
+Bouton/ copier_Bouton
+	.Handle			= "%file_utility%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "260"
+	.PY				= "45"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Deactivate"
+	.Image			= "OS/ELIEOS/SYSTEM4/ELIEXT/ELIELDR/MEDIA/GUI/BUTTONS/BTN_BLUE.png"
+	.event			= "%_exe_path_%=Click"
+	creer/
+Fin/ Bouton
+
+fonction/ copier_Bouton.Click()
+txt/ sekerity hehe
+
+@#PASSWORD OUVRIR/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/password.cfg
+         textebox/ /modif:dataefu1
+			 @#DATAPASSWORD .texte
+			 creer/
+		 Fin/ textbox
+SI/ "%DATAPASSWORD%" == "%PASSWORD%" alors:
+         CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/account.cfg
+         CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/USERS/account.cfg = DESACTIVER
+         CMD/ /THREAD SUPPRIMER/ OS/ELIEOS/SYSTEM4/ELIEXT/USERS/lock.cfg
+         CMD/ /THREAD ecrire/ /BIN OS/ELIEOS/SYSTEM4/ELIEXT/USERS/lock.cfg = DESACTIVER
+         Message/ Account Deactivate! /Titre: Elie Office System /Erreur:1 /Type:0
+SINON:
+	SI/ "%DATAPASSWORD%" N= "%PASSWORD%" alors:
+        msgbox/ Wrong Password! /TITRE:Erreur! /ERREUR:4 /TYPE:0
+	Fin/ SI
+Fin/ SI 
+
+FIX/ /S DATAPASSWORD
+FIX/ /S PASSWORD
+	
+fin/ fonction
+
+FIN/ FONCTION
+
+
+

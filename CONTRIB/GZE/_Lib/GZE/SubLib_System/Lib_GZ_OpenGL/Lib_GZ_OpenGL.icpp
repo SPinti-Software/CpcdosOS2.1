@@ -1,0 +1,29 @@
+﻿#include "Lib_GZ_OpenGL/Lib_GZ_OpenGL.h"
+#include "Lib_GZ_OpenGL/OpenGL.h"
+#include "Lib_GZ_OpenGL/Base/OpAttribute.h"
+#include "Lib_GZ_OpenGL/OpGpuInfo.h"
+#include "Lib_GZ_OpenGL/Base/OpUnVec2.h"
+#include "Lib_GZ_OpenGL/GpuObj/OpGpuBatch.h"
+#include "Lib_GZ_OpenGL/GpuObj/OpGpuBuffer.h"
+#include "Lib_GZ_OpenGL/GpuObj/OpGpuFace.h"
+#include "Lib_GZ_OpenGL/ShaderBase/OpFragmentShader.h"
+#include "Lib_GZ_OpenGL/ShaderBase/OpProgramShader.h"
+#include "Lib_GZ_OpenGL/ShaderBase/OpVbo.h"
+#include "Lib_GZ_OpenGL/ShaderBase/OpVertexShader.h"
+#include "Lib_GZ_OpenGL/OpGpu.h"
+extern "C" int IniLib_Lib_GZ_OpenGL(){
+Lib_GZ_OpenGL::zpLib = Lib_GZ_OpenGL::NewLib();
+Lib_GZ_OpenGL::OpenGL::NewClass();
+Lib_GZ_OpenGL::Base::OpAttribute::NewClass();
+Lib_GZ_OpenGL::OpGpuInfo::NewClass();
+Lib_GZ_OpenGL::Base::OpUnVec2::NewClass();
+Lib_GZ_OpenGL::GpuObj::OpGpuBatch::NewClass();
+Lib_GZ_OpenGL::GpuObj::OpGpuBuffer::NewClass();
+Lib_GZ_OpenGL::GpuObj::OpGpuFace::NewClass();
+Lib_GZ_OpenGL::ShaderBase::OpFragmentShader::NewClass();
+Lib_GZ_OpenGL::ShaderBase::OpProgramShader::NewClass();
+Lib_GZ_OpenGL::ShaderBase::OpVbo::NewClass();
+Lib_GZ_OpenGL::ShaderBase::OpVertexShader::NewClass();
+Lib_GZ_OpenGL::OpGpu::NewClass();
+return 1;
+}

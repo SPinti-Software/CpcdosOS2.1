@@ -1,0 +1,133 @@
+﻿#include "Lib_GZ/Lib_GZ.h"
+#include "Lib_GZ/Sys/Debug.h"
+#include "Lib_GZ/Class.h"
+#include "Lib_GZ/ThreadMsg.h"
+#include "Lib_GZ/Gpu/Gpu.h"
+#include "Lib_GZ/Gpu/GpuInfo.h"
+#include "Lib_GZ/Gfx/Interface.h"
+#include "Lib_GZ/Gfx/Root.h"
+#include "Lib_GZ/Gfx/Dispacher.h"
+#include "Lib_GZ/Gfx/Object.h"
+#include "Lib_GZ/Gfx/Attribute.h"
+#include "Lib_GZ/Gfx/Pixel.h"
+#include "Lib_GZ/Gfx/Shape.h"
+#include "Lib_GZ/Gfx/Buffer.h"
+#include "Lib_GZ/Gfx/Perspective.h"
+#include "Lib_GZ/Gpu/GpuObj/GpuBuffer.h"
+#include "Lib_GZ/Gpu/ShaderBase/ProgramShader.h"
+#include "Lib_GZ/Gpu/ShaderBase/ShaderBase.h"
+#include "Lib_GZ/Gpu/Base/Attribute.h"
+#include "Lib_GZ/Gpu/ShaderBase/Vbo.h"
+#include "Lib_GZ/Gpu/Base/Uniform.h"
+#include "Lib_GZ/Gpu/GpuObj/GpuObject.h"
+#include "Lib_GZ/Gfx/Face.h"
+#include "Lib_GZ/Gfx/Triangle.h"
+#include "Lib_GZ/Base/Pt.h"
+#include "Lib_GZ/Base/Vec3.h"
+#include "Lib_GZ/Base/Quaternion.h"
+#include "Lib_GZ/Base/Vec4.h"
+#include "Lib_GZ/Base/Vec2.h"
+#include "Lib_GZ/Gpu/GpuObj/GpuFace.h"
+#include "Lib_GZ/File/RcImg.h"
+#include "Lib_GZ/Sys/System.h"
+#include "Lib_GZ/File/Resource.h"
+#include "Lib_GZ/Sys/File.h"
+#include "Lib_GZ/Base/PtA.h"
+#include "Lib_GZ/Base/Poly4.h"
+#include "Lib_GZ/Sys/Window.h"
+#include "Lib_GZ/Input/Key.h"
+#include "Lib_GZ/Gfx/GlobalData.h"
+#include "Lib_GZ/Sys/FrameRate.h"
+#include "Lib_GZ/Sys/Context.h"
+#include "Lib_GZ/Sys/Message/ContextCreated.h"
+#include "Lib_GZ/Sys/ContextHandle.h"
+#include "Lib_GZ/Sys/Message/ContextLink.h"
+#include "Lib_GZ/Base/Dim.h"
+#include "Lib_GZ/Sys/Message/MousePos.h"
+#include "Lib_GZ/Sys/Message/Blit.h"
+#include "Lib_GZ/Sys/Message/BlitComplete.h"
+#include "Lib_GZ/Gfx/Clip/Rectangle.h"
+#include "Lib_GZ/Sys/ThreadItf.h"
+#include "Lib_GZ/Sys/ThreadObj.h"
+#include "Lib_GZ/Gpu/Base/UnVec2.h"
+#include "Lib_GZ/Gpu/GpuObj/GpuBatch.h"
+#include "Lib_GZ/Gpu/ShaderBase/FragmentShader.h"
+#include "Lib_GZ/Gpu/ShaderBase/VertexShader.h"
+#include "Lib_GZ/Gpu/ShaderModel/GzModel/GzShModel.h"
+#include "Lib_GZ/Base/Perspective.h"
+#include "Lib_GZ/Base/Mat4x4.h"
+#include "Lib_GZ/Base/Mat3x4.h"
+#include "Lib_GZ/Base/Mat2x4.h"
+#include "Lib_GZ/Base/Mat1x4.h"
+#include "Lib_GZ/Base/TestPod.h"
+#include "Lib_GZ/Base/TestPod2.h"
+#include "Lib_GZ/Gfx/Clip/Img.h"
+#include "Lib_GZ/Gfx/Clip.h"
+extern "C" int IniLib_Lib_GZ(){
+Lib_GZ::zpLib = Lib_GZ::NewLib();
+Lib_GZ::Sys::Debug::NewClass();
+Lib_GZ::Class::NewClass();
+Lib_GZ::ThreadMsg::NewClass();
+Lib_GZ::Gpu::Gpu::NewClass();
+Lib_GZ::Gpu::GpuInfo::NewClass();
+Lib_GZ::Gfx::Interface::NewClass();
+Lib_GZ::Gfx::Root::NewClass();
+Lib_GZ::Gfx::Dispacher::NewClass();
+Lib_GZ::Gfx::Object::NewClass();
+Lib_GZ::Gfx::Attribute::NewClass();
+Lib_GZ::Gfx::Pixel::NewClass();
+Lib_GZ::Gfx::Shape::NewClass();
+Lib_GZ::Gfx::Buffer::NewClass();
+Lib_GZ::Gfx::Perspective::NewClass();
+Lib_GZ::Gpu::GpuObj::GpuBuffer::NewClass();
+Lib_GZ::Gpu::ShaderBase::ProgramShader::NewClass();
+Lib_GZ::Gpu::ShaderBase::ShaderBase::NewClass();
+Lib_GZ::Gpu::Base::Attribute::NewClass();
+Lib_GZ::Gpu::ShaderBase::Vbo::NewClass();
+Lib_GZ::Gpu::Base::Uniform::NewClass();
+Lib_GZ::Gpu::GpuObj::GpuObject::NewClass();
+Lib_GZ::Gfx::Face::NewClass();
+Lib_GZ::Gfx::Triangle::NewClass();
+Lib_GZ::Base::Pt::NewClass();
+Lib_GZ::Base::Vec3::NewClass();
+Lib_GZ::Base::Quaternion::NewClass();
+Lib_GZ::Base::Vec4::NewClass();
+Lib_GZ::Base::Vec2::NewClass();
+Lib_GZ::Gpu::GpuObj::GpuFace::NewClass();
+Lib_GZ::File::RcImg::NewClass();
+Lib_GZ::Sys::System::NewClass();
+Lib_GZ::File::Resource::NewClass();
+Lib_GZ::Sys::File::NewClass();
+Lib_GZ::Base::PtA::NewClass();
+Lib_GZ::Base::Poly4::NewClass();
+Lib_GZ::Sys::Window::NewClass();
+Lib_GZ::Input::Key::NewClass();
+Lib_GZ::Gfx::GlobalData::NewClass();
+Lib_GZ::Sys::FrameRate::NewClass();
+Lib_GZ::Sys::Context::NewClass();
+Lib_GZ::Sys::Message::ContextCreated::NewClass();
+Lib_GZ::Sys::ContextHandle::NewClass();
+Lib_GZ::Sys::Message::ContextLink::NewClass();
+Lib_GZ::Base::Dim::NewClass();
+Lib_GZ::Sys::Message::MousePos::NewClass();
+Lib_GZ::Sys::Message::Blit::NewClass();
+Lib_GZ::Sys::Message::BlitComplete::NewClass();
+Lib_GZ::Gfx::Clip::Rectangle::NewClass();
+Lib_GZ::Sys::ThreadItf::NewClass();
+Lib_GZ::Sys::ThreadObj::NewClass();
+Lib_GZ::Gpu::Base::UnVec2::NewClass();
+Lib_GZ::Gpu::GpuObj::GpuBatch::NewClass();
+Lib_GZ::Gpu::ShaderBase::FragmentShader::NewClass();
+Lib_GZ::Gpu::ShaderBase::VertexShader::NewClass();
+Lib_GZ::Gpu::ShaderModel::GzModel::GzShModel::NewClass();
+Lib_GZ::Base::Perspective::NewClass();
+Lib_GZ::Base::Mat4x4::NewClass();
+Lib_GZ::Base::Mat3x4::NewClass();
+Lib_GZ::Base::Mat2x4::NewClass();
+Lib_GZ::Base::Mat1x4::NewClass();
+Lib_GZ::Base::TestPod::NewClass();
+Lib_GZ::Base::TestPod2::NewClass();
+Lib_GZ::Gfx::Clip::Img::NewClass();
+Lib_GZ::Gfx::Clip::NewClass();
+return 1;
+}
