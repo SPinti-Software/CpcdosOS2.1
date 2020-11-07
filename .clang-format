@@ -10,5 +10,7 @@ IndentCaseLabels: false
 ColumnLimit: 0
 AccessModifierOffset: -4
 FixNamespaceComments: true
+NamespaceIndentation: All
+IndentPPDirectives: AfterHash
 
 ...
