@@ -1,1 +1,0 @@
-C:\TH05\LDR.BAT

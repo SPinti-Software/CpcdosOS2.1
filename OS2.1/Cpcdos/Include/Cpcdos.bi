@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "01" 
+CONST _VJOUR as string 	= "16" 
 CONST _VMOIS as string 	= "11"
 CONST _VANNEE as string = "2020"
 
@@ -327,6 +327,7 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _MAX_GUI_TEXTBOX	 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_PROGRESSBAR 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_CHECKBOX 	as integer = _MAX_GUI___OBJS
+		CONST _MAX_GUI_EXPLORER 	as integer = _MAX_GUI___OBJS
 		
 		CONST _MAX_NOMBRE_OS		as integer = 8
 		
@@ -593,7 +594,7 @@ CONST var_ as integer = 5-3
 CONST _ABOUT as String = "co-kernel " & (CHR(65+var_) & CHR(110+var_) & CHR(97+var_) & CHR(98+var_) & CHR(109+var_) & CHR(113+var_)) & CHR(32) & (CHR(109+var_) & CHR(113+var_)) & "x et " & CHR(65+var_) & CHR(78+var_) & "inti " & CHR(65+var_) & "ore (tm)" & CHR(13) & CHR(78+var_) & "ar " & (CHR(113+var_)) & "eba" & CHR(113+var_) & "tien FAVIER" & _
 							" et ses contributeurs d'Ultima Test." & CHR(13) & _
 							"Un grand remerciement a Mickael BANVILLE pour sa contribution SDK des modules WIN32, 3D OpenGL/GZE Engine, LLVM." & CHR(13) & _
-							"Ainsi qu'a Timothee LUSSIAUD, Esteban CADIC, Leo ENDOR, Leo VACHET et Johann GRAF." & CHR(13) & _
+							"Ainsi qu'a Timothee LUSSIAUD, Esteban CADIC, Leo ENDOR, Leo VACHET et Johann GRAF. Et a la communaute" & CHR(13) & _
 							"  Copyright©" & CHR(65+var_) & CHR(78+var_) & "inti Software"
 Declare Sub intro()
 Declare function	__CPCDOS_INIT_2 cdecl 	Alias "__CPCDOS_INIT_2"		(a as integer) as integer

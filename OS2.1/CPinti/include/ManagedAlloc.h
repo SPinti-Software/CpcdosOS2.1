@@ -1,3 +1,4 @@
+#define ManagedAlloc
 
 #ifndef ManagedAlloc
 

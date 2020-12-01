@@ -280,7 +280,7 @@ namespace cpinti
 			
 			puts("Bye from kernel\n");
 			
-			cpc_clean();
+			// cpc_clean();
 			
 			// Activer les interruptions materiel
 			enable();

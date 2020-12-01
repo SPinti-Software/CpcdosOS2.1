@@ -100,7 +100,7 @@ Public Function cpc_Creer_Contexte cdecl Alias "cpc_Creer_Contexte" (TailleX as 
 		End if
 	End if
 	
-	Dim Resultat as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Render_Context(" & TailleX & "x" & TailleY & ")-" & CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, ImageCreate(800, 600, RGB(50, 150, 250), 32), CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, 800, 600)
+	Dim Resultat as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Render_Context(" & TailleX & "x" & TailleY & ")-" & CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, ImageCreate(TailleX, TailleY, RGB(50, 150, 250), 32), CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, TailleX, TailleY)
 	
 	if Resultat > 0 Then
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

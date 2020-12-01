@@ -1,4 +1,0 @@
-fix/ CTN = Server=LOCALHOST%CPC.CRLF%User-Agent=Cpcdos%CPC.CRLF%%CPC.CRLF%<!DOCTYPE html> <html lang="fr" id="facebook" class="no_js"> <head><meta charset="utf-8">
-
-FIX/ POS = /F:CPC.INSTR(%CTN%,%CPC.CRLF%%CPC.CRLF%)
-TXT/ Contenu:/F:CPC.MID(%CTN%,%POS%)

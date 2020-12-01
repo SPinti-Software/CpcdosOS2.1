@@ -281,12 +281,12 @@ public sub Test_MT()
 END sub
 
 public sub DUMP_PG()
-	print "Nombre de pages : " & get_numbers_of_pages() & "."
-	sleep
-	for b as integer = 0 to get_numbers_of_pages()
-		dump_page(get_numbers_of_pages() - b)
-		sleep
-	next b
+	' print "Nombre de pages : " & get_numbers_of_pages() & "."
+	' sleep
+	' for b as integer = 0 to get_numbers_of_pages()
+		' dump_page(get_numbers_of_pages() - b)
+		' sleep
+	' next b
 End sub
 
 #print * ENTRY POINT - __CPCDOS_INIT_1

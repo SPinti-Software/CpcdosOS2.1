@@ -15,34 +15,35 @@
  * for the specific language governing rights and limitations under the
  * License.
  *
- * The Original Code is MemoryModule.h
+ *  Changes have been made for:
  *
- * The Initial Developer of the Original Code is Joachim Bauch.
+/*  -== ExeLoader ==-
  *
- * --> Adaptation for Cpcdos OSx by Michael BANVILLE and Sebastien FAVIER
- *      Updated: 31/10/2016
+ *  Load .exe / .dll from memory and remap functions
+ *  Run your binaries on any x86 hardware
  *
- * Portions created by Joachim Bauch are Copyright (C) 2004-2015
- * Joachim Bauch. All Rights Reserved.
+ *  @autors
+ *   - Maeiky
+ *   - Sebastien FAVIER
+ *  
+ * Copyright (c) 2020 - V·Liance / SPinti-Software. All rights reserved.
  *
+ * The contents of this file are subject to the Apache License Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * If a copy of the Apache License Version 2.0 was not distributed with this file,
+ * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
  */
-
-extern void _EXE_LOADER_DEBUG(int alert, const char* format_FR, const char* format_EN, ...);
+ 
+#include "ExeLoader.h"
 
 #ifndef __MEMORY_MODULE_HEADER
 #define __MEMORY_MODULE_HEADER
 
-#undef CpcDos
-#define CpcDos ////////////////////////////////////////////
 
 
-
-#ifdef CpcDos
-    #include "win.h"
+#ifdef NoSetLastError
 	#define  SetLastError(x)
 #endif
-
-
 
 
 #define GET_HEADER_DICTIONARY(module, idx)  &(module)->headers->OptionalHeader.DataDirectory[idx]
@@ -66,24 +67,40 @@ typedef void *HCUSTOMMODULE;
 extern "C" {
 #endif
 
-typedef LPVOID (*CustomAllocFunc)(LPVOID, SIZE_T, DWORD, DWORD, void*, ManagedAlloc_exe&);
-typedef BOOL (*CustomFreeFunc)(LPVOID, SIZE_T, DWORD, void*, ManagedAlloc_exe&);
-typedef HCUSTOMMODULE (*CustomLoadLibraryFunc)(LPCSTR, void *, ManagedAlloc_exe&);
+typedef LPVOID (*CustomAllocFunc)(LPVOID, SIZE_T, DWORD, DWORD, void*, ManagedAlloc&);
+typedef BOOL (*CustomFreeFunc)(LPVOID, SIZE_T, DWORD, void*, ManagedAlloc&);
+typedef HCUSTOMMODULE (*CustomLoadLibraryFunc)(LPCSTR, void *, ManagedAlloc&);
 typedef FARPROC (*CustomGetProcAddressFunc)(HCUSTOMMODULE, LPCSTR, void *);
 typedef void (*CustomFreeLibraryFunc)(HCUSTOMMODULE, void *);
 
+
+typedef struct MEMORYMODULE {
+	PIMAGE_NT_HEADERS headers;
+	unsigned char *codeBase;
+	HCUSTOMMODULE *modules;
+	int numModules;
+	BOOL initialized;
+	BOOL isDLL;
+	BOOL isRelocated;
+	CustomAllocFunc alloc;
+	CustomFreeFunc free_;
+	CustomLoadLibraryFunc loadLibrary;
+	CustomGetProcAddressFunc getProcAddress;
+	CustomFreeLibraryFunc freeLibrary;
+	void *userdata;
+	DWORD pageSize;
+	ExeEntryProc exeEntry;
+	DllEntryProc dllEntry;
+	void* section_text;
+} MEMORYMODULE, *PMEMORYMODULE;
+
+
+extern ManagedAlloc instance_AllocManager;
+
 class MemoryModule
 {
-	
 	public:
-	ManagedAlloc_exe instance_AllocManager;
-	
-	
-	MemoryModule(){ 
-		_EXE_LOADER_DEBUG(2, "CONSTRUCTEUR: MemoryModule instancie avec succes!\n", "CONSTRUCTOR: MemoryModule instancied with success!"); 
-	
-	};
-	
+	MemoryModule(){ _EXE_LOADER_DEBUG(2, "CONSTRUCTEUR: MemoryModule instancie avec succes!\n", "CONSTRUCTOR: MemoryModule instancied with success!"); };
 	void Fin_instance();
 
 	/**

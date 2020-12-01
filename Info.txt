@@ -1,3 +1,0 @@
-Je suis un fichier texte lu depuis un executable .exe win32
-Hop un saut de ligne
-FIN!

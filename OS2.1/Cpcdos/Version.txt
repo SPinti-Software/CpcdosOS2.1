@@ -1,4 +1,6 @@
 
+ajouter correction Creer contexte --> 800x600 en dur
+
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.3         *** 
 	***       01 Novembre 2020 For public     ***

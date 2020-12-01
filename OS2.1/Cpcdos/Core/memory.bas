@@ -129,9 +129,9 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG(" [OK] id:" & Index_Libre & " offset depuis le bitmap existant [0x" & Hex(this.donnees_RVBA(Index_Libre)) & "] " & TX_ & "x" & " " & TY_ & " " & Bits_ & " bits - handle:" & Handle & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			DEBUG(" [OK] id:" & Index_Libre & " offset depuis le bitmap existant [0x" & Hex(this.donnees_RVBA(Index_Libre)) & "] " & TX_ & "x" & TY_ & " " & Bits_ & " bits - handle:" & Handle & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		Else
-			DEBUG(" [OK] id:" & Index_Libre & " offset from existing bitmap [0x" & Hex(this.donnees_RVBA(Index_Libre)) & "] " & TX_ & "x" & " " & TY_ & " " & Bits_ & " bits - handle:" & Handle & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			DEBUG(" [OK] id:" & Index_Libre & " offset from existing bitmap [0x" & Hex(this.donnees_RVBA(Index_Libre)) & "] " & TX_ & "x" & TY_ & " " & Bits_ & " bits - handle:" & Handle & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		End if
 	End if
 	

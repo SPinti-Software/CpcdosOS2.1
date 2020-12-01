@@ -35,6 +35,7 @@
             <File name="Cpcdos\GUI\OBJ_TextBox.BAS" />
             <File name="Cpcdos\GUI\OBJ_TexteBloc.BAS" />
             <File name="Cpcdos\GUI\UTF8.BAS" />
+            <File name="Cpcdos\GUI\OBJ_Explorer.BAS" />
         </Folder>
         <Folder name="Include">
             <File name="Cpcdos\Include\CCP_Thrd.bi" />

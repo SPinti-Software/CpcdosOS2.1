@@ -4623,6 +4623,140 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 	_scope_CMD
 	
 		' ===============================================================
+		'  Commande pour creer un explorateur de fichiers
+		' ===============================================================
+		CommLANG(1) = "explorer/"
+		CommLANG(2) = "explorer/"
+		CommLANG(3) = "\\#//"
+		CommTrouve = 0 : NoCMD = 0
+		for boucle as integer = 1 to 2
+			IF OnCherche = CommLANG(boucle) Then
+				NoCMD = 0
+				exit for
+			Else
+				NoCMD = 1
+			End if
+		Next boucle
+		IF NoCMD = 1 then CommLANG(1) = "[F.#).|" : CommLANG(2) = "[F.#).|" : CommLANG(3) = "\\#//"
+		rem Afficher la liste des commandes avec anglais / francais
+		IF AfficherAide = 1 then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+				CommandesAide = CommandesAide & CRLF & " explorer/                  Creer une nouvelle instance d'un explorateur"
+			Else
+				CommandesAide = CommandesAide & CRLF & " explorer/                  Create new explorer instance."
+			END IF
+		END IF
+		IF CommLANG(1) = OnCherche Then CommTrouve = 1
+		IF CommLANG(2) = OnCherche Then CommTrouve = 2
+		IF CommTrouve > 0 Then ' Afficher l'aide de la commande
+			IF AfficherAide = 2 then
+				Mess_Aide = ""
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Explorer'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un explorateur de fichiers dans un No de handle d'une fenetre existante"
+					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   Explorer/ my_explorer"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Texte				= " & CHR(34) & "C:\dossier" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parametres			= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurTexte	 	= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurFond		= " & CHR(34) & "255,255,255" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\dossier\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Creer/"
+					Mess_Aide = Mess_Aide & CRLF & "   Fin/ explorer"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : Imagebox/ , fenetre/"
+					Mess_Aide = Mess_Aide & CRLF
+				ELSEIF CPCDOS_INSTANCE.Utilisateur_Langage = 1 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Explorer'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
+					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create new file explorer instance in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   Explorer/ my_explorer"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.text				= " & CHR(34) & "c:\folder" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parameters 		= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TextColor 			= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.BackColor			= " & CHR(34) & "220,220,220" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\folder\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Create/"
+					Mess_Aide = Mess_Aide & CRLF & "   End/ Explorer"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  See also : picturebox/ , window/ , textblock/"
+					Mess_Aide = Mess_Aide & CRLF
+				END IF
+
+				DEBUG(Mess_Aide, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				testCMD = 0
+				AfficherAide = 0
+				exit _scope_CMD, _scope
+			END IF
+			' Tester la syntaxe
+			testCMD	= CCP_Verifier_Syntaxe(Commande, CommPosition)
+			IF testCMD > 10 Then exit _scope_CMD, _scope
+			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
+				IF testCMD < 6 then
+					Affichage = 0
+					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
+				Else
+					Affichage = 1
+				END IF
+			Else
+				Affichage = 1
+			END IF
+			' Recuperer les Parametres
+			Param = MID(Commande, CommPosition + TailleComm + 2)
+			SCOPE
+			' ====================================================================
+			
+			' Enlever les espaces et mettre tout en majuscules
+			Dim NomExplorer as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
+			
+			IF INSTR(UCASE(NomExplorer), "/MODIF") > 0 Then
+				NomExplorer = MID(NomExplorer, INSTR(UCASE(NomExplorer), "/MODIF") + 7) & "~MODIF#"
+
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Mode edition d'un explorer '" & NomExplorer & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Explorer edition mode '" & NomExplorer & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			Else
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Creation d'un explorer '" & NomExplorer & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Creating explorer '" & NomExplorer & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			End if
+		
+
+			CpcdosCP_SHELL = "IUG:EXPLORER_NOM=" & NomExplorer
+			
+			' ====================================================================
+			END SCOPE
+			
+			exit _scope_CMD, _scope
+		End if ' **** EXPLORER/ ****
+	
+	_end_scope_CMD
+	
+	_scope_CMD
+	
+		' ===============================================================
 		'  Commande pour rafraichir un objet ou une fenetre
 		' ===============================================================
 		CommLANG(1) = "actualiser/"

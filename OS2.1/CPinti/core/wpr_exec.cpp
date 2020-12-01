@@ -54,7 +54,7 @@ namespace Wrapper_Cpcdos
 		
 		if(FunctionID == 99)
 		{
-			cpc_clean();
+			// cpc_clean();
 			return 0;
 		}
 		
