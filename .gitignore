@@ -1,0 +1,27 @@
+# Kernel Binary
+CPCLDR.EXE 
+
+# Object file 
+*.o 
+*.a 
+*.obj 
+
+# Transpilled files
+OS2.1/Cpcdos/Core/*.c
+OS2.1/Cpcdos/Core/*.asm
+OS2.1/Cpcdos/Debug/*.c
+OS2.1/Cpcdos/Debug/*.asm
+OS2.1/Cpcdos/CpcdosCP/*.c
+OS2.1/Cpcdos/CpcdosCP/*.asm
+OS2.1/Cpcdos/GUI/*.c
+OS2.1/Cpcdos/GUI/*.asm
+OS2.1/Cpcdos/Network/*.c
+OS2.1/Cpcdos/Network/*.asm
+
+# Folders
+FB/
+djgpp/
+
+# Log 
+*.LOG 
+*.log

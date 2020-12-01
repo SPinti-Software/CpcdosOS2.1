@@ -1,0 +1,825 @@
+/*	
+	======================================
+	==       CPinti ---> SERVEUR TCP    ==
+	======================================
+	
+	Developpe entierement par Sebastien FAVIER
+
+	Description
+		Module permettant de creer un serveur TCP/UDP multi-client multithread multi I/O
+	 
+	Creation
+		19/10/2016
+		
+	Reecriture
+		02/11/2016
+		18/11/2016
+
+	Mise a jour
+		07/12/2017
+		
+		07-12-2017	: AMELIORATION du code en suivant une procedure sticte de GCC
+		11-04-2017	: ADAPTATION pour creation de serveur d'ECHO.
+		21-02-2017	: DEBUG ajout info port
+		14-02-2017	: Revue des includes + Finitions
+		13-02-2017	: Ajout du controle d'envoie (#CLT# et #TOUT#) pour choisir en envoie general ou cible
+		07-02-2017	: Ajout des fonctionnalites de controle de buffer
+	
+*/
+
+
+#include <ctime>
+#include <cstdlib>
+#include <cstring>
+#include <memory>
+#include <ctime> // RAND()
+#include <unistd.h> // usleep
+
+
+#include "func_cpi.h"
+
+#include "debug.h"
+
+#include "cpinti.h"
+#include "stack.h"
+
+#include "buffer.h"
+#include "socket.h"
+#include "serveur.h"
+
+// #include "io.h" // Lecture des fichiers de config
+
+namespace NP_cpinti_serveur
+{
+	int cpinti_srv::Demarrer_serveur(unsigned int NumPort, int NombreClients, unsigned int _NumeroID, int _TYPE_SERVEUR)
+	{
+		// Cette fonction permet de creer un serveur TCP 
+		//  _TYPE_SERVEUR 	= TCP:3 / UDP:5 / 31:CCP / 32:TELNET / 33:ECHO tcp  53:ECHO udp
+		//  NumPort			= Numero de port
+		//	_NumeroID		= Numero d'itentification unique associe a un processus
+		
+		// Retourne :
+		//	0	: OK
+		// 	-1 	: 
+		//	-2	: Erreur de configuration du socket
+		//	-3	: Impossible de creer un socket (Driver manquant?)
+		//	-4	: Erreur de binding
+		//	-5	: Ecoute impossible
+		//	-6	: Erreur de descripteur de fichier (select())
+		//	-7	: Erreur de lecture de socket (ERRPIPE)
+		//  -8	: Impossible de resoudre le nom (DNS)
+		//	-9	: Memoire insuffisante
+		
+		int Resultat_Preparation_SOCKET = 0;
+		int Resultat_Preparation_ECOUTE	= 0;
+		int Resultat_EXECUTION	 		= 0;
+		
+		
+		if(_TYPE_SERVEUR==31) // CCP
+		{
+			_TYPE_SERVEUR = 3; // TCP
+			this->Mode_Administration = 1; // CCP
+		}
+		else if(_TYPE_SERVEUR==32) // TELNET
+		{
+			_TYPE_SERVEUR = 3; // TCP
+			this->Mode_Administration = 2; // TELNET
+		}
+		else if(_TYPE_SERVEUR==33) // ECHO TCP
+		{
+			_TYPE_SERVEUR = 3; // TCP
+			this->Mode_Administration = 3; // ECHO
+		}
+		else if(_TYPE_SERVEUR==53) // ECHO UDP
+		{
+			_TYPE_SERVEUR = 5; // UDP
+			this->Mode_Administration = 3; // ECHO
+		}
+		
+		/* // Si le serveur CCP / TELNET a ete instancie
+		if(this->Mode_Administration != 0)
+		{
+			cpinti_dbg::CPINTI_DEBUG("Configuration du serveur pour un controle a distance...", 
+					 "Server configuration in progress for an remote control...",
+						"cpinti_srv", "Demarrer_serveur", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+						
+			if(NP_cpinti_io::cpinti_io::Fichier_Existe(this->CHEMIN_INTRO_1) == true)
+			{
+				// Si le remote control est active, alors on va chercher la configuration
+				if(NP_cpinti_io::cpinti_io::Lire_Fichier_complet( this->CHEMIN_INTRO_1,  this->MODE_LECTURE, this->Intro_Serveur_1) == false)
+					cpinti_dbg::CPINTI_DEBUG("Impossible de lire fichier d'introduction 'KRNL/CONFIG/INTRO_fr.SRV'", 
+						"Unable to read introduction file 'KRNL/CONFIG/INTRO_fr.SRV'",
+							"cpinti_srv", "Demarrer_serveur", Ligne_reste, Alerte_erreur, Date_avec, Ligne_r_normal);
+			}
+			else
+			{
+				cpinti_dbg::CPINTI_DEBUG("Impossible de recuperer le texte d'introduction 'KRNL\\CONFIG\\INTRO_fr.SRV'", 
+						"Unable to read introduction text 'KRNL\\CONFIG\\INTRO_fr.SRV'",
+							"cpinti_srv", "Demarrer_serveur", Ligne_reste, Alerte_erreur, Date_avec, Ligne_r_normal);
+			}
+			
+			// Si le texte est vide, on en cree un en anglais ;)
+			if(this->Intro_Serveur_1 == "")
+				this->Intro_Serveur_1 = Intro_Serveur_1_DEFAUT;
+			
+		} */
+
+		/*********************************************************************************/
+		/********* Allocation memoire d'une nouvelle instance d'un socket reseau *********/
+		/*********************************************************************************/
+
+		cpinti_dbg::CPINTI_DEBUG(" * Allocation memoire d'une instance d'un socket... ", 
+					 " * Memory allocation for network socket... ",
+						"cpinti_srv", "Demarrer_serveur", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+		
+		std::unique_ptr<NP_cpinti_socket::cpinti_socket> instance_socket(new NP_cpinti_socket::cpinti_socket);
+		
+		// Verifier si l'allocation a echoue
+		if (instance_socket == NULL)
+		{
+			std::string Erreur_mem = std::string(strerror(errno));
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'allouer de la memoire.\n Raison '" + Erreur_mem + "'", 
+						"[ERROR] Unable to allocate memory.\n Reason '" + Erreur_mem + "'",
+						"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+
+			return SRV_ERR_MEM; 
+		} /* Erreur de memoire */
+		
+		
+		std::string ADR = "0x" + std::to_string((unsigned int) &instance_socket);
+		std::string SIZ = std::to_string((int) sizeof(instance_socket));
+		cpinti_dbg::CPINTI_DEBUG("[OK] --> Allocation offset:" + ADR + " taille:" + SIZ + " octets.", "[OK] --> Allocation offset:" + ADR + " size:" + SIZ + " bytes.", 
+						"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+		
+		// Eviter tout crash hein... ;)
+		if(NombreClients < 0) NombreClients = 0;
+		
+		// Ok, on verifie si la preparation du socket a echoue
+		Resultat_Preparation_SOCKET = Preparer_Socket(instance_socket, NumPort, NombreClients, _NumeroID, _TYPE_SERVEUR);
+		
+		// Si il y a un soucis, le message d'erreur est deja logge, on quitte.
+		if(Resultat_Preparation_SOCKET < 0)
+			return Resultat_Preparation_SOCKET;
+		
+		Resultat_Preparation_ECOUTE = Preparer_Ecoute(instance_socket, NombreClients, NumPort);
+	
+		// Si il y a un soucis, le message d'erreur est deja logge, on quitte.
+		if(Resultat_Preparation_ECOUTE < 0)
+		{
+			Fermer_Socket(instance_socket);
+			return Resultat_Preparation_ECOUTE;
+		}
+		
+		// On finit par executer le serveur!
+		Resultat_EXECUTION = Executer_Serveur(instance_socket);
+		
+		if(Resultat_EXECUTION < 0)
+		{
+			Fermer_Socket(instance_socket);
+			return Resultat_EXECUTION;
+		}
+		
+		// Lui faire sa petite toilette, et fermer le socket reseau maintenant qu'on ne s'en servira plus! :)
+		Fermer_Socket(instance_socket);
+
+		
+		return SRV_OK;
+	} /* DEMARRER_SERVEUR */
+	
+	int cpinti_srv::Executer_Serveur(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket)
+	{
+		// Cette fonction execute le serveur, gere les clients
+		
+		
+		// Ceci va permettre de maintenir en vie ou non le serveur (true:OUI false:NON)
+		bool CONTINUER_EXECUTION 	= true;
+		int Resultat_Select		 	= 0;
+		int Code_Erreur				= 0;
+		int Lecture_Client			= 0;
+		
+		unsigned int Activite_socket;
+
+		unsigned int BoucleDoEvents = 0;
+		
+		// Recuperer le numero de port
+		unsigned int NoPort = instance_socket->get_Port();
+		
+		std::string NoPort_STR = std::to_string(NoPort);
+		
+		// Recuperer le nombre maximum de clients dans un STRING
+		std::string NombreClientsMAX_STR = std::to_string(instance_socket->get_Nombre_client_MAX());
+		
+		cpinti_dbg::CPINTI_DEBUG("Inscription du serveur dans le gestionnaire des statistiques de la carte reseau... ",
+								"Registering the server in the network card statistics manager... ",
+								"", "", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+								
+		// Incrire le serveur dans le systeme de statistiques
+		// if(cpinti::__CpintiCore_CpcdosOSx__::cpinti_add_net_info(NoPort) == false)
+			// cpinti_dbg::CPINTI_DEBUG("[ERREUR] Incription deja effectuee ou plus de places !",
+								// "[ERROR] Server already registered of full !",
+								// "", "", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);
+		// else
+			// cpinti_dbg::CPINTI_DEBUG("[OK]",
+								// "[OK]",
+								// "", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+		
+		cpinti_dbg::CPINTI_DEBUG("Lancement du serveur '" + NoPort_STR + "' !",
+								"Starting server '" + NoPort_STR + "' !",
+								"", "", Ligne_saute, Alerte_ok, Date_avec, Ligne_r_normal);
+								
+		/*******************************************************/
+		/******  E X E C U T I O N   D U   S E R V E U R  ******/
+		/*******************************************************/
+		
+		// Declarer celui qui recevra le contenu de la stack
+		std::string STACK_MEMOIRE_STR;
+		
+		
+		while(CONTINUER_EXECUTION)
+		{
+			BoucleDoEvents++;
+			
+			if(BoucleDoEvents > 10)
+			{
+				BoucleDoEvents = 0;
+				
+				instance_socket->THREAD_EVALUATION();
+
+				// Recuperer les info
+				Activite_socket = instance_socket->get_STATISTIQUES_Activite();
+
+				usleep(0);
+				
+				if(Activite_socket == 0)
+				{
+					// S'il y a 1 ou plusieurs clients deja connectes, tout a 100ms
+					if(instance_socket->get_Nombre_client() > 0)
+					{
+						instance_socket->set_THREAD_PRIORITE_YIELD(100000);
+						instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(100000);
+						instance_socket->set_THREAD_PRIORITE_SLEEP(100000);
+					}
+					else
+					{	
+						// Si aucun client connectes, tout a 600ms
+						instance_socket->set_THREAD_PRIORITE_YIELD(600000);
+						instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(600000);
+						instance_socket->set_THREAD_PRIORITE_SLEEP(600000);
+					}
+				} 
+				else if((Activite_socket > 0) && (Activite_socket < 10))
+				{
+					instance_socket->set_THREAD_PRIORITE_YIELD(20000);
+					instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(20000);
+					instance_socket->set_THREAD_PRIORITE_SLEEP(20000);
+				}
+				else if((Activite_socket >= 10) && (Activite_socket < 20))
+				{
+					instance_socket->set_THREAD_PRIORITE_YIELD(5000);
+					instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(5000);
+					instance_socket->set_THREAD_PRIORITE_SLEEP(5000);
+				} 
+				else if((Activite_socket >= 20) && (Activite_socket < 40))
+				{
+					instance_socket->set_THREAD_PRIORITE_YIELD(10);
+					instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(100);
+					instance_socket->set_THREAD_PRIORITE_SLEEP(1000);
+				} 
+				else if((Activite_socket > 40) && (Activite_socket < 99))
+				{
+					instance_socket->set_THREAD_PRIORITE_YIELD(0);
+					instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(0);
+					instance_socket->set_THREAD_PRIORITE_SLEEP(100);
+				}
+				else if(Activite_socket == 100)
+				{
+					instance_socket->set_THREAD_PRIORITE_YIELD(0);
+					instance_socket->set_THREAD_PRIORITE_DESCRIPTEUR(0);
+					instance_socket->set_THREAD_PRIORITE_SLEEP(1);
+				}
+			}
+			
+			// Recuperer les donnees stockes dans la stack du serveur
+			STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(NoPort, _STACK_EXTRACT_POUR_SERVEUR, " ");
+			
+			// Optimiser
+			if(STACK_MEMOIRE_STR.length() > 3)
+			{
+				// Stopper le serveur
+				if(STACK_MEMOIRE_STR == "#STOP") 
+				{
+					Code_Erreur = SOCK_OK;
+					CONTINUER_EXECUTION = false;
+				}
+				
+				// Liberer le CPU pendant 200 ms
+				else if(STACK_MEMOIRE_STR == "#DOEVENTS") 
+					usleep(280395);
+					
+				// Envoyer un message a TOUS les clients
+				else if(STACK_MEMOIRE_STR.find("#TOUT::# ")!=std::string::npos)	
+				{
+					// Recuperer et convertir en string la taille
+					std::string STACK_MEMOIRE_TAILLE = std::to_string((unsigned int) STACK_MEMOIRE_STR.length());
+					
+					if(this->Mode_Administration == 3)
+						cpinti_dbg::CPINTI_DEBUG("ECHO de " + STACK_MEMOIRE_TAILLE + " octets a tous les clients connectes...", 
+											"Sending " + STACK_MEMOIRE_TAILLE + " bytes to all connected clients...",
+											NoPort_STR, "", Ligne_saute, Alerte_action, Date_avec, Ligne_r_normal);
+					
+					else
+						cpinti_dbg::CPINTI_DEBUG("Envoie de " + STACK_MEMOIRE_TAILLE + " octets a tous les clients connectes...", 
+											"Sending " + STACK_MEMOIRE_TAILLE + " bytes to all connected clients...",
+											NoPort_STR, "", Ligne_saute, Alerte_action, Date_avec, Ligne_r_normal);
+					
+					// Envoyer le message a tous les clients connectes
+					std::string Nombre_Envoie_STR = std::to_string(instance_socket->Envoyer_Donnees_TOUT_CLIENTS(STACK_MEMOIRE_STR.substr(9)));
+					
+					cpinti_dbg::CPINTI_DEBUG("Les donnees ont ete envoye a " + Nombre_Envoie_STR + " client(s) [OK]", 
+											"The data has been sent at " + Nombre_Envoie_STR + " client(s) [OK]",
+											NoPort_STR, "", Ligne_saute, Alerte_ok, Date_avec, Ligne_r_normal);
+				}
+				else if(STACK_MEMOIRE_STR.find("#CLT#")!=std::string::npos)	
+				{
+					// FORME ex: "192.168.1.5:14569 TCP#8=Blablaaa"
+
+					
+					size_t posPORT = STACK_MEMOIRE_STR.find(":");
+					size_t posFINPORT;
+
+					if(this->TYPE_SERVEUR == INIT_SERVEUR_TCP)
+						posFINPORT = STACK_MEMOIRE_STR.find("TCP#");
+					else
+						posFINPORT = STACK_MEMOIRE_STR.find("UDP#");
+						
+					
+					size_t posFINSOCK = STACK_MEMOIRE_STR.find("=");
+					int Client_SOCK;
+					
+					// Recuperer l'adresse IP
+					std::string Client_IP_STR = STACK_MEMOIRE_STR.substr(5, posPORT - 6);
+					
+					// Recuperer le numero de port
+					std::string Client_PORT_STR = STACK_MEMOIRE_STR.substr(posPORT + 1, posFINPORT - (posPORT + 2));
+
+					// Recuperer le numero de socket (+6 --> " TCP#" ou " UDP#")
+					std::string Client_SOCK_STR = STACK_MEMOIRE_STR.substr(posFINPORT + 4, posFINSOCK - (posFINPORT + 4));
+
+					
+					// Convertir en int pour la methode
+					Client_SOCK = cpinti::Func_Cpinti::to_int(Client_SOCK_STR);
+					
+					
+					// A afficher seulement si le debogeur reseau est actif
+					// cpinti_dbg::CPINTI_DEBUG("Envoie des donnees au client IP:" + Client_IP_STR + " PORT:" + Client_PORT_STR + " SOCK#" + Client_SOCK_STR, 
+											// "Sending to the client " + Client_IP_STR + ":" + Client_PORT_STR + " #" + Client_SOCK_STR, 
+											// "", "", Ligne_saute, Alerte_action, Date_avec, Ligne_r_normal);
+					if(Client_SOCK > 0)				
+						// Envoyer la trame au socket
+						instance_socket->Envoyer_Donnees(STACK_MEMOIRE_STR.substr(posFINSOCK+1), Client_SOCK);
+					
+				}
+			
+			} /* STACK_MEMOIRE_STR */
+			else
+				usleep(0); // en plus
+			
+			
+			// Mettre a jour les utilisateurs dont leur fermeture sont differes
+			instance_socket->Fermeture_differe_UPDATE();
+
+			// Obtenir le numero du "prochain" descripteur de fichier
+			Resultat_Select = instance_socket->get_Descripteur();
+			
+			if(Resultat_Select < 0)
+			{
+				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'obtenir le No du descripteur de fichier.\n Raison '" + instance_socket->get_Erreur()  + "'", 
+						"[ERROR] Unable to getting file descriptor number.\n Reason '" + instance_socket->get_Erreur()  + "'",
+						NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+						
+				Code_Erreur = SOCK_ERR_DESCRIPTEUR_SELECT;
+				CONTINUER_EXECUTION = false; // Stopper l'execution
+			}
+			else
+			{
+				/*********************************************************************/
+				/******  D E S C R I P T E U R   O K.     V A L I D A T I O N   ******/
+				/*********************************************************************/
+
+				// Verifier s'il y a un changement
+				if(Resultat_Select > 0)
+				{					
+					if(this->TYPE_SERVEUR == INIT_SERVEUR_UDP)
+					{ /* UDP */
+				
+						/*********************************************************************/
+						/********************** S E R V E U R   U D P ************************/
+						/*********************************************************************/
+						
+						if(Resultat_Select > 0)
+						{
+							/***************************************************************/
+							/******   R E C E P T I O N   D E   D O N N E E S   U D P ******/ 
+							/***************************************************************/
+						
+						
+							// Recuperer l'adresse IP du client courant
+							std::string AdresseIPClient_STR = std::string("0.0.0.0"); /*instance_socket->get_IP_Client();*/
+										
+							// Recuperer le port du client courant
+							std::string Port_Client_STR = std::string("-1"); /*instance_socket->get_PORT_Client();*/
+							
+							std::string Socket_STR = std::to_string(instance_socket->get_NoSocket());
+						
+							// Recuperer ce qui a ete recu
+							std::string BUFFER_STR = instance_socket->get_BUFFER();
+							
+							unsigned int Nombre_octets_recu = BUFFER_STR.size();
+							
+							/***** TEMPORAIRE *****/
+							if(BUFFER_STR == std::string("STOPSRV/"))
+							{
+								Code_Erreur = SOCK_OK;
+								CONTINUER_EXECUTION = false; // Stopper l'execution
+							}
+							/***** TEMPORAIRE *****/
+							
+							// Le client a envoye des donnees!
+							std::string Nombre_octets_recu_STR = std::to_string(Nombre_octets_recu);
+							
+							cpinti_dbg::CPINTI_DEBUG("[" + AdresseIPClient_STR + ":" + Port_Client_STR + " UDP#" + Socket_STR + "]:" + BUFFER_STR + " (" + Nombre_octets_recu_STR + " o)",
+															"[" + AdresseIPClient_STR + ":" + Port_Client_STR + " UDP#" + Socket_STR + "]:" + BUFFER_STR + " (" + Nombre_octets_recu_STR + " b)",
+															NoPort_STR, "", Ligne_saute, Alerte_surbrille, Date_avec, Ligne_r_normal);
+							
+						}
+						
+					}
+					else if(this->TYPE_SERVEUR == INIT_SERVEUR_TCP)
+					{ /* TCP */
+				
+						/*********************************************************************/
+						/********************** S E R V E U R   T C P ************************/
+						/*********************************************************************/
+						// Chercher le bon descripteur
+						for(Lecture_Client = 0; (Lecture_Client <= instance_socket->get_FD_MAX()) 
+													&& (Lecture_Client < FD_SETSIZE); Lecture_Client++)
+						{
+							instance_socket->Attribuer_descr_lecture(Lecture_Client);
+							
+							// Verifier si ce descripteur est bien valide et qu'on a des donnees a lire
+							if(Resultat_Select > 0 && instance_socket->Verifier_descripteur(Lecture_Client))
+							{							
+										
+								// Verifier si le descripteur correspond bien! Autrement ce sont des donnees a lire
+								if(instance_socket->Verifier_correspondance(Lecture_Client))
+								{
+									bool Resultat_ACCEPTER;
+									/*********************************************************/
+									/******  C L I E N T S   N O N   C O N N E C T E S  ******/
+									/*********************************************************/
+									
+									if(this->TYPE_SERVEUR == INIT_SERVEUR_TCP)
+										// TCP on doit accepter la connexion via son FD
+										Resultat_ACCEPTER = instance_socket->Accepter_connexion();
+									else
+										// UDP n'a pas "d'acceptation" client
+										Resultat_ACCEPTER = true;
+									
+									if(Resultat_ACCEPTER == true)
+									{
+
+										// La connexion a ete acceptee temporairement
+										std::string NombreClientsActuel_STR = std::to_string(instance_socket->get_Nombre_client());
+										
+										// Recuperer l'adresse IP du client courant
+										std::string AdresseIPClient_STR = instance_socket->get_IP_Client();
+										
+										// Recuperer le port du client courant
+										std::string Port_Client_STR = instance_socket->get_PORT_Client();
+										
+										std::string Socket_STR = std::to_string(instance_socket->get_NoSocket());
+								
+										
+										// Verifier si on depasse le nombre maximum autorise
+										if(instance_socket->get_Nombre_client() > instance_socket->get_Nombre_client_MAX())
+										{
+											/************************************************/
+											/****** C O N N E X I O N   R E F U S E E  ******/
+											/************************************************/
+											
+											cpinti_dbg::CPINTI_DEBUG("Connexion [" + AdresseIPClient_STR + ":" + Port_Client_STR + "] refusee... " + NombreClientsMAX_STR + " connexions maximum!",
+																"Connection [" + AdresseIPClient_STR + ":" + Port_Client_STR + "] refused... " + NombreClientsMAX_STR + " maximum connection!",
+																NoPort_STR, "", Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
+			
+																
+											if(instance_socket->RefuserClient("[FR] Serveur plein! / [EN] Server is full!") == false) // On refuse sa connexion
+											{
+												cpinti_dbg::CPINTI_DEBUG("[ERREUR] La fermeture differe a echoue, fermerture direct", 
+																		"[ERROR] Delayed closure failed, direct closing...",
+																		NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+																		
+												if(instance_socket->Fermer_SocketClient() == false)
+													cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de fermer le socket... Aile!", 
+																		"[ERROR] Unable to closing socket... outch!",
+																		NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+											}
+										}
+										else
+										{
+											/**************************************************/
+											/****** C O N N E X I O N   A C C E P T E E  ******/
+											/**************************************************/
+							
+											cpinti_dbg::CPINTI_DEBUG("Connexion [" + AdresseIPClient_STR + ":" + Port_Client_STR + "] acceptee!",
+																	"Connection [" + AdresseIPClient_STR + ":" + Port_Client_STR + "] accepted!",
+																	NoPort_STR, "", Ligne_saute, Alerte_validation, Date_avec, Ligne_r_normal);
+											
+											// Apres que la connexion soit accepte, on lui prepare sa connexion!
+											if(instance_socket->Ajouter_Client() == false)
+											{
+												// Probleme..
+												cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de fermer le socket... Aile!", 
+																		"[ERROR] Unable to closing socket... outch!",
+																		NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+
+											}
+											else
+											{
+												cpinti_dbg::CPINTI_DEBUG("[" + AdresseIPClient_STR + ":" + Port_Client_STR + "] est connecte! (" + NombreClientsActuel_STR + "/" + NombreClientsMAX_STR + " connexions)",
+																		"[" + AdresseIPClient_STR + ":" + Port_Client_STR + "] is connected! (" + NombreClientsActuel_STR + "/" + NombreClientsMAX_STR + " connections)",
+																		NoPort_STR, "", Ligne_saute, Alerte_validation, Date_avec, Ligne_r_normal);
+												
+												// Si on est en remote control (CCP ou TELNET) alors on affiche un message d'accueil
+												// if(this->Mode_Administration)
+												// {
+													// instance_socket->Envoyer_Donnees(this->Intro_Serveur_1, instance_socket->get_NoSocket());
+												// }
+											}
+										}
+									}
+									else
+									{
+										// Probleme
+										cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'accepter la connexion.\n Raison '" + instance_socket->get_Erreur()  + "'", 
+															"[ERROR] Unable to accept connection.\n Reason '" + instance_socket->get_Erreur()  + "'",
+															NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+
+										Code_Erreur = SRV_ERR_ACCEPTER;
+										CONTINUER_EXECUTION = false; // Stopper l'execution
+									}
+								}
+								else
+								{
+									std::string NombreClientsActuel_STR = std::to_string(instance_socket->get_Nombre_client()-1);
+									
+									// Recuperer l'adresse IP du client courant
+									std::string AdresseIPClient_STR = instance_socket->get_IP_Client();
+									
+									// Recuperer le port du client courant
+									std::string Port_Client_STR = instance_socket->get_PORT_Client();
+									
+									std::string Socket_STR = std::to_string(instance_socket->get_NoSocket());
+								
+									
+									/********************************************************************************/
+									/****** D O N N E E S   D E   C L I E N T S   D E J A   C O N N E C T E S  ******/
+									/********************************************************************************/
+									
+									// Enclencher la reception + recevoir sa taille
+									unsigned int Nombre_octets_recu = (unsigned int) instance_socket->Recevoir_donnees_client();
+									
+									if (Nombre_octets_recu <= 0)
+									{
+										if(Nombre_octets_recu == 0)
+										{
+											/*********************************************************/
+											/****** C L I E N T   S'E S T   D E C O N N E C T E ******/
+											/*********************************************************/
+											
+											
+											// Le client s'est deconnecte!
+											cpinti_dbg::CPINTI_DEBUG("[" + AdresseIPClient_STR + ":" + Port_Client_STR + "] s'est deconnecte (" + NombreClientsActuel_STR + "/" + NombreClientsMAX_STR + " connectes) ",
+																			"[" + AdresseIPClient_STR + ":" + Port_Client_STR + "] is deconnected! (" + NombreClientsActuel_STR + "/" + NombreClientsMAX_STR + " connected) ",
+																			NoPort_STR, "", Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
+
+										}
+										else
+											cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de receptionner.\n Raison '" + instance_socket->get_Erreur()  + "'", 
+															"[ERROR] Unable to receive.\n Reason '" + instance_socket->get_Erreur()  + "'",
+															NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+
+										// Meme si le client s'est deconnecte tout seul, on ferme le socket
+										if(instance_socket->Fermer_SocketClient() == false)
+											cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de fermer le socket", 
+																	"[ERROR] Unable to closing socket",
+																	NoPort_STR, "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+									}
+									else
+									{
+										/***************************************************************/
+										/******   R E C E P T I O N   D E   D O N N E E S   T C P ******/ 
+										/***************************************************************/
+
+										// Le client a envoye des donnees! Recuperer ce qui a ete recu
+										std::string BUFFER_STR = instance_socket->get_BUFFER();
+										
+										/** TEMPORAIRE **/
+										if(BUFFER_STR == std::string("STOPSRV/"))
+										{
+											Code_Erreur = SOCK_OK;
+											CONTINUER_EXECUTION = false; // Stopper l'execution
+										}
+										
+										
+										std::string Nombre_octets_recu_STR = std::to_string(Nombre_octets_recu);
+										
+										// Si le mode d'administration est active pour le TELNET, on n'affiche pas, sinon c'est hyper encombrant sur l'ecran
+										if (this->Mode_Administration != 2) // N'EST PAS TELNET
+											cpinti_dbg::CPINTI_DEBUG("[" + AdresseIPClient_STR + ":" + Port_Client_STR + " TCP#" + Socket_STR + "]:" + BUFFER_STR + " (" + Nombre_octets_recu_STR + " o)",
+																		"[" + AdresseIPClient_STR + ":" + Port_Client_STR + " TCP#" + Socket_STR + "]:" + BUFFER_STR + " (" + Nombre_octets_recu_STR + " b)",
+																		NoPort_STR, "", Ligne_saute, Alerte_surbrille, Date_avec, Ligne_r_normal);
+
+																		
+										BUFFER_STR = "[" + AdresseIPClient_STR + ":" + Port_Client_STR + " TCP#" + Socket_STR + "]:" + BUFFER_STR;
+										
+										// Si le serveur est un ECHO, alors on renvoie directement les donnees a TOUT les clients
+										//  en y stockant dans le buffer, exactement comme cpcdos :)
+										if(this->Mode_Administration == 3)
+											cpinti::cpinti_GEST_BUFF(instance_socket->get_Port(), _STACK_STOCKER_POUR_SERVEUR, "#TOUT::# " + BUFFER_STR);
+										else
+											// Stocker les donnees recues dans la stack du KERNEL
+											cpinti::cpinti_GEST_BUFF(instance_socket->get_Port(), _STACK_STOCKER_POUR_CPCDOS, BUFFER_STR);
+									}								
+								}
+							}
+						}
+					} /* TCP */
+					
+				} /* Resultat_Select > 0 */
+				
+				/* ------------------------------------------------- */
+			}
+			if(Code_Erreur != SOCK_OK) // Une erreur signalee!!
+			{
+				CONTINUER_EXECUTION = false; // Stopper l'execution
+				break;
+			}
+		}
+	
+		return SRV_OK; // S'est bien execute!
+	} /* EXECUTER_SERVEUR*/
+	
+	int cpinti_srv::Fermer_Socket(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket)
+	{
+		// Fermer la connexion de tous les clients connectes + liberer la memoire!
+		if(instance_socket->Fermer_TOUT_Clients() == false)
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Lors de la deconnexion en masse des clients.\n Raison '" + instance_socket->get_Erreur() + "'",
+								"[ERROR] During clients deconnection.\n Reason '" + instance_socket->get_Erreur() + "'",
+								"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+	
+		// Fermer la connexion
+		if(instance_socket->Fermer_socket() == false)
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Lors de la fermeture du socket.\n Raison '" + instance_socket->get_Erreur() + "'",
+								"[ERROR] During socket closing.\n Reason '" + instance_socket->get_Erreur() + "'",
+								"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+	
+		return SRV_OK;
+	} /* FERMER_SOCKET */
+	
+	int cpinti_srv::Preparer_Ecoute(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket, int NombreClients, unsigned int NumPort)
+	{
+		std::string NombreClients_STR = std::to_string(NombreClients);
+		std::string PORT_STR = std::to_string(NumPort);
+		
+		if(this->TYPE_SERVEUR == INIT_SERVEUR_TCP)
+		{
+			// Lancer une ecoute reseau TCP
+			cpinti_dbg::CPINTI_DEBUG("Lancement d'une ecoute reseau TCP (Port " + PORT_STR + " : " + NombreClients_STR + " clients MAX) ",
+									"Starting network listening... (" + NombreClients_STR + " MAX clients) ",
+									"", "", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+								
+			// Reserve uniquement en TCP	
+			if(instance_socket->Ecouter_socket()==false)
+			{
+				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Lors de l'ecoute reseau.\n Raison '" + instance_socket->get_Erreur() + "'",
+									"[ERROR] During network listening.\n Reason '" + instance_socket->get_Erreur() + "'",
+									"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+				return SRV_ERR_ECOUTE_SOCK;
+			}
+		}
+		else
+			if(this->TYPE_SERVEUR == INIT_SERVEUR_UDP)
+				// Lancer une ecoute reseau UDP
+				cpinti_dbg::CPINTI_DEBUG("Lancement d'une ecoute reseau UDP (Port " + PORT_STR + " : " + NombreClients_STR + " clients MAX) ",
+										"Starting network listening (Port " + PORT_STR + " : " + NombreClients_STR + " clients MAX) ",
+										"", "", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+								
+		
+		if(instance_socket->Ecouter_socket_FD()==false)
+		{
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Lors de l'ecoute reseau depuis son descripteur de fichier.\n Raison '" + instance_socket->get_Erreur() + "'",
+								"[ERROR] During network listening from file descriptor.\n Reason '" + instance_socket->get_Erreur() + "'",
+								"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+			return SRV_ERR_ECOUTE_SOCK;
+		}
+		
+		cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", 
+					"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+
+					
+		return SRV_OK;
+	} /* PREPARER_ECOUTE */
+	
+	int cpinti_srv::Preparer_Socket(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket, unsigned int NumPort, int NombreClients, unsigned int _NumeroID, int _TYPE_SERVEUR)
+	{
+
+		this->TYPE_SERVEUR 	= _TYPE_SERVEUR;
+		this->NumeroID		= _NumeroID;
+		
+		instance_socket->set_Nombre_client_MAX(NombreClients);
+		instance_socket->set_Port(NumPort);
+		
+		cpinti_dbg::CPINTI_DEBUG(" * Creation d'un nouveau socket reseau... ", 
+				 " * Creating new network socket... ",
+					"cpinti_srv", "Preparer_Socket", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+
+		/*********************************************************************************/
+		/**************** Creer une nouvelle socket dans la classe Socket ****************/
+		/*********************************************************************************/
+		
+		if(instance_socket->Initialiser_socket(this->TYPE_SERVEUR) == false)
+		{
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de creer un socket reseau.\n Raison '" + instance_socket->get_Erreur() + "'", 
+						"[ERROR] Unable to create network socket.\n Reason '" + instance_socket->get_Erreur() + "'",
+						"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+						
+			return SRV_ERR_INIT_SOCK; // 
+		} /* Impossible de creer un socket */
+
+		
+		cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", 
+					"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+			
+		cpinti_dbg::CPINTI_DEBUG(" * Configuration du socket reseau... ", 
+				 " * Configuration network socket... ",
+					"cpinti_srv", "Preparer_Socket", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+
+					
+		/*********************************************************************************/
+		/** Configurer le socket par rapport au type selectionne --> "INIT_SERVEUR_TCP" **/
+		/*********************************************************************************/
+		
+		if(instance_socket->Configurer_socket() == false)
+		{
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de configurer le socket reseau.\n Raison '" + instance_socket->get_Erreur() + "'", 
+						"[ERROR] Unable to create network socket.\n Reason '" + instance_socket->get_Erreur() + "'",
+						"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+						
+			return SRV_ERR_CONFIG_SOCK;
+		} /*  Erreur de configuration du socket */
+		
+		
+		cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", "", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+
+	
+
+		/*********************************************************************************/
+		/****************** Binder le socket pour le rendre utilisable *******************/
+		/*********************************************************************************/
+
+		cpinti_dbg::CPINTI_DEBUG(" * Bindage du socket reseau... ", 
+				 " * Binding network socket... ",
+					"cpinti_srv", "Preparer_Socket", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
+
+		
+		if(instance_socket->Binder_socket() == false)
+		{
+			cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de binder le socket\n Raison '" + NP_cpinti_socket::cpinti_socket_LOCAL::get_Erreur(), 
+						"[ERROR] Unable to binding socket\n Reason '" + NP_cpinti_socket::cpinti_socket_LOCAL::get_Erreur(),
+						"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+
+				return SRV_ERR_BIND_SOCK; // Impossible de binder le socket
+		}
+		else
+			cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]" ,
+							"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+
+
+		return 0; // Preparation du socket OK
+
+	} /* PREPARER_SOCKET */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

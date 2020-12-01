@@ -1,0 +1,18 @@
+txt/ Test a touche
+
+fix/ /atouche touche
+
+txt/ Touche presse : %touche%
+
+txt/ 
+txt/ Ton nom ?
+fix/ /q Nom
+txt/ Bonjour %Nom%
+
+txt/ Reste appuye sur une touche
+ccp/ /pause 2000
+fix/ /touche touche
+txt/ Touche presse : %touche%
+txt/
+
+txt/ Fin.

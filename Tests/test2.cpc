@@ -1,0 +1,38 @@
+
+txt/ Fonction INSTR
+
+txt/ /F:CPC.INSTR(7, abcdefgh, f)
+
+
+txt/ Fonction MID
+
+txt/ /F:CPC.MID(abcdefgh, 1)
+
+txt/ Fonction MID
+
+txt/ /F:CPC.MID(abcdefgh, 3)
+
+
+txt/ Fonction MID
+
+txt/ /F:CPC.MID(abcdefgh, 3, 2)
+
+
+
+txt/ Fonction MIDA
+
+txt/ /F:CPC.MIDA(abcdefgh, 1)
+
+txt/ Fonction MIDA
+
+txt/ /F:CPC.MIDA(abcdefgh, 3)
+
+
+txt/ Fonction MIDA
+
+txt/ /F:CPC.MIDA(abcdefgh, 3, 6)
+
+
+
+
+txt/ Fin.

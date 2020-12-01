@@ -1,0 +1,80 @@
+/* Entete ping.cpp */
+
+#include <sys/select.h>
+
+namespace NP_cpinti_ping
+{
+	#define PING_OK					0
+	#define PING_NO_REP				-1
+	#define PING_ERR_INIT_SOCK		-2
+	#define PING_ERR_CONFIG_SOCK	-3
+	#define PING_ERR_BIND_SOCK		-4
+	#define PING_ERR_ECOUTE_SOCK	-5
+	#define PING_ERR_FD				-6
+	#define PING_ERR_PIPE_SOCK		-7
+	#define PING_ERR_NOM_DNS		-8
+	#define PING_ERR_MEM			-9
+	#define PING_ERR_CREER_TRAME	-10
+	#define PING_NO_RES				-11
+
+	
+		//  0	: OK
+		// 	-1 	: La machine n'a pas repondu
+		//	-2	: Impossible de creer un socket (Driver manquant?)
+		//	-3	: Erreur de configuration du socket 
+		//	-4	: Erreur de binding
+		//	-5	: Ecoute impossible
+		//	-6	: Erreur de descripteur de fichier (select())
+		//	-7	: Erreur de lecture de socket (ERRPIPE)
+		//  -8	: Impossible de resoudre le nom (DNS)
+		//	-9	: Memoire insuffisante
+	
+	
+	#define REQUETE_ICMP	8			// ICMP echo
+	#define CODE_ICMP		0			// Code ICMP
+	#define CHECKSUM_ICMP	0			// Le checksum par defaut
+	#define SEQUENCE_ICMP 	0			// Numero de sequence
+	#define ID_ICMP 		1909		// Idetification de la trame par defaut
+	
+	
+	class cpinti_ping
+	{
+		private:
+			// **** Variables ****
+			char 			PAQUET_ICMP[512];
+			struct icmp*	TRAME_ICMP = (struct icmp*) PAQUET_ICMP;
+			
+			int 			SocketPing;
+			int 			FD_MAX;
+			int 			delai_ms;
+			
+			std::string		STR_Message_ICMP;
+			const char *	Message_ICMP;
+			
+			struct timeval	Temps_Depart;
+			struct timeval	Temps_Actuel;
+			struct timeval 	Temps_Envoie;
+			struct timezone	Temps_Zone;
+
+			
+			// **** Fonctions ****
+			int Preparer_Socket		(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket, 
+										std::string IP_machine, int Param);
+									
+			unsigned int Preparer_Trame	();
+									
+			int Transmission		(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket, 
+										unsigned int Taille);
+
+			int Fermer_Socket		(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket);
+			
+			int Reception			(std::unique_ptr<NP_cpinti_socket::cpinti_socket> &instance_socket, int Param);
+
+			
+		
+		public:
+			int Demarrer_ping(std::string IP_machine, std::string Message, int Param);
+			
+	};
+	
+}

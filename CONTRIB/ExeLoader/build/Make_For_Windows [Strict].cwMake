@@ -1,0 +1,6 @@
+;Register Cwc before using a .cwmake
+>
+-{_sOpt}="O2"
+>
+-#Run Build.cwc -{_wToolchain}= VLianceTool/CpcDosRT
+

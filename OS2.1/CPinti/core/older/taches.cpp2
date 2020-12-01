@@ -1,0 +1,401 @@
+/*	
+	=============================================
+	==   CPinti ---> Gestionnaire de threads   ==
+	=============================================
+
+	Developpe entierement par Sebastien FAVIER
+
+	Description
+		Module TRES IMPORTANT permettant la gestion des threads et 
+			processus du system entier. Il permet egalement la creation 
+			d'un espace memoire dedie a un processus/thread a la demande 
+			jusqu'a saturation de la memoire RAM, puis la suspension 
+			et la suppression d'une tache et gestion de l'ordonnancement
+			des processus selon les cycles du processeur.
+
+	Creation
+		20/08/2015
+		
+	Reecriture complete
+		No.1 02/12/2015
+		No.2 06/12/2016
+		
+
+	Mise a jour
+		07/12/2017
+		
+		07-12-2017	: AMELIORATION du code en suivant une procedure sticte de GCC
+		23-08-2017	: Ajout de get_Nom_Thread() pour recuperer les noms des threads
+		09-02-2017	: Ajustement anti-crash
+		05-01-2017 	: Ajout des fonctionnalites de fermeture des processus + threads lies
+
+*/
+
+#include <iostream>
+#include <algorithm>
+
+#include "func_cpi.h"
+#include "debug.h"
+#include "taches.h" // contient #include "threads.h"
+
+#include <signal.h> // Temporaire
+#include <core.h>	// idem
+#include <unistd.h> // usleep
+#include <dpmi.h>	// yield
+
+
+namespace NP_cpinti_gestionnaire_tache
+{ 
+	bool DoEventsPassage 		= false;
+	
+	Gestionnaire_des_taches::Gestionnaire_des_taches()
+	{
+		// Constructeur
+		cpinti_dbg::CPINTI_DEBUG("Allocation memoire de l'ordonnanceur de taches... ", 
+								"Memory allocation for task sheduler...",
+								"__CpintiCore_CpcdosOSx__", "cpinti_ordonnancement_init()",
+								Ligne_saute, Alerte_validation, Date_avec, Ligne_r_normal);
+	}
+	
+	Gestionnaire_des_taches::~Gestionnaire_des_taches()
+	{
+		// Desctructeur
+		cpinti_dbg::CPINTI_DEBUG("Desallocation memoire de l'ordonnanceur de taches... ", 
+								"Memory deallocation for task sheduler...",
+								"__CpintiCore_CpcdosOSx__", "cpinti_ordonnancement_init()",
+								Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
+	}
+
+
+	int Gestionnaire_des_taches::init__gestionnaire(unsigned int _ID, int P0)
+	{
+		// Cette fonction permet d'initialiser le gestionnaire des taches
+		
+		
+		return 0;
+	}
+	
+	
+	/***************************************************************/
+	/********************** P R O C E S S U S **********************/
+	/***************************************************************/
+	
+	unsigned int Gestionnaire_des_taches::Creer_Processus(unsigned int ID_KERNEL, std::string NomProcessus)
+	{
+		// Cette fonction permet de creer un nouveau processus
+		//		ID_KERNEL	: Numero d'identification kernel
+		//		PID			: Numero de processus genere par Cpcdos
+		// 		NomProcessus: Nom du processus
+		
+		// Retourne
+		//		0  : Probleme
+		//		>0 : OK Numero de PID
+		
+		return 0;
+	}
+	
+	unsigned int Gestionnaire_des_taches::Etat_Processus(unsigned int ID_KERNEL, unsigned int PID)
+	{
+		// Cette fonction permet de retourner l'état du thread
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+
+		//	Retourne 	_EN_EXECUTION (0x53) 83
+		//				_EN_PAUSE	 	(0x65) 101
+		//				_EN_ATTENTE	(0x62) 98
+		//				_EN_ARRET 	(0x46) 70
+		//				autre.... erreur
+		
+		
+		
+		return 0x0;
+	}
+	
+	int Gestionnaire_des_taches::Gerer_Processus(unsigned int ID_KERNEL, unsigned int PID, unsigned int ACTION)
+	{
+		// Cette fonction permet de gerer les threads
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		// 	ACTION			: Action a a appliquer au processus (Executer, pause, stop)
+		
+		
+		return 0;
+	}
+
+	
+	int Gestionnaire_des_taches::Arreter_Processus(unsigned int ID_KERNEL, unsigned int PID)
+	{
+		// Cette fonction permet de fermer un thread
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+
+		
+		return 0;
+	}
+	
+	std::string Gestionnaire_des_taches::get_Nom_Processus(unsigned int ID_KERNEL, unsigned int PID)
+	{
+		// Cette fonction permet de retourner le nom du processus
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+
+		//	Retourne le nom
+		
+		
+		
+		return "";
+	}
+	
+	
+	/***************************************************************/
+	/************************ T H R E A D S ************************/
+	/***************************************************************/
+	
+	unsigned int Gestionnaire_des_taches::Creer_Thread(unsigned int ID_KERNEL, unsigned int PID, std::string NomThread, 
+														int Priorite, void* (* Fonction) (void*))
+	{
+		// Cette fonction permet de creer un nouveau processus
+		//		ID_KERNEL	: Numero d'identification kernel
+		//		PID			: Numero de processus genere par Cpcdos
+		// 		NomProcessus: Nom du processus
+		
+		// Retourne
+		//		< 1 Probleme
+		//		> 0 Numero de TID
+
+		
+		
+			
+		return 0;
+	}
+	
+	unsigned int Gestionnaire_des_taches::Joindre_Thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID, int CYCLES)
+	{
+		// Cette fonction permet d'executer directement un thread sans passer par l'ordonanceur
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+		//	CYCLES			: Nombre de cycles a executer (1 par defaut)
+		
+		
+		return 0;
+	}
+	
+	unsigned int Gestionnaire_des_taches::Etat_Thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+	{
+		// Cette fonction permet de retourner l'état du thread
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+
+		//	Retourne 	_EN_EXECUTION (0x53) 83
+		//				_EN_PAUSE	 	(0x65) 101
+		//				_EN_ATTENTE	(0x62) 98
+		//				_EN_ARRET 	(0x46) 70
+		//				autre.... erreur
+		
+		
+		return 0x0;
+	}
+	
+	std::string Gestionnaire_des_taches::get_Nom_Thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+	{
+		// Cette fonction permet de retourner l'état du thread
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+
+		//	Retourne 	_EN_EXECUTION (0x53) 83
+		//				_EN_PAUSE	 	(0x65) 101
+		//				_EN_ATTENTE	(0x62) 98
+		//				_EN_ARRET 	(0x46) 70
+		//				autre.... erreur
+		
+		
+		return "";
+	}
+	
+	int Gestionnaire_des_taches::Gerer_Threads(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID, unsigned int ACTION)
+	{
+		// Cette fonction permet de gerer les threads
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+		// 	ACTION			: Action a a appliquer au thread
+		
+		
+		return 0;
+	}
+	
+	int Gestionnaire_des_taches::Arreter_Thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+	{
+		// Cette fonction permet de fermer un thread
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//  PID				: Numero de processus
+		//	TID				: Numero du thread
+
+		
+		return 0;
+	}
+	
+	void Gestionnaire_des_taches::Arreter_Thread_SANS_ID(unsigned int INDEX_PROCESSUS, unsigned int INDEX_THREAD)
+	{
+		// Cette fonction permet de nettoyer une instance d'un thread grace a ses numero d'index de tableau (unique)
+		
+		
+	}
+	
+	unsigned int Gestionnaire_des_taches::Thread_est_arrete(unsigned int ID_KERNEL, bool Fermer)
+	{
+		// Permet de savoir quel thread est actuellement en "arret"
+		// Chercher le processus
+		// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
+		//	Fermer			: TRUE: Fermer le thread / FALSE:Juste informer du numero de pid
+
+		return 0;
+	}
+	
+	
+	void Gestionnaire_des_taches::Appeler_Scheduler_CPintiCore()
+	{
+		Appeler_Scheduler_CPintiCore(0);
+	}
+	
+	void Gestionnaire_des_taches::Appeler_Scheduler_CPintiCore(unsigned int Temps)
+	{
+		
+		if(get_Nombre_processus() > 0)
+		{
+			if(DoEventsPassage == false)
+			{
+				// Executer cette fonction 1 fois sur 2
+				DoEventsPassage = true;
+			
+				// Obtenir et actualiser nouveau temps apres 1 sec
+				if(difftime(time(0), Gestionnaire_des_taches::Temps_DEPART) >= 1)
+				{
+					// Recuperer le nombre de cycles
+					Gestionnaire_des_taches::Cycle_CPU_res = Gestionnaire_des_taches::NB_Cycle_CPU;
+					
+					// Les resets
+					Gestionnaire_des_taches::NB_Cycle_CPU = 0;
+					
+					// Recuperer le temps actuel
+					Gestionnaire_des_taches::Temps_DEPART = time(0);
+
+				}
+			} 
+			else
+			{
+				DoEventsPassage = false;
+			}
+			
+			if(NP_cpinti_gestionnaire_tache::MT_Timer_en_Marche == false)
+			{
+				if(Temps > 0)
+				{
+					// Enlever 250 Micro secondes pour le yielding
+					if(Temps > 500) Temps = Temps - 250;
+					
+					
+						usleep((unsigned int) ((Temps / 2) +1));
+						__dpmi_yield();
+						usleep((unsigned int) ((Temps / 2) +1));
+				}
+					
+				else
+				{
+					__dpmi_yield();			
+				}
+			}
+			
+			
+		}
+	}
+
+	unsigned int Gestionnaire_des_taches::get_Nombre_threads()
+	{
+		// Recuperer le nombre de threads total
+		return 0;
+	}
+	
+	unsigned int Gestionnaire_des_taches::get_Nombre_processus()
+	{
+		// Recuperer le nombre de processus
+		return 0;
+	}
+	
+	void Gestionnaire_des_taches::set_moins_Nombre_thread()
+	{
+		// Diminuer le nombre de threads total
+		
+	}
+	
+	void Gestionnaire_des_taches::set_plus_Nombre_thread()
+	{
+		// Diminuer le nombre de threads total
+		
+	}
+	
+	
+	void Gestionnaire_des_taches::Update_cycle_CPU()
+	{
+		// Essayer de trouver une meilleure technique pour 
+		//  calculer le temps du CPU ;)
+		
+		// if(Gestionnaire_des_taches::NB_thread > 1)
+			 // Gestionnaire_des_taches::NB_Cycle_CPU = Gestionnaire_des_taches::NB_Cycle_CPU  Gestionnaire_des_taches::NB_thread;
+		
+		Gestionnaire_des_taches::NB_Cycle_CPU++;
+	}
+	
+	unsigned int Gestionnaire_des_taches::get_Nombre_cycle_CPU()
+	{
+		return 0;
+	}
+	
+	unsigned int Gestionnaire_des_taches::get_NB_MAX_Cycle_CPU()
+	{
+		// Pour obtenir le nombre maximum du CPU atteint pour faire une tolerence
+		return 0;
+	}
+	
+	void Gestionnaire_des_taches::set_NB_MAX_Cycle_CPU(unsigned int NombreMax)
+	{
+		// Pour obtenir le nombre maximum du CPU atteint pour faire une tolerence
+
+	}
+	
+	int Gestionnaire_des_taches::get_pourcent_CPU()
+	{
+		double Cycle_Actuel 	= (double) Gestionnaire_des_taches::Cycle_CPU_res;
+		double Cycle_MAX		= (double) Gestionnaire_des_taches::NB_MAX_Cycle_CPU;
+	
+		// Tant qu'on a pas de valeurs positives on fait rien!
+		if(Cycle_Actuel <= 0)
+			return 0;
+		
+		if(Cycle_MAX <= 0)
+			return 0;
+		
+		// Si le cycle actuel depasse le cycle MAX, alors ca sera dans tous les cas 0%
+		if(Cycle_Actuel >= Cycle_MAX) 
+			return 0;
+		else
+			return (100 + ((Cycle_Actuel / Cycle_MAX) * (-100)));
+	}
+	
+	
+}
+
+
+
+
+
+
+
+
+
+

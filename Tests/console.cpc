@@ -1,0 +1,38 @@
+// GUI Console test
+// SPinti Software 
+// 13-OCT-2020
+// Free code!
+
+window/ Console_text
+        .title          = "My first GUI Console test"
+        .px             = "200"
+        .py             = "130"
+        .sx             = "600"
+        .sy             = "400"
+        .Opacity        = "100"
+        .Parameters     = "TYPE:0 ALPHAMODE:0"
+	.WindowColor	= "050,050,100"
+        .TitleColor     = "255,255,255"
+        .BackColor      = "150,200,255"
+        .Icon           = "%OS_GUI%/ICO_DEF.png"
+	@#Handle_Fenetre creer/
+end/ window
+
+Textbox/ txt_console
+        .handle         = "%handle_fenetre%"
+        .parameters     = "EDIT:1 MULTILINE:1 COL:1 CONSOLE:1"
+        .px             = "1"
+        .py             = "1"
+        .tx             = "595"
+        .ty             = "395"
+        .BackColor      = "150,200,250"
+        .TextColor      = "255,255,255"
+        .text           = ""
+	Creer/
+end/ Textbox
+
+
+
+
+
+

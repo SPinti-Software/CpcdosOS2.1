@@ -1,0 +1,165 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
+
+#include "leakchk.h"
+
+extern void* 		m_allocation	(size_t sizemem);
+extern void*		c_allocation	(size_t size_mem, size_t size_elm);
+extern void			f_allocation	(void* pointer);
+
+static unsigned int NombreMalloc = 0;
+static unsigned int NombreCalloc = 0;
+static unsigned int NombreFree = 0;
+static unsigned int NombreRealloc = 0;
+
+#undef malloc
+#undef calloc
+#undef free
+#undef realloc
+void *stb_leakcheck_malloc(size_t sz, const char *file, int line)
+{
+
+	// fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " !!!! malloc() [No%d] --> %s (Line%4d) | %zd bytes ... ", NombreMalloc+1, file, line, sz);
+	
+	stb_leakcheck_malloc_info *mi = (stb_leakcheck_malloc_info *) c_allocation(sz + sizeof(*mi) + 64, 1);
+	if (mi == NULL) return mi;
+	mi->file = file;
+	mi->line = line;
+	mi->next = mi_head;
+	if (mi_head)
+		mi->next->prev = mi;
+	mi->prev = NULL;
+	mi->size = sz;
+	mi_head = mi;
+
+	NombreMalloc++;
+
+	// fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "[OK]\n");
+
+	return mi+1;
+}
+
+void *stb_leakcheck_calloc(size_t sz, size_t e_sz, const char *file, int line)
+{
+
+	// fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " !!!! calloc() [No%d] --> %s (Line%4d) | %zd bytes ... \n", NombreMalloc+1, file, line, sz);
+	
+	stb_leakcheck_malloc_info *mi = (stb_leakcheck_malloc_info *) c_allocation(sz + sizeof(*mi), e_sz);
+	if (mi == NULL) return mi;
+	mi->file = file;
+	mi->line = line;
+	mi->next = mi_head;
+	if (mi_head)
+		mi->next->prev = mi;
+	mi->prev = NULL;
+	mi->size = sz+e_sz;
+	mi_head = mi;
+
+	NombreCalloc++;
+
+	// fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "[OK]\n");
+
+	return mi+1;
+}
+
+void stb_leakcheck_free(void *ptr, const char *file, int line)
+{
+	if(NombreFree > 30050)
+		fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " !!!! free() [No%d] --> %s (Line%4d) | 0x%p\n ... ", NombreFree+1, file, line, (void*) ptr);
+	
+   if (ptr != NULL) 
+   {
+		stb_leakcheck_malloc_info *mi = (stb_leakcheck_malloc_info *) ptr - 1;
+		mi->size = ~mi->size;
+
+		if(NombreFree > 30050)
+			fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " ****** P1\n");
+
+		if (mi->prev == NULL) 
+		{
+			assert(mi_head == mi);
+			mi_head = mi->next;
+		} 
+		else
+			mi->prev->next = mi->next;
+	 
+		if (mi->next)
+			mi->next->prev = mi->prev;
+	 
+		if(NombreFree > 30050)
+			fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " ****** P2\n");
+	 
+		f_allocation(mi); // free
+
+		NombreFree++;
+	  
+		if(NombreFree > 30050)
+			fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "[OK]\n");
+		
+   }
+}
+
+void *stb_leakcheck_realloc(void *ptr, size_t sz, const char *file, int line)
+{
+	NombreRealloc++;
+   if (ptr == NULL) {
+      return stb_leakcheck_malloc(sz, file, line);
+   } else if (sz == 0) {
+      stb_leakcheck_free(ptr, __FILE__, __LINE__);
+      return NULL;
+   } else {
+      stb_leakcheck_malloc_info *mi = (stb_leakcheck_malloc_info *) ptr - 1;
+      if (sz <= mi->size)
+         return ptr;
+      else {
+         #ifdef STB_LEAKCHECK_REALLOC_PRESERVE_MALLOC_FILELINE
+         void *q = stb_leakcheck_malloc(sz, mi->file, mi->line);
+         #else
+         void *q = stb_leakcheck_malloc(sz, file, line);
+         #endif
+         if (q) {
+            memcpy(q, ptr, mi->size);
+            stb_leakcheck_free(ptr, __FILE__, __LINE__);
+         }
+         return q;
+      }
+   }
+}
+
+static void stblkck_internal_print(const char *reason, stb_leakcheck_malloc_info *mi)
+{
+
+  fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "%s: %s (Line%4d): %zd bytes at 0x%p\n", reason, mi->file, mi->line, mi->size, (void*)(mi+1));
+
+
+}
+
+void stb_leakcheck_dumpmem(void)
+{
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "-----------------------------\n");
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "- Dumpmemory - Leak checker -\n");
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, "-----------------------------\n");
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " * malloc()  x%d\n", NombreMalloc);
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " * calloc()  x%d\n", NombreCalloc);
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " * free()    x%d\n", NombreFree);
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " * realloc() x%d\n", NombreRealloc);
+	
+	fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " Found :\n");
+   stb_leakcheck_malloc_info *mi = mi_head;
+   while (mi) {
+      if ((ptrdiff_t) mi->size >= 0)
+         stblkck_internal_print("  - WARNING LEAKED", mi);
+      mi = mi->next;
+   }
+   mi = mi_head;
+   while (mi) {
+      if ((ptrdiff_t) mi->size < 0)
+         stblkck_internal_print("  - FREED ", mi);
+      mi = mi->next;
+   }
+   fprintf(STB_LEAKCHECK_OUTPUT_PIPE, " End of list\n");
+
+}
+
+

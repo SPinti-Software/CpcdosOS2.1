@@ -1,0 +1,21 @@
+﻿#include "DArray.cpp" //
+#include "DArray2.cpp" //
+#include "DataArray.cpp" //
+#include "Debugging.cpp" //
+#include "Easing.cpp" //
+#include "Gate.cpp" //
+#include "Lib.cpp" //
+#include "Main.cpp" //
+#include "Math.cpp" //
+#include "QArray.cpp" //
+#include "Str.cpp" //
+#include "StThread.cpp" //
+#include "Thread.cpp" //
+#include "ThreadExt.cpp" //
+#include "ThreadList.cpp" //
+#include "utf8.cpp" //
+#include "Wrap/Image.cpp" //
+#include "SysUtils/glWin.cpp" //
+#include "Lib/SFF/stb_image.cpp" //
+//1464314095429|1464314095439
+//1446284951652|1464313837893
