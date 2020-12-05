@@ -20,7 +20,6 @@
 *
 */
 
-
 #ifdef ImWin
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
@@ -35,6 +34,8 @@
 	#else // CpcDos
 	#define STDCALL __attribute__((stdcall))
 	#endif
+	#define NTAPI STDCALL
+	#define CALLBACK STDCALL
 
 	#ifdef ImWin
 	#undef CDECL
@@ -49,7 +50,6 @@
 
 	#define WINAPI STDCALL
 
-
 	#include <stdlib.h>
 	#include <string.h>
 
@@ -58,9 +58,6 @@
 	#define TRUE true
 
 	#define CONST const
-	//#define WINAPI  __stdcall
-	//#define WINAPI
-	#define NTAPI
 	#define VOID void
 
 	#ifndef __SIZE_TYPE__
@@ -73,6 +70,11 @@
 	  typedef int INT;
 	  typedef unsigned int UINT;
 	  typedef unsigned int *PUINT;
+
+	#ifndef _LPCVOID_DEFINED
+	#define _LPCVOID_DEFINED
+	  typedef CONST void *LPCVOID;
+	#endif
 
 	#ifdef _WIN64
 	  __MINGW_EXTENSION typedef __int64 INT_PTR,*PINT_PTR;
@@ -95,15 +97,73 @@
 	#define UNREFERENCED_PARAMETER(P) {(P) = (P);}
 
 
-	  typedef char CHAR;
-	  typedef CHAR *NPSTR,*LPSTR,*PSTR;
-	  typedef unsigned char BYTE;
-	  typedef void *PVOID;
-	  typedef void *PVOID64;
+#ifndef __LP64__	/* 32 bit target, 64 bit Mingw target */
+#define __LONG32 long
+#else			/* 64 bit Cygwin target */
+#define __LONG32 int
+#endif
+
+	typedef char CHAR;
+	typedef CHAR *NPSTR,*LPSTR,*PSTR;
+	typedef unsigned char BYTE;
+	typedef void *PVOID;
+	typedef void *PVOID64;
 	typedef PVOID HANDLE;
-	  typedef void *LPVOID;
+	typedef void *LPVOID;
 
 
+	typedef unsigned short WORD;
+	typedef unsigned __LONG32 DWORD;
+	typedef float FLOAT;
+	typedef FLOAT *PFLOAT;
+	typedef BYTE *PBYTE;
+	typedef BYTE *LPBYTE;
+	typedef int *PINT;
+	typedef int *LPINT;
+	typedef WORD *PWORD;
+	typedef WORD *LPWORD;
+	typedef __LONG32 *LPLONG;
+	typedef DWORD *PDWORD;
+	typedef DWORD *LPDWORD;
+	
+
+#ifdef _WIN64
+#define MAX_NATURAL_ALIGNMENT sizeof(ULONGLONG)
+#define MEMORY_ALLOCATION_ALIGNMENT 16
+#else
+#define MAX_NATURAL_ALIGNMENT sizeof(DWORD)
+#define MEMORY_ALLOCATION_ALIGNMENT 8
+#endif
+
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x502
+#endif
+
+
+#define __int8 char
+#define __int16 short
+#define __int32 int
+#define __int64 long long
+
+   typedef __int64 LONGLONG;
+   typedef unsigned __int64 ULONGLONG;
+
+#define MAXLONGLONG (0x7fffffffffffffffll)
+
+  typedef LONGLONG *PLONGLONG;
+  typedef ULONGLONG *PULONGLONG;
+  typedef LONGLONG USN;
+
+
+	#define _DWORDLONG_
+  typedef ULONGLONG DWORDLONG;
+  typedef DWORDLONG *PDWORDLONG;
+  
+	  
+    typedef struct _RTL_SRWLOCK { PVOID Ptr; } RTL_SRWLOCK,*PRTL_SRWLOCK;
+    typedef struct _RTL_CONDITION_VARIABLE { PVOID Ptr; } RTL_CONDITION_VARIABLE,*PRTL_CONDITION_VARIABLE;
+  typedef RTL_CONDITION_VARIABLE CONDITION_VARIABLE, *PCONDITION_VARIABLE;
+  
 		 typedef void *HMEMORYMODULE;
 
 	#define DECLARE_HANDLE(name) typedef HANDLE name
@@ -214,8 +274,8 @@
 
 	#define OPEN_EXISTING 3
 	#define FILE_ATTRIBUTE_NORMAL 0x00000080
-	#define __LONG32 int
-	  typedef __LONG32 LONG;
+	
+  typedef __LONG32 LONG;
 
 	typedef struct _IMAGE_DOS_HEADER {
 		  WORD e_magic;
@@ -466,8 +526,8 @@
 		  __C89_NAMELESS struct {
 		WORD wProcessorArchitecture;
 		WORD wReserved;
-		  } DUMMYSTRUCTNAME;
-		} DUMMYUNIONNAME;
+		  } ;
+		} ;
 		DWORD dwPageSize;
 		LPVOID lpMinimumApplicationAddress;
 		LPVOID lpMaximumApplicationAddress;
@@ -1195,6 +1255,132 @@
 	
 	#define INVALID_HANDLE_VALUE ((HANDLE) (LONG_PTR)-1)
 	
+
+	typedef struct _OVERLAPPED {
+    ULONG_PTR Internal;
+    ULONG_PTR InternalHigh;
+    __C89_NAMELESS union {
+      struct {
+	DWORD Offset;
+	DWORD OffsetHigh;
+      } DUMMYSTRUCTNAME;
+      PVOID Pointer;
+    } DUMMYUNIONNAME;
+    HANDLE hEvent;
+  } OVERLAPPED, *LPOVERLAPPED;
+
+  typedef struct _OVERLAPPED_ENTRY {
+    ULONG_PTR lpCompletionKey;
+    LPOVERLAPPED lpOverlapped;
+    ULONG_PTR Internal;
+    DWORD dwNumberOfBytesTransferred;
+  } OVERLAPPED_ENTRY, *LPOVERLAPPED_ENTRY;
+
+
+	typedef RTL_CRITICAL_SECTION CRITICAL_SECTION;
+	typedef PRTL_CRITICAL_SECTION PCRITICAL_SECTION;
+	typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
+	typedef RTL_CRITICAL_SECTION_DEBUG CRITICAL_SECTION_DEBUG;
+	typedef PRTL_CRITICAL_SECTION_DEBUG PCRITICAL_SECTION_DEBUG;
+	typedef PRTL_CRITICAL_SECTION_DEBUG LPCRITICAL_SECTION_DEBUG;
+
+	typedef VOID (WINAPI *LPOVERLAPPED_COMPLETION_ROUTINE) (DWORD dwErrorCode, DWORD dwNumberOfBytesTransfered, LPOVERLAPPED lpOverlapped);
+
+	#define LOCKFILE_FAIL_IMMEDIATELY 0x1
+	#define LOCKFILE_EXCLUSIVE_LOCK 0x2
+	
+	
+	typedef DWORD (WINAPI *PTHREAD_START_ROUTINE) (LPVOID lpThreadParameter);
+	typedef PTHREAD_START_ROUTINE LPTHREAD_START_ROUTINE;
+
+   typedef struct _MESSAGE_RESOURCE_ENTRY {
+      WORD Length;
+      WORD Flags;
+      BYTE Text[1];
+    } MESSAGE_RESOURCE_ENTRY,*PMESSAGE_RESOURCE_ENTRY;
+
+#define SEF_DACL_AUTO_INHERIT 0x01
+#define SEF_SACL_AUTO_INHERIT 0x02
+#define SEF_DEFAULT_DESCRIPTOR_FOR_OBJECT 0x04
+#define SEF_AVOID_PRIVILEGE_CHECK 0x08
+#define SEF_AVOID_OWNER_CHECK 0x10
+#define SEF_DEFAULT_OWNER_FROM_PARENT 0x20
+#define SEF_DEFAULT_GROUP_FROM_PARENT 0x40
+#define SEF_MACL_NO_WRITE_UP 0x100
+#define SEF_MACL_NO_READ_UP 0x200
+#define SEF_MACL_NO_EXECUTE_UP 0x400
+#define SEF_AVOID_OWNER_RESTRICTION 0x1000
+
+#define SEF_MACL_VALID_FLAGS (SEF_MACL_NO_WRITE_UP | SEF_MACL_NO_READ_UP | SEF_MACL_NO_EXECUTE_UP)
+
+#define MESSAGE_RESOURCE_UNICODE 0x0001
+
+    typedef struct _MESSAGE_RESOURCE_BLOCK {
+      DWORD LowId;
+      DWORD HighId;
+      DWORD OffsetToEntries;
+    } MESSAGE_RESOURCE_BLOCK,*PMESSAGE_RESOURCE_BLOCK;
+
+    typedef struct _MESSAGE_RESOURCE_DATA {
+      DWORD NumberOfBlocks;
+      MESSAGE_RESOURCE_BLOCK Blocks[1];
+    } MESSAGE_RESOURCE_DATA,*PMESSAGE_RESOURCE_DATA;
+
+    typedef struct _OSVERSIONINFOA {
+      DWORD dwOSVersionInfoSize;
+      DWORD dwMajorVersion;
+      DWORD dwMinorVersion;
+      DWORD dwBuildNumber;
+      DWORD dwPlatformId;
+      CHAR szCSDVersion[128];
+    } OSVERSIONINFOA,*POSVERSIONINFOA,*LPOSVERSIONINFOA;
+
+    typedef struct _OSVERSIONINFOW {
+      DWORD dwOSVersionInfoSize;
+      DWORD dwMajorVersion;
+      DWORD dwMinorVersion;
+      DWORD dwBuildNumber;
+      DWORD dwPlatformId;
+      WCHAR szCSDVersion[128];
+    } OSVERSIONINFOW,*POSVERSIONINFOW,*LPOSVERSIONINFOW,RTL_OSVERSIONINFOW,*PRTL_OSVERSIONINFOW;
+
+
+    typedef struct _OSVERSIONINFOEXA {
+      DWORD dwOSVersionInfoSize;
+      DWORD dwMajorVersion;
+      DWORD dwMinorVersion;
+      DWORD dwBuildNumber;
+      DWORD dwPlatformId;
+      CHAR szCSDVersion[128];
+      WORD wServicePackMajor;
+      WORD wServicePackMinor;
+      WORD wSuiteMask;
+      BYTE wProductType;
+      BYTE wReserved;
+    } OSVERSIONINFOEXA,*POSVERSIONINFOEXA,*LPOSVERSIONINFOEXA;
+
+    typedef struct _OSVERSIONINFOEXW {
+      DWORD dwOSVersionInfoSize;
+      DWORD dwMajorVersion;
+      DWORD dwMinorVersion;
+      DWORD dwBuildNumber;
+      DWORD dwPlatformId;
+      WCHAR szCSDVersion[128];
+      WORD wServicePackMajor;
+      WORD wServicePackMinor;
+      WORD wSuiteMask;
+      BYTE wProductType;
+      BYTE wReserved;
+    } OSVERSIONINFOEXW,*POSVERSIONINFOEXW,*LPOSVERSIONINFOEXW,RTL_OSVERSIONINFOEXW,*PRTL_OSVERSIONINFOEXW;
+
+	 typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
+    COORD dwSize;
+    COORD dwCursorPosition;
+    WORD wAttributes;
+    SMALL_RECT srWindow;
+    COORD dwMaximumWindowSize;
+  } CONSOLE_SCREEN_BUFFER_INFO,*PCONSOLE_SCREEN_BUFFER_INFO;
+
 	
 	
 #endif /*ImWin*/

@@ -140,7 +140,17 @@ void pixView_MakeSurface(ContextInf* _context);
 #define showfunc_opt
 #endif
 
-/*
+
+inline static size_t wcslen_(const wchar_t *s){
+	size_t ln = 0;
+	while (s[ln] != L'\0'){
+		if (s[++ln] == L'\0')return ln;
+		if (s[++ln] == L'\0')return ln;
+		if (s[++ln] == L'\0')return ln;
+		++ln;
+	}return ln;
+}
+
 /// STRING ///
 class WStr {
   public:
@@ -148,12 +158,12 @@ class WStr {
 	size_t 	 len;
 	UTF8*    utf8;
 	
-	WStr(wchar_t* _src):utf8(0) {
-		src = _src;
-		len =  wcslen(src);
+	WStr(const wchar_t* _src):utf8(0) {
+		src = (wchar_t*)_src;
+		len =  wcslen_(src);
 	}
 	
-	char* ToCStr(){
+	inline char* ToCStr(){
 		const UTF16* input = (const UTF16*)src;
 		UTF8* utf8 = (UTF8*)malloc(len+1);//+1 for null terminating char
 		
@@ -161,13 +171,13 @@ class WStr {
 		ConversionResult res =	ConvertUTF16toUTF8(&input, &input[len], &utf8, &utf8[len], ConversionFlags::lenientConversion);
 		//Possible value of res: conversionOK || sourceExhausted || targetExhausted
 		*utf8 = 0; //Terminate string
-		return (char*)utf8;
+		return (char*)outStart;
 	}
 	
 	~WStr(){
 		free(utf8);
 	}
-};*/
+};
 ////////////////
 
 #ifndef No_vswprintf

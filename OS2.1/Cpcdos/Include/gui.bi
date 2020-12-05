@@ -573,11 +573,19 @@ Type Cpcdos_GUI__EXPLORER
 	IUG_UPDATER				as integer 	' Actualisation graphique en ms
 	THREAD_OK				as integer 	' Si le thread est execute ou non
 
+	DejaSize				as boolean 	' Si l'image a deja ete resize
 	IMAGE					as String 	' Chemin d'acces a la ressource
-	Image_Ancien			as String  	' L'originale
-
-	IMG_ID					as integer
+	IMAGE_SURVOLE			as String 	' Chemin d'acces a la ressource
 	
+	IMAGE_ANCIEN 			as String 	' Ancien chemin d'acces a la ressource
+	IMAGE_SURVOLE_ANCIEN 	as String 	' Ancien chemin d'acces a la ressource
+	
+	IMG_ID					as integer
+	IMG_ORG_ID				as integer
+	IMG_SURVOLE_ID			as integer
+	IMG_SURVOLE_ORG_ID		as integer
+
+	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
 										'  Ce qui permet en cas de changeent de resolutin d'ecran, de recharger l'image
 	

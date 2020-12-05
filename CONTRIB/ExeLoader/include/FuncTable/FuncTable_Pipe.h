@@ -24,8 +24,6 @@
 *
 */
 
-
-
 //!ATOM RegisterClassW(const WNDCLASSW *lpWndClass)
 inline ATOM WINAPI pipe_RegisterClassW(void* value){
 	showfunc("RegisterClassW( value: %p )", value);
@@ -45,6 +43,14 @@ inline LRESULT WINAPI pipe_DispatchMessageA(const MSG *lpMsg){
 		return 0;
 	#endif
 }
+
+/*
+> -->Call:  GetProcAddress( hModule: 61980000, lpProcName: wglCreateContext)
+O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglDeleteContext)
+O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglGetProcAddress)
+O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglGetCurrentDC)
+O> -->Call: GetProcAddress( hModule: 61980000, lpProcName: wglMakeCurrent)
+*/
 
 extern funcPtr_int _dFunc_wglGetPixelFormat;
 //!int GetPixelFormat(HDC hdc)
@@ -113,8 +119,8 @@ inline int WINAPI pipe_DescribePixelFormat(HDC hdc,int iPixelFormat,UINT nBytes,
 
 extern funcPtr_bool _dFunc_wglSwapBuffers;
 //!BOOL SwapBuffers(HDC Arg1)
-inline BOOL WINAPI pipe_SwapBuffers(HDC hdc){
-	showfunc("SwapBuffers( hdc: %p )", hdc);
+BOOL WINAPI pipe_SwapBuffers(HDC hdc){
+	showfunc_opt("SwapBuffers( hdc: %p )", hdc);
 	if(_dFunc_wglSwapBuffers != 0){
 		return _dFunc_wglSwapBuffers(hdc);
 	}
@@ -122,7 +128,7 @@ inline BOOL WINAPI pipe_SwapBuffers(HDC hdc){
 		//_sapp.wgl.ChoosePixelFormat(_sapp.wgl.msg_dc, &pfd);
 		return SwapBuffers((HDC)hdc);
 	#else
-		return false;
+		return true;
 	#endif
 }
 
@@ -167,6 +173,10 @@ inline HMODULE  WINAPI pipe_GetModuleHandleW(LPCWSTR lpModuleName){
 	#endif
 }
 
+///////////////// HERE OK ////////////
+//#undef Func_Win
+////////////////////////////////
+
 //!HCURSOR LoadCursorA(HINSTANCE hInstance,LPCSTR lpCursorName)
 //!HCURSOR LoadCursorW(HINSTANCE hInstance,LPCWSTR lpCursorName)
 HCURSOR WINAPI pipe_LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName){
@@ -207,8 +217,8 @@ HICON WINAPI pipe_LoadIconW(HINSTANCE hInstance, LPCWSTR lpIconName){
 }
 
 //!BOOL WINAPI CloseHandle(HANDLE hObject)
-inline BOOL WINAPI pipe_CloseHandle(HANDLE hObject){
-	showfunc("CloseHandle( hObject: %p)", hObject); 
+ BOOL WINAPI pipe_CloseHandle(HANDLE hObject){
+	showfunc_opt("CloseHandle( hObject: %p)", hObject); 
 	#ifdef Func_Win
 		return CloseHandle(hObject);
 	#else
@@ -217,7 +227,7 @@ inline BOOL WINAPI pipe_CloseHandle(HANDLE hObject){
 }
 
 //!SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD     dwThreadId)
-inline HHOOK WINAPI pipe_SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD     dwThreadId){
+ HHOOK WINAPI pipe_SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hmod,DWORD     dwThreadId){
 	showfunc("SetWindowsHookExA( idHook: %d, lpfn:%p, hmod:%p, dwThreadId:%p )", idHook, lpfn, hmod, dwThreadId);
 	#ifdef Func_Win
 		return SetWindowsHookExA(idHook,lpfn,hmod,dwThreadId);
@@ -227,7 +237,7 @@ inline HHOOK WINAPI pipe_SetWindowsHookExA(int idHook,HOOKPROC lpfn,HINSTANCE hm
 }
 
 //!LRESULT CallNextHookEx(HHOOK hhk, int nCode, WPARAM wParam,LPARAM lParam)
-inline LRESULT WINAPI pipe_CallNextHookEx(HHOOK hhk, int nCode, WPARAM wParam,LPARAM lParam){
+ LRESULT WINAPI pipe_CallNextHookEx(HHOOK hhk, int nCode, WPARAM wParam,LPARAM lParam){
 	showfunc("CallNextHookEx( hhk: %d, nCode:%d, wParam:%p, lParam:%p )", hhk, nCode, wParam, lParam);
 	#ifdef Func_Win
 		return CallNextHookEx(hhk,nCode,wParam,lParam);
@@ -237,7 +247,7 @@ inline LRESULT WINAPI pipe_CallNextHookEx(HHOOK hhk, int nCode, WPARAM wParam,LP
 }
 
 //!BOOL EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD ModeNum,DEVMODEA *lpDevMode)
-inline BOOL WINAPI pipe_EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD ModeNum,DEVMODEA *lpDevMode){
+ BOOL WINAPI pipe_EnumDisplaySettingsA(LPCSTR lpszDeviceName,DWORD ModeNum,DEVMODEA *lpDevMode){
 	showfunc("EnumDisplaySettingsA( lpszDeviceName: %p, ModeNum: %d, lpDevMode: %d)", lpszDeviceName, ModeNum, lpDevMode);
 	#ifdef Func_Win
 		return EnumDisplaySettingsA(lpszDeviceName,ModeNum,lpDevMode);
@@ -270,93 +280,161 @@ inline HANDLE WINAPI pipe_CreateToolhelp32Snapshot(DWORD  dwFlags,DWORD  th32Pro
 	return INVALID_HANDLE_VALUE;//INVALID_HANDLE_VALUE //TODO
 }
 
-//!BOOL Thread32First(HANDLE hSnapshot,LPTHREADENTRY32 lpte)
-BOOL WINAPI pipe_Thread32First(HANDLE hSnapshot,void* lpte){
-	showfunc("Thread32First( hSnapshot: %p, lpte: %p )", hSnapshot,lpte);
-	return 0;
-}
-
-//!BOOL Thread32Next(HANDLE hSnapshot,LPTHREADENTRY32 lpte)
-BOOL WINAPI pipe_Thread32Next(HANDLE hSnapshot,void* lpte){
-	showfunc("Thread32Next( hSnapshot: %p, lpte: %p )", hSnapshot,lpte);
-	return 0;
-}
-
-//!HANDLE CreateSemaphoreA(_In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes,_In_ LONG lInitialCount, _In_ LONG lMaximumCount, _In_opt_ LPCTSTR lpName)
-//!HANDLE CreateSemaphoreW(_In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes,_In_ LONG lInitialCount, _In_ LONG lMaximumCount, _In_opt_ LPCWSTR lpName)
-HANDLE WINAPI  pipe_CreateSemaphoreA( //Must have __stdcall
- _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes,
-  _In_     LONG                  lInitialCount,
-  _In_     LONG                  lMaximumCount,
-  _In_opt_ LPCTSTR               lpName
-){
-	showfunc_unimplt("_CreateSemaphoreA(  )","");
-	#ifdef Func_Win
-	return CreateSemaphoreA(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName);
-	#else
-	#endif
-	return 0;
-}
-HANDLE  WINAPI  pipe_CreateSemaphoreW( //Must have __stdcall
- _In_opt_ LPSECURITY_ATTRIBUTES lpSemaphoreAttributes,
-  _In_     LONG                  lInitialCount,
-  _In_     LONG                  lMaximumCount,
-  _In_opt_ LPCWSTR                lpName
-){
-	showfunc_unimplt("_CreateSemaphoreW(  )","");
-	#ifdef Func_Win
-	return CreateSemaphoreW(lpSemaphoreAttributes, lInitialCount, lMaximumCount, lpName);
-	#else
-	#endif
-	return 0;
-}
 
 //!void GetSystemInfo( LPSYSTEM_INFO lpSystemInfo)
-inline void WINAPI pipe_GetSystemInfo( LPSYSTEM_INFO lpSystemInfo){
+void WINAPI pipe_GetSystemInfo( LPSYSTEM_INFO lpSystemInfo){
 	//A pointer to a SYSTEM_INFO structure that receives the information.
 	showfunc("GetSystemInfo( lpSystemInfo:%p )",lpSystemInfo);
 	#ifdef Func_Win
 	GetSystemInfo(lpSystemInfo);
 	#else
+	
+//In 32bit System, value is 64KB(65536 Bytes)
+//It would depend on the CPU architecture and its implementation of pages and paging table
+
+//"Page size and granularity are the same."  Wrong!
+//Page size is the size of each memory "page" in the memory paging model of virtual memory.  It's the size of the span of addresses having the same address translation (between virtual addresses and physical addresses).  
+//Although x86 CPUs support 2 MiB pages and 4 MiB pages, and x64 CPUs support 1 GiB pages (and multiple sizes ranging from 4 kiB through 256 MiB), I think only 4 kiB pages have been in commonplace use for personal computer users.
+//Allocation granularity is a rather arbitrary value that Microsoft selected.  From the MSDN documentation for the SYSTEM_INFO structure: dwAllocationGranularity
+//The granularity with which virtual memory is allocated.
+//For example, a VirtualAlloc request to allocate 1 byte will reserve an address space of dwAllocationGranularity bytes.
+//This value was hard coded as 64 KB in the past, but other hardware architectures may require different values.
+//On my 64-bit Windows 7 system, with 12 GiB of RAM, "dwPageSize" is 4096 bytes, and "dwAllocationGranularity" is 65536 bytes (i.e., 64 kiB, which was imprecisely called "64 KB" in the documentation).
+/*
+	GetSystemInfo(lpSystemInfo);
+	printf("\n wProcessorArchitecture: %d", lpSystemInfo->wProcessorArchitecture);
+	printf("\n wReserved: %d", lpSystemInfo->wReserved);
+	printf("\n dwPageSize: %d", lpSystemInfo->dwPageSize);
+	printf("\n lpMinimumApplicationAddress: %d", lpSystemInfo->lpMinimumApplicationAddress);
+	printf("\n lpMaximumApplicationAddress: %d", lpSystemInfo->lpMaximumApplicationAddress);
+	printf("\n dwActiveProcessorMask: %d", lpSystemInfo->dwActiveProcessorMask);
+	printf("\n dwNumberOfProcessors: %d", lpSystemInfo->dwNumberOfProcessors);
+	printf("\n dwProcessorType: %d", lpSystemInfo->dwProcessorType);
+	printf("\n dwAllocationGranularity: %d", lpSystemInfo->dwAllocationGranularity); //Needed for mesa
+	printf("\n wProcessorLevel: %d", lpSystemInfo->wProcessorLevel);
+	printf("\n wProcessorRevision: %d", lpSystemInfo->wProcessorRevision);
+	*/
+/*
+O>  wProcessorArchitecture: 0
+O>  wReserved: 0
+O>  dwPageSize: 4096
+O>  lpMinimumApplicationAddress: 65536
+O>  lpMaximumApplicationAddress: -65537
+O>  dwActiveProcessorMask: 255
+O>  dwNumberOfProcessors: 8
+O>  dwProcessorType: 586
+O>  dwAllocationGranularity: 65536
+O>  wProcessorLevel: 6
+O>  wProcessorRevision: 15363
+/////////////////////////////
+O>  wProcessorArchitecture: 0
+O>  wReserved: 0
+O>  dwPageSize: 4096
+O>  lpMinimumApplicationAddress: 65536
+O>  lpMaximumApplicationAddress: -65537
+O>  dwActiveProcessorMask: 15
+O>  dwNumberOfProcessors: 4
+O>  dwProcessorType: 586
+O>  dwAllocationGranularity: 65536
+O>  wProcessorLevel: 6
+O>  wProcessorRevision: 10759
+*/
+
+//Hardcoded typical data
+lpSystemInfo->wProcessorArchitecture = 0;
+lpSystemInfo->wReserved = 0;
+lpSystemInfo->dwPageSize = 4096;
+lpSystemInfo->lpMinimumApplicationAddress = (void*) 65536;
+lpSystemInfo->lpMaximumApplicationAddress = (void*)-65537;
+lpSystemInfo->dwActiveProcessorMask = 0;//TODO
+lpSystemInfo->dwNumberOfProcessors = 4;	//TODO
+lpSystemInfo->dwProcessorType = 586;	//TODO
+lpSystemInfo->dwAllocationGranularity = 65536; //Needed for LLVM
+lpSystemInfo->wProcessorLevel = 6; 		//TODO
+lpSystemInfo->wProcessorRevision = 0;
+
+/*
+//LLVM
+  SYSTEM_INFO  Info;
+  ::GetSystemInfo(&Info);
+  if (Info.dwPageSize > Info.dwAllocationGranularity)
+	return Info.dwPageSize;
+  else
+	return Info.dwAllocationGranularity;
+*/
 	#endif
 }
 
+
+//!VOID WINAPI pipe_GetNativeSystemInfo (LPSYSTEM_INFO lpSystemInfo)
+VOID WINAPI pipe_GetNativeSystemInfo(LPSYSTEM_INFO lpSystemInfo){
+	showfunc("GetNativeSystemInfo( lpSystemInfo:%p )", lpSystemInfo);
+	#ifdef Func_Win
+	GetNativeSystemInfo(lpSystemInfo);
+	#else
+/*	
+	GetNativeSystemInfo(lpSystemInfo);
+	printf("\n wProcessorArchitecture: %d", lpSystemInfo->wProcessorArchitecture);
+	printf("\n wReserved: %d", lpSystemInfo->wReserved);
+	printf("\n dwPageSize: %d", lpSystemInfo->dwPageSize);
+	printf("\n lpMinimumApplicationAddress: %d", lpSystemInfo->lpMinimumApplicationAddress);
+	printf("\n lpMaximumApplicationAddress: %d", lpSystemInfo->lpMaximumApplicationAddress);
+	printf("\n dwActiveProcessorMask: %d", lpSystemInfo->dwActiveProcessorMask);
+	printf("\n dwNumberOfProcessors: %d", lpSystemInfo->dwNumberOfProcessors);
+	printf("\n dwProcessorType: %d", lpSystemInfo->dwProcessorType);
+	printf("\n dwAllocationGranularity: %d", lpSystemInfo->dwAllocationGranularity); //Needed for mesa
+	printf("\n wProcessorLevel: %d", lpSystemInfo->wProcessorLevel);
+	printf("\n wProcessorRevision: %d", lpSystemInfo->wProcessorRevision);
+
+O>  wProcessorArchitecture: 9
+O>  wReserved: 0
+O>  dwPageSize: 4096
+O>  lpMinimumApplicationAddress: 65536
+O>  lpMaximumApplicationAddress: -65537
+O>  dwActiveProcessorMask: 15
+O>  dwNumberOfProcessors: 4
+O>  dwProcessorType: 8664
+O>  dwAllocationGranularity: 65536
+O>  wProcessorLevel: 6
+O>  wProcessorRevision: 10759.
+*/
+//Hardcoded typical data
+lpSystemInfo->wProcessorArchitecture = 0;
+lpSystemInfo->wReserved = 0;
+lpSystemInfo->dwPageSize = 4096;
+lpSystemInfo->lpMinimumApplicationAddress = (void*) 65536;
+lpSystemInfo->lpMaximumApplicationAddress = (void*)-65537;
+lpSystemInfo->dwActiveProcessorMask = 0;//TODO
+lpSystemInfo->dwNumberOfProcessors = 4;	//TODO
+lpSystemInfo->dwProcessorType = 586;	//TODO (May be different from GetSystemInfo)
+lpSystemInfo->dwAllocationGranularity = 65536; //Needed for LLVM
+lpSystemInfo->wProcessorLevel = 6; 		//TODO
+lpSystemInfo->wProcessorRevision = 0;
+
+	#endif
+}
+
+//!WINBOOL WINAPI FlushInstructionCache (HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T dwSize)
+WINBOOL WINAPI pipe_FlushInstructionCache (HANDLE hProcess, LPCVOID lpBaseAddress, SIZE_T dwSize){
+	showfunc_opt("FlushInstructionCache( hProcess:%p, lpBaseAddress:%d, dwSize:%d )",hProcess, lpBaseAddress, dwSize);
+	#ifdef Func_Win
+	return FlushInstructionCache(hProcess, lpBaseAddress, dwSize);
+	#else
+	//Applications should call FlushInstructionCache if they generate or modify code in memory. 
+	//The CPU cannot detect the change, and may execute the old code it cached.
+	//return FlushInstructionCache(hProcess, lpBaseAddress, dwSize); //TODO
+	return true;
+	#endif
+
+}
+ 
 //!BOOL ClientToScreen(HWND    hWnd,LPPOINT lpPoint)
 inline WINAPI BOOL pipe_ClientToScreen(HWND hWnd,LPPOINT lpPoint){
-	showfunc("ClientToScreen( hWnd:%p, lpPoint.x:%d, lpPoint.y:%d )",hWnd, lpPoint->x, lpPoint->y);
+	showfunc_opt("ClientToScreen( hWnd:%p, lpPoint.x:%d, lpPoint.y:%d )",hWnd, lpPoint->x, lpPoint->y);
 	#ifdef Func_Win
 	return ClientToScreen(hWnd, lpPoint);
 	#else
 	return true;
-	#endif
-}
-
-//!LPVOID VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect)
-inline LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
-	showfunc("VirtualAlloc( lpAddress %p, dwSize: %d, flAllocationType: %d, flProtect:%d )", lpAddress, dwSize, flAllocationType, flProtect);
-	#ifdef USE_Windows_VirtualAlloc
-	return VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect); 
-	#else
-	if(flAllocationType == 0x01000){
-		return instance_AllocManager.ManagedCalloc(dwSize, sizeof(char));
-	}else{
-		return 0;
-	}
-	#endif
-	
-}
-
-//!BOOL VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType)
-inline BOOL WINAPI pipe_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFreeType){
-	showfunc("VirtualFree( lpAddress %p, dwSize: %d, dwFreeType:%d )", lpAddress, dwSize, dwFreeType);
-	#ifdef USE_Windows_VirtualAlloc
-    return VirtualFree(lpAddress, dwSize, dwFreeType); 
-	#else
-	if(dwFreeType == 0x08000){
-		return instance_AllocManager.ManagedFree(lpAddress);
-	}else{
-		return true;
-	}
 	#endif
 }
 
@@ -464,7 +542,7 @@ LONG WINAPI pipe_UnhandledExceptionFilter(_EXCEPTION_POINTERS* ExceptionInfo){
 
 //!HANDLE WINAPI GetCurrentProcess()
 HANDLE WINAPI pipe_GetCurrentProcess(){
-	showfunc("GetCurrentProcess( )", "");
+	showfunc_opt("GetCurrentProcess( )", "");
 	#ifdef Func_Win 
 	return GetCurrentProcess();
 	#else
@@ -519,18 +597,45 @@ char* pipe_setlocale(int category, const char* locale){
 }
 
 //!char* getenv (const char* name)
-char* pipe_getenv(const char* name){
+const char* pipe_getenv(const char* name){
 	showfunc("getenv( name: %s )", name);
+	return 0;
+	
+	if(strcmp(name, "ST_DEBUG") == 0 ){
+		return "tgsi";
+	}
+	
+	
+	if(strcmp(name, "MESA_DEBUG") == 0 ){
+	 // { "silent", DEBUG_SILENT }, /* turn off debug messages */
+     // { "flush", DEBUG_ALWAYS_FLUSH }, /* flush after each drawing command */
+     // { "incomplete_tex", DEBUG_INCOMPLETE_TEXTURE },
+      //{ "incomplete_fbo", DEBUG_INCOMPLETE_FBO },
+     // { "context", DEBUG_CONTEXT } /* force set GL_CONTEXT_FLAG_DEBUG_BIT flag */
+		return "yes";
+	}
+	if(strcmp(name, "MESA_VERBOSE") == 0 ){
+		return "yes";
+	}
+	if(strcmp(name, "LIBGL_DEBUG") == 0 ){
+		return "verbose";
+	}
+	if(strcmp(name, "LIBGL_SHOW_FPS") == 0 ){
+		return "yes";
+	}
+
+	
 	return getenv(name);
 }
 
 //!int WINAPI WideCharToMultiByte (UINT CodePage, DWORD dwFlags, LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar)
 int WINAPI pipe_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar){
-	showfunc("WideCharToMultiByte( ... )", "");
+	showfunc_opt("WideCharToMultiByte( ... )", "");
 	#ifdef Func_Win 
 	return WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpDefaultChar, lpUsedDefaultChar);
 	#else
-	return 0;
+	//return WideCharToMultiByte(CodePage, dwFlags, lpWideCharStr, cchWideChar, lpMultiByteStr, cbMultiByte, lpDefaultChar, lpUsedDefaultChar);
+	return 0;//TODO
 	#endif	
 }
 
@@ -540,7 +645,8 @@ int WINAPI pipe_MultiByteToWideChar (UINT CodePage, DWORD dwFlags, LPCCH lpMulti
 	#ifdef Func_Win 
 	return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
 	#else
-	return 0;
+	//return MultiByteToWideChar(CodePage, dwFlags, lpMultiByteStr, cbMultiByte, lpWideCharStr, cchWideChar);
+	return 0;//TODO
 	#endif	
 }
 
@@ -564,7 +670,7 @@ VOID WINAPI pipe_OutputDebugStringW (LPCWSTR lpOutputString){
 
 //!HWND WINAPI GetConsoleWindow(VOID)
 HWND WINAPI pipe_GetConsoleWindow(VOID){
-	showfunc("GetConsoleWindow( )", "");
+	showfunc_opt("GetConsoleWindow( )", "");
 	#ifdef Func_Win 
 	return GetConsoleWindow();
 	#else
@@ -585,3 +691,27 @@ struct lconv* pipe_localeconv(void){
 	#endif	
 	*/
 }
+
+//!HANDLE WINAPI GetStdHandle (DWORD nStdHandle)
+HANDLE WINAPI pipe_GetStdHandle (DWORD nStdHandle){
+	showfunc("GetStdHandle( nStdHandle: %d )", nStdHandle);
+	#ifdef Func_Win 
+
+	return GetStdHandle(nStdHandle);
+	#else
+	return 0;//If an application does not have associated standard handles, such as a service running on an interactive desktop, and has not redirected them, the return value is NULL.
+	#endif	
+
+}
+
+//!WINBOOL WINAPI GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo);
+WINBOOL WINAPI pipe_GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo){
+	showfunc("GetConsoleScreenBufferInfo( hConsoleOutput: %d,  lpConsoleScreenBufferInfo: %p )", hConsoleOutput, lpConsoleScreenBufferInfo);
+	#ifdef Func_Win 
+	return GetConsoleScreenBufferInfo(hConsoleOutput, lpConsoleScreenBufferInfo);
+	#else
+	return 0;
+	#endif	
+} 
+
+

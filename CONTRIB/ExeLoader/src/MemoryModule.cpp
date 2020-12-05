@@ -546,8 +546,8 @@ printf("\n New LIB[%p]: %s", handle, (LPCSTR) (codeBase + importDesc->Name));
 		static unsigned int current = 0;
 		current++;
 
-		_EXE_LOADER_DEBUG(3, "\nAvertissement, %s:  ---------   %s ", "\nWarning, %s:  ---------   %s ",  sDllName, name);
-
+		_EXE_LOADER_DEBUG(3, "\nAvertissement, %s:  ---------   %s  [#%d]", "\nWarning, %s:  ---------   %s [#%d]",  sDllName, name, current);
+		
 		aDummyFunc[current].Who = name;
 		aDummyFunc[current].DLL = sDllName;
 
@@ -964,7 +964,8 @@ int MemoryModule::MemoryCallEntryPoint(HMEMORYMODULE mod) {
 	
 	fprintf(stdout, "Adresse %p \n", module->exeEntry);
 
-	if (module == NULL || module->isDLL || module->exeEntry == NULL || !module->isRelocated) {
+	//if (module == NULL || module->isDLL || module->exeEntry == NULL || !module->isRelocated) {
+	if (module == NULL || module->isDLL || module->exeEntry == NULL ) {
 		fprintf(stdout, "ARF.....\n");
 		return -1;
 	}

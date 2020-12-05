@@ -34,6 +34,7 @@ int ManagedAlloc::ManagedAlloc_clean()
 {
 	fprintf(stdout, "[%s] ManagedAlloc_clean()\n", this->name);
 	// Vider la memoire 
+	#ifdef USE_AllocManager
 	for(int index = 0; index < this->managed_alloc_max; index++)
 	{
 		if(this->Alloc_Array[index] != 0)
@@ -43,64 +44,82 @@ int ManagedAlloc::ManagedAlloc_clean()
 			fprintf(stdout, "%d : [0x%p] freed!\n", index, (void*) this->Alloc_Array[index]);
 		}
 	}
+	#endif
 	return 0;
 }
 
 bool ManagedAlloc::ManagedFree(void* ptr)
 {
-	// Vider un emplacement connu
-	fprintf(stdout, "[%s] ManagedFree() [0x%p]\n", this->name, (void*) ptr);
-	if(ptr != 0)
-		#ifdef USE_sbrk
-		if(ptr < sbrk(0)){
-		#endif
-			for(int index = 0; index < this->managed_alloc_max; index++)
-				if(this->Alloc_Array[index] == ptr)
-				{
-					free(ptr);
-					this->Alloc_Array[index] = 0;
-					return true;
-				
-				}
-		#ifdef USE_sbrk
-		}else{
-			fprintf(stdout, "[%s] ManagedFree() !! WARNING SEGMENT VIOLATION !! Max memory zone [0x%p]\n", this->name, sbrk(0));
-		}
-		#endif
-	return false;
+	#ifdef USE_AllocManager
+		// Vider un emplacement connu
+		fprintf(stdout, "[%s] ManagedFree() [0x%p]\n", this->name, (void*) ptr);
+		if(ptr != 0)
+			#ifdef USE_sbrk
+			if(ptr < sbrk(0)){
+			#endif
+				for(int index = 0; index < this->managed_alloc_max; index++)
+					if(this->Alloc_Array[index] == ptr)
+					{
+						free(ptr);
+						this->Alloc_Array[index] = 0;
+						return true;
+					
+					}
+			#ifdef USE_sbrk
+			}else{
+				fprintf(stdout, "[%s] ManagedFree() !! WARNING SEGMENT VIOLATION !! Max memory zone [0x%p]\n", this->name, sbrk(0));
+			}
+			#endif
+				return false;
+	#else
+		free(ptr);
+	#endif
+	return true;
 }
 
 void* ManagedAlloc::ManagedMalloc(size_t size__)
 {
-	// Chercher un emplacement vide et malloc dedans!
-	fprintf(stdout, "[%s] ManagedMalloc() %d ", this->name, (int) size__);
-	for(int index = 0; index < this->managed_alloc_max; index++)
-		if(this->Alloc_Array[index] == 0)
-		{
-			this->Alloc_Array[index] = malloc(size__);
-			fprintf(stdout, "Wrote in [0x%p] -> %d\n", this->Alloc_Array[index], index);
-			return this->Alloc_Array[index];
+	#ifdef USE_AllocManager
+		// Chercher un emplacement vide et malloc dedans!
+		fprintf(stdout, "[%s] ManagedMalloc() %d ", this->name, (int) size__);
+		for(int index = 0; index < this->managed_alloc_max; index++)
+			if(this->Alloc_Array[index] == 0)
+			{
+				this->Alloc_Array[index] = malloc(size__);
+				fprintf(stdout, "Wrote in [0x%p] -> %d\n", this->Alloc_Array[index], index);
+				return this->Alloc_Array[index];
+			}
+	#else
+		// Plus de places
+		void* ptr = malloc(size__);
+		if(ptr == 0){
+			printf("\n Fail to alloc memory: %d ", size__);
+			abort();
 		}
-	
-	// Plus de places
-	return malloc(size__);
-	
+		return ptr;
+	#endif
 }
 
 void* ManagedAlloc::ManagedCalloc(size_t numElem__, size_t sizeElem__)
 {
-	// Chercher un emplacement vide et malloc dedans!
-	fprintf(stdout, "[%s] ManagedCalloc() %d ", this->name, (int) numElem__*sizeElem__);
-	for(int index = 0; index < this->managed_alloc_max; index++)
-		if(this->Alloc_Array[index] == 0)
-		{
-			this->Alloc_Array[index] = calloc(numElem__, sizeElem__);
-			fprintf(stdout, "Wrote in [0x%p] -> %d\n", this->Alloc_Array[index], index);
-			return this->Alloc_Array[index];
+	#ifdef USE_AllocManager
+		// Chercher un emplacement vide et malloc dedans!
+		fprintf(stdout, "[%s] ManagedCalloc() %d ", this->name, (int) numElem__*sizeElem__);
+		for(int index = 0; index < this->managed_alloc_max; index++)
+			if(this->Alloc_Array[index] == 0)
+			{
+				this->Alloc_Array[index] = calloc(numElem__, sizeElem__);
+				fprintf(stdout, "Wrote in [0x%p] -> %d\n", this->Alloc_Array[index], index);
+				return this->Alloc_Array[index];
+			}
+	#else
+		void* ptr = calloc(numElem__, sizeElem__);
+		if(ptr == 0){
+			printf("\n Fail to calloc memory: numElem__:%d , sizeElem__:%d", numElem__, sizeElem__);
+			abort();
 		}
-	
-	// Plus de places
-	return calloc(numElem__, sizeElem__);
+		return ptr;
+	#endif
 }
 
 

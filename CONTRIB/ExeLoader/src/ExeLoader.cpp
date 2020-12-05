@@ -140,6 +140,7 @@ long nExeFileSize;
 	bool fExeCpcDosLoadFile(const char* _sFullPath)
 	{
 	
+
 		if(_sFullPath == 0){
 			printf("\n Error: No file to load. \n ");
 			return false;
@@ -587,25 +588,25 @@ bool fStartExeLoader(const char* _sPath) {
 	// MemoryFreeLibrary(handle);
 }
 
-#ifdef ImWin
-int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nShowCmd){
-	hExeloader = hInstance;
-	printf("#\nWinMainCalled!! %d, %s",lpCmdLine);
-	fMainExeLoader(lpCmdLine);  // argv[0] is path
-	printf("\n -- END -- \n");
-	system("Pause");
-	// MemoryFreeLibrary(handle);
-	return 0;
-}
-#else
-	#ifndef CpcDos
-		int main(int argc, char* argv[]) {
-			printf("#\nMainCalled!! %d, %s", argc, argv[0]);
-			fMainExeLoader(argv[1]);  // argv[0] is path
-			printf("\n -- END -- \n");
-			system("Pause");
-			// MemoryFreeLibrary(handle);
-			return 0;
-		}
+#ifndef No_Main
+	#ifdef ImWin
+	int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nShowCmd){
+		hExeloader = hInstance;
+		printf("#\nWinMainCalled!! %d, %s",lpCmdLine);
+		fMainExeLoader(lpCmdLine);  // argv[0] is path
+		printf("\n -- END -- \n");
+		system("Pause");
+		// MemoryFreeLibrary(handle);
+		return 0;
+	}
+	#else
+			int main(int argc, char* argv[]) {
+				printf("#\nMainCalled!! %d, %s", argc, argv[0]);
+				fMainExeLoader(argv[1]);  // argv[0] is path
+				printf("\n -- END -- \n");
+				system("Pause");
+				// MemoryFreeLibrary(handle);
+				return 0;
+			}
 	#endif
 #endif

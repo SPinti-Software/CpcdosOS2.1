@@ -855,6 +855,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 							' Go !
 						Pret_Pour_Evenement = TRUE
 					 End if
+					 
+					' Progressbar
 				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ProgressBar Then
 					
 					' Recuperer l'index et le fichier evenement
@@ -872,6 +874,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' Go !
 						Pret_Pour_Evenement = TRUE
 					End if
+					
+					' Checkbox
 				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.CheckBox Then
 					
 					' Recuperer l'index et le fichier evenement
@@ -889,7 +893,24 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' Go !
 						Pret_Pour_Evenement = TRUE
 					End if
+						' On est deja focus sur un bouton
+				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 					
+					' Recuperer l'index et le fichier evenement
+					Index_Focus_OBJ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX
+					Fichier_evenement = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).PROP_TYPE.Fichier_evenement
+					
+					' Verifier s'il y a un ficheir evenement
+					IF NOT Fichier_evenement = "" Then
+					
+						' Si oui on recupere le nom de l'objet et sa cle numerique
+						Nom_Objet = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet.Nom
+						_CLE_OBJ_ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet._CLE_
+						Texte_obj  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Texte
+						
+						' Go !
+						Pret_Pour_Evenement = TRUE
+					End if
 				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre Then
 					' Autrement si on est focus uniquement sur une fenetre
 					
@@ -1185,6 +1206,22 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
 							Elements_Trouves += 1
 							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBOX Then exit for
+						End if
+					End if
+				Next _INDEX_
+			End if
+			
+			Elements_Trouves = 0
+			
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER > 0 Then
+			' Actualiser tous les explorer
+				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.OS_id = _OSID Then
+						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).IUG_UPDATER > 0 then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).THREAD_OK = 1
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+							Elements_Trouves += 1
+							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
 						End if
 					End if
 				Next _INDEX_

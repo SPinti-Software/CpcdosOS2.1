@@ -34,12 +34,12 @@
 /////////////  CUSTOM SETTINGS  ////////////////////
 ////////////////////////////////////////////////////
 
-//Use the Windows Stanard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
+//Use the Windows Standard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
 //#define USE_Windows_LoadLibrary
-
+//#define USE_Windows_GetProcAddress
 
 //Show when function are called from the fonction table, with is parameters
-#define Show_FuncTable
+// #define Show_FuncTable
 
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
 // #define Show_AllFuncTable
@@ -50,8 +50,23 @@
 //Use standard TlsAlloc instead of the Exeloader one
 //#define USE_Platform_ThreadStorage
 
+//Use standard Windows LocalAlloc
+// #define USE_Platform_LocalAlloc
+
+//Use standard compiler AlignedAlloc
+// #define USE_Platform_AlignedAlloc
+
+//#define USE_Platform_RegisterFrame
+
+//#define USE_Window_LastError
+
+#define NO_Windows_Sleep
+
+#define USE_WinThread
 
 #define ShowPixView //Temp
+
+//#define No_Main
 
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////
@@ -78,8 +93,11 @@
 #define No_wprintf
 #define NoSetLastError
 #define CpcDos //TODO
-#define INT_MAX 2147483647
 #define USE_sbrk
+#define USE_limit_on_vsnprintf  2147483647 /*INT_MAX*/
+#define NO_Windows_Sleep
+#undef USE_WinThread
+#define No_Main
 #endif
 
 #endif //EXELOADER_Config_H

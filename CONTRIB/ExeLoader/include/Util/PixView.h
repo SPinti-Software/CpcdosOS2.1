@@ -129,6 +129,9 @@ void pixView_MakeSurface(ContextInf* _context){
 	bmi.bmiColors[0].rgbReserved = 0;
 
 	HDC hdc = GetDC( _hwnd );
+	if(_context->hbmp != 0){
+		DeleteObject(_context->hbmp );
+	}
 	_context->hbmp = CreateDIBSection( hdc, &bmi, DIB_RGB_COLORS, (void**)&_context->pixels, NULL, 0 );
 	DeleteDC( hdc );
 }
@@ -152,5 +155,6 @@ void pixView_update(ContextInf* _context){
 	BitBlt( hdc, 0, 0, _context->width, _context->height, hdcMem, 0, 0, SRCCOPY );
 
 	SelectObject( hdcMem, hbmOld );
+	DeleteObject(hdcMem);
 	DeleteDC( hdc );
 }

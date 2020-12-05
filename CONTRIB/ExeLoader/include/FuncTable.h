@@ -53,9 +53,12 @@
 #include <stdlib.h>  
 
 #include "FuncTable/DummyTable.h"
-#include "FuncTable/FuncTable_Imp.h"
+
+#include "FuncTable/FuncTable_Memory.h"
+#include "FuncTable/FuncTable_Thread.h"
 #include "FuncTable/FuncTable_Sys.h"
 #include "FuncTable/FuncTable_Pipe.h"
+#include "FuncTable/FuncTable_Imp.h"
 //#include "FuncTable/FuncTable_Remap_Common.h"
 //#include "FuncTable/FuncTable_Remap_Windows.h"
 	
@@ -63,6 +66,16 @@
 	//onCpcDos
 //	#include "FuncTableRemap_CpcDos.h"
 #endif
+
+
+extern "C" ULONG __chkstk();
+
+extern "C" void __register_frame(void* ptr);
+extern "C" void __deregister_frame(void* ptr);
+
+extern "C" void* _aligned_malloc(size_t size,size_t alignment);
+extern "C" void  _aligned_free(void *memblock);
+extern "C" void* _aligned_realloc(void *memblock,size_t size,size_t alignment);
 
  sFunc aTableFunc[] = {
  ////////// CPC DOS ///////////////////
@@ -72,10 +85,36 @@
 {"func_NotImplemented" 		,(FUNC_) func_NotImplemented }, //Must be first
 {"GetProcAddress" 			,(FUNC_) imp_GetProcAddress }, 	//Special
 {"LoadLibraryA"    			,(FUNC_) imp_LoadLibraryA },  	//Special
+{"LoadLibraryW"    			,(FUNC_) imp_LoadLibraryW},  	//Special
+{"FreeLibrary"    			,(FUNC_) imp_FreeLibrary},  	
 //{"LoadLibraryExW"  			,(FUNC_) LoadLibraryExW }, 			//TODO
 
 {"CommandLineToArgvW"  		,(FUNC_) imp_CommandLineToArgvW },
 {"GetCommandLineW"  		,(FUNC_) imp_GetCommandLineW },
+//{"chkstk"  					,(FUNC_) imp_chkstk },
+#ifdef ImWin
+{"chkstk"  					,(FUNC_) __chkstk },
+#endif
+
+#ifdef USE_Platform_RegisterFrame
+{"__register_frame"  	,(FUNC_) __register_frame },
+{"__deregister_frame"  	,(FUNC_) __deregister_frame },
+#else
+{"__register_frame"  	,(FUNC_) imp_register_frame },
+{"__deregister_frame"  	,(FUNC_) imp_deregister_frame },
+#endif
+
+
+#ifdef USE_Platform_AlignedAlloc
+{"_aligned_malloc"	,(FUNC_) _aligned_malloc },
+{"_aligned_realloc"	,(FUNC_) _aligned_realloc },
+{"_aligned_free"  	,(FUNC_) _aligned_free },
+#else
+{"_aligned_malloc"	,(FUNC_) imp_aligned_malloc },
+{"_aligned_realloc"	,(FUNC_) imp_aligned_realloc },
+{"_aligned_free"  	,(FUNC_) imp_aligned_free },
+#endif
+
 /////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////// FUNC TABLE /////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -92,10 +131,42 @@
 
 /////////////////////////////
 
+//Temp
+
+//{"wcscpy"  				,(FUNC_) wcscpy },
+{"sscanf"  				,(FUNC_) sscanf },
+{"bsearch"  			,(FUNC_) bsearch },
+
+//{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
+//{"_open"  				,(FUNC_) imp_open },
+
+/*
+{"InitOnceExecuteOnce"  		,(FUNC_) InitOnceExecuteOnce },
+{"SleepConditionVariableCS"  	,(FUNC_) thread_SleepConditionVariableCS },
+{"InitializeConditionVariable"  ,(FUNC_) InitializeConditionVariable },
+{"WakeAllConditionVariable"  	,(FUNC_) WakeAllConditionVariable },
+{"WakeConditionVariable"  		,(FUNC_) thread_WakeConditionVariable },
+*/
+
+{"CreateSemaphoreA"  		,(FUNC_) pipe_CreateSemaphoreA },
+{"CreateSemaphoreW"  		,(FUNC_) pipe_CreateSemaphoreW },
+{"WaitForSingleObject"  	,(FUNC_) pipe_WaitForSingleObject },
+{"ReleaseSemaphore"  		,(FUNC_) pipe_ReleaseSemaphore },
+
+
+//{"_fdopen"  			,(FUNC_) _fdopen },
+
+//
+//Temp
+
+
+
+
+
+
+
 //////// Implemented ////////////////////////////////////////
-{"_aligned_malloc"	,(FUNC_) imp_aligned_malloc },
-{"_aligned_realloc"	,(FUNC_) imp_aligned_realloc },
-{"_aligned_free"  	,(FUNC_) imp_aligned_free },
+
 
 {"_strdup"  		,(FUNC_) imp_strdup },
 {"strncpy"  		,(FUNC_) imp_strncpy },
@@ -125,6 +196,8 @@
 
 {"VirtualAlloc"  		,(FUNC_) pipe_VirtualAlloc },
 {"VirtualFree"  		,(FUNC_) pipe_VirtualFree },
+{"VirtualProtect"  		,(FUNC_) pipe_VirtualProtect },
+{"FlushInstructionCache",(FUNC_) pipe_FlushInstructionCache },
 
 {"setvbuf"  			,(FUNC_) pipe_setvbuf },
 {"_set_error_mode" 		,(FUNC_) pipe_set_error_mode },
@@ -135,6 +208,7 @@
 {"DispatchMessageA"  	,(FUNC_) pipe_DispatchMessageA }, 
 
 {"GetSystemInfo"  		,(FUNC_) pipe_GetSystemInfo }, 
+{"GetNativeSystemInfo"  ,(FUNC_) pipe_GetNativeSystemInfo }, 
 {"WindowFromDC"  		,(FUNC_) pipe_WindowFromDC }, 
 {"ClientToScreen"  		,(FUNC_) pipe_ClientToScreen }, 
 
@@ -177,6 +251,11 @@
 {"OutputDebugStringW"  	,(FUNC_) pipe_OutputDebugStringW },
 
 {"GetConsoleWindow"  	,(FUNC_) pipe_GetConsoleWindow },
+
+{"GetStdHandle"  				,(FUNC_) pipe_GetStdHandle },
+{"GetConsoleScreenBufferInfo"  	,(FUNC_) pipe_GetConsoleScreenBufferInfo },
+
+
 
 
 
@@ -245,6 +324,12 @@
 {"LeaveCriticalSection" 		,(FUNC_) sys_LeaveCriticalSection },
 {"DeleteCriticalSection" 		,(FUNC_) sys_DeleteCriticalSection },
 
+{"EnumerateLoadedModules64" 	,(FUNC_) sys_EnumerateLoadedModules64 },
+
+
+
+
+
 {"SetErrorMode"  			,(FUNC_) sys_SetErrorMode },
 
 {"DefWindowProcW"  			,(FUNC_) sys_DefWindowProcW },
@@ -252,10 +337,21 @@
 
 {"GetLastError"  			,(FUNC_) sys_GetLastError },
 {"SetLastError"  			,(FUNC_) sys_SetLastError },
+{"GetFileType"  			,(FUNC_) sys_GetFileType },
+{"GetCurrentDirectoryA"  	,(FUNC_) sys_GetCurrentDirectoryA },
+{"GetCurrentDirectoryW"  	,(FUNC_) sys_GetCurrentDirectoryW },
+{"VerSetConditionMask"  	,(FUNC_) sys_VerSetConditionMask },
+{"VerifyVersionInfoW"  		,(FUNC_) sys_VerifyVersionInfoW },
 
 
-{"CreateSemaphoreA"  		,(FUNC_) pipe_CreateSemaphoreA },
-{"CreateSemaphoreW"  		,(FUNC_) pipe_CreateSemaphoreW },
+
+{"_get_osfhandle"  			,(FUNC_) imp_get_osfhandle },
+{"_lseek"  					,(FUNC_) imp_lseek },
+{"_write"  					,(FUNC_) imp_write},
+{"_isatty"  				,(FUNC_) imp_isatty},
+
+
+
 
 {"_vsnprintf"  	,(FUNC_) imp_vsnprintf },
 {"_snwprintf"  	,(FUNC_) imp_snwprintf },
@@ -266,8 +362,24 @@
 
 {"abort"  		,(FUNC_) abort },  //TODO custom abort
 
-{"vfprintf"  ,(FUNC_) vfprintf },
 {"_stricmp"  ,(FUNC_) imp_stricmp },
+
+
+
+
+
+#ifdef USE_Platform_LocalAlloc
+{"LocalAlloc"  		,(FUNC_) LocalAlloc },
+{"LocalReAlloc"		,(FUNC_) LocalReAlloc },
+{"LocalSize"  		,(FUNC_) LocalSize },
+{"LocalFree"  		,(FUNC_) LocalFree },
+#else
+{"LocalAlloc"  		,(FUNC_) imp_LocalAlloc },
+{"LocalReAlloc"		,(FUNC_) imp_LocalReAlloc },
+{"LocalSize"  		,(FUNC_) imp_LocalSize },
+{"LocalFree"  		,(FUNC_) imp_LocalFree },
+#endif
+
 
 
 #ifdef USE_Platform_ThreadStorage
@@ -311,11 +423,6 @@
 
 
 
-{"LocalAlloc"  		,(FUNC_) imp_LocalAlloc },
-{"LocalReAlloc"		,(FUNC_) imp_LocalReAlloc },
-{"LocalSize"  		,(FUNC_) imp_LocalSize },
-{"LocalFree"  		,(FUNC_) imp_LocalFree },
-
 
 
 /*
@@ -325,38 +432,73 @@
 */
 
 
+{"malloc"  	,(FUNC_) imp_malloc },
+{"calloc"  	,(FUNC_) imp_calloc },
+{"realloc"  ,(FUNC_) imp_realloc },
+{"free"  	,(FUNC_) imp_free },
 
-{"malloc"  ,(FUNC_) malloc },
-{"calloc"  ,(FUNC_) calloc },
-{"realloc"  ,(FUNC_) realloc },
-{"free"  ,(FUNC_) free },
 
-{"scanf"  ,(FUNC_) scanf },
+
+
+{"_snprintf"  		,(FUNC_) snprintf },
+{"_beginthreadex"  ,(FUNC_) imp_beginthreadex },
+{"_errno"  			,(FUNC_) imp_errno },
+
+
+
+
+
+
+
+
+
 /////////////////////////////////////////////
 /////////// DIRECT MAPPING //////////////////
 /// *safe enough for a direct replacement* ///
 /////////////////////////////////////////////
 /////////////////////////////////////////////
 
+{"vfprintf"  ,(FUNC_) vfprintf },
+{"scanf"  ,(FUNC_) scanf },
+
 /////////// LOG ////////////////////
-{"printf"  ,(FUNC_) printf }, // maybe not safe
-{"fflush"  	,(FUNC_) fflush },
-{"fprintf"  ,(FUNC_) fprintf },
-{"fwrite"  ,(FUNC_) fwrite },
+{"printf"  	,(FUNC_) printf }, // maybe not safe
+{"fflush"  	,(FUNC_) imp_fflush },
+{"fwrite"  	,(FUNC_) imp_fwrite },
+
+{"fprintf"  ,(FUNC_) imp_fprintf },
+{"sprintf"  ,(FUNC_) imp_sprintf },
+
+
+{"putc"  	,(FUNC_) imp_putc },
+{"fputc"  	,(FUNC_) imp_fputc },
+{"puts"  	,(FUNC_) imp_puts },
+{"fputs"  	,(FUNC_) imp_fputs },
+{"putchar"  ,(FUNC_) imp_putchar },
+
 ////////////////////////////////////
 
 /////////// MEM ////////////////////
 {"memcmp"  		,(FUNC_) memcmp },
 {"memmove"  	,(FUNC_) memmove },
-{"memcpy"  ,(FUNC_) memcpy },
-{"memset"  ,(FUNC_) memset },
+{"memcpy"  		,(FUNC_) memcpy },
+{"memset"  		,(FUNC_) memset },
 ////////////////////////////////////
 
 /////////// STRING ///////////////
+//#ifdef ImWin
 //{"wcslen"  	,(FUNC_) wcslen }, //Not in DJGPP
+//#endif
+{"wcslen"  	,(FUNC_) wcslen_ }, //Not in DJGPP
+
+
+
+{"isalnum"  ,(FUNC_) isalnum},
+
+
 {"strcmp"  	,(FUNC_) strcmp },
 {"stricmp"	,(FUNC_) stricmp },
-{"sprintf"  ,(FUNC_) sprintf },
+
 {"strcat"  	,(FUNC_) strcat },
 {"strchr"  	,(FUNC_) strchr },
 {"strcpy"  	,(FUNC_) strcpy },
@@ -375,13 +517,8 @@
 ////////////////////////////////
 
 /////////// CHAR ////////////////
-{"putchar"  ,(FUNC_) putchar },
-{"puts"  	,(FUNC_) puts },
 {"getc"  	,(FUNC_) getc },
 {"fgetc"  	,(FUNC_) fgetc },
-{"putc"  	,(FUNC_) putc },
-{"fputs"  	,(FUNC_) fputs },
-{"putchar"  ,(FUNC_) putchar },
 {"getchar"  ,(FUNC_) getchar },
 {"getch"  	,(FUNC_) getch },
 /////////////////////////////////

@@ -20,45 +20,118 @@
 * 
 */
 
+
+
+
+//!HMODULE LoadLibraryW(LPCWSTR lpLibFileName)
+inline HMODULE WINAPI imp_LoadLibraryW(LPCWSTR lpLibFileName){
+	showfunc("LoadLibraryW( .. )", NULL);
+	WStr _swFile(lpLibFileName);
+	const char* _sFile = _swFile.ToCStr();
+	showfunc("LoadLibraryW( lpLibFileName: %s )", _sFile);
+	#ifdef USE_Windows_LoadLibrary
+		HMODULE _ret = LoadLibraryW(lpLibFileName);
+		if(!_ret){sys_GetLastError();}return _ret;
+	#else
+		if(strcmp(_sFile, "Dbghelp.dll") == 0){ //required for Mesa
+			return (HMODULE)1; //Fake availability
+		}
+		return (HMODULE)AddLibrary(_sFile);
+	#endif
+}
+
+
 //!HMODULE LoadLibraryA(LPCSTR lpLibFileName)
 inline HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
 	showfunc("LoadLibraryA( lpLibFileName: %s )", lpLibFileName);
 	#ifdef USE_Windows_LoadLibrary
 		HMODULE _ret = LoadLibraryA(lpLibFileName);
-		if(!_ret){My_GetLastError();}return _ret;
+		if(!_ret){sys_GetLastError();}return _ret;
 	#else
 		return (HMODULE)AddLibrary(lpLibFileName);
+	#endif
+}
+
+//!WINBOOL WINAPI FreeLibrary (HMODULE hLibModule)
+WINBOOL WINAPI imp_FreeLibrary(HMODULE hLibModule){
+	#ifdef USE_Windows_LoadLibrary
+		WINBOOL _ret = FreeLibrary(hLibModule);
+		if(!_ret){sys_GetLastError();}return _ret;
+	#else
+		return true; //TODO free lib?
 	#endif
 }
 
 //!FARPROC GetProcAddress(HMODULE hModule,LPCSTR  lpProcName)
 FARPROC WINAPI  imp_GetProcAddress(  HMODULE hModule, LPCSTR  lpProcName){
 	showfunc("GetProcAddress( hModule: %p, lpProcName: %s)",hModule, lpProcName);
-	
-	char* _sDllName = (char*)"unknow";
-	bool bOurLib = is_in_aLibList((HMEMORYMODULE)hModule);
+	#ifdef USE_Windows_GetProcAddress
+		return GetProcAddress(hModule, lpProcName);
+	#else
+		char* _sDllName = (char*)"unknow";
+		bool bOurLib = is_in_aLibList((HMEMORYMODULE)hModule);
 
-	FARPROC func = 0;
-	if(bOurLib){
-		PIMAGE_DATA_DIRECTORY directory = GET_HEADER_DICTIONARY((PMEMORYMODULE)hModule, IMAGE_DIRECTORY_ENTRY_EXPORT);
-		if(directory != 0){
-			if ( directory->Size == 0) {
-				 _EXE_LOADER_DEBUG(0, "no export table found", "no export table found" );
+		FARPROC func = 0;
+		if(bOurLib){
+			PIMAGE_DATA_DIRECTORY directory = GET_HEADER_DICTIONARY((PMEMORYMODULE)hModule, IMAGE_DIRECTORY_ENTRY_EXPORT);
+			if(directory != 0){
+				if ( directory->Size == 0) {
+					 _EXE_LOADER_DEBUG(0, "no export table found", "no export table found" );
+				}
+				PIMAGE_EXPORT_DIRECTORY exports = (PIMAGE_EXPORT_DIRECTORY) ( ((MEMORYMODULE*)hModule)->codeBase + directory->VirtualAddress);
+				_sDllName =  (char*) ( ((MEMORYMODULE*)hModule)->codeBase + exports->Name);
 			}
-			PIMAGE_EXPORT_DIRECTORY exports = (PIMAGE_EXPORT_DIRECTORY) ( ((MEMORYMODULE*)hModule)->codeBase + directory->VirtualAddress);
-			_sDllName =  (char*) ( ((MEMORYMODULE*)hModule)->codeBase + exports->Name);
+			func =  memory_module->MemoryGetProcAddress((HMEMORYMODULE)hModule, lpProcName);
 		}
-		func =  memory_module->MemoryGetProcAddress((HMEMORYMODULE)hModule, lpProcName);
-	}
-	if(func != 0){
-		_EXE_LOADER_DEBUG(0, "GetLibAddress[%s] --> %s() ...", "GetLibAddress[%s] --> %s() ...", _sDllName, lpProcName);
-		return func;
-	}else{
-		_EXE_LOADER_DEBUG(0, "GetTableAddress[%s] --> %s() ...", "GetTableAddress[%s] --> %s() ...", _sDllName, lpProcName);
-		return MyMemoryDefaultGetProcAddress(0, lpProcName, 0); //Look in our function table
-	}
+		if(func != 0){
+			_EXE_LOADER_DEBUG(0, "GetLibAddress[%s] --> %s() ...", "GetLibAddress[%s] --> %s() ...", _sDllName, lpProcName);
+			return func;
+		}else{
+			_EXE_LOADER_DEBUG(0, "GetTableAddress[%s] --> %s() ...", "GetTableAddress[%s] --> %s() ...", _sDllName, lpProcName);
+			//// malloc name to keep track of it ///
+			int len = strlen(lpProcName)+1;
+			char* _sName = (char*)malloc(len);
+			memcpy(_sName, lpProcName, len);
+			//TODO free it at end of Exeloading
+			return MyMemoryDefaultGetProcAddress(0, _sName, 0); //Look in our function table
+		}
+	#endif
 }
+/*
+//!VOID imp_chkstk(DWORD size)
+static void* ntdll = 0;
+typedef ULONG  (*funcPtr_chkstk)();
+static funcPtr_chkstk _func = 0;
+//https://metricpanda.com/rival-fortress-update-45-dealing-with-__chkstk-__chkstk_ms-when-cross-compiling-for-windows/
+//https://stackoverflow.com/questions/52406183/mingw-stack-size-reserved-or-committed
+ //WINIWE: https://github.com/wine-mirror/wine/blob/master/dlls/ntdll/signal_i386.c
 
+//This issue was not only due to ntdll.dll. Potentially it could be on "large-address-aware" with JIT.I have missed to consider the case that JIT memory pool would not be within 2GB area.
+ULONG imp_chkstk(){
+	//Windows pages in extra stack for your thread as it is used. At the end of the stack, there is one guard page mapped as inaccessible memory -- if the program accesses it (because it is trying to use more stack than is currently mapped), there's an access violation. The OS catches the fault, maps in another page of stack at the same address as the old guard page, creates a new guard page just beyond the old one, and resumes from the instruction that caused the violation.
+	//alloca is partially intrinsic function, implemented by compiler. but internally it call _alloca_probe_16 (for x86) or __chkstk(x64) for move guard page down on stack. implementation of this functions exist in alloca16.obj and chkstk.objwhich can be found in VC subfolder (where exacly depended from VC version) - you can add this obj for link process or even first convert it to lib. also in latest WDK libs - exist ntdllp.lib (not confuse with ntdll.lib) - it also containing all need for implementation ( ntdll.dll export _chkstk (for x86) and __chkstk (for x64))
+	showfunc("chkstk( )", "");
+	//showfunc("chkstk(size: %d)", size);
+	if(ntdll == 0){
+		//HMODULE _hmod = LoadLibraryA("ntdll.dll");
+		HMODULE _hmod = LoadLibraryA("C:/Windows/System32/ntdll.dll");
+		//HMODULE _hmod = LoadLibraryA("C:/Windows/SysWOW64/ntdll.dll");
+		if(_hmod != 0){
+			printf("\nLoaded");
+			//_func = (funcPtr_chkstk)GetProcAddress(_hmod,"_chkstk");
+			_func = (funcPtr_chkstk)GetProcAddress(_hmod,"_chkstk");
+		}
+	}
+	if(_func != 0){
+		showinf("Found chkstk: Call it %p", _func);
+		return _func();
+	}else{
+		showinf("Error: No function 'chkstk'","");
+	}
+	return 0;
+	//Load ntdll.dll: __chkstk
+}
+ */
 //!void __cdecl _initterm(PVFV *,PVFV *);
 typedef void (CDECL *_PVFV)();
 inline void imp_initterm(_PVFV* ppfn,_PVFV* end){
@@ -269,94 +342,10 @@ inline int imp_abs(int x){
 	if(x < 0){return x*-1;}return x;
 }
 
-//==== TLS === //
-
-void** aTlsNewMem = 0;
-//!DWORD TlsAlloc()
-DWORD WINAPI imp_TlsAlloc(void){
-   	showfunc_opt("TlsAlloc( )", "");
-	static int _nIndex = 0;
-	static int _nMax = 0;
-	if(_nIndex >= _nMax){ //Realloc
-		int _nNewSize = _nMax*2 + 5; 
-		
-		 void** _aNewMem = (void**)calloc(_nNewSize, sizeof(void*));
-		 memcpy(_aNewMem, aTlsNewMem, _nMax*sizeof(void*) );
-		 free(aTlsNewMem);
-		 aTlsNewMem = _aNewMem;
-		 
-		 _nMax = _nNewSize;
-		// _EXE_LOADER_DEBUG(3,"TlsAlloc() : [ReAlloc] size: %d\n","TlsAlloc() : [ReAlloc] size: %d\n", _nNewSize);
-	}
-	
-	_EXE_LOADER_DEBUG(3,"TlsAlloc() : %d\n","TlsAlloc() : %d\n", _nIndex);
-	_nIndex++;
-	return _nIndex-1;
-}
-
-//!BOOL TlsSetValue(DWORD  dwTlsIndex,LPVOID lpTlsValue)
-BOOL  WINAPI imp_TlsSetValue(DWORD dwTlsIndex, _In_opt_ LPVOID lpTlsValue){
-	showfunc_opt("TlsSetValue( dwTlsIndex: %d, lpTlsValue: %p )", dwTlsIndex, lpTlsValue);
-	//if(lpTlsValue != 0){showfunc_opt(3,"TlsSetValue() : %d [0x%p] value : %d\n","TlsSetValue() : %d [0x%p] value : %d\n", dwTlsIndex, lpTlsValue, *(int*)lpTlsValue );
-	//}else{showfunc_opt(3,"TlsSetValue() : %d [0x%p]\n"		    ,"TlsSetValue() : %d [0x%p]\n",			   dwTlsIndex, lpTlsValue);}
-   aTlsNewMem[dwTlsIndex] = lpTlsValue;
-   return true;
-}
-
-//!LPVOID TlsGetValue(DWORD dwTlsIndex)
-LPVOID WINAPI imp_TlsGetValue(DWORD dwTlsIndex){
-	showfunc_opt("TlsGetValue( dwTlsIndex: %d )", dwTlsIndex);
-   //if(aTlsNewMem[dwTlsIndex] != 0){_EXE_LOADER_DEBUG(3,"TlsGetValue() : %d [0x%p] value : %d\n","TlsGetValue() : %d [0x%p] value : %d\n", dwTlsIndex, aTlsNewMem[dwTlsIndex], *(int*)aTlsNewMem[dwTlsIndex]);
-   //}else{_EXE_LOADER_DEBUG(3,"TlsGetValue() : %d [0x%p]\n"		     ,"TlsGetValue() : %d [0x%p]\n",		   dwTlsIndex, aTlsNewMem[dwTlsIndex]);}
-   return aTlsNewMem[dwTlsIndex];
-}
-
-//!BOOL TlsFree(DWORD dwTlsIndex)
-BOOL WINAPI imp_TlsFree(DWORD dwTlsIndex){
-	showfunc_opt("TlsFree( dwTlsIndex: %d )", dwTlsIndex);
-	//_EXE_LOADER_DEBUG(3,"TlsFree() : %d [0x%p] value : %d\n","TlsFree() : %d [0x%p] value: %d\n", dwTlsIndex, aTlsNewMem[dwTlsIndex], *(int*)aTlsNewMem[dwTlsIndex]);
-	aTlsNewMem[dwTlsIndex] = 0;
-	return true;
-}
-
-//==== Local Alloc === //  ** ---- Not tested --- **
-
-//!HLOCAL WINAPI LocalAlloc (UINT uFlags, SIZE_T uBytes)
-inline HLOCAL WINAPI imp_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
-	showfunc_opt("LocalAlloc( uFlags: %d, uBytes: %d )", uFlags, uBytes);
-	SIZE_T* _alloc = (SIZE_T*)instance_AllocManager.ManagedCalloc(uBytes + sizeof(SIZE_T), sizeof(char));
-	_alloc[0] = uBytes;
-	return (HLOCAL)&_alloc[1];
-}
-
-//!SIZE_T WINAPI LocalSize (HLOCAL hMem)
-SIZE_T WINAPI imp_LocalSize(HLOCAL hMem){
-	showfunc_opt("LocalSize( hMem: %p)", hMem);
-	SIZE_T* _alloc = (SIZE_T*)hMem;_alloc--;
-	return _alloc[0];
-}
-
-//!HLOCAL WINAPI LocalFree (HLOCAL hMem)
-inline SIZE_T WINAPI imp_LocalFree(HLOCAL hMem){
-	showfunc_opt("LocalFree( hMem: %p)", hMem);
-	if(hMem != 0){
-		SIZE_T* _alloc = (SIZE_T*)hMem;_alloc--;
-		instance_AllocManager.ManagedFree(_alloc);
-	}
-	return 0;
-}
-
-//!HLOCAL WINAPI LocalReAlloc (HLOCAL hMem, SIZE_T uBytes, UINT uFlags)
-HLOCAL WINAPI imp_LocalReAlloc(HLOCAL hMem, SIZE_T uBytes, UINT uFlags){
-	showfunc_opt("LocalReAlloc( hMem: %p, uFlags: %d, uBytes: %d )", hMem, uFlags, uBytes);
-	imp_LocalFree(hMem);
-	return imp_LocalAlloc(0, uBytes);
-}
-
 //===== CommandLine ==== //
 
 //!LPWSTR GetCommandLineW(){
-LPWSTR imp_GetCommandLineW(){
+inline LPWSTR WINAPI imp_GetCommandLineW(){
 	showfunc("GetCommandLineW( )", "");
 	#ifdef Func_Win
 	return GetCommandLineW();
@@ -371,7 +360,7 @@ LPWSTR imp_GetCommandLineW(){
 }
 
 //!LPWSTR* CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs)
-inline LPWSTR* imp_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
+inline LPWSTR* WINAPI imp_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 	showfunc("CommandLineToArgvW( lpCmdLine: %p, pNumArgs: %p )", lpCmdLine, pNumArgs);
 	#ifdef Func_Win
 	return CommandLineToArgvW(lpCmdLine, pNumArgs);
@@ -386,7 +375,7 @@ inline LPWSTR* imp_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 
 //!int snprintf ( char * s, size_t n, const char * format, ... )
 inline int  imp_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
-	showfunc("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
+	showfunc_opt("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
 /*
 	size_t len = wcslen(format);
 	printf("\nlength: %d \n", len);
@@ -426,20 +415,40 @@ inline int imp_fwprintf (FILE* stream, const wchar_t* format, ...){
 	return ret;
 }
 
+//copy d:
+//gdb cpcldr
+//set arg nogui
+//r
+//sys /debug = 2
+//sys /debug /cpinticore = p1
+//exe/ /win32 blend2.exe
+
+
 //!int vsnprintf (char * __restrict__ __stream, size_t __n, const char * __restrict__ __format, va_list __local_argv);
 int imp_vsnprintf (char* s, size_t n, const char *  format, va_list __local_argv){
+	/*
+	showfunc("vsnprintf( s: %u, n: %d, format: %s, ... )", s,n,format); 
 	
-	showfunc("vsnprintf( s: %p, n: %u, format: %s, ... )  --  %u", s, n, format);
-	if(n > INT_MAX) 
-		n = INT_MAX;
+	static int count = 0;
+	count++;
+	if(n == 4048){
+		printf("\nhere");
+	}
 	
+	return vsnprintf(s, n, format, __local_argv);
+	*/
+	
+	showfunc_opt("vsnprintf( s: %p, n: %u, format: %s, ... )  --  %u", s, n, format);
+	#ifdef USE_limit_on_vsnprintf
+	if(n > USE_limit_on_vsnprintf) n = USE_limit_on_vsnprintf;
+	#endif
+	/*
 	if(strcmp(format, "#version %I64i%s%s") == 0)
 	{
 		format = "#version %llu%s%s";
 		showfunc("CORRECTED : vsnprintf( s: %p, n: %u, format: %s, ... )", s, n, format);
 	}
-
-	
+	*/
 	return vsnprintf(s, n, format, __local_argv);
 }
 
@@ -453,6 +462,142 @@ UINT imp_lc_codepage_func(void){
 int imp_stricmp(const char *string1,const char *string2){
 	showfunc_opt("_stricmp( string1: %p, string2: %p )", ""); 
 	return stricmp(string1, string2);
+}
+
+
+//vswprintf_ARG(format, dest, max, ret)va_list _arg_;va_start (_arg_, format);int ret = vswprintf((wchar_t*)dest, max, format, _arg_);va_end (_arg_);
+
+//!int fprintf ( FILE * stream, const char * format, ... )
+//int imp_fprintf( FILE* stream, const char* format, va_list __local_argv){
+int imp_fprintf( FILE* stream, const char* format, ...){
+	showfunc_opt("fprintf( stream: %p, format: %s, ... )", stream,format); 
+	va_list _arg_;va_start (_arg_, format);
+	int ret = vprintf(format, _arg_);
+	va_end (_arg_);
+	return ret;
+}
+
+//!size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream )
+size_t imp_fwrite( const void * ptr, size_t size, size_t count, FILE * stream ){
+	showfunc_opt("fwrite( ptr: %p, size: %d, count: %d, stream: %p )", ptr,size, count, stream); 
+	return fwrite(ptr,size, count, stdout);
+	//printf("%s", _char);
+}
+
+//int fflush ( FILE * stream )
+int imp_fflush( FILE * stream ){
+	showfunc("fflush( stream: %p )", stream); 
+	return 0;
+}
+
+//!int fputc(int char, FILE *stream)
+int imp_fputc(int _char, FILE *stream){
+	showfunc_opt("fputc( _char: %d, stream: %p, ... )", _char,stream); 
+	printf("%c", _char);
+	return _char;
+}
+
+//!int putc(int char, FILE *stream)
+int imp_putc(int _char, FILE *stream){
+	showfunc_opt("putc( _char: %d, stream: %p, ... )", _char,stream); 
+	printf("%c", _char);
+	return _char;
+}
+//!int putchar ( int character )
+int imp_putchar( int _char ){
+	showfunc_opt("putc( character: %c )", _char); 
+	printf("%c", _char);
+	return _char;
+}
+
+//!int puts ( const char * str )
+int imp_puts( const char * str ){
+	showfunc_opt("puts( _char: %s )", str); 
+	return printf(str);
+}
+
+//!int fputs ( const char * str, FILE * stream )
+int imp_fputs ( const char * str, FILE * stream ){
+	showfunc_opt("puts( _char: %s, stream: %p)", str, stream); 
+	return printf(str);
+}
+
+//!int sprintf ( char * str, const char * format, ... )
+int imp_sprintf( char * str, const char * format, va_list __local_argv){
+	showfunc_opt("sprintf( s: %p, format: %p, ... )", str,format); 
+	return sprintf(str, format, __local_argv);
+}
+
+//!int sprintf ( char * str, const char * format, ... )
+int imp_snprintf( char * str, size_t n, const char * format, va_list __local_argv){
+	showfunc_opt("snprintf( s: %p, format: %p, ... )", str,format); 
+	return snprintf(str, n, format, __local_argv);
+}
+
+//!int* CDECL _errno(void )
+static int _errno_ = 0;
+int* imp_errno(void ){
+	showfunc_opt("errno()", ""); 
+	//  return &(msvcrt_get_thread_data()->thread_errno);
+	return &_errno_;
+}
+//!intptr_t _get_osfhandle(int fd)
+#ifndef EBADF
+#define EBADF            9      /* Bad file number */
+#endif
+intptr_t imp_get_osfhandle(int fd){
+	showfunc("_get_osfhandle( fd: %d )", fd); 
+	//File descriptor 0 stdint, 1 stdout, 2 strerr
+	//If execution is allowed to continue, it returns INVALID_HANDLE_VALUE (-1). It also sets errno to EBADF, indicating an invalid file handle.
+	return -1;
+}
+
+//!long _lseek(int fd,long offset,int origin)
+long imp_lseek(int fd,long offset,int origin){
+	showfunc_opt("_lseek( fd: %d, offset: %d, origin: %d )", fd, offset, origin); 
+	//File descriptor 0 stdint, 1 stdout, 2 strerr
+	//If execution is allowed to continue, these functions set errno to EBADF and return -1L.
+	return ((long)-1);
+}
+
+
+//!int _write(int fd,const void *buffer, unsigned int count)
+int imp_write(int fd,const void* buffer, unsigned int count){
+	showfunc_opt("_write( fd: %d, buffer: %p, count: %d )", fd, buffer, count);
+	int _bytes = printf ("%.*s\n",count, buffer)-1;
+	if(_bytes > count){_bytes = count;}
+	return _bytes;
+	
+}
+
+//!int _isatty( int fd )
+int imp_isatty( int fd ){
+	showfunc_opt("isatty( fd: %d)", fd);
+	//_isatty returns a nonzero value if the descriptor is associated with a character device. Otherwise, _isatty returns 0.
+	return 1;
+}
+
+
+//!void __register_frame(void*)
+void imp_register_frame(void* ptr){	//!__USING_SJLJ_EXCEPTIONS__
+	// libgcc defines the __register_frame function to dynamically register new
+	// dwarf frames for exception handling. This functionality is not portable
+	// across compilers and is only provided by GCC. We use the __register_frame
+	// function here so that code generated by the JIT cooperates with the unwinding
+	// runtime of libgcc. When JITting with exception handling enable, LLVM
+	// generates dwarf frames and registers it to libgcc with __register_frame.
+	showfunc_opt("__register_frame( ptr: %p)", ptr);
+}
+//!void __deregister_frame(void*)	
+void imp_deregister_frame(void* ptr){
+	showfunc_opt("__deregister_frame( ptr: %p)", ptr);
+}
+
+
+//!int _open(const char *filename,int oflag [,int pmode])
+int imp_open(const char *filename,int oflag,int pmode){
+	showfunc("_open( filename: %s, oflag: d, pmode: %d)", filename,oflag,pmode);
+	return -1;//error
 }
 
 
