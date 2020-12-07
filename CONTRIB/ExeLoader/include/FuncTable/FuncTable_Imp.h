@@ -25,9 +25,7 @@
 
 //!HMODULE LoadLibraryW(LPCWSTR lpLibFileName)
 inline HMODULE WINAPI imp_LoadLibraryW(LPCWSTR lpLibFileName){
-	showfunc("LoadLibraryW( .. )", NULL);
-	WStr _swFile(lpLibFileName);
-	const char* _sFile = _swFile.ToCStr();
+	WStr _swFile(lpLibFileName);const char* _sFile = _swFile.ToCStr();
 	showfunc("LoadLibraryW( lpLibFileName: %s )", _sFile);
 	#ifdef USE_Windows_LoadLibrary
 		HMODULE _ret = LoadLibraryW(lpLibFileName);
@@ -157,6 +155,16 @@ inline int imp_initterm_e(_PIFV* ppfn,_PIFV* end){
     } while (ppfn < end);
     return 0;
 }
+
+
+//!_CRTIMP char ***__cdecl __p__environ(void)
+static  char** _environ_ = 0;
+inline char*** imp_p__environ(void){
+	showfunc("__p__environ( )", "");
+	//return &_environ; //Standard one
+	return &_environ_; //Custom
+}
+
 
 //!void __cdecl _lock(int locknum)
 inline void  imp_lock(int locknum){
@@ -345,7 +353,7 @@ inline int imp_abs(int x){
 //===== CommandLine ==== //
 
 //!LPWSTR GetCommandLineW(){
-inline LPWSTR WINAPI imp_GetCommandLineW(){
+LPWSTR WINAPI imp_GetCommandLineW(){
 	showfunc("GetCommandLineW( )", "");
 	#ifdef Func_Win
 	return GetCommandLineW();
@@ -472,7 +480,44 @@ int imp_stricmp(const char *string1,const char *string2){
 int imp_fprintf( FILE* stream, const char* format, ...){
 	showfunc_opt("fprintf( stream: %p, format: %s, ... )", stream,format); 
 	va_list _arg_;va_start (_arg_, format);
+
+	#ifdef USE_PRINTF
 	int ret = vprintf(format, _arg_);
+	#else
+	
+	//TODO optimise & size check
+	char BUFFER[4096] = {0};
+	va_list arg;
+	va_start (arg, format);
+		int ret = vsprintf (BUFFER, format, arg);
+	va_end (arg);
+	showinf("O> %s", BUFFER);
+	
+	#endif
+	
+	
+	va_end (_arg_);
+	return ret;
+}
+
+//!int printf ( const char * format, ... )
+//int imp_printf( const char* format, va_list __local_argv){
+int imp_printf( const char* format, ...){
+	showfunc_opt("printf( stream: %p, format: %s, ... )",format); 
+	va_list _arg_;va_start (_arg_, format);
+	#ifdef USE_PRINTF
+	int ret = printf(_arg_);
+	#else
+	
+	//TODO optimise & size check
+	char BUFFER[4096] = {0};
+	va_list arg;
+	va_start (arg, format);
+		int ret = vsprintf (BUFFER, format, arg);
+	va_end (arg);
+	showinf("O> %s", BUFFER);
+	
+	#endif
 	va_end (_arg_);
 	return ret;
 }

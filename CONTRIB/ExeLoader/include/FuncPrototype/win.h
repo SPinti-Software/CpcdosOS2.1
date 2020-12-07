@@ -20,6 +20,7 @@
 *
 */
 
+
 #ifdef ImWin
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
@@ -1381,6 +1382,113 @@
     COORD dwMaximumWindowSize;
   } CONSOLE_SCREEN_BUFFER_INFO,*PCONSOLE_SCREEN_BUFFER_INFO;
 
-	
-	
+
+   typedef LRESULT (CALLBACK *WNDPROC)(HWND,UINT,WPARAM,LPARAM);
+  
+  
+	typedef struct tagWNDCLASSEXA {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+    HICON hIconSm;
+  } WNDCLASSEXA,*PWNDCLASSEXA,*NPWNDCLASSEXA,*LPWNDCLASSEXA;
+
+  typedef struct tagWNDCLASSEXW {
+    UINT cbSize;
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+    HICON hIconSm;
+  } WNDCLASSEXW,*PWNDCLASSEXW,*NPWNDCLASSEXW,*LPWNDCLASSEXW;
+
+  typedef struct tagWNDCLASSA {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+  } WNDCLASSA,*PWNDCLASSA,*NPWNDCLASSA,*LPWNDCLASSA;
+
+  typedef struct tagWNDCLASSW {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+  } WNDCLASSW,*PWNDCLASSW,*NPWNDCLASSW,*LPWNDCLASSW;
+  
+  
+  
+#define WM_CTLCOLORMSGBOX 0x0132
+#define WM_CTLCOLOREDIT 0x0133
+#define WM_CTLCOLORLISTBOX 0x0134
+#define WM_CTLCOLORBTN 0x0135
+#define WM_CTLCOLORDLG 0x0136
+#define WM_CTLCOLORSCROLLBAR 0x0137
+#define WM_CTLCOLORSTATIC 0x0138
+#define MN_GETHMENU 0x01E1
+
+#define WM_MOUSEFIRST 0x0200
+#define WM_MOUSEMOVE 0x0200
+#define WM_LBUTTONDOWN 0x0201
+#define WM_LBUTTONUP 0x0202
+#define WM_LBUTTONDBLCLK 0x0203
+#define WM_RBUTTONDOWN 0x0204
+#define WM_RBUTTONUP 0x0205
+#define WM_RBUTTONDBLCLK 0x0206
+#define WM_MBUTTONDOWN 0x0207
+#define WM_MBUTTONUP 0x0208
+#define WM_MBUTTONDBLCLK 0x0209
+#define WM_MOUSEWHEEL 0x020A
+#define WM_XBUTTONDOWN 0x020B
+#define WM_XBUTTONUP 0x020C
+#define WM_XBUTTONDBLCLK 0x020D
+#define WM_MOUSEHWHEEL 0x020e
+#define WM_MOUSELAST 0x020d
+
+
+  typedef struct tagTRACKMOUSEEVENT {
+    DWORD cbSize;
+    DWORD dwFlags;
+    HWND hwndTrack;
+    DWORD dwHoverTime;
+  } TRACKMOUSEEVENT,*LPTRACKMOUSEEVENT;
+
 #endif /*ImWin*/
+
+/* extra */
+#ifndef HIWORD
+#define HIWORD(l)           ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff))
+#define LOWORD(l)           ((WORD)(((DWORD_PTR)(l)) & 0xffff))
+#endif
+#ifndef GET_X_LPARAM
+#define GET_X_LPARAM(lp)    ((int)(short)LOWORD(lp))
+#define GET_Y_LPARAM(lp)    ((int)(short)HIWORD(lp))
+#endif 
+#define SETLPARAM(lw, hw) LOWORD(lw) | (LOWORD(hw) << 16)
+/* extra */

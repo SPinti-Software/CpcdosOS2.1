@@ -51,8 +51,6 @@ void imp_free(void* ptr){
 //==== Local Alloc === //  ** ---- Not tested --- **
 
 //!HLOCAL WINAPI LocalAlloc (UINT uFlags, SIZE_T uBytes)
-
-
 inline HLOCAL WINAPI imp_LocalAlloc(UINT  uFlags, SIZE_T uBytes){
 	showfunc_opt("LocalAlloc( uFlags: %d, uBytes: %d )", uFlags, uBytes);
 	SIZE_T* _alloc = (SIZE_T*)instance_AllocManager.ManagedCalloc(uBytes + sizeof(SIZE_T), sizeof(char));
@@ -72,7 +70,8 @@ inline SIZE_T WINAPI imp_LocalFree(HLOCAL hMem){
 	showfunc_opt("LocalFree( hMem: %p)", hMem);
 	if(hMem != 0){
 		SIZE_T* _alloc = (SIZE_T*)hMem;_alloc--;
-		// instance_AllocManager.ManagedFree(_alloc);
+		//TODO !crash!?
+	//	instance_AllocManager.ManagedFree(_alloc); 
 	}
 	return 0;
 }

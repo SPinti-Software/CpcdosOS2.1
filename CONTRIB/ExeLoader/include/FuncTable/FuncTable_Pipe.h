@@ -24,15 +24,152 @@
 *
 */
 
+
+/*
+  typedef struct tagWNDCLASSW {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCWSTR lpszMenuName;
+    LPCWSTR lpszClassName;
+  } WNDCLASSW,*PWNDCLASSW,*NPWNDCLASSW,*LPWNDCLASSW;
+*/
+#define MAX_WND_CLASS 20
+
+typedef LRESULT (*func_WndProc)( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam);
+func_WndProc aWndProc[MAX_WND_CLASS] = {};
+short aWndProc_idx = 0;
+
 //!ATOM RegisterClassW(const WNDCLASSW *lpWndClass)
-inline ATOM WINAPI pipe_RegisterClassW(void* value){
-	showfunc("RegisterClassW( value: %p )", value);
+inline ATOM WINAPI pipe_RegisterClassW(const WNDCLASSW *lpWndClass){
+	showfunc("RegisterClassW( value: %p )", lpWndClass);
 	#ifdef Func_Win
-		return RegisterClassW((WNDCLASSW*)value);
+		return RegisterClassW((WNDCLASSW*)lpWndClass);
 	#else
+		if(aWndProc_idx < MAX_WND_CLASS){
+		    aWndProc[aWndProc_idx] = (func_WndProc)lpWndClass->lpfnWndProc;//WNDPROC
+			aWndProc_idx++;
+		}
 		return 0;
 	#endif
 }
+
+#ifdef ShowPixView
+extern float pixView_mouse_x;
+extern float pixView_mouse_y;
+extern bool bLButtonDown; 
+#else
+bool bLButtonDown  = false;
+#endif
+bool bLButtonDown_last  = false;
+
+inline void impl_GetMessages(){
+	for(int i = 0; i < aWndProc_idx; i++){
+		//Call all WndProc messages
+		
+		HWND _hWnd = (HWND)1;
+		UINT uMsg = 1;
+		LPARAM lparam;
+		WPARAM wParam;
+
+	    uMsg = WM_MOUSEMOVE;
+		
+		#ifdef ShowPixView
+			static int j = 0;j++;
+			lparam = SETLPARAM(pixView_mouse_x,pixView_mouse_y);
+			showinf("mouse_X: %f, mouse_Y: %f, bLButtonDown:d", pixView_mouse_x, pixView_mouse_y, bLButtonDown);
+			//TODO Multi msg
+		
+		#endif
+		
+		#ifdef CpcDos
+			
+			lparam = SETLPARAM(oCpc->Mouse_state(1),oCpc->Mouse_state(2));
+			
+			if(oCpc->Mouse_state(1) == 1){
+				bLButtonDown = true;
+			}else{
+				bLButtonDown = false;
+			}
+				
+		#endif
+			
+		
+		if(bLButtonDown != bLButtonDown_last){
+			bLButtonDown_last = bLButtonDown;
+			if(bLButtonDown){
+				uMsg = WM_LBUTTONDOWN;
+			}else{
+				uMsg = WM_LBUTTONUP;
+			}
+		}
+			
+		/*
+		
+		WM_MOUSEMOVE
+		GET_X_LPARAM(lParam)
+		
+		
+		WM_CLOSE
+		WM_SYSCOMMAND
+			SC_SCREENSAVE
+			SC_MONITORPOWER
+			SC_KEYMENU
+		WM_ERASEBKGND
+		WM_SIZE 
+			SIZE_MINIMIZED 
+			SAPP_EVENTTYPE_ICONIFIED
+			SAPP_EVENTTYPE_RESTORED
+		WM_SETCURSOR
+		WM_LBUTTONDOWN
+			SAPP_EVENTTYPE_MOUSE_DOWN
+			SAPP_MOUSEBUTTON_LEFT
+			SAPP_MOUSEBUTTON_RIGHT
+			SAPP_MOUSEBUTTON_MIDDLE
+		WM_MOUSEMOVE
+		WM_MBUTTONUP
+		WM_MBUTTONDOWN
+		WM_INPUT
+		WM_MOUSELEAVE
+		WM_MOUSEWHEEL
+		WM_KEYUP
+		WM_SYSKEYUP
+		WM_CHAR
+		*/
+		aWndProc[i](_hWnd,uMsg,wParam,lparam);
+	}
+}
+
+
+
+
+//!WINBOOL WINAPI PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg)
+//!WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg)
+WINBOOL WINAPI sys_PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg){
+ 	showfunc_opt("PeekMessageA( lpMsg: %p, hWnd: %p, wMsgFilterMin: %d, wMsgFilterMax: %d, wRemoveMsg: %d )", lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
+	#ifdef Func_Win
+		return PeekMessageA( lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
+	#else
+		impl_GetMessages();
+		return 0;
+	#endif
+}
+WINBOOL WINAPI sys_PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg){
+ 	showfunc_opt("PeekMessageW( lpMsg: %p, hWnd: %p, wMsgFilterMin: %d, wMsgFilterMax: %d, wRemoveMsg: %d )", lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
+	#ifdef Func_Win
+		return PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
+	#else
+		impl_GetMessages();
+		return 0;
+	#endif
+}
+
+
 
 //!LRESULT DispatchMessageA(const MSG *lpMsg)
 inline LRESULT WINAPI pipe_DispatchMessageA(const MSG *lpMsg){
@@ -164,7 +301,7 @@ inline HMODULE  WINAPI pipe_GetModuleHandleA(LPCSTR lpModuleName){
 	#endif
 }
 inline HMODULE  WINAPI pipe_GetModuleHandleW(LPCWSTR lpModuleName){
-	showfunc("GetModuleHandleW( lpModuleName: %s)", lpModuleName); //TODO ewide str
+	showfunc("GetModuleHandleW( lpModuleName: %p)", lpModuleName); //TODO wide str
 	#ifdef Func_Win
 		return GetModuleHandleW(lpModuleName);
 	#else
@@ -560,9 +697,11 @@ BOOL WINAPI pipe_TerminateProcess(HANDLE hProcess,UINT uExitCode){
 	#endif	
 }
 
+
+//!VOID WINAPI GetStartupInfoA (LPSTARTUPINFOA lpStartupInfo)
 //!VOID WINAPI GetStartupInfoW (LPSTARTUPINFOW lpStartupInfo)
-VOID WINAPI pipe_GetStartupInfoW(LPSTARTUPINFOW lpStartupInfo){
-	showfunc("GetStartupInfoW( lpStartupInfo: %p)", lpStartupInfo);
+VOID WINAPI pipe_GetStartupInfoA(LPSTARTUPINFOA lpStartupInfo){
+	showfunc("GetStartupInfoA( lpStartupInfo: %p)", lpStartupInfo);
 	/*
 	lpStartupInfo->cb = sizeof(LPSTARTUPINFO);
 	lpStartupInfo->lpDesktop = (LPTSTR)L"";
@@ -585,6 +724,13 @@ VOID WINAPI pipe_GetStartupInfoW(LPSTARTUPINFOW lpStartupInfo){
 */
 
 	#ifdef Func_Win 
+	GetStartupInfoA(lpStartupInfo);
+	#else
+	#endif	
+}
+VOID WINAPI pipe_GetStartupInfoW(LPSTARTUPINFOW lpStartupInfo){
+	showfunc("GetStartupInfoW( lpStartupInfo: %p)", lpStartupInfo);
+	#ifdef Func_Win 
 	GetStartupInfoW(lpStartupInfo);
 	#else
 	#endif	
@@ -599,11 +745,26 @@ char* pipe_setlocale(int category, const char* locale){
 //!char* getenv (const char* name)
 const char* pipe_getenv(const char* name){
 	showfunc("getenv( name: %s )", name);
-	return 0;
+	if(strcmp(name, "GALLIUM_PRINT_OPTIONS") == 0 ){
+		return "yes";
+	}
+	if(strcmp(name, "LP_NUM_THREADS") == 0 ){
+		return "0";
+	}
+	if(strcmp(name, "GALLIUM_DRIVER") == 0 ){
+		//return "softpipe";
+		return "llvmpipe";
+		//return "swr";
+	}
 	
 	if(strcmp(name, "ST_DEBUG") == 0 ){
 		return "tgsi";
 	}
+	
+	return 0;
+	
+	
+	
 	
 	
 	if(strcmp(name, "MESA_DEBUG") == 0 ){
@@ -714,4 +875,14 @@ WINBOOL WINAPI pipe_GetConsoleScreenBufferInfo(HANDLE hConsoleOutput,PCONSOLE_SC
 	#endif	
 } 
 
+
+//!WINBOOL WINAPI DuplicateHandle (HANDLE hSourceProcessHandle, HANDLE hSourceHandle, HANDLE hTargetProcessHandle, LPHANDLE lpTargetHandle, DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwOptions);
+WINBOOL WINAPI pipe_DuplicateHandle(HANDLE hSourceProcessHandle, HANDLE hSourceHandle, HANDLE hTargetProcessHandle, LPHANDLE lpTargetHandle, DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwOptions){
+	showfunc("DuplicateHandle( hSourceProcessHandle: %d,  hSourceHandle: %p, hTargetProcessHandle: %p, lpTargetHandle: %d, dwDesiredAccess: %p, bInheritHandle: %d, dwOptions: %d)", hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
+	#ifdef Func_Win 
+	return DuplicateHandle(hSourceProcessHandle, hSourceHandle, hTargetProcessHandle, lpTargetHandle, dwDesiredAccess, bInheritHandle, dwOptions);
+	#else
+	return true;
+	#endif	
+}
 

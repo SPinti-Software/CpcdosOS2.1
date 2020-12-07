@@ -39,10 +39,10 @@
 //#define USE_Windows_GetProcAddress
 
 //Show when function are called from the fonction table, with is parameters
-// #define Show_FuncTable
+#define Show_FuncTable
 
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
-// #define Show_AllFuncTable
+//#define Show_AllFuncTable
 
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
 //#define USE_Windows_VirtualAlloc
@@ -51,10 +51,10 @@
 //#define USE_Platform_ThreadStorage
 
 //Use standard Windows LocalAlloc
-// #define USE_Platform_LocalAlloc
+//#define USE_Platform_LocalAlloc
 
 //Use standard compiler AlignedAlloc
-// #define USE_Platform_AlignedAlloc
+//#define USE_Platform_AlignedAlloc
 
 //#define USE_Platform_RegisterFrame
 
@@ -62,11 +62,14 @@
 
 #define NO_Windows_Sleep
 
-#define USE_WinThread
+//#define USE_WinThread
 
 #define ShowPixView //Temp
 
 //#define No_Main
+
+//#define USE_PRINTF
+
 
 ////////////////////////////////////////////////////
 ////////////////////////////////////////////////////

@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "05" 
+CONST _VJOUR as string 	= "07" 
 CONST _VMOIS as string 	= "12"
 CONST _VANNEE as string = "2020"
 
@@ -233,8 +233,8 @@ CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/E
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
-CONST _VERSION_MINEUR 	as string = "beta 1.3"
-CONST _VER_NET_MINEUR 	as string = "BETA1.3"
+CONST _VERSION_MINEUR 	as string = "beta 1.4"
+CONST _VER_NET_MINEUR 	as string = "BETA1.4"
 CONST _VERSION_CCP 		as string = "3.0"
 CONST _VERSION_SCI 		as string = "3.0"
 CONST _VERSION_CONSOLE	as string = "3.0"

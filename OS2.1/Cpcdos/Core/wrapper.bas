@@ -8,6 +8,10 @@
 
 #print * WRAPPER
 ' ============================ Fonctions publiques/wrapped =============================
+Declare Function 	cpc_mouse_state					cdecl Alias "cpc_mouse_state" 					(param as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
+Declare Function 	cpc_set_mouse 					cdecl Alias "cpc_set_mouse" 					(PX as integer, PY as integer, Visible as boolean) as boolean
+Declare Function	cpc_get_key						cdecl Alias "cpc_get_key"						() as integer ' numero ascii
+
 Declare Function 	cpc_Blitter 					cdecl Alias "cpc_Blitter" 						(ID as integer) as integer
 Declare Function 	cpc_Creer_Contexte 				cdecl Alias "cpc_Creer_Contexte" 				(TailleX as integer, TailleY as integer) as integer
 Declare Function 	cpc_Obtenir_Zone_Contexte 		cdecl Alias "cpc_Obtenir_Zone_Contexte" 		(ID as integer) as any ptr
@@ -38,6 +42,69 @@ Declare sub 		cpc_SortirSectionCritique 		cdecl Alias "cpc_SortirSectionCritique
 
 dim shared ACU 				as integer = 0
 dim shared temps_precedent 	as double = 1
+
+Public Function cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer) as integer 
+	' Obtenir les informations de la souris
+	' 0:clic 1:posx 2:posy, scrool, clip
+	
+	dim as integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip
+	
+	dim Presente as integer = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+			
+	if Presente <> 0 Then
+		Dim Message_erreur as string = ERRAVT("ERR_060", 0)
+		DEBUG("[SCI] " & Message_erreur, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		return -1
+	else
+		' TYPE DE CLIC
+		if param = 0 then
+			return TypeClic
+			
+			
+		' POSITION X
+		elseif param = 1 then
+			return Pos_X
+			
+		' POSITION Y
+		elseif param = 2 then
+			return Pos_Y
+			
+		' SCROOL
+		elseif param = 3 then
+			return Scroll_Weel
+			
+		' CLIP
+		elseif param = 4 then
+			return Clip
+		end if
+		
+		return -1 ' param number false
+	end if
+	
+End function
+
+Public Function cpc_set_mouse cdecl Alias "cpc_set_mouse" (PX as integer, PY as integer, Visible as boolean) as boolean
+	' Definir les informations X et Y et visibilite de la souris
+	
+	dim retour as integer
+	dim vis as integer
+	
+	if Visible = true then vis = 1 else vis = 0
+		
+	retour = Setmouse(PX, PY, 0)
+	
+	if retour = 0 then 
+		return true
+	else
+		return false
+	end if
+End function
+
+Public Function cpc_get_key cdecl Alias "cpc_get_key" () as integer ' numero ascii
+	' recuperer la touche
+	
+	return ASC(inkey)
+End function
 
 Public Function cpc_Blitter cdecl Alias "cpc_Blitter" (ID as integer) as integer
 	

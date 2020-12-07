@@ -27,6 +27,10 @@ struct pixel {
   };pixel():val(0){}
 };
 
+ float pixView_mouse_x  = 0;
+ float pixView_mouse_y  = 0;
+ bool bLButtonDown  = false;
+
 LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
   switch ( msg ) {
     case WM_CREATE:
@@ -34,6 +38,19 @@ LRESULT CALLBACK WndProc( HWND hwnd,UINT msg,WPARAM wParam,LPARAM lParam){
        // MakeSurface( hwnd );
       }
       break;
+	  
+  case WM_LBUTTONDOWN:
+		bLButtonDown = true;
+		break;
+	case WM_LBUTTONUP:
+		bLButtonDown = false;
+		break;
+				
+	case WM_MOUSEMOVE:{
+		pixView_mouse_x = (float)GET_X_LPARAM(lParam);
+		pixView_mouse_y = (float)GET_Y_LPARAM(lParam);
+	 }
+			 
     case WM_PAINT:
       {
         PAINTSTRUCT ps;

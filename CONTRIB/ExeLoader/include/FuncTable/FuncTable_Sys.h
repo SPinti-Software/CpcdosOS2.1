@@ -24,6 +24,8 @@
 *
 */
 
+#include "FuncPrototype\CPC_WPR.h"
+
 //!VOID WINAPI SetLastError (DWORD dwErrCode)
 DWORD last_error = 0;
 VOID WINAPI sys_SetLastError (DWORD dwErrCode){
@@ -62,6 +64,18 @@ DWORD WINAPI sys_GetLastError(VOID){
 	#endif
 }
 
+
+//!WINBOOL WINAPI TrackMouseEvent(LPTRACKMOUSEEVENT lpEventTrack)
+WINBOOL WINAPI sys_TrackMouseEvent(LPTRACKMOUSEEVENT lpEventTrack){
+	showfunc("TrackMouseEvent( lpEventTrack: %p)", lpEventTrack); 
+	#ifdef Func_Win
+		return TrackMouseEvent(lpEventTrack);
+	#else
+		return true;
+	#endif
+}
+
+
 //!HDC GetDC(HWND hWnd)
 inline HDC WINAPI sys_GetDC(HWND hWnd){
 	showfunc("GetDC( lpModuleName: %p)", hWnd); 
@@ -83,6 +97,8 @@ inline WINAPI HWND pipe_WindowFromDC(HDC hDC){
 }
 
 
+extern CpcdosOSx_CPintiCore* oCpc; //TODO free
+
 //!HWND WINAPI CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam)
 HWND WINAPI pipe_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpWindowName,DWORD dwStyle,int X,int Y,int nWidth,int nHeight,HWND hWndParent,HMENU hMenu,HINSTANCE hInstance,LPVOID lpParam){
 	showfunc("CreateWindowExW( dwExStyle: %d, lpClassName: %p, lpWindowName :%d, dwStyle: %d, X: %d, Y: %d, nWidth: %d, nHeight: %d, hWndParent: %p, hMenu: %p, hInstance: %d, lpParam: %d )",
@@ -101,21 +117,27 @@ HWND WINAPI pipe_CreateWindowExW(DWORD dwExStyle,LPCWSTR lpClassName,LPCWSTR lpW
 		aContext[idx].hwnd_View = pixView_createWindow(hExeloader, &aContext[idx]);
 		#endif
 
-		showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
+		#ifdef CpcDos
+		if(nWidth > 10){
+			// Get ID context from cpcdos
+			aContext[idx].id_context = oCpc->Create_Context(nWidth, nHeight);
+			showinf("Create_Context()= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
+		}
+		#endif
 		
+		showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
 		showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );
 	
 		return (HWND)idx;
+		
+		
 	#endif
 }
 
 
 //!int StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestHeight,int xSrc,int ySrc, int SrcWidth, int SrcHeight, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT iUsage, DWORD rop)
-struct pixel;
-extern pixel* pixels;
-extern pixel** container_pixels;
 int WINAPI pipe_StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int DestHeight,int xSrc,int ySrc, int SrcWidth, int SrcHeight, const VOID *lpBits, const BITMAPINFO *lpbmi, UINT iUsage, DWORD rop){
-	showfunc_opt("StretchDIBits( hdc: %p )", hdc);
+	showfunc("StretchDIBits( hdc: %p )", hdc);
 	#ifdef Func_Win
 		return StretchDIBits(hdc, xDest, yDest, DestWidth, DestHeight, xSrc, ySrc, SrcWidth, SrcHeight, lpBits, lpbmi, iUsage, rop);
 	#else
@@ -153,7 +175,24 @@ int WINAPI pipe_StretchDIBits(HDC hdc,int xDest,int yDest,int DestWidth,int Dest
 			pixView_update(&aContext[idx]);
 			//showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
 		#endif
+		
+		#ifdef CpcDos
+		if(aContext[idx].width > 10){
+			aContext[idx].pixels = oCpc->Init_Get_Context_PTR(aContext[1].id_context);
+
+			uint32_t* pix_src = (uint32_t*)lpBits;
+			uint32_t* pix_dest = (uint32_t*)aContext[idx].pixels;
+			
+			for(int y = 0; y <  aContext[idx].height; y++){
+				memcpy(pix_dest + (y * aContext[idx].width), pix_src + (y * SrcWidth), aContext[idx].width *4);
+			}
+
+			oCpc->Blitting(aContext[1].id_context);
+		}
+		#endif
+		
 		//showinf("use hwnd_View( hwnd_View: %d )", aContext[idx].hwnd_View);
+		
 		return aContext[idx].height; //number of scan lines copied
 	#endif
 }
@@ -212,25 +251,6 @@ WINBOOL WINAPI sys_DispatchMessageW(CONST MSG *lpMsg){
  	showfunc_opt("DispatchMessageW( lpMsg: %p )", lpMsg);
 	#ifdef Func_Win
 		return DispatchMessageW(lpMsg);
-	#else
-		return 0;
-	#endif
-}
-
-//!WINBOOL WINAPI PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg)
-//!WINBOOL WINAPI PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg)
-WINBOOL WINAPI sys_PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg){
- 	showfunc_opt("PeekMessageA( lpMsg: %p, hWnd: %p, wMsgFilterMin: %d, wMsgFilterMax: %d, wRemoveMsg: %d )", lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
-	#ifdef Func_Win
-		return PeekMessageA( lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
-	#else
-		return 0;
-	#endif
-}
-WINBOOL WINAPI sys_PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg){
- 	showfunc_opt("PeekMessageW( lpMsg: %p, hWnd: %p, wMsgFilterMin: %d, wMsgFilterMax: %d, wRemoveMsg: %d )", lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
-	#ifdef Func_Win
-		return PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 	#else
 		return 0;
 	#endif
@@ -428,6 +448,36 @@ LPTOP_LEVEL_EXCEPTION_FILTER WINAPI sys_SetUnhandledExceptionFilter(LPTOP_LEVEL_
  	showfunc("SetUnhandledExceptionFilter( lpTopLevelExceptionFilter: %p )", lpTopLevelExceptionFilter);
 	#ifdef Func_Win
 		return SetUnhandledExceptionFilter(lpTopLevelExceptionFilter);
+	#else
+		return 0;
+	#endif
+}
+
+
+//!HANDLE WINAPI CreateEventA (LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCSTR lpName)
+//!HANDLE WINAPI CreateEventW (LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCWSTR lpName)
+HANDLE WINAPI sys_CreateEventA(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCSTR lpName){
+	showfunc("CreateEventA( lpEventAttributes: %p,  bManualReset: %d, bInitialState: %d, lpName: %s )", lpEventAttributes, bManualReset, bInitialState, lpName);
+	#ifdef Func_Win
+		return CreateEventA(lpEventAttributes, bManualReset, bInitialState, lpName);
+	#else
+		return 0;
+	#endif
+}
+HANDLE WINAPI sys_CreateEventW(LPSECURITY_ATTRIBUTES lpEventAttributes, WINBOOL bManualReset, WINBOOL bInitialState, LPCWSTR lpName){
+	showfunc("CreateEventW( lpEventAttributes: %p,  bManualReset: %d, bInitialState: %d, lpName: %p )", lpEventAttributes, bManualReset, bInitialState, lpName);
+	#ifdef Func_Win
+		return CreateEventW(lpEventAttributes, bManualReset, bInitialState, lpName);
+	#else
+		return 0;
+	#endif
+}
+
+//!SHORT WINAPI GetKeyState(int nVirtKey)
+SHORT WINAPI sys_GetKeyState(int nVirtKey){
+	showfunc_opt("GetKeyState( nVirtKey: %d )", nVirtKey);
+	#ifdef Func_Win
+		return GetKeyState(nVirtKey);
 	#else
 		return 0;
 	#endif

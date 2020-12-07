@@ -115,6 +115,7 @@ typedef struct {
 	int idx;
 	int width;
 	int height;
+	int id_context; // cpcdos
 } ContextInf;
 extern int aContext_count;
 extern ContextInf aContext[50];
