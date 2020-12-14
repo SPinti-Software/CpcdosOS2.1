@@ -3293,6 +3293,9 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								
 								ElseIf The_Objet = "EXPLORER" Then 
 								
+									
+									
+									
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement
 								
 									if NOT Fichier_evenement = "" Then

@@ -249,6 +249,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							TexteTaille = ""
 	
 							' Dossier en cours
+							Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("D :" & instance_FICHER_DOSSIER_.liste_Elements(b) , Pos_X , Pos_Y + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 							
 						Else
@@ -288,6 +289,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							End Scope
 
 							' Fichier en cours
+							Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("F :" & instance_FICHER_DOSSIER_.liste_Elements(b) , Pos_X , Pos_Y + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
 						end if
@@ -359,9 +361,25 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			' Recuperer la position du curseur RELATIF a la position du picturebox
 			Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
 			Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+			
+			for boucle as integer = 0 to 64
+				if Position_clic_Y > boucle * 8 AND Position_clic_Y < boucle * 8 + 8 + espacement Then ' Si clic dans la zone
+				
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Debug : " & Mid(Lines_array(boucle), 1, 2), Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 24, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+					
+					Dim element as String = Mid(Lines_array(boucle), 3)
+					If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+						' FICHIER
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic FICHIER : " & element, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+					else
+						' DOSSIER
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic DOSSIER : " & element, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+					End if
+				End if
+			Next boucle
 		
 			' Afficher la position du clic
-			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic!: X:" & Position_clic_X & " Position_clic_Y:" & Position_clic_Y, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+			' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic!: X:" & Position_clic_X & " Position_clic_Y:" & Position_clic_Y, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 			
 		End if
 		
