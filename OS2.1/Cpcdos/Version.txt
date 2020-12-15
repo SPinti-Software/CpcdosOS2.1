@@ -1,6 +1,4 @@
 
-ajouter correction Creer contexte --> 800x600 en dur
-
 
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.4         *** 
@@ -12,10 +10,10 @@ ajouter correction Creer contexte --> 800x600 en dur
 	#### En bref ####
 	#################
 
-		--> 0	Ajouts de divers fonctionnalités.
-		--> 0	corrections importantes.
+		--> 3	Ajouts de divers fonctionnalités.
+		--> 2	corrections importantes.
 		--> 0	optimisations.
-		--> 0	corrections et modifications mineures.
+		--> 2	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -29,7 +27,7 @@ ajouter correction Creer contexte --> 800x600 en dur
 				GUI		: 8%
 				3D		: 2%
 				I/O		: 28%
-				Win32	: 30%
+				Win32	: 25%
 				GENERAL	: 30%
 			
 			
@@ -38,11 +36,22 @@ ajouter correction Creer contexte --> 800x600 en dur
 	#############################
 	
 		[AJOUTS]
-	
+		- [GUI] Ajout de  la première version de l'objet Explorer. 
+				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
+				
+		- [SYSTEME] Ajout du support de lecture de fichiers .INI
+		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
+					Il est possible de personnaliser les formats de fichiers .CPC .EXE .PNG .DLL etc... avec 
+					un programme associé, description et une icône pour l'objet graphique Explorateur
+		
 
 		[CORRECTIONS]
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
-
+		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
+		
+		[MODIFICATIONS]
+		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux
+		- [SYSTEME] Affiche désormais le répertoire ".." dans du listing d'un répertoire.
 
 	#######################
 	##### CPinti Core #####
@@ -50,13 +59,14 @@ ajouter correction Creer contexte --> 800x600 en dur
 	
 			
 		[CORRECTIONS]
-
+		
 		
 		[AJOUT]
 		
 		
 		[MODIFICATIONS]
-
+		- [Exeloader] Intégration de la nouvelle mise à jour permettant l'exécution native de programmes
+						OpenGL mesa avec emulation des shaders GPU sur CPU et plus...
 
 		
 		
