@@ -1201,10 +1201,16 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 		End if
 		
 		' Supprimer les anciennes images!
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ID)
-		this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ID = 0
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ORG_ID)
-		this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ORG_ID = 0
+		if this.INST_INIT_GUI.GUI__EXPLORER(_index_).NB_ICONE > 0 Then
+			' Delete les icones 1 par 1
+			For ico_index as integer = 0 to this.INST_INIT_GUI.GUI__EXPLORER(_index_).NB_ICONE -1
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ICONE_ID(ico_index))
+				this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_ICONE_ID(ico_index) = 0
+			Next ico_index
+		End if
+		
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SELECTEUR_ID)
+		this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SELECTEUR_ID = 0
 		
 		' Vider toutes les proprietes du bouton
 		this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_)				= this.NULL_GUI__EXPLORER

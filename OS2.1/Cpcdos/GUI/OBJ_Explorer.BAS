@@ -57,119 +57,163 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 		End if
 		
 		
-		
-		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation des donnees d'instances depuis la memoire SCI...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-			else
-				DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting instance data from SCI memory ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-			End if
-		end if
-	
-		Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-		Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
-		Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
-		Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
-		
-		Dim Texte 			as string = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte
-
-		Dim Pos_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_X + Pos_Fenetre_X
-		
-		Dim Pos_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_Y + Pos_Fenetre_Y
-		
-		Dim Siz_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_X
-		Dim Siz_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_Y
-	
-		
-		Dim AutoSizeIMG		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.AutoSizeIMG
-		
-		Dim Couleur_R 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_R
-		Dim Couleur_V 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_V
-		Dim Couleur_B 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_B
-		
-		Dim Couleur_FNT_R as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_R
-		Dim Couleur_FNT_V as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_V
-		Dim Couleur_FNT_B as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_B
-		
-		Dim Couleur_ALPHA 	as integer
-		
-		Dim Image 			as String = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Image
-		Dim Image_Ancien	as String = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Image_Ancien
-	
-		
-		Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
-		
-		Dim Lines_array(64) as string
-		dim Espacement as integer = 2
-	
-		Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
-		
-		
-		
-		' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Explorer:" & Texte, Pos_X , Pos_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-		Scope
-			Texte = Rtrim(Texte)
+		dim Reload as boolean = true
+		While(Reload)
+			Reload = false
 			
-			Dim Affichage_Breve as boolean
-			Dim Source 			as String
+			
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation des donnees d'instances depuis la memoire SCI...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting instance data from SCI memory ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		
+			Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
+			Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+			Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
+			Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
+			
+			Dim Texte 			as string = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte
+
+			Dim Pos_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_X + Pos_Fenetre_X
+			
+			Dim Pos_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_Y + Pos_Fenetre_Y
+			
+			Dim Siz_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_X
+			Dim Siz_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_Y
+		
+			
+			Dim AutoSizeIMG		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.AutoSizeIMG
+			
+			Dim Couleur_R 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_R
+			Dim Couleur_V 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_V
+			Dim Couleur_B 		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_CTN_B
+			
+			Dim Couleur_FNT_R as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_R
+			Dim Couleur_FNT_V as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_V
+			Dim Couleur_FNT_B as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_B
+			
+			Dim Couleur_ALPHA 	as integer
+			
+			' Dim Icones_lst 		as String = CPCDOS_INSTANCE.SCI_INSTANCE.Get_icon_list_format()
+			' Dim Icones(24)			as String
+			' if NOT Icones = "" Then
+				' For boucle as integer 
+					
+				' Next boucle
+			' End if
+		
+			
+			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
+			
+			Dim Lines_array(64) as string
+			dim Espacement as integer = 24
+		
+			Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
+			
+			
+			IF this.INST_INIT_GUI.DEPLACEMENT > 0 Then
+				if this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Alpha < 150 Then
+					Couleur_ALPHA = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Alpha
+				else
+					Couleur_ALPHA = 150
+				end if
+			else
+				' Alpha programme
+				Couleur_ALPHA = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Alpha
+			End if
+			
+			Dim alpha_buffer as integer = 255
+			if Couleur_ALPHA = 0 Then alpha_buffer = 0
+			
+			Dim Buffer_temp_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Explorer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, Couleur_ALPHA, this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.Handle)
+			
 			Dim CPY_Source		as String 
 			
-			Dim SourceRecherche as String
-			Dim Source_exe_path as String
-			
-			
-			Source 			= Rtrim(Rtrim(Ltrim(Ltrim(Texte, CHR(09))), CHR(09)))
-			CPY_Source		= CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source, TRUE, TRUE, FALSE)
-			
-			
-			
-			IF Instr(CPY_Source, "\") > 0 Then
-				' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
-				'  --> REP/ Dossier\*.*
-				SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
+			Scope
+				Texte = Rtrim(Texte)
 				
-				If SourceRecherche = "" Then SourceRecherche = "\*.*"
+				Dim Affichage_Breve as boolean
+				Dim Source 			as String
 				
-				IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
-					SourceRecherche = "\*.*"
-				Else
-					Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
-					IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
-				End if
-	
-			Else
-				' Ex: REP/ .
-				' --> REP/ .\*.*
-				IF Len(CPY_Source) = 1 Then
-					IF CPY_Source = "." Then
-						SourceRecherche = ".\*.*"
-						Source = ""
+				
+				Dim SourceRecherche as String
+				Dim Source_exe_path as String
+				
+				
+				Source 			= Rtrim(Rtrim(Ltrim(Ltrim(Texte, CHR(09))), CHR(09)))
+				CPY_Source		= CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source, TRUE, TRUE, FALSE)
+				
+				
+				
+				IF Instr(CPY_Source, "\") > 0 Then
+					' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
+					'  --> REP/ Dossier\*.*
+					SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
+					
+					If SourceRecherche = "" Then SourceRecherche = "\*.*"
+					
+					IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
+						SourceRecherche = "\*.*"
 					Else
-						SourceRecherche = ".\*.*"
-						Source = ""
+						Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
+						IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
+					End if
+		
+				Else
+					' Ex: REP/ .
+					' --> REP/ .\*.*
+					IF Len(CPY_Source) = 1 Then
+						IF CPY_Source = "." Then
+							SourceRecherche = ".\*.*"
+							Source = ""
+						Else
+							SourceRecherche = ".\*.*"
+							Source = ""
+						End if
+					Else
+						' EX: REP/
+						' --> REP/ *.*
+						SourceRecherche = "\*.*"
+						' Source = ""
+					End if
+				End if
+				
+				' Si rien n'a ete precise
+				if Source = "" Then
+					' Si on ne precise rien, alors c'est le dossier courant dans l'executable
+					Source_exe_path = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
+					
+					' Verifier si la variable existe
+					if Source_exe_path = Ucase(CPCDOS_INSTANCE._CONTENU_IMPROPABLE) Then Source_exe_path = ""
+					
+					' Optimisation
+					IF NOT Source_exe_path = "" Then
+						Source = Source_exe_path
+						Source = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source_exe_path, TRUE, TRUE, FALSE)
+					
+						
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							End if
+						END IF
+
+					Else
+						Source = "."
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							End if
+						END IF
 					End if
 				Else
-					' EX: REP/
-					' --> REP/ *.*
-					SourceRecherche = "\*.*"
-					' Source = ""
-				End if
-			End if
-			
-			' Si rien n'a ete precise
-			if Source = "" Then
-				' Si on ne precise rien, alors c'est le dossier courant dans l'executable
-				Source_exe_path = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
-				
-				' Verifier si la variable existe
-				if Source_exe_path = Ucase(CPCDOS_INSTANCE._CONTENU_IMPROPABLE) Then Source_exe_path = ""
-				
-				' Optimisation
-				IF NOT Source_exe_path = "" Then
-					Source = Source_exe_path
-					Source = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source_exe_path, TRUE, TRUE, FALSE)
-				
-					
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 							DEBUG("[CpcdosC+] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
@@ -177,213 +221,231 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							DEBUG("[CpcdosC+] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						End if
 					END IF
-
-				Else
-					Source = "."
-					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[CpcdosC+] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-						Else
-							DEBUG("[CpcdosC+] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-						End if
-					END IF
 				End if
-			Else
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-					End if
-				END IF
-			End if
-		
-		
-			scope
-				
-				Dim Resultat as Boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_)
-				
-				If instance_FICHER_DOSSIER_.Est_OK = False Then
-					' ERREUR
-					DEBUG("0", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+			
+			
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "PATH : " & CPY_Source, 0 , 0, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+			
+				scope
 					
-					Dim Message_erreur as String = ERRAVT("ERR_064", 0)
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-					End if
+					Dim Resultat as Boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_)
 					
-				Else
-					Dim TailleCH 		as integer
-					Dim TailleFichier 	as uinteger
-					Dim TailleFinal 	as uinteger
-					Dim TexteTaille 	as String
-					Dim as String octets, kilo, mega, giga, tera
-					Dim Resultat_chaine as String = ""
-					
-					Dim TexteTaille_FINAL as String
-
-					' Afficher la bonne taille (Octets, Kilos, Mega, Giga)
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						octets = "o"
-						kilo = "ko"
-						mega = "mo"
-						giga = "go"
-						tera = "to"
-					Else
-						octets = "b"
-						kilo = "kb"
-						mega = "mb"
-						giga = "gb"
-						tera = "tb"
-					End if
-					
-					for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
-		
-						' Positionnement label
-						dim Pos_lst_Y as integer = (b * 8) + Espacement
+					If instance_FICHER_DOSSIER_.Est_OK = False Then
+						' ERREUR
+						DEBUG("0", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
 						
-						if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
-						
-							TexteTaille = ""
-	
-							' Dossier en cours
-							Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("D :" & instance_FICHER_DOSSIER_.liste_Elements(b) , Pos_X , Pos_Y + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-							
+						Dim Message_erreur as String = ERRAVT("ERR_064", 0)
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						Else
+							DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						End if
+						
+					Else
+						Dim TailleCH 		as integer
+						Dim TailleFichier 	as uinteger
+						Dim TailleFinal 	as uinteger
+						Dim TexteTaille 	as String
+						Dim as String octets, kilo, mega, giga, tera
+						Dim Resultat_chaine as String = ""
+						
+						Dim TexteTaille_FINAL as String
 
+						' Afficher la bonne taille (Octets, Kilos, Mega, Giga)
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							octets = "o"
+							kilo = "ko"
+							mega = "mo"
+							giga = "go"
+							tera = "to"
+						Else
+							octets = "b"
+							kilo = "kb"
+							mega = "mb"
+							giga = "gb"
+							tera = "tb"
+						End if
+						
+						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
+			
+							' Positionnement label
+							dim Pos_lst_Y as integer = (b * 8) + Espacement
 							
-							' Recuperer la taille du fichier et le convertir en KiloOctets
-							TailleFichier = instance_FICHER_DOSSIER_.attributs_Elements(b).taille
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
 							
-							' Incrmenter la taille total
-							TailleFinal += TailleFichier
-							
-							Scope 
+								TexteTaille = ""
+		
+								' Dossier en cours
+								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "D :" & instance_FICHER_DOSSIER_.liste_Elements(b), 12 , 0 + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								
+							Else
 
-								' Attribuer l'unite correspondante a la taille
-								IF TailleFichier < 1 Then
-									' Fichier VIDE
-									TexteTaille = "0 " & octets
-								Else
-									IF (TailleFichier/1024^4) < 1 Then ' Tera
-										IF (TailleFichier/1024^3) < 1 Then ' Giga
-											IF (TailleFichier/1024^2) < 1 Then ' Mega
-												IF (TailleFichier/1024) < 1 Then ' Kilo
-													TexteTaille = TailleFichier & " " & octets ' OCTETS
+								
+								' Recuperer la taille du fichier et le convertir en KiloOctets
+								TailleFichier = instance_FICHER_DOSSIER_.attributs_Elements(b).taille
+								
+								' Incrmenter la taille total
+								TailleFinal += TailleFichier
+								
+								Scope 
+
+									' Attribuer l'unite correspondante a la taille
+									IF TailleFichier < 1 Then
+										' Fichier VIDE
+										TexteTaille = "0 " & octets
+									Else
+										IF (TailleFichier/1024^4) < 1 Then ' Tera
+											IF (TailleFichier/1024^3) < 1 Then ' Giga
+												IF (TailleFichier/1024^2) < 1 Then ' Mega
+													IF (TailleFichier/1024) < 1 Then ' Kilo
+														TexteTaille = TailleFichier & " " & octets ' OCTETS
+													Else
+														TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 3) & " " & kilo ' KILOS
+													End if
 												Else
-													TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 3) & " " & kilo ' KILOS
+													TexteTaille = Left(str(TailleFichier/1024^2), instr(str(TailleFichier/1024^2), ".") + 3) & " " & mega ' MEGA
 												End if
 											Else
-												TexteTaille = Left(str(TailleFichier/1024^2), instr(str(TailleFichier/1024^2), ".") + 3) & " " & mega ' MEGA
+												TexteTaille = Left(str(TailleFichier/1024^3), instr(str(TailleFichier/1024^3), ".") + 3) & " " & giga ' GIGA
 											End if
 										Else
-											TexteTaille = Left(str(TailleFichier/1024^3), instr(str(TailleFichier/1024^3), ".") + 3) & " " & giga ' GIGA
+											TexteTaille = Left(str(TailleFichier/1024^4), instr(str(TailleFichier/1024^4), ".") + 3) & " " & tera ' TERA
+										End if
+									End if
+								End Scope
+
+								' Fichier en cours
+								Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "F :" & instance_FICHER_DOSSIER_.liste_Elements(b), 12 , 0 + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+							end if
+							
+							' ** Ajouter les autres attributs **
+							
+							' Lecture Seule
+							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_ReadOnly = True Then Resultat_chaine += ",r"
+							
+							' Cache
+							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Hidden = True Then Resultat_chaine += ",h"
+							
+							' Systeme
+							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_System = True Then Resultat_chaine += ",s"
+							
+							' Archive
+							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Archive = True Then Resultat_chaine += ",a"
+							
+							' Normal
+							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Resultat_chaine += ",n"
+
+							' Taille du fichier
+							' TexteTaille
+
+						next b
+						
+						
+						
+						' Attribuer l'unite correspondante a la taille
+						IF TailleFinal < 1 Then
+							' Fichier VIDE
+							TexteTaille_FINAL = "0 " & octets
+						Else
+							IF (TailleFinal/1024^4) < 1 Then ' Tera
+								IF (TailleFinal/1024^3) < 1 Then ' Giga
+									IF (TailleFinal/1024^2) < 1 Then ' Mega
+										IF (TailleFinal/1024) < 1 Then ' Kilo
+											TexteTaille_FINAL = TailleFinal & " " & octets ' OCTETS
+										Else
+											TexteTaille_FINAL = Left(str(TailleFinal/1024), instr(str(TailleFinal/1024), ".") + 3) & " " & kilo ' KILOS
 										End if
 									Else
-										TexteTaille = Left(str(TailleFichier/1024^4), instr(str(TailleFichier/1024^4), ".") + 3) & " " & tera ' TERA
-									End if
-								End if
-							End Scope
-
-							' Fichier en cours
-							Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("F :" & instance_FICHER_DOSSIER_.liste_Elements(b) , Pos_X , Pos_Y + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-
-						end if
-						
-						' ** Ajouter les autres attributs **
-						
-						' Lecture Seule
-						' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_ReadOnly = True Then Resultat_chaine += ",r"
-						
-						' Cache
-						' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Hidden = True Then Resultat_chaine += ",h"
-						
-						' Systeme
-						' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_System = True Then Resultat_chaine += ",s"
-						
-						' Archive
-						' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Archive = True Then Resultat_chaine += ",a"
-						
-						' Normal
-						' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Resultat_chaine += ",n"
-
-						' Taille du fichier
-						' TexteTaille
-
-					next b
-					
-					
-					
-					' Attribuer l'unite correspondante a la taille
-					IF TailleFinal < 1 Then
-						' Fichier VIDE
-						TexteTaille_FINAL = "0 " & octets
-					Else
-						IF (TailleFinal/1024^4) < 1 Then ' Tera
-							IF (TailleFinal/1024^3) < 1 Then ' Giga
-								IF (TailleFinal/1024^2) < 1 Then ' Mega
-									IF (TailleFinal/1024) < 1 Then ' Kilo
-										TexteTaille_FINAL = TailleFinal & " " & octets ' OCTETS
-									Else
-										TexteTaille_FINAL = Left(str(TailleFinal/1024), instr(str(TailleFinal/1024), ".") + 3) & " " & kilo ' KILOS
+										TexteTaille_FINAL = Left(str(TailleFinal/1024^2), instr(str(TailleFinal/1024^2), ".") + 3) & " " & mega ' MEGA
 									End if
 								Else
-									TexteTaille_FINAL = Left(str(TailleFinal/1024^2), instr(str(TailleFinal/1024^2), ".") + 3) & " " & mega ' MEGA
+									TexteTaille_FINAL = Left(str(TailleFinal/1024^3), instr(str(TailleFinal/1024^3), ".") + 3) & " " & giga ' GIGA
 								End if
 							Else
-								TexteTaille_FINAL = Left(str(TailleFinal/1024^3), instr(str(TailleFinal/1024^3), ".") + 3) & " " & giga ' GIGA
+								TexteTaille_FINAL = Left(str(TailleFinal/1024^4), instr(str(TailleFinal/1024^4), ".") + 3) & " " & tera ' TERA
 							End if
-						Else
-							TexteTaille_FINAL = Left(str(TailleFinal/1024^4), instr(str(TailleFinal/1024^4), ".") + 3) & " " & tera ' TERA
+						End if
+
+						' Resultats totaux
+						' instance_FICHER_DOSSIER_.nb_Dossiers
+						' instance_FICHER_DOSSIER_.nb_Fichiers
+						' instance_FICHER_DOSSIER_.nb_Elements
+						' TexteTaille_FINAL
+
+
+					End if
+				End scope
+			End scope
+			
+			
+			' Checker le clic !
+			' Clic GAUCHE
+			if cpc_mouse_state(0) = 1 Then
+			
+				' Recuperer la position du curseur RELATIF a la position du picturebox
+				Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
+				Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+				
+				for boucle as integer = 0 to 64
+					if Position_clic_Y > boucle * 8 AND Position_clic_Y < boucle * 8 + 8 + espacement Then ' Si clic dans la zone
+					
+						
+						Dim element as String = Mid(Lines_array(boucle), 3)
+						If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+							' FICHIER
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "Clic FICHIER : " & element, 0 , 0 + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							
+						elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
+							' DOSSIER
+							if element = ".." OR element = "..\" Then
+								CPY_Source = Mid(CPY_Source, 1, Instr(CPY_Source, "\"))
+								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+							else
+								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element
+							End if
+							
+							reload = true ' Recharger l'objet
+							
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								else
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							end if
+							
 						End if
 					End if
-
-					' Resultats totaux
-					' instance_FICHER_DOSSIER_.nb_Dossiers
-					' instance_FICHER_DOSSIER_.nb_Fichiers
-					' instance_FICHER_DOSSIER_.nb_Elements
-					' TexteTaille_FINAL
-
-
-				End if
-			End scope
-		End scope
-		
-		
-		' Checker le clic !
-		' Clic GAUCHE
-		if cpc_mouse_state(0) = 1 Then
-		
-			' Recuperer la position du curseur RELATIF a la position du picturebox
-			Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
-			Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+				Next boucle
 			
-			for boucle as integer = 0 to 64
-				if Position_clic_Y > boucle * 8 AND Position_clic_Y < boucle * 8 + 8 + espacement Then ' Si clic dans la zone
+				' Afficher la position du clic
 				
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Debug : " & Mid(Lines_array(boucle), 1, 2), Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 24, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-					
-					Dim element as String = Mid(Lines_array(boucle), 3)
-					If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-						' FICHIER
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic FICHIER : " & element, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-					else
-						' DOSSIER
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic DOSSIER : " & element, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-					End if
-				End if
-			Next boucle
-		
-			' Afficher la position du clic
-			' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran("Clic!: X:" & Position_clic_X & " Position_clic_Y:" & Position_clic_Y, Pos_X , Pos_Y + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+				
+			End if
 			
-		End if
-		
-	end if
+			
+			
+			' Rechargement de l'objet
+			if reload = true then
+				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Demande de rechargement graphique de l'objet. Changement de repertoire --> " & CPY_Source, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					else
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Asking to reload graphic object. Changing directory --> " & CPY_Source, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					End if
+				end if
+			Else
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Buffer_temp_ID, Pos_X, Pos_Y, 0, 0, Siz_X , Siz_Y, true, Couleur_ALPHA)
+			end if
+			
+		Wend ' reload
+	End if
+	
+	
+	
 	
 	Creer_Explorer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.handle ' OK
 	
