@@ -14860,8 +14860,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_IMAGE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMAGE
 															GUI__PROP_IMAGE_ANCIEN 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMAGE_ANCIEN
 															
-															GUI__PROP_IMAGE_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ID
-															GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ORG_ID
+															' GUI__PROP_IMAGE_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ID
+															' GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ORG_ID
 	
 															
 															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).BIT_ORG
@@ -16203,10 +16203,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMAGE			= GUI__PROP_IMAGE
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMAGE_ANCIEN 	= GUI__PROP_IMAGE_ANCIEN
 												
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_ID				= GUI__PROP_IMAGE_ID
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_ORG_ID 			= GUI__PROP_IMAGE_ORG_ID
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_ID				= GUI__PROP_IMAGE_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_ORG_ID 			= GUI__PROP_IMAGE_ORG_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
 
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.BIT_ORG			= GUI__PROP_BIT_ORG ' Obtenir le pointeur du context GZE
 												
@@ -18864,6 +18864,8 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "    Ce qui va permettre d'utiliser l'OS id d'un autre OS pour que les"
 					Mess_Aide = Mess_Aide & CRLF & "     interactions/variables/ev de niveau 3 soient traite par l'OS choisis"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Lister les variables en memoire depuis son numero de visibilite"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
@@ -19035,6 +19037,8 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Display number of OS"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /os /nb"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Update file format list"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   List variables in memory with visibility level"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
@@ -20035,7 +20039,15 @@ _FIN_EXE_CCP_EXE:
 				
 				' Et on affiche le resultat
 				DEBUG("--> NEW SERVER NET ID : '" & Final_NetID & "' saved!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				exit _scope_CMD, _scope
 			End if
+
+			' Mettre a jour la liste des extensions de fichiers
+			IF Instr(UCASE(Param), "/FILEFORMAT-UPDATE") > 0 Then
+				CPCDOS_INSTANCE.Load_list_format()
+				exit _scope_CMD, _scope
+			End if
+			
 			
 			' Mettre a jour le noyau
 			IF Instr(UCASE(Param), "/UPDATE") > 0 Then

@@ -360,6 +360,8 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		End scope
 
 		
+		
+		
 		DEBUG("__CPCDOS_INIT_1() [0x" & HEX(@__CPCDOS_INIT_1, 8) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")	
 		
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -422,6 +424,7 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		else
 			DEBUG("[__CPCDOS_INIT_1] Kernel in execution.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		end if
+		
 		
 		
 		SORTIR_SectionCritique()
@@ -1017,18 +1020,18 @@ end function
 #print * Intro
 Sub intro()
 	' Cette procedure SUB permet d'afficher le logo cpcdos et reste en pause 1 seconde
-	Print "                                                  "
-	Print "    ======================                        "
-	Print "    =      --   --   --  =    --    -     --      "
-	Print "    =     |    |__| |    =   |  ) (   )   \       "
-	Print "    =      --  |     --  =    --    -    --       "
-	Print "    ===========================================   "
-	Print "         --   --   --    =  --    -     --    =   "
-	Print "        |    |__| |      = |  ) (   )   \     =   "
-	Print "         --  |     --    =  --    -    --     =   "
-	Print "                         ======================   "
+	Print "                                                         "
+	Print "	  _____              _____            			"
+	Print "	 / ____|            |  __ \           			"
+	Print "	| |     _ __   ___  | |  | | ___  ___ 			"
+	Print "	| |    | '_ \ / __| | |  | |/ _ \/ __|			"
+	Print "	| |____| |_) | (__  | |__| | (_) \__ \			"
+	Print "	 \_____| .__/ \___| |_____/ \___/|___/			"
+	Print "	       | |                            			"
+	Print "	       |_|    						"
+	Print "								"
 	Print "    CPCDOS OSx                                    "
-	Print "                       Cr‚e Pour Concevoir Des OS "
+	Print "                       Cree Pour Concevoir Des OS "
 	Print "                           Created for develop OS "
 	Print " Version :                                        "
 	Print "  - Date        : " 		&   _VERSION_DATEV                  

@@ -580,10 +580,10 @@ Type Cpcdos_GUI__EXPLORER
 	IMAGE_ANCIEN 			as String 	' Ancien chemin d'acces a la ressource
 	IMAGE_SURVOLE_ANCIEN 	as String 	' Ancien chemin d'acces a la ressource
 	
-	IMG_ID					as integer
-	IMG_ORG_ID				as integer
-	IMG_SURVOLE_ID			as integer
-	IMG_SURVOLE_ORG_ID		as integer
+	NB_ICONE				as integer	' Nombre d'icones differents
+	IMG_ICONE_ID(24)		as integer	' Icones des formats de fichiers
+	
+	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
 
 	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
@@ -693,6 +693,8 @@ Type _SCI_Cpcdos_OSx__
 		MULTI_PICTUREBOX					as boolean ' Permet de synchoniser les picturesbox animes n'ayant pas le focus
 		
 		
+		
+		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__
 		
 		GUI_TYPE 			as Cpcdos_GUI_TYPE
@@ -742,6 +744,8 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function IMG_Recuperer_bpp			(byref Source as any ptr) 									as integer
 		Declare Function IMG_Changer_taille			(byref Source as any ptr, byref Destination as any ptr, Nouveau_X as integer, Nouveau_Y as integer, RegenBitmap as boolean)						as any ptr
 		Declare Function IMG_Changer_taille_Rapide	(byref Source as any ptr, byref Nouveau_IMG as any ptr, Taille_X as integer, Taille_Y as integer, Nouveau_X as integer, Nouveau_Y as integer) 	as any ptr
+		
+		
 		
 		' *** OBJ ***
 		Declare Function Creer_Fenetre				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer) 							as integer

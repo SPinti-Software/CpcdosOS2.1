@@ -32,6 +32,9 @@ CCP/ /LANG = FR
 // [EN] Starting system in Without OS mode (Important)
 SYS/ /WITHOUTOS
 
+// [FR] Mettre a jour la liste des formats de fichiers
+// [EN] Updating files formats
+SYS/ /FILEFORMAT-UPDATE
 
 // [FR] Desactiver le debug (Pour eviter les crises epideptiques)
 // [EN] Disable debug (More beautiful)

@@ -798,7 +798,8 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 	
 	ENTRER_SectionCritique()
 	Do Until Len(NomElement) = 0 ' Boucle jsuqu'a qu'il n'y a plus d'elements
-		If (NomElement <> ".") And (NomElement <> "..") Then ' Ignorer les "." et ".."
+		' If (NomElement <> ".") And (NomElement <> "..") Then ' Ignorer les "." et ".."
+		If (NomElement <> ".") Then ' Ignorer le "." uniquement
 	
 	
 			' Si le nombre d'elements a memoriser sort de la limite, on arrete
@@ -918,6 +919,9 @@ Function _SYSTEME_Cpcdos_OSx__.check_NomAutorise(byval NomElement as String, Pat
 	' S'il s'agit d'un chemin d'acces
 	if PathComplet = TRUE Then
 		if INSTR(NomElement, "/") > 0 		Then NomElement = CPCDOS_INSTANCE.remplacer_Caractere(NomElement, "/"		, "\")
+		if INSTR(NomElement, "//") > 0		Then NomElement = CPCDOS_INSTANCE.remplacer_Caractere(NomElement, "//"		, "\") ' Doublon 
+		if INSTR(NomElement, "///") > 0		Then NomElement = CPCDOS_INSTANCE.remplacer_Caractere(NomElement, "///"		, "\")
+		if INSTR(NomElement, "////") > 0		Then NomElement = CPCDOS_INSTANCE.remplacer_Caractere(NomElement, "////", "\") ' Limite
 	Else
 		' Ou simplement d'un fichier
 		if INSTR(NomElement, "/") > 0 		Then NomElement = CPCDOS_INSTANCE.remplacer_Caractere(NomElement, "_"		, "_")

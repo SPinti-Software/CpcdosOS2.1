@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "12" 
+CONST _VJOUR as string 	= "15" 
 CONST _VMOIS as string 	= "12"
 CONST _VANNEE as string = "2020"
 
@@ -266,6 +266,7 @@ CONST TOUCHE_TAB		as String = CHR(09)
 CONST TOUCHE_BACK		as String = CHR(08)
 CONST TOUCHE_ECHAP		as String = CHR(27)
 CONST TOUCHE_SUPPR		as String = CHR(127)
+
 
 Common shared	ZERO_FILL as String 
 
@@ -468,6 +469,17 @@ Type __Noyau_Cpcdos_OSx__
 		LOGGER_TOUT_AU_DEMARRAGE as boolean = FALSE ' Logger TOUT dans tous les cas dans le fichier debug.log
 		
 		
+		' *** Liste des formats programmes et icones associes **
+		const FORMAT_MAX					as integer = 24
+		FORMAT_nombre						as integer = 0
+		
+		FORMAT_Extention	(FORMAT_MAX)	as String
+		FORMAT_Description	(FORMAT_MAX)	as String
+		FORMAT_Icones_min	(FORMAT_MAX)	as String
+		FORMAT_Icones_max	(FORMAT_MAX)	as String
+		FORMAT_Programme	(FORMAT_MAX)	as String
+		
+		
 		' *** Instanciation des classes du systeme ***
 		DEBUG_INSTANCE 		as _DEBUG_Cpcdos_OSx__	 			' Deboggage
 		' CPintiCore_INSTANCE as cpinti.__CpintiCore_CpcdosOSx__ 	' CPinti Core
@@ -574,9 +586,14 @@ Type __Noyau_Cpcdos_OSx__
 		Declare Function 	test_OSPresent		(ByVal Nom as String) 				as Integer
 		
 		' Charger une image PNG, JPG, JPEG, JTIF et MJPG
-		Declare Function Charger_Image			(ByVal ImageSource as String) as Any PTR
-		Declare Function Charger_Image			(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) as Any PTR
+		Declare Function 	Charger_Image		(ByVal ImageSource as String) as Any PTR
+		Declare Function 	Charger_Image		(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) as Any PTR
 		
+		' Charger un fichier INI
+		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) as string
+
+		' Charger la liste des formats de fichiers
+		Declare Function Load_list_format		() as boolean
 		
 		
 		Declare sub tester_erreur_memoire()
