@@ -765,15 +765,27 @@ End Function
 Function _memoire_bitmap.Modifier_BITMAP_CP(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer) as boolean
 	' Permet de dupliquer pointeur bitmap
 
+	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() id source:" & NumeroID & " Pointeur source [0x" & hex(this.donnees_RVBA(NumeroID)) & "] destination relatif pos(" & PX & "x" & PY & ") id:" & NumeroID_Dest & " offset [0x" & hex(this.donnees_RVBA(NumeroID_Dest)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() id source:" & NumeroID & " id:" & NumeroID_Dest, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		Else
-			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() source id:" & NumeroID & " source pointer [0x" & hex(this.donnees_RVBA(NumeroID)) & "] destination relative pos(" & PX & "x" & PY & ") id:" & NumeroID_Dest & " offset [0x" & hex(this.donnees_RVBA(NumeroID_Dest)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() id source:" & NumeroID & " id:" & NumeroID_Dest, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		End if
 	End if
 	
 	if NumeroID < 0 OR NumeroID_Dest < 0 then return 0
+	
+	
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() Pointeur source [0x" & hex(this.donnees_RVBA(NumeroID)) & "] destination relatif pos(" & PX & "x" & PY & ") offset [0x" & hex(this.donnees_RVBA(NumeroID_Dest)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		Else
+			DEBUG("[_memoire_bitmap] Modifier_BITMAP_CP() source pointer [0x" & hex(this.donnees_RVBA(NumeroID)) & "] destination relative pos(" & PX & "x" & PY & ") offset [0x" & hex(this.donnees_RVBA(NumeroID_Dest)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+	End if
+	
+	
 	
 	if NumeroID >= this._MAX_BITMAP_ID OR NumeroID_Dest >= This._MAX_BITMAP_ID Then 	
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -851,6 +863,8 @@ Function _memoire_bitmap.Modifier_BITMAP_texte(Pointeur as any ptr, Texte as Str
 			DEBUG("[_memoire_bitmap] Modifier_BITMAP_texte() Texte:'" & Texte & "' " & PX & "x" & PY & " source PTR[0x" & hex(Pointeur) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		End if
 	End if
+	
+	if Pointeur = 0 then Return false
 	
 	 ' Faire sorte a ce que le texte soit decoupe pour le multi-ligne ou non
 	Draw String Pointeur, (PX, PY), Texte, RGB(R, V, B)
