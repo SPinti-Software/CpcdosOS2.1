@@ -32,6 +32,11 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/txtbox.cpc
 // [EN] checkbox configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/checkbox.cpc
 
+// [FR] Configuration de l'explorateur
+// [EN] Explorer configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/explorer.cpc
+
+
 
 // [FR] Configuration du msgbox
 // [EN] Msgbox configuration

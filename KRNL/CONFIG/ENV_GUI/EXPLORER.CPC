@@ -1,0 +1,11 @@
+// USER
+CCP/ /SET.LEVEL = 3
+
+// ---- EXPLORER ----
+
+FIX/ CPC_GUI.EXPLORER.BACKGROUND = %OS_GUI%/EXP_BCK.png
+
+
+
+
+
