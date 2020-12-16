@@ -20044,7 +20044,21 @@ _FIN_EXE_CCP_EXE:
 
 			' Mettre a jour la liste des extensions de fichiers
 			IF Instr(UCASE(Param), "/FILEFORMAT-UPDATE") > 0 Then
-				CPCDOS_INSTANCE.Load_list_format()
+				param = Mid(Param, Instr(Param, "/FILEFORMAT-UPDATE") + Len("/FILEFORMAT-UPDATE")+2)
+				if len(param) < 5 Then
+					' Si pas de parametres on load le fichier par defaut
+					CPCDOS_INSTANCE.Load_list_format(Recherche_Fonction_Var("CPC.REP.KRNL", _CLE_) & "\CONFIG\FORMATS.INI")
+				else
+					CPCDOS_INSTANCE.Load_list_format(param)
+				End if
+				exit _scope_CMD, _scope
+			End if
+			
+			IF Instr(UCASE(Param), "/FILEFORMAT-GUI-LOAD") > 0 Then
+				' Charger les icones
+				CPCDOS_INSTANCE.SCI_INSTANCE.FILE_FORMAT_load_icons()
+
+				
 				exit _scope_CMD, _scope
 			End if
 			
