@@ -10,7 +10,7 @@
 	#### En bref ####
 	#################
 
-		--> 3	Ajouts de divers fonctionnalités.
+		--> 5	Ajouts de divers fonctionnalités.
 		--> 2	corrections importantes.
 		--> 0	optimisations.
 		--> 2	corrections et modifications mineures.
@@ -44,10 +44,17 @@
 					Il est possible de personnaliser les formats de fichiers .CPC .EXE .PNG .DLL etc... avec 
 					un programme associé, description et une icône pour l'objet graphique Explorateur
 		
+		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-update" qui permet de mettre a jour la liste des formats de fichiers
+						depuis KRNL\CONFIG\FORMATS.INI
+					ou "SYS/ /Fileformat-update MonFichier.ini" pour choisir son propre profile de format.
+		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-gui-load" qui permet de charger graphiquement les icônes associés
+						aux formats des fichier. (Taille minimale et maximale).
+		
 
 		[CORRECTIONS]
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
 		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
+		
 		
 		[MODIFICATIONS]
 		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux

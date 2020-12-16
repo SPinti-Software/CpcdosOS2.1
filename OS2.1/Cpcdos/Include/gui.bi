@@ -692,7 +692,13 @@ Type _SCI_Cpcdos_OSx__
 		
 		MULTI_PICTUREBOX					as boolean ' Permet de synchoniser les picturesbox animes n'ayant pas le focus
 		
+		' Liste des icones de taille MAX et MIN pour l'explorateur de fichiers
+		const icon_ID						as integer = 11111
+		const FORMAT_MAX					as integer = 24 ' a display
 		
+		FORMAT_file_icon_MAX_ID(FORMAT_MAX)	as integer
+		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer
+		EXP_BACKGROUND_ID					as integer
 		
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__
@@ -745,6 +751,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function IMG_Changer_taille			(byref Source as any ptr, byref Destination as any ptr, Nouveau_X as integer, Nouveau_Y as integer, RegenBitmap as boolean)						as any ptr
 		Declare Function IMG_Changer_taille_Rapide	(byref Source as any ptr, byref Nouveau_IMG as any ptr, Taille_X as integer, Taille_Y as integer, Nouveau_X as integer, Nouveau_Y as integer) 	as any ptr
 		
+		declare Function FILE_FORMAT_load_icons		() as boolean
 		
 		
 		' *** OBJ ***

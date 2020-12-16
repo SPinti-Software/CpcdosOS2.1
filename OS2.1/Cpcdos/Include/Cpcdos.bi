@@ -202,7 +202,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Enlever le texte en trop quand l'update ne marche pas
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
-
+' 	- Rendre dechargeable les icones & background de l'explorateur
 
 '
 ' =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=
@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "15" 
+CONST _VJOUR as string 	= "16" 
 CONST _VMOIS as string 	= "12"
 CONST _VANNEE as string = "2020"
 
@@ -593,7 +593,7 @@ Type __Noyau_Cpcdos_OSx__
 		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) as string
 
 		' Charger la liste des formats de fichiers
-		Declare Function Load_list_format		() as boolean
+		Declare Function 	Load_list_format	(source as string) as boolean
 		
 		
 		Declare sub tester_erreur_memoire()

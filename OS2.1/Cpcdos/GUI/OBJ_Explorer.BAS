@@ -97,19 +97,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 			Dim Couleur_ALPHA 	as integer
 			
-			' Dim Icones_lst 		as String = CPCDOS_INSTANCE.SCI_INSTANCE.Get_icon_list_format()
-			' Dim Icones(24)			as String
-			' if NOT Icones = "" Then
-				' For boucle as integer 
-					
-				' Next boucle
-			' End if
-		
 			
 			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
 			
 			Dim Lines_array(64) as string
-			dim Espacement as integer = 24
+			Dim ZoneClic as integer = 32
+			dim Espacement as integer = 14
 		
 			Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 			
@@ -131,6 +124,13 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Buffer_temp_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Explorer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, Couleur_ALPHA, this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.Handle)
 			
 			Dim CPY_Source		as String 
+			
+			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = 0 Then
+				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.BACKGROUND", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+			End if
+			
+			' Push l'image background sur le buffer
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, Buffer_temp_ID, 0, 0)
 			
 			Scope
 				Texte = Rtrim(Texte)
@@ -224,7 +224,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 				End if
 			
 			
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "PATH : " & CPY_Source, 0 , 0, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, CPY_Source, 32 , 1, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 			
 				scope
 					
@@ -269,7 +269,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
 			
 							' Positionnement label
-							dim Pos_lst_Y as integer = (b * 8) + Espacement
+							dim Pos_lst_Y as integer = (b * (8 + espacement))
 							
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
 							
@@ -277,7 +277,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 		
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "D :" & instance_FICHER_DOSSIER_.liste_Elements(b), 12 , 0 + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								
+								' Icone MIN
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), Buffer_temp_ID, 0, 0 + Pos_lst_Y)
 								
 							Else
 
@@ -317,8 +320,33 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 								' Fichier en cours
 								Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "F :" & instance_FICHER_DOSSIER_.liste_Elements(b), 12 , 0 + Pos_lst_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								
+								Dim Extension as string
+								Dim Index_extension as integer = 24
+								For boucle as integer = 1 to CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
+									Extension = Ucase(MID(instance_FICHER_DOSSIER_.liste_Elements(b), InstrREV(instance_FICHER_DOSSIER_.liste_Elements(b), ".") + 1))
+									
+									' Si extension correspond
+									if Extension = CPCDOS_INSTANCE.FORMAT_Extention(boucle) Then
+										Index_extension = boucle
+										exit for
+									End if
+								Next boucle
+								
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+										DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Extension : " & Extension & " associe avec l'icone (" & Index_extension & ") '" & CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+									else
+										DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Extension : " & Extension & " associed with icon (" & Index_extension & ") '" & CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+									End if
+								end if
+								
+								' Si pas d'icone, on met l'icone inconnu 
+								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = 24
+								
+								' Icone fichier
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), Buffer_temp_ID, 0, 0 + Pos_lst_Y)
 							end if
 							
 							' ** Ajouter les autres attributs **
@@ -389,8 +417,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 				Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
 				Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
 				
-				for boucle as integer = 0 to 64
-					if Position_clic_Y > boucle * 8 AND Position_clic_Y < boucle * 8 + 8 + espacement Then ' Si clic dans la zone
+				for boucle as integer = 1 to 64
+					dim Pos_lst_Y as integer = (boucle * (8 + espacement))
+					
+					if Position_clic_Y > Pos_lst_Y AND Position_clic_Y < Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 					
 						
 						Dim element as String = Mid(Lines_array(boucle), 3)
@@ -401,10 +431,15 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
 							' DOSSIER
 							if element = ".." OR element = "..\" Then
-								CPY_Source = Mid(CPY_Source, 1, Instr(CPY_Source, "\"))
+								' Recuperer le dernier \
+								CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
 								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
 							else
-								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element
+								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
+								Else
+									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+								End if
 							End if
 							
 							reload = true ' Recharger l'objet

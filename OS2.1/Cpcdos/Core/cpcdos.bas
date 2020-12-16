@@ -1555,10 +1555,11 @@ Function __Noyau_Cpcdos_OSx__.Charger_Image(ByVal ImageSource as String, byref H
 End Function
 
 
+
 function __Noyau_Cpcdos_OSx__.Read_INI_value (Fichier_source as string, Section as string, Cle as string) as string
     ' Cette fonction permet de lire dans un fichier INI
 
-	Dim ini_ligne 			as string
+	Dim Chaine_Ligne 			as string
 	Dim NouvelleSection 	as string
     dim Step_str 			as integer
 	Dim Gauche_str 			as string
@@ -1573,58 +1574,84 @@ function __Noyau_Cpcdos_OSx__.Read_INI_value (Fichier_source as string, Section 
 		End if
 	End if
 	
-	dim NumeroFichier 		as integer = freefile
-    open Fichier_source for input as #NumeroFichier ' MODIFIER CA !!
-   
-    do
-        line input #NumeroFichier, ini_ligne
-        if left(ini_ligne,1) = "[" and right(ini_ligne,1) = "]" then
-            NouvelleSection = mid(ini_ligne, 2, len(ini_ligne)-2)
-        elseif instr(ini_ligne, "=") > 0 then
-            Step_str = instr(ini_ligne, "=")
-            Gauche_str = trim(left(ini_ligne,Step_str-1))
-            Droite_Str = trim(right(ini_ligne, len(ini_ligne)-Step_str))
-            if (NouvelleSection = Section) and (Gauche_str = Cle) then
+	if Fichier_Existe(Fichier_source) = true then
+		Dim Buffer_Fichier as String = Lire_fichier_complet(Fichier_source)
+		Dim Position_FIN as integer
+		Dim Position_Debut as integer = 1
 			
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					DEBUG("[OK] Value '" & Droite_Str & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-				End if
+		For Boucle as integer = 0 to compter_Caractere(Buffer_Fichier, CRLF)
+		
+			Position_FIN = INSTR(Position_Debut, Buffer_Fichier, CRLF)
+			
+			if Position_FIN < 1 then Position_FIN = Len(Buffer_Fichier)
+			
+			' Recuperer la ligne dans le fichier en supprimant le CRLF a la fin
+			Chaine_Ligne = Mid(Buffer_Fichier, Position_Debut, Position_FIN - Position_Debut)
+			
+			Position_Debut = Position_FIN + 2
+
+			if left(Chaine_Ligne,1) = "[" and right(Chaine_Ligne,1) = "]" then
+				NouvelleSection = mid(Chaine_Ligne, 2, len(Chaine_Ligne)-2)
+			elseif instr(Chaine_Ligne, "=") > 0 then
+				Step_str = instr(Chaine_Ligne, "=")
+				Gauche_str = trim(left(Chaine_Ligne,Step_str-1))
+				Droite_Str = trim(right(Chaine_Ligne, len(Chaine_Ligne)-Step_str))
+				if (NouvelleSection = Section) and (Gauche_str = Cle) then
 				
-				' Fermer fichier
-				close #NumeroFichier
-                return Droite_Str
-            end if
-        end if
-    loop until eof(NumeroFichier)
-    close #NumeroFichier
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[OK] Value '" & Droite_Str & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+					End if
+					
+					return Droite_Str
+				end if
+			end if
+			if Position_FIN = Len(Buffer_Fichier) Then exit for
+		Next Boucle
+	End if
+	
 end function
 
 
-Function __Noyau_Cpcdos_OSx__.Load_list_format() as boolean
+Function __Noyau_Cpcdos_OSx__.Load_list_format(source as String) as boolean
 	' Cette fonction permet de charger la liste des formats de fichiers
 	
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[CPCDOS] Load_list_format() Mise a jour de la liste des formats de fichiers ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		DEBUG("[CPCDOS] Load_list_format() Mise a jour de la liste des formats de fichiers depuis '" & source & "' ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 	Else
-		DEBUG("[CPCDOS] Load_list_format() Updating file format list ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		DEBUG("[CPCDOS] Load_list_format() Updating file format list from '" & source & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 	End if
 	
-	' recuperer 1 par 1 les elements
+	' Recperer les proprietes du DOSSIER
+	FORMAT_Extention	(0) = "NULL"
+	FORMAT_Programme	(0) = "NULL"
+	FORMAT_Description	(0) = Read_INI_value(source, "DIR", "DESCRIPTION")
+	FORMAT_Icones_min	(0) = Read_INI_value(source, "DIR", "ICON_MIN")
+	FORMAT_Icones_max	(0) = Read_INI_value(source, "DIR", "ICON_MAX")
+	
+	
+	' recuperer 1 par 1 les elements pour format de fichier
 	For boucle as integer = 1 to FORMAT_MAX
-		FORMAT_Extention	(boucle) 	= Read_INI_value("KRNL\CONFIG\FORMATS.INI", "EXT_" & boucle, "FORMAT")
-		FORMAT_Description	(boucle)	= Read_INI_value("KRNL\CONFIG\FORMATS.INI", "EXT_" & boucle, "DESCRIPTION")
-		FORMAT_Icones_min	(boucle)	= Read_INI_value("KRNL\CONFIG\FORMATS.INI", "EXT_" & boucle, "ICON_MIN")
-		FORMAT_Icones_max	(boucle)	= Read_INI_value("KRNL\CONFIG\FORMATS.INI", "EXT_" & boucle, "ICON_MAX")
-		FORMAT_Programme	(boucle)	= Read_INI_value("KRNL\CONFIG\FORMATS.INI", "EXT_" & boucle, "PROGRAM")
+		FORMAT_Extention	(boucle) 	= Ucase(Read_INI_value(source, "EXT_" & boucle, "FORMAT"))
+		FORMAT_Description	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "DESCRIPTION")
+		FORMAT_Icones_min	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "ICON_MIN")
+		FORMAT_Icones_max	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "ICON_MAX")
+		FORMAT_Programme	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "PROGRAM")
 		
 		FORMAT_nombre = FORMAT_nombre+1
 		
 	Next boucle
 	
-	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-		DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-	End if
+	
+	FORMAT_Extention	(24) = Read_INI_value(source, "EXT_DEF", "FORMAT")
+	FORMAT_Programme	(24) = Read_INI_value(source, "EXT_DEF", "PROGRAM")
+	FORMAT_Description	(24) = Read_INI_value(source, "EXT_DEF", "DESCRIPTION")
+	FORMAT_Icones_min	(24) = Read_INI_value(source, "EXT_DEF", "ICON_MIN")
+	FORMAT_Icones_max	(24) = Read_INI_value(source, "EXT_DEF", "ICON_MAX")
+	
+
+	DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	
 	
 	return true
 End Function
