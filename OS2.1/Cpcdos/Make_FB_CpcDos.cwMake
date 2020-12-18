@@ -4,3 +4,6 @@
 >
 fbc_dos -v -p FB/lib/dos/ @ARGS.CFG 
 >
+-#Copy LIBcpc.a ../../FB/lib/DOS/LIBcpc.a
+-#Copy LIBcpc.a ../../djgpp/lib/LIBcpc.a
+>
