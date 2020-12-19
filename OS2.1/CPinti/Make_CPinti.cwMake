@@ -1,0 +1,34 @@
+;Register Cwc before using a .cwmake
+>
+-{_wToolchain}=VLianceTool/DJGPP_RT
+>
+-{_sOpt}=Debug
+;-{_sOpt}=O2
+>
+-{vIncl}= 
+-I include/
+-I ../../djgpp/include/
+>
+;Build core
+-c &core/ -o obj/{_sOpt}/core/ 
+-{vIncl}
+>
+;Build debug
+-c debug/ -o obj/{_sOpt}/debug/ 
+-{vIncl}
+>
+;Build IO
+-c &io/ -o obj/{_sOpt}/io/ 
+-{vIncl}
+>
+;Build network
+-c &network/ -o obj/{_sOpt}/network/ 
+-{vIncl}
+>
+;Build Lib
+-o  obj/{_sOpt}/ -#To LIBcpnti.a
+>
+-#Copy LIBcpnti.a ../../FB/lib/DOS/LIBcpnti.a
+-#Copy LIBcpnti.a ../../djgpp/lib/LIBcpnti.a
+-#Copy LIBcpnti.a ../../../CpcdosSDK/FB/lib/dos/LIBcpnti.a
+>
