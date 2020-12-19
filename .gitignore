@@ -25,3 +25,4 @@ djgpp/
 # Log 
 *.LOG 
 *.log
+*.wdat
