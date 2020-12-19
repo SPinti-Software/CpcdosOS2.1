@@ -1,7 +1,5 @@
 ;Register Cwc before using a .cwmake
 >
--{_sOpt}="Debug"
->
 -{_wToolchain}=VLianceTool/DJGPP_RT
 >
 fbc_dos -v -p FB/lib/dos/ -l cpnti -l pthread -l zip -l fbgfx -l png  -l z -l watt @FB/ARGS.CFG 
