@@ -56,6 +56,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			end if
 		End if
 		
+		if this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = true Then
+			if cpc_mouse_state(0) = 0 Then this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = false
+		End if
+		
 		
 		dim Reload as boolean = true
 		While(Reload)
@@ -84,6 +88,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Siz_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_X
 			Dim Siz_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_Y
 		
+			Dim IMG_BUFFER_ID	as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID
 			
 			Dim AutoSizeIMG		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.AutoSizeIMG
 			
@@ -100,9 +105,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
 			
-			Dim Lines_array(64) as string
-			Dim ZoneClic as integer = 32
-			dim Espacement as integer = 14
+			Dim Lines_array(CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS) as string
+			Dim ZoneClic as integer = 16
+			dim Espacement as integer = 16
 		
 			Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 			
@@ -119,18 +124,22 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			End if
 			
 			Dim alpha_buffer as integer = 255
+			Dim CPY_Source		as String 
 			if Couleur_ALPHA = 0 Then alpha_buffer = 0
 			
-			Dim Buffer_temp_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Explorer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, Couleur_ALPHA, this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.Handle)
+			if IMG_BUFFER_ID = 0 Then
+				this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Explorer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, Couleur_ALPHA, this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.Handle)
+				IMG_BUFFER_ID = this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID
+			End if
 			
-			Dim CPY_Source		as String 
+			
 			
 			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = 0 Then
 				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.BACKGROUND", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
 			End if
 			
 			' Push l'image background sur le buffer
-			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, Buffer_temp_ID, 0, 0)
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
 			
 			Scope
 				Texte = Rtrim(Texte)
@@ -223,8 +232,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 					END IF
 				End if
 			
-			
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, CPY_Source, 32 , 1, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+				' Afficher le path
+				' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, CPY_Source, 32 , 1, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 			
 				scope
 					
@@ -271,16 +280,18 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							' Positionnement label
 							dim Pos_lst_Y as integer = (b * (8 + espacement))
 							
+							
+							
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
 							
 								TexteTaille = ""
 		
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								
 								' Icone MIN
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), Buffer_temp_ID, 0, 0 + Pos_lst_Y)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), IMG_BUFFER_ID, 0, 0 + Pos_lst_Y)
 								
 							Else
 
@@ -320,10 +331,21 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 								' Fichier en cours
 								Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								
+								
+								if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
+									' Si le nom est trop grand pour etre affiche
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								else
+									' Sinon on l'affiche normalement
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								End if
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, 200 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								
 								Dim Extension as string
-								Dim Index_extension as integer = 24
+								' Index de l'extension fichier
+								Dim Index_extension as integer = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
+							
 								For boucle as integer = 1 to CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
 									Extension = Ucase(MID(instance_FICHER_DOSSIER_.liste_Elements(b), InstrREV(instance_FICHER_DOSSIER_.liste_Elements(b), ".") + 1))
 									
@@ -343,59 +365,70 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								end if
 								
 								' Si pas d'icone, on met l'icone inconnu 
-								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = 24
+								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
 								
 								' Icone fichier
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), Buffer_temp_ID, 0, 0 + Pos_lst_Y)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, 0, 0 + Pos_lst_Y)
+								
+								' Afficher la description
+								if Len(CPCDOS_INSTANCE.FORMAT_Description(Index_extension)) > 32 Then
+									' Si trop grand
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", 260 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								Else
+									' Sinon on display normal
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), 260 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								End if
+								
 							end if
 							
 							' ** Ajouter les autres attributs **
-							
+							Dim Attribut_str as String
 							' Lecture Seule
-							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_ReadOnly = True Then Resultat_chaine += ",r"
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_ReadOnly = True Then Attribut_str += "read only "
 							
 							' Cache
-							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Hidden = True Then Resultat_chaine += ",h"
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Hidden = True Then Attribut_str += "hidden "
 							
 							' Systeme
-							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_System = True Then Resultat_chaine += ",s"
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_System = True Then Attribut_str += "system "
 							
 							' Archive
-							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Archive = True Then Resultat_chaine += ",a"
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Archive = True Then Attribut_str += ""
 							
 							' Normal
-							' if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Resultat_chaine += ",n"
+							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Attribut_str += ""
 
-							' Taille du fichier
-							' TexteTaille
-
+							
+							
+							' Afficher l'attribut de fichier
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, 520 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 						next b
 						
 						
 						
 						' Attribuer l'unite correspondante a la taille
-						IF TailleFinal < 1 Then
+						' IF TailleFinal < 1 Then
 							' Fichier VIDE
-							TexteTaille_FINAL = "0 " & octets
-						Else
-							IF (TailleFinal/1024^4) < 1 Then ' Tera
-								IF (TailleFinal/1024^3) < 1 Then ' Giga
-									IF (TailleFinal/1024^2) < 1 Then ' Mega
-										IF (TailleFinal/1024) < 1 Then ' Kilo
-											TexteTaille_FINAL = TailleFinal & " " & octets ' OCTETS
-										Else
-											TexteTaille_FINAL = Left(str(TailleFinal/1024), instr(str(TailleFinal/1024), ".") + 3) & " " & kilo ' KILOS
-										End if
-									Else
-										TexteTaille_FINAL = Left(str(TailleFinal/1024^2), instr(str(TailleFinal/1024^2), ".") + 3) & " " & mega ' MEGA
-									End if
-								Else
-									TexteTaille_FINAL = Left(str(TailleFinal/1024^3), instr(str(TailleFinal/1024^3), ".") + 3) & " " & giga ' GIGA
-								End if
-							Else
-								TexteTaille_FINAL = Left(str(TailleFinal/1024^4), instr(str(TailleFinal/1024^4), ".") + 3) & " " & tera ' TERA
-							End if
-						End if
+							' TexteTaille_FINAL = "0 " & octets
+						' Else
+							' IF (TailleFinal/1024^4) < 1 Then ' Tera
+								' IF (TailleFinal/1024^3) < 1 Then ' Giga
+									' IF (TailleFinal/1024^2) < 1 Then ' Mega
+										' IF (TailleFinal/1024) < 1 Then ' Kilo
+											' TexteTaille_FINAL = TailleFinal & " " & octets ' OCTETS
+										' Else
+											' TexteTaille_FINAL = Left(str(TailleFinal/1024), instr(str(TailleFinal/1024), ".") + 3) & " " & kilo ' KILOS
+										' End if
+									' Else
+										' TexteTaille_FINAL = Left(str(TailleFinal/1024^2), instr(str(TailleFinal/1024^2), ".") + 3) & " " & mega ' MEGA
+									' End if
+								' Else
+									' TexteTaille_FINAL = Left(str(TailleFinal/1024^3), instr(str(TailleFinal/1024^3), ".") + 3) & " " & giga ' GIGA
+								' End if
+							' Else
+								' TexteTaille_FINAL = Left(str(TailleFinal/1024^4), instr(str(TailleFinal/1024^4), ".") + 3) & " " & tera ' TERA
+							' End if
+						' End if
 
 						' Resultats totaux
 						' instance_FICHER_DOSSIER_.nb_Dossiers
@@ -409,58 +442,81 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			End scope
 			
 			
+
 			' Checker le clic !
 			' Clic GAUCHE
-			if cpc_mouse_state(0) = 1 Then
-			
-				' Recuperer la position du curseur RELATIF a la position du picturebox
-				Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
-				Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+			if this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = false Then
+				if cpc_mouse_state(0) = 1 Then
 				
-				for boucle as integer = 1 to 64
-					dim Pos_lst_Y as integer = (boucle * (8 + espacement))
+					this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = true
 					
-					if Position_clic_Y > Pos_lst_Y AND Position_clic_Y < Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
-					
+					' Recuperer la position du curseur RELATIF a la position du picturebox
+					Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
+					Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+
+					for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
+						dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 						
-						Dim element as String = Mid(Lines_array(boucle), 3)
-						If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-							' FICHIER
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(Buffer_temp_ID, "Clic FICHIER : " & element, 0 , 0 + (instance_FICHER_DOSSIER_.nb_Elements*8) + Espacement + 12, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
+
 							
-						elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
-							' DOSSIER
-							if element = ".." OR element = "..\" Then
-								' Recuperer le dernier \
-								CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
-								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
-							else
-								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
-								Else
-									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+							IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
+
+								Dim element as String = Mid(Lines_array(boucle), 3)
+
+								If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+									Dim path_fichier as string
+									' FICHIER
+									' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, "Clic FICHIER : " & element, 0 , 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+										path_fichier = CPY_Source & element
+									else 
+										path_fichier = CPY_Source & "\" & element
+									End if
+									
+									' On execute le fichier
+									CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
+									
+								elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
+									' DOSSIER
+								
+									if element = ".." OR element = "..\" Then
+										' Recuperer le dernier \
+										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+											CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+										End if
+										
+										' Chercher le dernier \
+										CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
+										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+									else
+										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
+										Else
+											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+										End if
+									End if
+									
+									reload = true ' Recharger l'objet
+									
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+									exit for
 								End if
 							End if
-							
-							reload = true ' Recharger l'objet
-							
-							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-								else
-									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-								End if
-							end if
-							
 						End if
-					End if
-				Next boucle
-			
-				' Afficher la position du clic
+					Next boucle
 				
-				
-			End if
-			
+					' Afficher la position du clic
+					
+					
+				End if ' Mouse state
+			End if 
 			
 			
 			' Rechargement de l'objet
@@ -473,7 +529,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 					End if
 				end if
 			Else
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Buffer_temp_ID, Pos_X, Pos_Y, 0, 0, Siz_X , Siz_Y, true, Couleur_ALPHA)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(IMG_BUFFER_ID, Pos_X, Pos_Y, 0, 0, Siz_X , Siz_Y, true, Couleur_ALPHA)
 			end if
 			
 		Wend ' reload

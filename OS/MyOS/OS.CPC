@@ -1,3 +1,4 @@
+sys/ /os:myos
 
 // Charger le profil graphique PAR DEFAUT (Obligatoire)
 exe/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
@@ -40,6 +41,8 @@ FIX/ GUI_OS = %HOST_OS%/MEDIA/GUI
 // ******************************************************
 GUI/
 
+// Load icon on GUI
+sys/ /fileformat-gui-load
 
 // ----------------------------------------------------------- //
 //                  ------ C O D E ------                      //
@@ -60,7 +63,9 @@ CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
 
-exe/ test.cpc
+exe/ & test.cpc
+exe/ & tests/tchat.cpc
+exe/ & explorer.cpc
 
 
 

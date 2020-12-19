@@ -53,6 +53,9 @@ Type Proprietes_Objet
 	Pression		as boolean ' Clic enfonce
 	Pressable		as boolean
 	
+	Press			as boolean
+	Release			as boolean
+	
 	Active			as boolean
 	Activable		as boolean
 	
@@ -583,6 +586,7 @@ Type Cpcdos_GUI__EXPLORER
 	NB_ICONE				as integer	' Nombre d'icones differents
 	IMG_ICONE_ID(24)		as integer	' Icones des formats de fichiers
 	
+	IMG_BUFFER_ID			as integer	' Buffer de l'explorer
 	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
 
 	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
@@ -694,7 +698,7 @@ Type _SCI_Cpcdos_OSx__
 		
 		' Liste des icones de taille MAX et MIN pour l'explorateur de fichiers
 		const icon_ID						as integer = 11111
-		const FORMAT_MAX					as integer = 24 ' a display
+		const FORMAT_MAX					as integer = 24 ' a display identique a celui de cpcdos.bi
 		
 		FORMAT_file_icon_MAX_ID(FORMAT_MAX)	as integer
 		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer

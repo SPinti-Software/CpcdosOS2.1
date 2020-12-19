@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "16" 
+CONST _VJOUR as string 	= "19" 
 CONST _VMOIS as string 	= "12"
 CONST _VANNEE as string = "2020"
 
@@ -468,6 +468,8 @@ Type __Noyau_Cpcdos_OSx__
 		LOGGER_AU_DEMARRAGE		as boolean = FALSE ' Logger dans tous les cas dans le fichier debug.log
 		LOGGER_TOUT_AU_DEMARRAGE as boolean = FALSE ' Logger TOUT dans tous les cas dans le fichier debug.log
 		
+		' *** Explorer GUI object ***
+		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 64 	' Nombre d'elements par pages
 		
 		' *** Liste des formats programmes et icones associes **
 		const FORMAT_MAX					as integer = 24
