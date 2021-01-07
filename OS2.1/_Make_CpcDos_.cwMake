@@ -1,0 +1,8 @@
+;Register Cwc before using a .cwmake
+>
+-#Lauch Cpcdos/Make_FB_CpcDos.cwMake
+>
+-#Lauch CPinti/Make_CPinti.cwMake
+>
+-#Lauch ../Make_FB.cwMake
+>
