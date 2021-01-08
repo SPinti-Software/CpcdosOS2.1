@@ -1,4 +1,4 @@
-# Cpcdos OS2.1 source co-kernel code.
+# Cpcdos OS2.1 co-kernel source code.
 
 ![](https://cpcdos.net/user/themes/cpcdos/images/logo.png)
 
