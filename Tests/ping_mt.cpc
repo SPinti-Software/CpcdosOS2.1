@@ -1,6 +1,6 @@
 txt/ Begin multi-threaded ping tests
 
-// NO-FN able to disable execution of /F functionnality for this /THREAD line!
+// #NO-FN able to disable execution of /F functionnality for this /THREAD line!
 
 cmd/ /thread /F:ping(google.fr,true) \#NO-FN
 cmd/ /thread /F:ping(www.facebook.com,true) \#NO-FN
