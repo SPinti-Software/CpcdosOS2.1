@@ -5,6 +5,8 @@
 Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx.
 Cette version sera maintenue à jour jusqu'à que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête.
 
+Le projet à été nettoyé, tous les **elements prototype** tel que le boot, GDT.. ont étés balayés ! Nos excuses s'il reste des morceaux dans le code.
+
 Crée le 15 Juillet 2011.
 Code source publié officiellement le 09 Janvier 2021.
 
