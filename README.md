@@ -23,7 +23,7 @@ Rejoignez le ![discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 - ![Forum - developpez.net](www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos/)
 
 ## Updates binaires
-- Depuis le ![site web](https://cpcdos.net) ci-dessus.
+- Depuis le [site web](https://cpcdos.net) ci-dessus.
 - Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
 
 ## Développeur(s)
