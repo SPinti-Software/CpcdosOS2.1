@@ -11,17 +11,16 @@ Code source publié officiellement le 09 Janvier 2021.
 ## How to compile
  - Téléchargez et installez la dernière version de ![CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
+ - Assurez-vous d'avoir une machine virtuelle ![éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos ![#1](https://www.youtube.com/user/cpcdososx) ![#2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos)
+ - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
 
 ## Liens officiel
-![Site web - cpcdos.net](https://cpcdos.net)
-
-![Forum - developpez.net](www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos/)
+- ![Site web - cpcdos.net](https://cpcdos.net)
+- ![Forum - developpez.net](www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos/)
 
 ## Updates binaires
 - Depuis le site web ci-dessous.
 - Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
-
-
 
 ## Développeur(s)
  - Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS & GoatOS
