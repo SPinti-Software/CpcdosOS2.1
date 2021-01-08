@@ -3,12 +3,15 @@
 ![](https://cpcdos.net/user/themes/cpcdos/images/logo.png)
 
 Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx.
-Cette version sera maintenue à jour jusqu'à que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête.
-
-Le projet à été nettoyé, tous les **elements prototype** tel que le boot, GDT.. ont étés balayés ! Nos excuses s'il reste des morceaux dans le code.
+Cette version sera maintenue à jour jusqu'à que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête. (Without FreeDos)
 
 Crée le 15 Juillet 2011.
 Code source publié officiellement le 09 Janvier 2021.
+
+
+#### Informations
+_Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code. La version OS2.1 va rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos_
+
 
 ## How to compile
  - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
