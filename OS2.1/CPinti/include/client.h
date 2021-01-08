@@ -51,9 +51,9 @@ namespace cpinti
 	namespace net_client
 	{
 		std::string Resolution_DNS	(std::string NomAdresse);
-		int Taille_Contenu			(int socket);
-		void Fermer_socket			(int SocketReseau);
-		int Demarrer_client			(std::string AdresseIP, unsigned int Port, unsigned int NumeroID, int TYPE_CLIENT);
+		long Taille_Contenu			(long socket);
+		void Fermer_socket			(long SocketReseau);
+		long Demarrer_client		(std::string AdresseIP, unsigned long Port, unsigned long NumeroID, long TYPE_CLIENT);
 			
 	}
 	

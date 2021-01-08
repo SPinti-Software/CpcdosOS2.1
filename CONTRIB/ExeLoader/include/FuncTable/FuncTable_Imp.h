@@ -47,6 +47,30 @@ inline HMODULE WINAPI imp_LoadLibraryA(LPCSTR lpLibFileName){
 		if(!_ret){sys_GetLastError();}return _ret;
 	#else
 		return (HMODULE)AddLibrary(lpLibFileName);
+		//return (HMODULE)AddLibrary("test");
+	#endif
+}
+
+
+//!HMODULE WINAPI LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
+//!HMODULE WINAPI LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
+HMODULE WINAPI imp_LoadLibraryExA (LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
+	showfunc("LoadLibraryExA( lpLibFileName: %s, dwFlags: %d )", lpLibFileName, dwFlags);
+	#ifdef USE_Windows_LoadLibrary
+		HMODULE _ret = LoadLibraryExA(lpLibFileName, dwFlags);
+		if(!_ret){sys_GetLastError();}return _ret;
+	#else
+		return (HMODULE)AddLibrary(lpLibFileName);
+	#endif
+}
+HMODULE WINAPI imp_LoadLibraryExW (LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags){
+	WStr _swFile(lpLibFileName);const char* _sFile = _swFile.ToCStr();
+	showfunc("LoadLibraryExW( lpLibFileName: %s, dwFlags: %d )", _sFile, dwFlags);
+	#ifdef USE_Windows_LoadLibrary
+		HMODULE _ret = LoadLibraryExW(lpLibFileName, dwFlags);
+		if(!_ret){sys_GetLastError();}return _ret;
+	#else
+		return (HMODULE)AddLibrary(_sFile);
 	#endif
 }
 
@@ -279,34 +303,6 @@ inline int imp_vscprintf(const char *format,va_list argptr){
     return retval;
  }
 
-//! void * _aligned_malloc(size_t size,size_t alignment)
-inline void* imp_aligned_malloc(size_t size,size_t alignment){
-	showfunc_opt("aligned_malloc( size: %d, alignment: %d )", size,alignment);
-	void* p1; // original block
-    void** p2; // aligned block
-    int offset = alignment - 1 + sizeof(void*);
-    if ((p1 = (void*)malloc(size + offset)) == NULL)
-    {
-       return NULL;
-    }
-    p2 = (void**)(((size_t)(p1) + offset) & ~(alignment - 1));
-    p2[-1] = p1;
-    return p2;
-}
-//!void _aligned_free (void *memblock)
-inline void imp_aligned_free(void *memblock){
-	showfunc_opt("aligned_free( memblock: %p )", memblock);
-	if(memblock != 0){
-		free(((void**)memblock)[-1]);
-	}
-}
-//! void * _aligned_realloc(void *memblock,size_t size,size_t alignment);
-inline void* imp_aligned_realloc(void *memblock,size_t size,size_t alignment){
-	showfunc_opt("aligned_realloc( size: %d, alignment: %d )", size,alignment);
-	imp_aligned_free(memblock);
-	return imp_aligned_malloc(size, alignment);
-}
-
 
 //!char *_strdup(const char *strSource)
 inline char* imp_strdup(const char *strSource){
@@ -352,7 +348,21 @@ inline int imp_abs(int x){
 
 //===== CommandLine ==== //
 
+//!LPSTR GetCommandLineA(){
 //!LPWSTR GetCommandLineW(){
+LPSTR imp_GetCommandLineA(){
+	showfunc("GetCommandLineA( )", "");
+	#ifdef Func_Win
+	return GetCommandLineA();
+	#else
+	//TODO Real Arg
+	wchar_t* arg = (wchar_t*)L"Test ExeLoader winMain input arg";
+	wchar_t* alloc = (wchar_t*)imp_LocalAlloc(0, sizeof(L"Test ExeLoader winMain input arg") ); //We must alloc with LocalAlloc because windows will call LocalFree later
+	memcpy(alloc, arg, sizeof(L"Test ExeLoader winMain input arg"));
+	showfunc_ret("GetCommandLineA[LPSTR: %p]", alloc);
+	return (LPSTR)alloc; 
+	#endif
+}
 LPWSTR WINAPI imp_GetCommandLineW(){
 	showfunc("GetCommandLineW( )", "");
 	#ifdef Func_Win
@@ -645,6 +655,12 @@ int imp_open(const char *filename,int oflag,int pmode){
 	return -1;//error
 }
 
+//!void abort (void)
+void imp_abort (void){
+	showfunc("abort", "");
+	showfunc("Try Continuing...", "");
+	return;
+}
 
 
 /*

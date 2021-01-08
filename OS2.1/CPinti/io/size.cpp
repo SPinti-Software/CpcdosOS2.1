@@ -39,7 +39,7 @@ namespace cpinti
 		// ============================ TAILLE FICHIER ===============================
 		// ===========================================================================
 		
-		unsigned int Taille_Fichier(const char* Chemin)
+		unsigned long Taille_Fichier(const char* Chemin)
 		{
 			// Cette fonction retourne la taille en octets
 			// -1 	: Probleme
@@ -54,12 +54,12 @@ namespace cpinti
 				fseek(Instance_Fichier, 0L, SEEK_END);
 
 				// Recuperer la position et donc la taille
-				unsigned int Taille = (unsigned int) ftell(Instance_Fichier);
+				unsigned long Taille = (unsigned long) ftell(Instance_Fichier);
 				// Fermer le fichier
 				fclose(Instance_Fichier);
 
 				// Retourner la taille
-				return (unsigned int) Taille;
+				return (unsigned long) Taille;
 			}
 			else
 			{

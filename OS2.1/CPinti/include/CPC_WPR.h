@@ -32,23 +32,23 @@
 */
 
 
-extern "C" int 			cpc_Creer_Contexte				(int TAILLEX, int TAILLEYn);
-extern "C" void* 		cpc_Obtenir_Zone_Contexte		(int ID);
-extern "C" int 			cpc_Blitter						(int ID);
-extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, int ID);
-extern "C" int 			cpc_CCP_Exec_Thread_cpc			(const char* chemin, int Thread_Priorite);
+extern "C" long 			cpc_Creer_Contexte				(long TAILLEX, long TAILLEYn);
+extern "C" void* 		cpc_Obtenir_Zone_Contexte		(long ID);
+extern "C" long 			cpc_Blitter						(long ID);
+extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, long ID);
+extern "C" long 			cpc_CCP_Exec_Thread_cpc			(const char* chemin, long Thread_Priorite);
 
-extern "C" char*		cpc_Exec_en_cours				(int ARG);
+extern "C" char*		cpc_Exec_en_cours				(long ARG);
 
-extern "C" void			cpc_cpinti_debug_plus_cpinticore(const char* texte, int Ecran, int Log, int Alerte, int RetourPLGN, int CR_LF, int DisplDate, int Signature, const char* File);
-extern "C" void			cpc_cpinti_debug_cpinticore		(const char* texte, int alerte);
-extern "C" int			cpc_cpinti_Fichier_Existe		(const char* chemin);
-extern "C" unsigned int	cpc_cpinti_Taille_Fichier		(const char* chemin);
-extern "C" int 			cpc_cpinti_Lire_Fichier_complet	(const char* Chemin, const char* Mode, char *retour_str);
+extern "C" void			cpc_cpinti_debug_plus_cpinticore(const char* texte, long Ecran, long Log, long Alerte, long RetourPLGN, long CR_LF, long DisplDate, long Signature, const char* File);
+extern "C" void			cpc_cpinti_debug_cpinticore		(const char* texte, long alerte);
+extern "C" long			cpc_cpinti_Fichier_Existe		(const char* chemin);
+extern "C" unsigned long	cpc_cpinti_Taille_Fichier		(const char* chemin);
+extern "C" long 			cpc_cpinti_Lire_Fichier_complet	(const char* Chemin, const char* Mode, char *retour_str);
 
-extern "C" void			cpc_cpinti_sleep_us				(unsigned int temp_us);
-extern "C" void			cpc_cpinti_sleep_ms				(unsigned int temp_ms);
-extern "C" void			cpc_cpinti_sleep_sec			(unsigned int temp_sec);
+extern "C" void			cpc_cpinti_sleep_us				(unsigned long temp_us);
+extern "C" void			cpc_cpinti_sleep_ms				(unsigned long temp_ms);
+extern "C" void			cpc_cpinti_sleep_sec			(unsigned long temp_sec);
 
 extern "C" double 		cpc_cpinti_Obtenir_Temps_ms		(double Temps_av);
 
@@ -61,80 +61,80 @@ extern "C" double 		cpc_cpinti_Obtenir_Temps_ms		(double Temps_av);
 	{
 		public:
 		// ************ For GZE 3D Graphic engine ************
-		int 			Create_Context			(int TAILLEX, int TAILLEYn);			// Creer un contexte de donnees
-		void* 			Init_Get_Context_PTR	(int ID);								// Initialiser et obtenir le pointeur du contexte
-		void 			Blitting				(int ID);								// Blitter le buffer
+		long 			Create_Context			(long TAILLEX, long TAILLEYn);			// Creer un contexte de donnees
+		void* 			Init_Get_Context_PTR	(long ID);								// Initialiser et obtenir le pointeur du contexte
+		void 			Blitting				(long ID);								// Blitter le buffer
 		
 		
 		// ***************** CpcdosC+ Engine *****************
-		void 			Shell_CCP				(const char* COMMAND, int LEVEL);		// Executer une commande CpcdosC+<
-		int 			Shell_FILE				(const char* FILE, int THREAD_PRIORITY); // Executer un fichier CpcdosC+ multithreadé ou pas
+		void 			Shell_CCP				(const char* COMMAND, long LEVEL);		// Executer une commande CpcdosC+<
+		long 			Shell_FILE				(const char* FILE, long THREAD_PRIORITY); // Executer un fichier CpcdosC+ multithreadé ou pas
 		
 		// ******************** Cpcdos OSx ********************
-		char* 			Get_Path(int ARG);												// Obtenir le chemin d'acces en cours
+		char* 			Get_Path(long ARG);												// Obtenir le chemin d'acces en cours
 		
 		// ******************* CPinti Core *******************
-		void 			fdebug_log				(int alert, const char* format, ...);	// Debug formatable
-		void			debug_log				(const char* text, int alert);			// Debug bref
-		void			debug_log_plus			(const char* texte, int Ecran, int Log,
-													int Alerte, int RetourPLGN, int CR_LF, 
-													int DisplDate, int Parameters, 
+		void 			fdebug_log				(long alert, const char* format, ...);	// Debug formatable
+		void			debug_log				(const char* text, long alert);			// Debug bref
+		void			debug_log_plus			(const char* texte, long Ecran, long Log,
+													long Alerte, long RetourPLGN, long CR_LF, 
+													long DisplDate, long Parameters, 
 													const char* File); 					// Debug normal
 		
-		int			 	File_exist				(char* path);							// Renvoie 1 OK 0 FAUX
-		int			 	File_exist				(const char* path);						// Renvoie 1 OK 0 FAUX
-		unsigned int 	File_size				(char* path);							// Obtenir la taille d'un fichier
-		unsigned int 	File_size				(const char* path);						// Obtenir la taille d'un fichier
-		int 			File_read_all			(const char* path, const char* mode, 
+		long			 	File_exist				(char* path);							// Renvoie 1 OK 0 FAUX
+		long			 	File_exist				(const char* path);						// Renvoie 1 OK 0 FAUX
+		unsigned long 	File_size				(char* path);							// Obtenir la taille d'un fichier
+		unsigned long 	File_size				(const char* path);						// Obtenir la taille d'un fichier
+		long 			File_read_all			(const char* path, const char* mode, 
 													char *data);						// Lire TOUT le contenu d'un fichier
-		int 			File_read_all			(char* path, char* mode, 
+		long 			File_read_all			(char* path, char* mode, 
 													char *data);
 		
-		void			usleep					(unsigned int microseconds);			// Pause en micro secondes
-		void			sleep					(unsigned int milliseconds);			// Pause en milli secondes
-		void			ssleep					(unsigned int seconds);					// Pause en secondes
+		void			usleep					(unsigned long microseconds);			// Pause en micro secondes
+		void			sleep					(unsigned long milliseconds);			// Pause en milli secondes
+		void			ssleep					(unsigned long seconds);					// Pause en secondes
 		double 			get_time_ms				(double Temps_av);						// Obtenir le temps actuel en millisecondes
 		
 	};
 	
 	//////////////////// For GZE 3D Graphic engine ////////////////////
-	int CpcdosOSx_CPintiCore::Create_Context(int TAILLEX, int TAILLEYn)
+	long CpcdosOSx_CPintiCore::Create_Context(long TAILLEX, long TAILLEYn)
 	{
 		return cpc_Creer_Contexte(TAILLEX, TAILLEYn);
 		
 	}
 	
-	void* CpcdosOSx_CPintiCore::Init_Get_Context_PTR(int ID)
+	void* CpcdosOSx_CPintiCore::Init_Get_Context_PTR(long ID)
 	{
 		return cpc_Obtenir_Zone_Contexte(ID);
 	}
 	
-	void CpcdosOSx_CPintiCore::Blitting(int ID)
+	void CpcdosOSx_CPintiCore::Blitting(long ID)
 	{
 		cpc_Blitter(ID);
 	}
 	
 	////////////////////// For CpcdosC+ //////////////////////
-	void CpcdosOSx_CPintiCore::Shell_CCP(const char* COMMAND, int LEVEL)
+	void CpcdosOSx_CPintiCore::Shell_CCP(const char* COMMAND, long LEVEL)
 	{
 		cpc_CCP_Exec_Commande(COMMAND, LEVEL);
 	}
 	
-	int CpcdosOSx_CPintiCore::Shell_FILE(const char* _file, int Thread_Priority)
+	long CpcdosOSx_CPintiCore::Shell_FILE(const char* _file, long Thread_Priority)
 	{
 		return cpc_CCP_Exec_Thread_cpc(_file, Thread_Priority);
 	}
 	
 	
 	//////////////////// For Cpcdos OSx ////////////////////
-	char* CpcdosOSx_CPintiCore::Get_Path(int ARG)
+	char* CpcdosOSx_CPintiCore::Get_Path(long ARG)
 	{
 		return cpc_Exec_en_cours(ARG);
 	}
 	
 	//////////////////// For CPinti Core ////////////////////	
 	
-	void CpcdosOSx_CPintiCore::fdebug_log(int alert, const char* format, ...)
+	void CpcdosOSx_CPintiCore::fdebug_log(long alert, const char* format, ...)
 	{
 		// Cette fonction permet d'utiliser le simuler un sprintf()
 		va_list arg;
@@ -152,55 +152,55 @@ extern "C" double 		cpc_cpinti_Obtenir_Temps_ms		(double Temps_av);
 
 	}
 	
-	void CpcdosOSx_CPintiCore::debug_log(const char* text, int alert)
+	void CpcdosOSx_CPintiCore::debug_log(const char* text, long alert)
 	{
 		cpc_cpinti_debug_cpinticore(text, alert);
 	}
 
-	void CpcdosOSx_CPintiCore::debug_log_plus(const char* texte, int Ecran, int Log, int Alerte, int RetourPLGN, int CR_LF, int DisplDate, int Signature, const char* File)
+	void CpcdosOSx_CPintiCore::debug_log_plus(const char* texte, long Ecran, long Log, long Alerte, long RetourPLGN, long CR_LF, long DisplDate, long Signature, const char* File)
 	{
 		cpc_cpinti_debug_plus_cpinticore(texte, Ecran, Log, Alerte, RetourPLGN, CR_LF, DisplDate, Signature, File);
 	}
 	
 		// ---
-	int CpcdosOSx_CPintiCore::File_exist(char* path)
+	long CpcdosOSx_CPintiCore::File_exist(char* path)
 	{
 		return cpc_cpinti_Fichier_Existe(path);
 	}
-	int CpcdosOSx_CPintiCore::File_exist(const char* path)
+	long CpcdosOSx_CPintiCore::File_exist(const char* path)
 	{
 		return cpc_cpinti_Fichier_Existe(path);
 	}
 	// ---
-	unsigned int CpcdosOSx_CPintiCore::File_size(char* path)
+	unsigned long CpcdosOSx_CPintiCore::File_size(char* path)
 	{
 		return cpc_cpinti_Taille_Fichier(path);
 	}
-	unsigned int CpcdosOSx_CPintiCore::File_size(const char* path)
+	unsigned long CpcdosOSx_CPintiCore::File_size(const char* path)
 	{
 		return cpc_cpinti_Taille_Fichier(path);
 	}
 	// ---
-	int CpcdosOSx_CPintiCore::File_read_all(const char* path, const char* mode, char* data)
+	long CpcdosOSx_CPintiCore::File_read_all(const char* path, const char* mode, char* data)
 	{
 		return cpc_cpinti_Lire_Fichier_complet(path, mode, data);
 	}
-	int CpcdosOSx_CPintiCore::File_read_all(char* path, char* mode, char* data)
+	long CpcdosOSx_CPintiCore::File_read_all(char* path, char* mode, char* data)
 	{
 		return cpc_cpinti_Lire_Fichier_complet(path, mode, data);
 	}
 	// ---
 	
 	// Time
-	void CpcdosOSx_CPintiCore::usleep(unsigned int microseconds)
+	void CpcdosOSx_CPintiCore::usleep(unsigned long microseconds)
 	{
 		cpc_cpinti_sleep_us(microseconds);
 	}
-	void CpcdosOSx_CPintiCore::sleep(unsigned int milliseconds)
+	void CpcdosOSx_CPintiCore::sleep(unsigned long milliseconds)
 	{
 		cpc_cpinti_sleep_ms(milliseconds);
 	}
-	void CpcdosOSx_CPintiCore::ssleep(unsigned int seconds)
+	void CpcdosOSx_CPintiCore::ssleep(unsigned long seconds)
 	{
 		cpc_cpinti_sleep_sec(seconds);
 	}

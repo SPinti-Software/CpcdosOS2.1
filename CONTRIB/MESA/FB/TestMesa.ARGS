@@ -1,1 +1,0 @@
--O 2 -t 16384 -arch 486 -w all -l stdcxx -l wrp -l mesa -l OSMesa -l GLU -lang fb 

@@ -52,10 +52,10 @@ namespace cpinti
 	
 	namespace net_ping
 	{
-			void Fermer_socket(int SocketReseau);
+			void Fermer_socket(long SocketReseau);
 			const char* Resolution_DNS(const char* NomAdresse, struct hostent* Sock_hostent);
 			const char* Resolution_DNS (const char *NomAdresse);
-			int ping(const char* AdresseIP, const char* Message, int Timeout);
+			long ping(const char* AdresseIP, const char* Message, long Timeout);
 			
 		
 	} /* net_ping */

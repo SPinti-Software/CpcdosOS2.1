@@ -31,7 +31,7 @@
 		02/10/2017	- Deplacement du code lecture/ecriture dans 2 fichiers separes
 		08/05/2017 	- Petites correction et ajout du doevents
 		25/01/2017 	- Ajout fonction d'ecriture de fichier 
-		13/01/2017	- Fichier existe renvoie un BOOL au lieu d'un int. std::ios::fail etant un BOOL
+		13/01/2017	- Fichier existe renvoie un BOOL au lieu d'un long. std::ios::fail etant un BOOL
 	
 */
 #include <stdio.h>
@@ -45,7 +45,7 @@
 
 // #include "leakchk.h"
 
-extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, int ID);
+extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, long ID);
 
 namespace cpinti 
 {
@@ -56,7 +56,7 @@ namespace cpinti
 		// ================================= LECTURE =================================
 		// ===========================================================================
 
-		bool Copier_Fichier(const char* Source, const char* Destination, int Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
+		bool Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
 		{
 			// Cette methode permet de copier un fichier source a une destination
 		
@@ -74,7 +74,7 @@ namespace cpinti
 			
 			// Definit les attributs temporaires		
 			bool RETOUR = false;
-			int CompteurDoevents = 0;
+			long CompteurDoevents = 0;
 			
 			// Les descripteurs de fichier
 			FILE* Instance_Fichier_SOURCE;
@@ -98,11 +98,11 @@ namespace cpinti
 				if (Instance_Fichier_DESTINATION != NULL) 
 				{
 
-					unsigned int TailleFichier 		= Taille_Fichier(Source);
-					unsigned int Position 			= 0;
-					unsigned int NombreOctets 		= 0;
-					unsigned int NombreOctetsParSec = 0;
-					unsigned int TempsPasse 		= 0;
+					unsigned long TailleFichier 		= Taille_Fichier(Source);
+					unsigned long Position 			= 0;
+					unsigned long NombreOctets 		= 0;
+					unsigned long NombreOctetsParSec = 0;
+					unsigned long TempsPasse 		= 0;
 					
 					double valeur					= 0;
 					double vitesse					= 0;
@@ -134,7 +134,7 @@ namespace cpinti
 							{
 								
 								valeur = ((double) NombreOctets / (double) TailleFichier) * 100;
-								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_Progression, valeur);
+								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_Progression, valeur);
 								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 							}
 							
@@ -143,7 +143,7 @@ namespace cpinti
 							{
 
 								valeur = (double) NombreOctets;
-								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_Octets, valeur);
+								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_Octets, valeur);
 								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 							}
 						
@@ -153,7 +153,7 @@ namespace cpinti
 								if((VAR_OctetsParSec != NULL) && (strlen(VAR_OctetsParSec) > 1))
 								{
 									
-									sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_OctetsParSec, vitesse);
+									sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_OctetsParSec, vitesse);
 									cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									vitesse = 0;
 								}
@@ -179,7 +179,7 @@ namespace cpinti
 						{
 							TempsFin = clock();
 
-							TempsPasse = (unsigned int) ((TempsFin - TempsDebut)/CLOCKS_PER_SEC);
+							TempsPasse = (unsigned long) ((TempsFin - TempsDebut)/CLOCKS_PER_SEC);
 	
 							if(TempsPasse > 1)
 							{
@@ -219,7 +219,7 @@ namespace cpinti
 			if(RETOUR == false)
 			{
 				// Probleme!
-				std::string Erreur_STR = std::to_string((unsigned int) strerror(errno));
+				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de copier le fichier '" + std::string(Source) + "' a '" + std::string(Destination) + "'. Raison:" + std::string(strerror(errno)), 
 										 "[ERROR] Unable to copy file '" + std::string(Source) + "' to '" + std::string(Destination) + "'. Raison:" + std::string(strerror(errno)),
 									 "gestionnaire_fichier", "Lire_Fichier_complet()",

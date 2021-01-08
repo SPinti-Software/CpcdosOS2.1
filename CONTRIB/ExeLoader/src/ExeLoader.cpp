@@ -19,6 +19,11 @@
 #include "ExeLoader.h"
 #include "Debug.h"
 
+#include <unistd.h>
+#include <stdio.h>
+#include <errno.h>
+
+
 ManagedAlloc instance_AllocManager = {1024};
 
 char* DLL_LOADED[512] = {0};
@@ -171,6 +176,7 @@ long nExeFileSize;
 			// Lib_GZ::Sys::pDebug::fConsole(gzStrL("---File Open!-- ") + _sFullPath);
 			return true;
 		}else{
+			printf("\nError: %d (%s)\n", errno, strerror(errno));
 			_EXE_LOADER_DEBUG(6, " * Impossible d'ouvrir le fichier: %s", "Error, can't open file: %s", _sFullPath );
 			// Lib_GZ::Sys::pDebug::fConsole(gzStrL("Error, can't open file : ") + _sFullPath);
 		}
@@ -237,7 +243,9 @@ void GDB_Send_AddSymbolFile(char* _path, void* _text_adress, int _timeout = 1000
 //add-symbol-file "E:/.../app.exe" 0xXXXXX
 	//fflush(stdout);fflush(stderr);//To be sure we receive the cmd
 	fprintf(stderr, "Cmd[GDB]:add-symbol-file \"%s\" 0x%p\n", _path, _text_adress);
+
 	fflush(stdout);fflush(stderr);//To be sure we receive the cmd
+
 	GDB_Func_ExecuteCmds();
 }
 
@@ -253,6 +261,12 @@ char** exe_arg=0;
 MemoryModule* memory_module = 0;
 bool fMainExeLoader(const char* _sPath){
 
+	#ifdef __DJGPP__
+	setbuf(stdout, NULL);//Required to see every printf
+	setbuf(stderr, NULL);//Required to see every printf
+	dup2(STDOUT_FILENO, STDERR_FILENO);; //Redirect stderr to stdout
+	#endif
+	
 	#ifdef ImWin
 		 setbuf(stdout, NULL);//Required to see every printf
 		 setbuf(stderr, NULL);//Required to see every printf
@@ -427,7 +441,7 @@ void GetLibraryExportTable(PMEMORYMODULE module){
 	PIMAGE_DATA_DIRECTORY directory = GET_HEADER_DICTIONARY((PMEMORYMODULE)module, IMAGE_DIRECTORY_ENTRY_EXPORT);
 	if (directory->Size == 0) {
 		// no export table found
-		#ifdef ImWin
+		#ifdef USE_Window_LastError
 		SetLastError(ERROR_PROC_NOT_FOUND);
 		#endif
 		return;
@@ -436,7 +450,7 @@ void GetLibraryExportTable(PMEMORYMODULE module){
 	exports = (PIMAGE_EXPORT_DIRECTORY) (codeBase + directory->VirtualAddress);
 	if (exports->NumberOfNames == 0 || exports->NumberOfFunctions == 0) {
 		// DLL doesn't export anything
-		#ifdef ImWin
+		#ifdef USE_Window_LastError
 		SetLastError(ERROR_PROC_NOT_FOUND);
 		#endif
 		return;
@@ -522,7 +536,10 @@ HMEMORYMODULE AddLibrary(const char* _sPath) {
 						 "///========= AddLibrary: %s", _sPath);
 	_EXE_LOADER_DEBUG_("///===============================================================================================================///","");
 	// Charger le fichier en memoire
-	if(!fExeCpcDosLoadFile(_sPath)) return 0;
+	if(!fExeCpcDosLoadFile(_sPath)){
+		printf("\n !fExeCpcDosLoadFile");
+		return 0;
+	}
 	long filesize = nExeFileSize;
 	void* data = aExeFileData;
 	

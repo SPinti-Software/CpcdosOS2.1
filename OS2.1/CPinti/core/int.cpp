@@ -49,7 +49,7 @@ namespace cpinti
 						Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
 						
 			
-			instance_SigAction[0].sa_handler = Erreur_Fatale_Signal;
+			instance_SigAction[0].sa_handler = (void (*)(int)) Erreur_Fatale_Signal;
 			sigemptyset(&instance_SigAction[0].sa_mask);
 			instance_SigAction[0].sa_flags = 0;
 			sigaction(SIGSEGV, &instance_SigAction[0], 0);
@@ -60,7 +60,7 @@ namespace cpinti
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 
 
-			instance_SigAction[1].sa_handler = Erreur_Fatale_Signal;
+			instance_SigAction[1].sa_handler = (void (*)(int)) Erreur_Fatale_Signal;
 			sigemptyset(&instance_SigAction[1].sa_mask);
 			instance_SigAction[1].sa_flags = 0;
 			sigaction(SIGILL, &instance_SigAction[1], 0);
@@ -70,7 +70,7 @@ namespace cpinti
 									 "", "",
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 
-			instance_SigAction[2].sa_handler = Erreur_Fatale_Signal;
+			instance_SigAction[2].sa_handler = (void (*)(int)) Erreur_Fatale_Signal;
 			sigemptyset(&instance_SigAction[2].sa_mask);
 			instance_SigAction[2].sa_flags = 0;
 			sigaction(SIGABRT, &instance_SigAction[2], 0);
@@ -80,7 +80,7 @@ namespace cpinti
 									 "", "",
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 
-			instance_SigAction[3].sa_handler = Erreur_Fatale_Signal;
+			instance_SigAction[3].sa_handler = (void (*)(int)) Erreur_Fatale_Signal;
 			sigemptyset(&instance_SigAction[3].sa_mask);
 			instance_SigAction[3].sa_flags = 0;
 			sigaction(SIGTRAP, &instance_SigAction[3], 0);
@@ -90,7 +90,7 @@ namespace cpinti
 									 "", "",
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 			
-			instance_SigAction[4].sa_handler = Erreur_Fatale_Signal;
+			instance_SigAction[4].sa_handler = (void (*)(int)) Erreur_Fatale_Signal;
 			sigemptyset(&instance_SigAction[4].sa_mask);
 			instance_SigAction[4].sa_flags = 0;
 			sigaction(SIGINT, &instance_SigAction[4], 0);
@@ -156,7 +156,7 @@ namespace cpinti
 			
 		}
 		
-		void Erreur_Fatale(int signalnum, int ligne, char* fichier, char* fonction)
+		void Erreur_Fatale(long signalnum, long ligne, char* fichier, char* fonction)
 		{
 			
 			if(Exception_capte == true) return;
@@ -175,23 +175,23 @@ namespace cpinti
 			{
 				printf(" * Internal runtime error not identified. :-(\n");
 				cpc_COLOR(1, 12);
-				printf("   --> eip : %s() [%s:%d]\n", fonction, fichier, ligne);
+				printf("   --> eip : %s() [%s:%ld]\n", fonction, fichier, ligne);
 			}
 			else{
 				printf(" * Internal runtime error identified !");
 				cpc_COLOR(1, 12);
-				printf("   --> In function %s() [%s:%d]\n", fonction, fichier, ligne);
+				printf("   --> In function %s() [%s:%ld]\n", fonction, fichier, ligne);
 			}
 			
 			cpc_COLOR(0, 12);
 			printf(" * Stack trace       : [0x%08x] <- [0x%08x] <- [0x%08x]\n", (unsigned int) __builtin_return_address(0), (unsigned int) __builtin_return_address(1), (unsigned int) __builtin_return_address(2));
-			printf(" * Current Thread ID : %d\n", cpinti::gestionnaire_tache::get_ThreadEnCours());
-			printf(" * Total Thread(s)   : %d\n", cpinti::gestionnaire_tache::get_NombreThreads());
+			printf(" * Current Thread ID : %ld\n", cpinti::gestionnaire_tache::get_ThreadEnCours());
+			printf(" * Total Thread(s)   : %ld\n", cpinti::gestionnaire_tache::get_NombreThreads());
 			if(Etat_section_critique)
 				printf(" * Critical section  : ENABLED\n");
 			else
 				printf(" * Critical section  : DISABLED\n");
-			printf(" * Error number      : %d\n", signalnum);
+			printf(" * Error number      : %ld\n", signalnum);
 			printf(" * Informations      : ");
 			
 			if(signalnum == SIGABRT)
@@ -209,7 +209,7 @@ namespace cpinti
 			Error_Finalise();
 		}
 		
-		void Erreur_Fatale_Signal(int signalnum) 
+		void Erreur_Fatale_Signal(long signalnum) 
 		{
 		
 			Erreur_Fatale(signalnum, 0, NULL, NULL);

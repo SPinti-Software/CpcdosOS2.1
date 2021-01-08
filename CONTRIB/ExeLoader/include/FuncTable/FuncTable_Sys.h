@@ -268,25 +268,6 @@ UINT WINAPI sys_SetErrorMode(UINT uMode){
 }
 
 
-//!LRESULT WINAPI DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
-//!LRESULT WINAPI DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
-LRESULT WINAPI sys_DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam){
-	showfunc("DefWindowProcA( hWnd: %p, Msg: %p, wParam: %p, lParam: %p )", hWnd, Msg, wParam, lParam);
-	#ifdef Func_Win
-		return DefWindowProcA(hWnd, Msg, wParam, lParam);
-	#else
-		return 0;
-	#endif
-}
-LRESULT WINAPI sys_DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam){
-	showfunc("DefWindowProcW( hWnd: %p, Msg: %p, wParam: %p, lParam: %p )", hWnd, Msg, wParam, lParam);
-	#ifdef Func_Win
-		return DefWindowProcW(hWnd, Msg, wParam, lParam);
-	#else
-		return 0;
-	#endif
-}
-
 
 ///////////////////// HERE OK
 ///////////////////// HERE OK
@@ -380,52 +361,54 @@ inline HRESULT sys_SetProcessDpiAwareness(int value){
 
 //!WINBOOL WINAPI QueryPerformanceCounter (LARGE_INTEGER *lpPerformanceCount)
 
-WINBOOL WINAPI sys_QueryPerformanceCounter (LARGE_INTEGER *lpPerformanceCount){
+WINBOOL WINAPI sys_QueryPerformanceCounter(LARGE_INTEGER* lpPerformanceCount){
    	showfunc_opt("QueryPerformanceCounter(lpPerformanceCount)", lpPerformanceCount);
 	#ifdef Func_Win
 		return QueryPerformanceCounter( lpPerformanceCount);
 	#else
 		static int i = 0; i++;
-		LARGE_INTEGER lpPerformanceCount_ = {(DWORD)521891041 + i};//Dummy value
-		*lpPerformanceCount = lpPerformanceCount_;
+		if(lpPerformanceCount != 0){
+			LARGE_INTEGER lpPerformanceCount_ = {(DWORD)521891041 + i};//Dummy value
+			*lpPerformanceCount = lpPerformanceCount_;
+		}
 		return true;
 	#endif
 }
 
 //!WINBOOL WINAPI QueryPerformanceFrequency (LARGE_INTEGER *lpFrequency)
-WINBOOL WINAPI sys_QueryPerformanceFrequency(LARGE_INTEGER *lpFrequency){
+WINBOOL WINAPI sys_QueryPerformanceFrequency(LARGE_INTEGER* lpFrequency){
    	showfunc("QueryPerformanceFrequency( lpFrequency: %p )", lpFrequency);
 	#ifdef Func_Win
 		return QueryPerformanceFrequency( lpFrequency);
 	#else
-		LARGE_INTEGER lpFrequency_ = {8221038}; //Dummy value
-		*lpFrequency = lpFrequency_;
-		return true;
+		static const LARGE_INTEGER lpFrequency_ = {8221038}; //Dummy value
+		if(lpFrequency != 0){*lpFrequency = lpFrequency_;}
+		return false;
 	#endif
 }
 
 //!DWORD WINAPI GetTickCount (VOID)
-DWORD WINAPI sys_GetTickCount(){
+DWORD WINAPI sys_GetTickCount(VOID){
  	showfunc("GetTickCount( )", "");
 	#ifdef Func_Win
 		return GetTickCount();
 	#else
-		return 0;
+		return 1;//Fake
 	#endif
 }
 
 //!DWORD WINAPI GetCurrentThreadId (VOID)
-DWORD WINAPI sys_GetCurrentThreadId(){
+DWORD WINAPI sys_GetCurrentThreadId(VOID){
  	showfunc("GetCurrentThreadId( )", "");
 	#ifdef Func_Win
 		return GetCurrentThreadId();
 	#else
-		return 1;//TODO
+		return 1;//Fake
 	#endif
 }
 
 //!DWORD WINAPI GetCurrentThreadId (VOID)
-DWORD WINAPI sys_GetCurrentProcessId(){
+DWORD WINAPI sys_GetCurrentProcessId(VOID){
  	showfunc("GetCurrentProcessId( )", "");
 	#ifdef Func_Win
 		return GetCurrentProcessId();
@@ -440,6 +423,9 @@ DWORD WINAPI sys_GetCurrentProcessId(){
 	#ifdef Func_Win
 		GetSystemTimeAsFileTime(lpSystemTimeAsFileTime);
 	#else
+		//typedef struct _FILETIME {DWORD dwLowDateTime;DWORD dwHighDateTime;} FILETIME,*PFILETIME,*LPFILETIME;
+		lpSystemTimeAsFileTime->dwLowDateTime = 1; //Fake time
+		lpSystemTimeAsFileTime->dwHighDateTime = 1; //Fake time
 	#endif
  }
 
@@ -482,3 +468,80 @@ SHORT WINAPI sys_GetKeyState(int nVirtKey){
 		return 0;
 	#endif
 }
+
+
+//!VOID WINAPI InitializeSListHead (PSLIST_HEADER ListHead)
+VOID WINAPI sys_InitializeSListHead(PSLIST_HEADER ListHead){
+	showfunc("InitializeSListHead( ListHead: %d )", ListHead);
+	#ifdef Func_Win
+		 InitializeSListHead(ListHead);
+	#else
+	//	 0;
+	//TODO
+	#endif
+}
+/*
+  WINBASEAPI VOID WINAPI InitializeSListHead (PSLIST_HEADER ListHead);
+  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedPopEntrySList (PSLIST_HEADER ListHead);
+  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedPushEntrySList (PSLIST_HEADER ListHead, PSLIST_ENTRY ListEntry);
+  WINBASEAPI PSLIST_ENTRY WINAPI InterlockedFlushSList (PSLIST_HEADER ListHead);
+  WINBASEAPI USHORT WINAPI QueryDepthSList (PSLIST_HEADER ListHead);
+*/
+
+//!LPCH WINAPI GetEnvironmentStrings (VOID)
+//!LPWCH WINAPI GetEnvironmentStringsW (VOID)
+LPCH WINAPI sys_GetEnvironmentStrings (VOID){
+	showfunc("GetEnvironmentStrings( )", "");
+	#ifdef Func_Win
+		return GetEnvironmentStrings();
+	#else
+		return 0;	//TODO (Not work!?)
+	#endif
+}
+LPWCH WINAPI sys_GetEnvironmentStringsW (VOID){
+	showfunc("GetEnvironmentStringsW( )", "");
+
+	#ifdef Func_Win
+		return GetEnvironmentStringsW();
+	#else
+		return 0;	//TODO (Not work!?)
+	#endif
+}
+ //!WINBOOL WINAPI FreeEnvironmentStringsA (LPCH penv)
+ //!WINBOOL WINAPI FreeEnvironmentStringsW (LPWCH penv)
+ WINBOOL WINAPI sys_FreeEnvironmentStringsA (LPCH penv){
+ 	showfunc("FreeEnvironmentStringsA( penv: %p )", penv);
+	#ifdef Func_Win
+		return FreeEnvironmentStringsA(penv);
+	#else
+		return 0;	//TODO (Not work!?)
+	#endif
+ }
+ WINBOOL WINAPI sys_FreeEnvironmentStringsW (LPWCH penv){
+  	showfunc("FreeEnvironmentStringsW( penv: %p )", penv);
+	#ifdef Func_Win
+		return FreeEnvironmentStringsW(penv);
+	#else
+		return 0;	//TODO (Not work!?)
+	#endif
+ }
+ 
+//!DWORD WINAPI GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize)
+//!DWORD WINAPI GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize)
+DWORD WINAPI sys_GetModuleFileNameA (HMODULE hModule, LPSTR lpFilename, DWORD nSize){
+	showfunc("GetModuleFileNameA( hModule: %p, lpFilename: %s, nSize: %d )", hModule, lpFilename, nSize);
+	#ifdef Func_Win
+		return sys_GetModuleFileNameA(hModule, lpFilename, nSize);
+	#else
+		return 0;
+	#endif
+}
+DWORD WINAPI sys_GetModuleFileNameW (HMODULE hModule, LPWSTR lpFilename, DWORD nSize){
+	showfunc("GetModuleFileNameW( hModule: %p, lpFilename: %s, nSize: %d )", hModule, lpFilename, nSize);
+	#ifdef Func_Win
+		return GetModuleFileNameW(hModule, lpFilename, nSize);
+	#else
+		return 0;
+	#endif
+}
+

@@ -74,15 +74,15 @@ inline void impl_GetMessages(){
 		
 		HWND _hWnd = (HWND)1;
 		UINT uMsg = 1;
-		LPARAM lparam;
-		WPARAM wParam;
+		LPARAM lparam = 0;
+		WPARAM wParam = 0;
 
 	    uMsg = WM_MOUSEMOVE;
 		
 		#ifdef ShowPixView
 			static int j = 0;j++;
 			lparam = SETLPARAM(pixView_mouse_x,pixView_mouse_y);
-			showinf("mouse_X: %f, mouse_Y: %f, bLButtonDown:d", pixView_mouse_x, pixView_mouse_y, bLButtonDown);
+			showinf("mouse[%d]: %f, mouse_Y: %f, bLButtonDown:d",i, pixView_mouse_x, pixView_mouse_y, bLButtonDown);
 			//TODO Multi msg
 		
 		#endif
@@ -91,12 +91,12 @@ inline void impl_GetMessages(){
 			
 			lparam = SETLPARAM(oCpc->Mouse_state(1),oCpc->Mouse_state(2));
 			
-			if(oCpc->Mouse_state(1) == 1){
+			if((oCpc->Mouse_state(1) & 0x01) == 0x01){
 				bLButtonDown = true;
 			}else{
 				bLButtonDown = false;
 			}
-				
+			showinf("mouse[%d]: lparam: %p, bLButtonDown:d",i, lparam, bLButtonDown);
 		#endif
 			
 		
@@ -108,9 +108,17 @@ inline void impl_GetMessages(){
 				uMsg = WM_LBUTTONUP;
 			}
 		}
-			
-		/*
 		
+		
+		uMsg = 0x200;
+		wParam = 0x6ab390;
+		lparam = 0xc0028;
+		
+		
+		aWndProc[i](_hWnd,uMsg,wParam,lparam); //Call DefWindowProc (When return)
+	}
+}
+		/*
 		WM_MOUSEMOVE
 		GET_X_LPARAM(lParam)
 		
@@ -141,10 +149,26 @@ inline void impl_GetMessages(){
 		WM_SYSKEYUP
 		WM_CHAR
 		*/
-		aWndProc[i](_hWnd,uMsg,wParam,lparam);
-	}
-}
 
+
+//!LRESULT WINAPI DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+//!LRESULT WINAPI DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI sys_DefWindowProcA (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam){
+	showfunc("DefWindowProcA( hWnd: %p, Msg: %p, wParam: %p, lParam: %p )", hWnd, Msg, wParam, lParam);
+	#ifdef Func_Win
+		return DefWindowProcA(hWnd, Msg, wParam, lParam);
+	#else
+		return 0;
+	#endif
+}
+LRESULT WINAPI sys_DefWindowProcW (HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam){
+	showfunc("DefWindowProcW( hWnd: %p, Msg: %p, wParam: %p, lParam: %p )", hWnd, Msg, wParam, lParam);
+	#ifdef Func_Win
+		return DefWindowProcW(hWnd, Msg, wParam, lParam);
+	#else
+		return 0;
+	#endif
+}
 
 
 
@@ -156,7 +180,7 @@ WINBOOL WINAPI sys_PeekMessageA(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wM
 		return PeekMessageA( lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg );
 	#else
 		impl_GetMessages();
-		return 0;
+		return false;
 	#endif
 }
 WINBOOL WINAPI sys_PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wMsgFilterMax,UINT wRemoveMsg){
@@ -165,7 +189,7 @@ WINBOOL WINAPI sys_PeekMessageW(LPMSG lpMsg,HWND hWnd,UINT wMsgFilterMin,UINT wM
 		return PeekMessageW(lpMsg, hWnd, wMsgFilterMin, wMsgFilterMax, wRemoveMsg);
 	#else
 		impl_GetMessages();
-		return 0;
+		return false;
 	#endif
 }
 
@@ -638,7 +662,7 @@ BOOL WINAPI pipe_InitializeCriticalSectionEx(LPCRITICAL_SECTION lpCriticalSectio
 }
 
 //!BOOL IsProcessorFeaturePresent(DWORD ProcessorFeature)
-BOOL pipe_IsProcessorFeaturePresent(DWORD ProcessorFeature){
+BOOL WINAPI pipe_IsProcessorFeaturePresent(DWORD ProcessorFeature){
 	showfunc("IsProcessorFeaturePresent( ProcessorFeature: %p )", ProcessorFeature);
 	#ifdef Func_Win 
 	return IsProcessorFeaturePresent(ProcessorFeature);
@@ -648,7 +672,7 @@ BOOL pipe_IsProcessorFeaturePresent(DWORD ProcessorFeature){
 }
 
 //!BOOL InitializeCriticalSectionAndSpinCount(LPCRITICAL_SECTION lpCriticalSection,DWORD dwSpinCount)
-BOOL pipe_InitializeCriticalSectionAndSpinCount(LPCRITICAL_SECTION lpCriticalSection,DWORD dwSpinCount){
+BOOL WINAPI pipe_InitializeCriticalSectionAndSpinCount(LPCRITICAL_SECTION lpCriticalSection,DWORD dwSpinCount){
 	showfunc("InitializeCriticalSectionAndSpinCount( lpCriticalSection: %p,  dwSpinCount: %p )", lpCriticalSection, dwSpinCount);
 	#ifdef Func_Win 
 	return InitializeCriticalSectionAndSpinCount(lpCriticalSection, dwSpinCount);

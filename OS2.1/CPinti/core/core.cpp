@@ -39,7 +39,7 @@
 
 // #include "leakchk.h"
 
-extern "C" int 		cpc_clean	();
+extern "C" long 		cpc_clean	();
 
 namespace cpinti 
 { 
@@ -59,7 +59,7 @@ namespace cpinti
 				//  ce qui permet d'estimer avec une precision de 60%
 				//  de la charge du CPU
 				InLiveCompteur++;
-				if(InLiveCompteur > 27483600) // unsigned int
+				if(InLiveCompteur > 27483600) // unsigned long
 					InLiveCompteur = 0; // On reinitialise pour eviter les plantages
 				
 				
@@ -100,7 +100,8 @@ namespace cpinti
 			while(Temps_total <= 1)
 			{
 				InLiveCompteur++;
-				if(InLiveCompteur > 27483600) // unsigned int
+				if(InLiveCompteur > 27483600) // unsigned long
+				if(InLiveCompteur > 27483600) // unsigned long
 					break; // On reinitialise pour eviter les plantages
 				
 				doevents(1);
@@ -117,14 +118,14 @@ namespace cpinti
 			EVALUATION_CPU = false;
 		}
 		
-		unsigned int get_cycle_MAX_cpu()
+		unsigned long get_cycle_MAX_cpu()
 		{
 			if(NombreCyles_MAX <= 0)
 				NombreCyles_MAX = 10;
 			return NombreCyles_MAX;
 		}
 		
-		unsigned int get_cycle_cpu()
+		unsigned long get_cycle_cpu()
 		{
 			if(NombreCycles > NombreCyles_MAX)
 				return NombreCyles_MAX;
@@ -135,7 +136,7 @@ namespace cpinti
 		}
 
 
-		volatile int SectionCritique_RECURSIF = 0;
+		volatile long SectionCritique_RECURSIF = 0;
 		void begin_SectionCritique()
 		{
 			// Rendre le systeme non interruptible			
@@ -186,7 +187,7 @@ namespace cpinti
 			begin_SectionCritique();
 			
 			// Allouer un espace memoire pour chaque threads
-			for(int index_id = 0; index_id <= MAX_THREAD-1; index_id++)
+			for(long index_id = 0; index_id <= MAX_THREAD-1; index_id++)
 			{
 				Liste_Threads[index_id].Etat_Thread = _ARRETE;
 				Liste_Threads[index_id].Priorite = 0;
@@ -219,12 +220,12 @@ namespace cpinti
 			
 			Liste_Threads[0].DM_arret				= false;
 			
-			int toto = 0;
+			long toto = 0;
 			pthread_create(&Liste_Threads->thread, NULL, Thread_Updater, (void*) &toto);
 
-			// std::string offset_fonction = std::to_string((unsigned int) Thread_Updater);
-			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:0. Fonction offset 0x" + std::to_string((unsigned int) Thread_Updater), 
-									 " [OK] TID:0. Offset function 0x" + std::to_string((unsigned int) Thread_Updater),
+			// std::string offset_fonction = std::to_string((unsigned long) Thread_Updater);
+			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:0. Fonction offset 0x" + std::to_string((unsigned long) Thread_Updater), 
+									 " [OK] TID:0. Offset function 0x" + std::to_string((unsigned long) Thread_Updater),
 									 "", "",
 						Ligne_saute, Alerte_validation, Date_sans, Ligne_r_normal);
 
@@ -242,9 +243,9 @@ namespace cpinti
 		
 		bool fermer_core()
 		{
-			unsigned int nombre_threads = 0;
+			unsigned long nombre_threads = 0;
 			// Cette fonction permet de fermer le core en terminant tous les threads
-			for(unsigned int boucle = 1; boucle < MAX_THREAD; boucle++)
+			for(unsigned long boucle = 1; boucle < MAX_THREAD; boucle++)
 			{
 				// Si le thread n'est pas arrete ou n'est pas zombie on ferme
 				if(Liste_Threads[boucle].Etat_Thread != _ARRETE)
@@ -255,7 +256,7 @@ namespace cpinti
 					}
 			}
 			
-			std::string nombre_threads_STR = std::to_string((unsigned int) nombre_threads);
+			std::string nombre_threads_STR = std::to_string((unsigned long) nombre_threads);
 			cpinti_dbg::CPINTI_DEBUG("Signal de fermeture envoye aux " + nombre_threads_STR + " thread(s). Attente",
 									 "Closing signal sent to " + nombre_threads_STR + " threads(s). Waiting",
 									 "", "",
@@ -270,9 +271,9 @@ namespace cpinti
 			// Bloquer tout autres interruptions
 			ENTRER_SectionCritique();
 			
-			unsigned int Nombre_Zombie = check_Thread_zombie(true, true);
+			unsigned long Nombre_Zombie = check_Thread_zombie(true, true);
 			
-			std::string Nombre_Zombie_STR = std::to_string((unsigned int) Nombre_Zombie);
+			std::string Nombre_Zombie_STR = std::to_string((unsigned long) Nombre_Zombie);
 			cpinti_dbg::CPINTI_DEBUG(Nombre_Zombie_STR + " thread(s) zombies ferme(s) sur " + nombre_threads_STR,
 									 Nombre_Zombie_STR + " zombies thread(s) closed on " + nombre_threads_STR,
 									 "", "",
@@ -294,25 +295,25 @@ namespace cpinti
 	 
 		/******** PROCESSUS ********/
 		
-		unsigned int get_EtatProcessus(unsigned int PID)
+		unsigned long get_EtatProcessus(unsigned long PID)
 		{
 			// Obtenir l'etat d'un processus
 			return Liste_Processus[PID].Etat_Processus;
 		}
 		
-		void set_EtatProcessus(unsigned int PID, unsigned int Etat)
+		void set_EtatProcessus(unsigned long PID, unsigned long Etat)
 		{
 			// Definir l'etat d'un processus
 			Liste_Processus[PID].Etat_Processus = Etat;
 		}
 		
-		unsigned int get_NombreProcessus()
+		unsigned long get_NombreProcessus()
 		{
 			// Retourner le nombre de threads en cours
 			return Nombre_Processus;
 		}
 		
-		unsigned int ajouter_Processus(const char* NomProcessus)
+		unsigned long ajouter_Processus(const char* NomProcessus)
 		{
 			// Cette fonction permet de creer un processus pour heberger des threads
 			
@@ -322,7 +323,7 @@ namespace cpinti
 			// Si on atteint le nombre maximum de processus
 			if(Nombre_Processus >= MAX_PROCESSUS)
 			{
-				std::string nombre_processus_STR = std::to_string((unsigned int) MAX_PROCESSUS);
+				std::string nombre_processus_STR = std::to_string((unsigned long) MAX_PROCESSUS);
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'attribuer un nouveau PID. Le nombre est fixe a " + nombre_processus_STR + " processus maximum.",
 									 "[ERROR] Unable to attrib new PID. The maximal process number value is " + nombre_processus_STR,
 									 "", "",
@@ -336,10 +337,10 @@ namespace cpinti
 						Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
 			
 			
-			unsigned int Nouveau_PID = 0;
+			unsigned long Nouveau_PID = 0;
 			
 			// Rechercher un emplacement ID vide
-			for(unsigned int b = 1; b <= MAX_PROCESSUS; b++)	
+			for(unsigned long b = 1; b <= MAX_PROCESSUS; b++)	
 			{
 				if(Liste_Processus[b].PID == 0)
 				{
@@ -349,7 +350,7 @@ namespace cpinti
 			}
 			if(Nouveau_PID == 0)
 			{
-				std::string nombre_threads_STR = std::to_string((unsigned int) MAX_THREAD);
+				std::string nombre_threads_STR = std::to_string((unsigned long) MAX_THREAD);
 				cpinti_dbg::CPINTI_DEBUG(" [ERREUR] Impossible d'attribuer un nouveau PID. Aucune zone memoire libere",
 									 " [ERROR] Unable to attrib new PID. No free memory",
 									 "", "",
@@ -370,7 +371,7 @@ namespace cpinti
 			Liste_Processus[Nouveau_PID].Etat_Processus 	= _EN_EXECUTION;
 
 			
-			std::string Nouveau_PID_STR = std::to_string((unsigned int) Nouveau_PID);
+			std::string Nouveau_PID_STR = std::to_string((unsigned long) Nouveau_PID);
 			cpinti_dbg::CPINTI_DEBUG(" [OK] PID " + Nouveau_PID_STR + ".", 
 									 " [OK] PID " + Nouveau_PID_STR + ".",
 									 "", "",
@@ -382,37 +383,37 @@ namespace cpinti
 			return Nouveau_PID;
 		}
 		
-		bool supprimer_Processus(unsigned int pid, bool force)
+		bool supprimer_Processus(unsigned long pid, bool force)
 		{
 			// Cette fonction permet de signaler l'arret d'un processus
 			//  et donc de tous ses threads
 			//  si force=true 
-			volatile int compteur_thread = 0;
+			volatile long compteur_thread = 0;
 			
 			if(pid == 0)
 				return false;
 			
-			// std::string pid_STR = std::to_string((unsigned int) pid);
+			// std::string pid_STR = std::to_string((unsigned long) pid);
 			
 			
 			if (Liste_Processus[pid].Etat_Processus == _ARRETE)
 			{
-				cpinti_dbg::CPINTI_DEBUG("Le processus " + std::to_string((unsigned int) pid) + " est deja arrete", 
-									 "Process " + std::to_string((unsigned int) pid) + " is already stopped",
+				cpinti_dbg::CPINTI_DEBUG("Le processus " + std::to_string((unsigned long) pid) + " est deja arrete", 
+									 "Process " + std::to_string((unsigned long) pid) + " is already stopped",
 									 "", "",
 						Ligne_saute, Alerte_avertissement, Date_sans, Ligne_r_normal);
 			}
 			else if (Liste_Processus[pid].Etat_Processus == _EN_ARRET)
 			{
-				cpinti_dbg::CPINTI_DEBUG("Arret du processus " + std::to_string((unsigned int) pid) + " deja signale", 
-									 "Process stopping " + std::to_string((unsigned int) pid) + " is already signaled",
+				cpinti_dbg::CPINTI_DEBUG("Arret du processus " + std::to_string((unsigned long) pid) + " deja signale", 
+									 "Process stopping " + std::to_string((unsigned long) pid) + " is already signaled",
 									 "", "",
 						Ligne_saute, Alerte_avertissement, Date_sans, Ligne_r_normal);
 			}
 			else
 			{
-				cpinti_dbg::CPINTI_DEBUG("Arret du processus PID " + std::to_string((unsigned int) pid) + " en cours...", 
-									 "Stopping process PID " + std::to_string((unsigned int) pid) + " in progress",
+				cpinti_dbg::CPINTI_DEBUG("Arret du processus PID " + std::to_string((unsigned long) pid) + " en cours...", 
+									 "Stopping process PID " + std::to_string((unsigned long) pid) + " in progress",
 									 "core::gestionnaire_tache", "supprimer_Processus()",
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 						
@@ -421,7 +422,7 @@ namespace cpinti
 				
 				
 				// Signaler l'arret a tous les threads heberges
-				for(unsigned int tid = 1; tid < MAX_THREAD; tid++)
+				for(unsigned long tid = 1; tid < MAX_THREAD; tid++)
 				{
 					// Si le thread est bien heberge dans le processus
 					if(Liste_Processus[pid].Threads_Enfant[tid] == true)
@@ -484,8 +485,8 @@ namespace cpinti
 			
 			Nombre_Processus--;
 			
-			cpinti_dbg::CPINTI_DEBUG("Processus " + std::to_string((unsigned int) pid) + " supprime!", 
-									 "Process " + std::to_string((unsigned int) pid) + " deleted!",
+			cpinti_dbg::CPINTI_DEBUG("Processus " + std::to_string((unsigned long) pid) + " supprime!", 
+									 "Process " + std::to_string((unsigned long) pid) + " deleted!",
 									 "core::gestionnaire_tache", "supprimer_Processus()",
 						Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 			
@@ -495,51 +496,51 @@ namespace cpinti
 	 
 		/******** THREADS ********/
 		
-		unsigned int get_EtatThread(unsigned int TID)
+		unsigned long get_EtatThread(unsigned long TID)
 		{
 			return Liste_Threads[TID].Etat_Thread;
 		}
 		
-		void set_EtatThread(unsigned int TID, unsigned int Etat)
+		void set_EtatThread(unsigned long TID, unsigned long Etat)
 		{
 			Liste_Threads[TID].Etat_Thread = Etat;
 		}
 		 
-		const char* get_NomThread(unsigned int TID)
+		const char* get_NomThread(unsigned long TID)
 		{
 			return (const char*) Liste_Threads[TID].Nom_Thread;
 		}
 		
-		unsigned int get_NombreThreads()
+		unsigned long get_NombreThreads()
 		{
 			// Retourner le nombre de threads en cours
 			return Nombre_Threads;
 		}
 		
-		unsigned int get_NombreTimer()
+		unsigned long get_NombreTimer()
 		{
 			// Retourner le nombre de timer executes
 			return Nombre_Timer;
 		}
 		
-		unsigned int get_ThreadEnCours()
+		unsigned long get_ThreadEnCours()
 		{
 			// Retourner la thread en cours
 			return Thread_en_cours;
 		}
 		
 
-		unsigned int ajouter_Thread(void* (* Fonction) (void* arg), const char* NomThread, unsigned int pid, int Priorite, unsigned int Arguments)
+		unsigned long ajouter_Thread(void* (* Fonction) (void* arg), const char* NomThread, unsigned long pid, long Priorite, unsigned long Arguments)
 		{
 			// Cette fonction permet d'ajouter une thread (Thread)
-			unsigned int Nouveau_TID = 0;
+			unsigned long Nouveau_TID = 0;
 			
 			// std::string NomThread_STR = NomThread;
 			
 			// Si on atteint le nombre maximum de threads
 			if(Nombre_Threads >= MAX_THREAD)
 			{
-				// std::string nombre_threads_STR = std::to_string((unsigned int) MAX_THREAD);
+				// std::string nombre_threads_STR = std::to_string((unsigned long) MAX_THREAD);
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'attribuer un nouveau TID. Le nombre est fixe a " + std::to_string(MAX_THREAD) + " thread(s) maximum.",
 									 "[ERROR] Unable to attrib new TID. The maximal thread(s) number value is " + std::to_string(MAX_THREAD),
 									 "", "ajouter_Thread()",
@@ -547,7 +548,7 @@ namespace cpinti
 				return 0;
 			}
 			
-			std::string pid_STR = std::to_string((unsigned int) pid);
+			std::string pid_STR = std::to_string((unsigned long) pid);
 			
 			cpinti_dbg::CPINTI_DEBUG("Creation du thread '" + std::string(NomThread) + "' dans le processus " + pid_STR + "...", 
 									 "Creating thread '" + std::string(NomThread) + "' in the process " + pid_STR + "...", 
@@ -569,7 +570,7 @@ namespace cpinti
 			
 			ENTRER_SectionCritique();
 			// Rechercher un emplacement ID vide
-			for(unsigned int b = 1; b <= MAX_THREAD; b++)	
+			for(unsigned long b = 1; b <= MAX_THREAD; b++)	
 			{
 				if(Liste_Threads[b].PID == 0)
 				{
@@ -619,7 +620,7 @@ namespace cpinti
 			Liste_Threads[Nouveau_TID].DM_arret					= false;
 			
 			// Point d'entree
-			Liste_Threads[Nouveau_TID]._eip						= (unsigned int*) &Fonction;
+			Liste_Threads[Nouveau_TID]._eip						= (unsigned long*) &Fonction;
 			
 			// Incrire le thread dans le processsus
 			Liste_Processus[pid].Threads_Enfant[Nouveau_TID]	= true;
@@ -630,12 +631,12 @@ namespace cpinti
 			// Creer le thread
 			pthread_create(&Liste_Threads[Nouveau_TID].thread, NULL, *Fonction, (void*) Arguments);
 			
-			// Liste_Threads[Nouveau_TID].PTID = (unsigned int) &Liste_Threads[Nouveau_TID].thread;
+			// Liste_Threads[Nouveau_TID].PTID = (unsigned long) &Liste_Threads[Nouveau_TID].thread;
 			
-			// std::string offset_fonction_STR = std::to_string((unsigned int) Fonction);
-			// std::string tid_STR = std::to_string((unsigned int) Nouveau_TID);
-			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned int) Nouveau_TID) + ". Fonction offset 0x" + std::to_string((unsigned int) Fonction), 
-									 " [OK] TID:" + std::to_string((unsigned int) Nouveau_TID) + ". Offset function 0x" + std::to_string((unsigned int) Fonction),
+			// std::string offset_fonction_STR = std::to_string((unsigned long) Fonction);
+			// std::string tid_STR = std::to_string((unsigned long) Nouveau_TID);
+			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Fonction offset 0x" + std::to_string((unsigned long) Fonction), 
+									 " [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Offset function 0x" + std::to_string((unsigned long) Fonction),
 									 "", "",
 						Ligne_saute, Alerte_validation, Date_sans, Ligne_r_normal);
 			
@@ -652,12 +653,12 @@ namespace cpinti
 			
 			
 		}
-		unsigned int check_Thread_zombie(bool liberer, bool debug)
+		unsigned long check_Thread_zombie(bool liberer, bool debug)
 		{
 			// Cette fonction permet de detecter tous les thread zombie
 			//  et selon la variable "liberer" il enclanche la liberation memoire du thread
 			
-			unsigned int compteur_zombie = 0;
+			unsigned long compteur_zombie = 0;
 			
 			
 			
@@ -665,7 +666,7 @@ namespace cpinti
 			return compteur_zombie;
 		}
 	
-		bool free_Thread_zombie(unsigned int tid)
+		bool free_Thread_zombie(unsigned long tid)
 		{
 			// Cette fonction permet de supprimer un thread zombie
 			//  Un thread zombie conserve encore sa segmentation memoire
@@ -680,23 +681,23 @@ namespace cpinti
 			
 		}
 		
-		bool supprimer_Thread(unsigned int tid, bool force)
+		bool supprimer_Thread(unsigned long tid, bool force)
 		{
 			// Cette fonction permet de signaler l'arret d'un thread
 			//  si force=true 
 
-			// std::string tid_STR = std::to_string((unsigned int) tid);
-			// std::string pid_STR = std::to_string((unsigned int) Liste_Threads[tid].PID);
+			// std::string tid_STR = std::to_string((unsigned long) tid);
+			// std::string pid_STR = std::to_string((unsigned long) Liste_Threads[tid].PID);
 			
 			if(force == true)
 			{
 				
 				Nombre_Threads--;
-				// std::string Nombre_Threads_STR = std::to_string((unsigned int) Nombre_Threads);
+				// std::string Nombre_Threads_STR = std::to_string((unsigned long) Nombre_Threads);
 				// std::string NomThread_STR = std::string(Liste_Threads[tid].Nom_Thread);
 				 
-				cpinti_dbg::CPINTI_DEBUG("Suppression du thread '" + std::string(Liste_Threads[tid].Nom_Thread) + "' TID:" + std::to_string((unsigned int) tid) + " PID:" + std::to_string((unsigned int) Liste_Threads[tid].PID) + ". " + std::to_string((unsigned int) Nombre_Threads) + " thread(s) restant(s)", 
-										 "Deleting thread '" + std::string(Liste_Threads[tid].Nom_Thread) + "' TID:" + std::to_string((unsigned int) tid) + " PID:" + std::to_string((unsigned int) Liste_Threads[tid].PID) + ". " + std::to_string((unsigned int) Nombre_Threads) + "remaining thread(s)",
+				cpinti_dbg::CPINTI_DEBUG("Suppression du thread '" + std::string(Liste_Threads[tid].Nom_Thread) + "' TID:" + std::to_string((unsigned long) tid) + " PID:" + std::to_string((unsigned long) Liste_Threads[tid].PID) + ". " + std::to_string((unsigned long) Nombre_Threads) + " thread(s) restant(s)", 
+										 "Deleting thread '" + std::string(Liste_Threads[tid].Nom_Thread) + "' TID:" + std::to_string((unsigned long) tid) + " PID:" + std::to_string((unsigned long) Liste_Threads[tid].PID) + ". " + std::to_string((unsigned long) Nombre_Threads) + "remaining thread(s)",
 										 "core::gestionnaire_tache", "supprimer_Thread()",
 							Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 				
@@ -720,8 +721,8 @@ namespace cpinti
 			}
 			else
 			{
-				cpinti_dbg::CPINTI_DEBUG("Envoi d'un signal d'arret au thread '" + std::to_string((unsigned int) tid) + "' PID:" + std::to_string((unsigned int) Liste_Threads[tid].PID), 
-										 "Sending stopping signal to thread '" + std::to_string((unsigned int) tid) + "' PID:" + std::to_string((unsigned int) Liste_Threads[tid].PID),
+				cpinti_dbg::CPINTI_DEBUG("Envoi d'un signal d'arret au thread '" + std::to_string((unsigned long) tid) + "' PID:" + std::to_string((unsigned long) Liste_Threads[tid].PID), 
+										 "Sending stopping signal to thread '" + std::to_string((unsigned long) tid) + "' PID:" + std::to_string((unsigned long) Liste_Threads[tid].PID),
 										 "core::gestionnaire_tache", "supprimer_Thread()",
 							Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 							
@@ -742,7 +743,7 @@ namespace cpinti
 	
 		static bool Alterner = false;
 		static bool Executer = false;
-		void Interruption_Timer(int Priorite)
+		void Interruption_Timer(long Priorite)
 		{	
 
 			if(state_SectionCritique() == false)
@@ -795,7 +796,7 @@ namespace cpinti
 
 				if(Executer == true)
 				{
-					unsigned int Precedent = Thread_en_cours;
+					unsigned long Precedent = Thread_en_cours;
 					Alterner = true;
 					Executer = false;
 					
@@ -895,13 +896,13 @@ namespace cpinti
 			
 		}
 		
-		unsigned int SCHEDULER(unsigned int ancien)
+		unsigned long SCHEDULER(unsigned long ancien)
 		{
 			// SCHEDULER : Cette fonction permet de selectionner 
 			//  le prochain thread a executer
 			
-			unsigned int nouveau = ancien;
-			unsigned int compteur_ = 0;
+			unsigned long nouveau = ancien;
+			unsigned long compteur_ = 0;
 
 			while(true)
 			{
@@ -927,7 +928,7 @@ namespace cpinti
 			return 0;
 		}
 		
-		bool SAUVEGARDER_CONTEXTE(unsigned int Thread_ID)
+		bool SAUVEGARDER_CONTEXTE(unsigned long Thread_ID)
 		{
 			// Cette fonction permet de sauvegarder les registres d'un thread
 			
@@ -952,7 +953,7 @@ namespace cpinti
 			
 		}
 		
-		void RESTAURER_CONTEXTE(unsigned int Thread_ID)
+		void RESTAURER_CONTEXTE(unsigned long Thread_ID)
 		{
 			// Cette fonction permet de restaurer les registres d'un thread
 			
@@ -973,7 +974,7 @@ namespace cpinti
 		
 		/************************** TIMER **************************/
 		
-		bool initialiser_PIT(int frequence, int Intervalle_INTERNE)
+		bool initialiser_PIT(long frequence, long Intervalle_INTERNE)
 		{
 			// Cette fonction permet de reprogrammer l'intervalle du PIT
 			//  -1:Pas de modification de la frequence
@@ -999,7 +1000,7 @@ namespace cpinti
 			return true;
 		}
 		
-		unsigned int ajouter_Timer(unsigned int fonction)
+		unsigned long ajouter_Timer(unsigned long fonction)
 		{
 			// Cette fonction permet d'ajouter un Timer
 			
@@ -1035,7 +1036,7 @@ namespace cpinti
 		}
 
 
-		bool demarrer_SCHEDULER(unsigned int id_TIMER, int temps_us)
+		bool demarrer_SCHEDULER(unsigned long id_TIMER, long temps_us)
 		{
 			// Cette fonction permet de demarrer le scheduling d'un timer 
 			//  en definissant le temps en intervalle en micro-secondes
@@ -1056,7 +1057,7 @@ namespace cpinti
 			return true;
 		}
 
-		bool stop_SCHEDULER(int id_TIMER)
+		bool stop_SCHEDULER(long id_TIMER)
 		{
 			// Cette fonction permet d'arreter le scheduler
 			
@@ -1074,7 +1075,7 @@ namespace cpinti
 	} // namespace
 } // namespace cpinti
 
-void Interruption_Timer(int signal)
+void Interruption_Timer(long signal)
 {
 	// fprintf(stdout, " **CORE 3\n");
 	cpinti::gestionnaire_tache::Interruption_Timer(signal);

@@ -29,15 +29,15 @@ namespace cpinti
 		public:
 		
 			// Servant aux modules
-			unsigned int tag_1;
-			unsigned int tag_2;
-			unsigned int tag_3;
+			unsigned long tag_1;
+			unsigned long tag_2;
+			unsigned long tag_3;
 		
 			// Obtenir la derniere erreur
 			std::string get_Erreur();
 			
 			// Initialiser une instance
-			bool 	stack__init(unsigned int Taille);
+			bool 	stack__init(unsigned long Taille);
 			
 			/*---------------------------------------------*/
 			
@@ -63,21 +63,21 @@ namespace cpinti
 			/*---------------------------------------------*/
 			
 			// Obtenir la donne SOUS la pile (la plus obsolete)
-			std::string 		get_Stack(int MODE);
+			std::string 		get_Stack(long MODE);
 			
 			// IDEM, compatible style-C ANSI Cpcdos
-			const char* 		get_Stack_c(int MODE);
+			const char* 		get_Stack_c(long MODE);
 			
 			/*---------------------------------------------*/
 			
 			// Obtenir la taille occupee par la stack (nombre d'elements)
-			unsigned int 	get_Taille_occupe();
+			unsigned long 	get_Taille_occupe();
 			
 			// Obtenir la taille libre non utilise dans la stack (Nombre d'elements)
-			unsigned int 	get_Taille_libre();
+			unsigned long 	get_Taille_libre();
 			
 			// Obtenir la taille total du stack (nombre d'elements)
-			unsigned int 	get_Taille_stack();
+			unsigned long 	get_Taille_stack();
 
 			/*---------------------------------------------*/
 			
@@ -89,7 +89,7 @@ namespace cpinti
 		
 	};
 	
-	static unsigned int Stack__PORT_ATTRIB[_MAX_Stack_instance];
+	static unsigned long Stack__PORT_ATTRIB[_MAX_Stack_instance];
 	static std::vector<std::shared_ptr<cpinti_stack_inv>> Stack_CPintiCore__KERNEL;
 	static std::vector<std::shared_ptr<cpinti_stack_inv>> Stack_CPintiCore__SERVEUR;
 	

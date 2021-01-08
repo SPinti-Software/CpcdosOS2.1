@@ -37,12 +37,12 @@
  
  
 
-extern "C" int cpc_clean();
+extern "C" long cpc_clean();
 
 namespace Wrapper_Cpcdos
 {	
 	
-	int cpinti_WRAPPER(int FunctionID, double _CLE_, const char* ARG_1, int ARG_2, void* ARG_3, void* ARG_4, void* ARG_5)
+	long cpinti_WRAPPER(long FunctionID, double _CLE_, const char* ARG_1, long ARG_2, void* ARG_3, void* ARG_4, void* ARG_5)
 	{
 		// Cette fonction va permettre d'executer une FunctionID compile dans CONTRIB
 		// 	FunctionID		: Numero de la fonction
@@ -58,7 +58,7 @@ namespace Wrapper_Cpcdos
 			return 0;
 		}
 		
-		int Resultats = 0;
+		long Resultats = 0;
 		std::string FunctionID_STR  = std::to_string(FunctionID);
 		
 		cpinti_dbg::CPINTI_DEBUG("Creation d'une instance du wrapper CPinti Core... ", 

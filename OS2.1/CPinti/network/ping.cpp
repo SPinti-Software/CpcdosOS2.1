@@ -59,7 +59,7 @@
 #define _w32_intel 		cpinti::Func_Cpinti::_w32_intel
 #define _w32_intel16 	cpinti::Func_Cpinti::_w32_intel16
 
-extern "C" void __real_sleep (int secondes);
+extern "C" void __real_sleep (long secondes);
 
 namespace cpinti
 {
@@ -67,10 +67,10 @@ namespace cpinti
 	{
 		std::string Erreur_STR;
 		
-		void Fermer_socket(int SocketReseau)
+		void Fermer_socket(long SocketReseau)
 		{
-			shutdown(SocketReseau, 2);
-			close(SocketReseau);
+			shutdown((int) SocketReseau, 2);
+			close((int) SocketReseau);
 		}
 		
 		
@@ -152,11 +152,11 @@ namespace cpinti
 			return AdresseLst;
 		}
 		
-		int ping(const char* AdresseIP, const char* Message, int Timeout)
+		long ping(const char* AdresseIP, const char* Message, long _Timeout)
 		{
 			
 			
-			
+			int Timeout = (int) _Timeout;
 			std::string AdresseIP_STR = std::string(AdresseIP);
 			cpinti_dbg::CPINTI_DEBUG("Ping vers " + AdresseIP_STR, 
 									"Ping to " + AdresseIP_STR,
@@ -218,7 +218,7 @@ namespace cpinti
 				cpinti_dbg::CPINTI_DEBUG(" [ERREUR] Impossible de creer un socket RECEIVE. Raison:'" + Erreur_STR + "'", 
 										 " [ERROR] Unable to create socket. Reason:'" + Erreur_STR + "'", 
 					"net_ping", "ping()", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);
-				return PING_ERR_INIT_SOCK;
+				return (long) PING_ERR_INIT_SOCK;
 			}
 		
 		
@@ -238,7 +238,7 @@ namespace cpinti
 					
 				Fermer_socket(SocketReseau);
 
-				return PING_ERR_CONFIG_SOCK;
+				return (long) PING_ERR_CONFIG_SOCK;
 			}
 
 			Sock_Option = SO_SNDTIMEO; // Configurer l'envoi
@@ -251,7 +251,7 @@ namespace cpinti
 					"net_ping", "ping()", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);
 				Fermer_socket(SocketReseau);
 
-				return PING_ERR_CONFIG_SOCK;
+				return (long) PING_ERR_CONFIG_SOCK;
 			}
 			
 			int flag = 1; 
@@ -262,12 +262,9 @@ namespace cpinti
 										 " [ERROR] Unable to configure socket. Reason:'" + Erreur_STR + "'", 
 					"net_ping", "ping()", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);
 				Fermer_socket(SocketReseau);
-				return PING_ERR_CONFIG_SOCK;
+				return (long) PING_ERR_CONFIG_SOCK;
 			}
-			cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", "", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
-
-			
-			
+			cpinti_dbg::CPINTI_DEBUG("[OK] Socket : " + std::to_string(SocketReseau), "[OK] Socket : " + std::to_string(SocketReseau), "", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 			
 			/******************************************************************/
 			/************************* RESOLUTION DNS *************************/
@@ -287,7 +284,7 @@ namespace cpinti
 				 " [ERROR] Unable to resolve DNS '" + AdresseIP_STR + "'. Reason:'" + Erreur_STR + "'", 
 					"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
 				Fermer_socket(SocketReseau);
-				return PING_ERR_NOM_DNS;
+				return (long) PING_ERR_NOM_DNS;
 			}
 
 
@@ -344,7 +341,7 @@ namespace cpinti
 			cpinti_dbg::CPINTI_DEBUG("Preparation de la trame ICMP... ",
 									"Preparation of the ICMP frame... ",
 									"net_ping", "ping()", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
-			
+		 
 			char 			PAQUET_ICMP[512];
 			struct icmp*	TRAME_ICMP = (struct icmp*) PAQUET_ICMP;
 			
@@ -406,19 +403,19 @@ namespace cpinti
 			
 			Resultat = sendto(SocketReseau, TRAME_ICMP, (size_t) TAILLE_Finale, MSG_DONTWAIT, (struct sockaddr *)&Sock_sockaddr, sizeof(Sock_sockaddr));
 			
-			cpinti_dbg::CPINTI_DEBUG("... ", "... ",
+			cpinti_dbg::CPINTI_DEBUG("(" + std::to_string(Resultat) + "/" + std::to_string(TAILLE_Finale) + " octets) ... ", "(" + std::to_string(Resultat) + "/" + std::to_string(TAILLE_Finale) + " bytes) ... ",
 								"", "", Ligne_reste, Alerte_action, Date_sans, Ligne_r_normal);
 								
 			if (Resultat < 0 || Resultat != (int) TAILLE_Finale)
 			{
-				Erreur_STR = std::string("sendto():");
+				Erreur_STR = std::string("sendto(" + std::to_string(SocketReseau) + ") Err(" + std::to_string(errno) + ") : ");
 				Erreur_STR = Erreur_STR + std::string(strerror(errno));
-				Erreur_STR = std::string(strerror(errno));
+				// Erreur_STR = std::string(strerror(errno));
 				cpinti_dbg::CPINTI_DEBUG(" [ERREUR] Probleme de transmission. Raison:'" + Erreur_STR + "'", 
 										 " [ERROR] Transmission problem. Reason:'" + Erreur_STR + "'",
 					"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
 				Fermer_socket(SocketReseau);
-				return PING_ERR_TRANS;
+				return (long) PING_ERR_TRANS;
 			}
 			else
 			{
@@ -440,7 +437,7 @@ namespace cpinti
 									
 							Fermer_socket(SocketReseau);
 					
-							return PING_NO_REP;
+							return (long) PING_NO_REP;
 							
 						}
 						default:{
@@ -456,7 +453,7 @@ namespace cpinti
 									"", "", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);
 					Fermer_socket(SocketReseau);
 					
-					return PING_ERR_TRANS;
+					return (long) PING_ERR_TRANS;
 				}
 			}
 			
@@ -523,7 +520,7 @@ namespace cpinti
 					"", "", Ligne_saute, Alerte_avertissement, Date_sans, Ligne_r_normal);
 				
 				Fermer_socket(SocketReseau);
-				return PING_NO_REP; // Pas de reponse!
+				return (long) PING_NO_REP; // Pas de reponse!
 			}
 
 			cpinti_dbg::CPINTI_DEBUG(" [OK]", " [OK]",
@@ -547,7 +544,7 @@ namespace cpinti
 			
 			// __real_sleep(1);
 			
-			return (int) Temps_total;
+			return (long)Temps_total;
 		}
 	}
 }

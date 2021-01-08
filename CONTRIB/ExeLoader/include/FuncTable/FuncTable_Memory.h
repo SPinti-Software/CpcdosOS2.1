@@ -84,6 +84,35 @@ HLOCAL WINAPI imp_LocalReAlloc(HLOCAL hMem, SIZE_T uBytes, UINT uFlags){
 }
 
 
+//! void * _aligned_malloc(size_t size,size_t alignment)
+inline void* imp_aligned_malloc(size_t size,size_t alignment){
+	showfunc_opt("aligned_malloc( size: %d, alignment: %d )", size,alignment);
+	void* p1; // original block
+    void** p2; // aligned block
+    int offset = alignment - 1 + sizeof(void*);
+    if ((p1 = (void*)malloc(size + offset)) == NULL)
+    {
+       return NULL;
+    }
+    p2 = (void**)(((size_t)(p1) + offset) & ~(alignment - 1));
+    p2[-1] = p1;
+    return p2;
+}
+//!void _aligned_free (void *memblock)
+inline void imp_aligned_free(void *memblock){
+	showfunc_opt("aligned_free( memblock: %p )", memblock);
+	if(memblock != 0){
+		free(((void**)memblock)[-1]);
+	}
+}
+//! void * _aligned_realloc(void *memblock,size_t size,size_t alignment);
+inline void* imp_aligned_realloc(void *memblock,size_t size,size_t alignment){
+	showfunc_opt("aligned_realloc( size: %d, alignment: %d )", size,alignment);
+	imp_aligned_free(memblock);
+	return imp_aligned_malloc(size, alignment);
+}
+
+
 //!LPVOID VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect)
 inline LPVOID WINAPI pipe_VirtualAlloc(LPVOID lpAddress,SIZE_T dwSize,DWORD flAllocationType,DWORD flProtect){
 	showfunc_opt("VirtualAlloc( lpAddress %p, dwSize: %d, flAllocationType: %d, flProtect:%d )", lpAddress, dwSize, flAllocationType, flProtect);
@@ -123,3 +152,50 @@ inline BOOL WINAPI pipe_VirtualFree(LPVOID lpAddress,SIZE_T dwSize,DWORD  dwFree
 	}
 	#endif
 }
+
+//!HANDLE WINAPI HeapCreate (DWORD flOptions, SIZE_T dwInitialSize, SIZE_T dwMaximumSize)
+HANDLE WINAPI mem_HeapCreate(DWORD flOptions, SIZE_T dwInitialSize, SIZE_T dwMaximumSize){
+	showfunc_opt("HeapCreate( flOptions %d, dwInitialSize: %d, dwMaximumSize:%d )", flOptions, dwInitialSize, dwMaximumSize);
+	#ifdef USE_Windows_VirtualAlloc
+    return HeapCreate(flOptions, dwInitialSize, dwMaximumSize); 
+	#else
+	if(dwInitialSize == 0){
+		//If this parameter is 0 [dwInitialSize], the function commits one page. To determine the size of a page on the host computer, use the GetSystemInfo function. => page size:4K
+		dwInitialSize = 1024*4;
+	}
+	//return instance_AllocManager.ManagedCalloc(	dwInitialSize, sizeof(char));
+	return 0; //TODO create an class!?
+	#endif
+}
+ 
+//!LPVOID WINAPI HeapAlloc (HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes)
+LPVOID WINAPI mem_HeapAlloc(HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes){
+	showfunc_opt("HeapAlloc( hHeap %p, dwFlags: %d, dwBytes:%d )", hHeap, dwFlags, dwBytes);
+	#ifdef USE_Windows_VirtualAlloc
+    return HeapAlloc(hHeap, dwFlags, dwBytes); 
+	#else
+	//return hHeap; //Already allocated by HeapCreate!?
+	return instance_AllocManager.ManagedCalloc(	dwBytes, sizeof(char));
+	#endif
+	
+}
+//!WINBOOL WINAPI HeapFree (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem)
+ WINBOOL WINAPI mem_HeapFree (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem){
+	showfunc_opt("HeapFree( hHeap %p, dwFlags: %d, lpMem:%d )", hHeap, dwFlags, lpMem);
+	#ifdef USE_Windows_VirtualAlloc
+    return HeapFree(hHeap, dwFlags, lpMem); 
+	#else
+	return instance_AllocManager.ManagedFree(hHeap);
+	//return true;
+	#endif
+	
+}
+
+
+
+ /*
+    LPVOID WINAPI HeapAlloc (HANDLE hHeap, DWORD dwFlags, SIZE_T dwBytes)
+   LPVOID WINAPI HeapReAlloc (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem, SIZE_T dwBytes)
+   WINBOOL WINAPI HeapFree (HANDLE hHeap, DWORD dwFlags, LPVOID lpMem)
+ //  SIZE_T WINAPI HeapSize (HANDLE hHeap, DWORD dwFlags, LPCVOID lpMem)
+ */

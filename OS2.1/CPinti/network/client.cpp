@@ -106,14 +106,14 @@ namespace cpinti
 			return std::string((char*) inet_ntoa(*ListeAdresses[0]));
 		}
 		
-		void Fermer_socket(int SocketReseau)
+		void Fermer_socket(long SocketReseau)
 		{
-			shutdown(SocketReseau, 2);
-			close(SocketReseau);
+			shutdown((int) SocketReseau, 2);
+			close((int) SocketReseau);
 		}
 		
 		
-		int Taille_Contenu(int socket)
+		long Taille_Contenu(long socket)
 		{
 			// Permet de recuperer la taille du contenu
 			char c;
@@ -121,7 +121,7 @@ namespace cpinti
 			char* ptr = buff + 4;
 			
 			int octets_recu;
-			while(octets_recu = recv(socket, ptr, 1, 0))
+			while((octets_recu = recv((int) socket, ptr, 1, 0)))
 			{
 				
 				if(octets_recu==-1){
@@ -142,18 +142,19 @@ namespace cpinti
 			if(octets_recu){
 				ptr=strstr(ptr,"Content-Length:");
 				if(ptr){
-					sscanf(ptr,"%*s %d",&octets_recu);
+					// sscanf(ptr,"%*s %d", &octets_recu);
+					sscanf(ptr,"%*s %d", &octets_recu);
 
 				}else
 					octets_recu=-2; // Taille inconnue
 			}
 			
 			
-			return  octets_recu ;
+			return (int) octets_recu ;
 
 		}
 
-		int Demarrer_client(std::string AdresseIP, unsigned int NumPort, unsigned int _NumeroID, int _TYPE_CLIENT)
+		long Demarrer_client(std::string AdresseIP, unsigned long _NumPort, unsigned long __NumeroID, long __TYPE_CLIENT)
 		{
 			// Cette fonction permet de creer un client
 			//  _TYPE_CLIENT 	= TCP:1 / UDP:2
@@ -172,6 +173,11 @@ namespace cpinti
 			//	-7	: Erreur de lecture de socket (ERRPIPE)
 			//  -8	: Impossible de resoudre le nom (DNS)
 			//	-9	: Memoire insuffisante
+			
+			unsigned int NumPort = (unsigned int) _NumPort;
+			unsigned int _NumeroID = (unsigned int) __NumeroID;
+			int _TYPE_CLIENT = (int) __TYPE_CLIENT;
+			
 			
 			int SocketReseau, connfd; 
 			int opt = 1;
@@ -204,7 +210,7 @@ namespace cpinti
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de creer le socket. Raison:'" + Erreur_STR + "'", 
 										 "[ERROR] Unable to create socket. Reason:'" + Erreur_STR + "'", 
 										 "", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
-				return CLIENT_ERR_INIT_SOCK;
+				return (long) CLIENT_ERR_INIT_SOCK;
 			} 
 			
 			cpinti_dbg::CPINTI_DEBUG(".", ".",
@@ -225,7 +231,7 @@ namespace cpinti
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de configurer 'SO_RCVTIMEO' sur le socket. Raison:'" + Erreur_STR + "'", 
 										 "[ERROR] Unable to configure 'SO_RCVTIMEO' on the socket. Reason:'" + Erreur_STR + "'", 
 										"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
-				return CLIENT_ERR_INIT_SOCK;
+				return (long)CLIENT_ERR_INIT_SOCK;
 			}
 			
 			cpinti_dbg::CPINTI_DEBUG(".", ".",
@@ -251,7 +257,7 @@ namespace cpinti
 					"[ERROR] Unable to resolve name server\n Reason '" + Erreur_STR + "'",
 					"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
 					
-				return CLIENT_ERR_NOM_DNS; // Impossible de resoudre le nom
+				return (long)CLIENT_ERR_NOM_DNS; // Impossible de resoudre le nom
 			}
 			
 			AdresseIP_DNS = AdresseIP;
@@ -305,7 +311,7 @@ namespace cpinti
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de se connecter au serveur '" + AdresseIP + ":" + NumPort_STR + "' Raison:'" + Erreur_STR + "'", 
 										 "[ERROR] Unable connect to server '" + AdresseIP + ":" + NumPort_STR + "' Reason:'" + Erreur_STR + "'", 
 										"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
-				return CLIENT_ERR_CONNECTION;
+				return (long)CLIENT_ERR_CONNECTION;
 			} 
 			
 			cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]",
@@ -346,7 +352,7 @@ namespace cpinti
 				CompteurDoevents = 0;
 				
 				// On recupere les donnees du buffer
-				STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_EXTRACT_POUR_SERVEUR, "");
+				STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_EXTRACT_POUR_SERVEUR, "");
 
 				// S'il y a quelque chose
 				if(STACK_MEMOIRE_STR.length() > 0)
@@ -391,7 +397,7 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_POURCENT ");
 
-						VAR_PROGRESSION = (char*) BUFFER.substr(posCFG+18).c_str();
+						VAR_PROGRESSION = (char*) (BUFFER.substr(posCFG+18).c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable progression en poucentage '" + std::string(VAR_PROGRESSION) + "'",
 												 "STATS : Variable definition in pourcent '" + std::string(VAR_PROGRESSION) + "'",
@@ -406,7 +412,7 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SPEED ");
 
-						VAR_SPEED = (char*) BUFFER.substr(posCFG+15).c_str();
+						VAR_SPEED = (char*) (BUFFER.substr(posCFG+15).c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets par secondes '" + std::string(VAR_SPEED) + "'",
 												 "STATS : Variable bytes per sec '" + std::string(VAR_SPEED) + "'",
@@ -422,7 +428,7 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SIZE ");
 
-						VAR_SIZE = (char*) BUFFER.substr(posCFG+14).c_str();
+						VAR_SIZE = (char*) (BUFFER.substr(posCFG+14).c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets copies '" + std::string(VAR_SIZE) + "'",
 												 "STATS : Variable definition for copied bytes'" + std::string(VAR_SIZE)+ "'",
@@ -437,13 +443,13 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SOCKET ");
 
-						VAR_SOCKET = (char*) BUFFER.substr(posCFG+16).c_str();
+						VAR_SOCKET = (char*) (BUFFER.substr(posCFG+16).c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable socket'" + std::string(VAR_SIZE) + "'",
 												 "STATS : Variable definition for socket '" + std::string(VAR_SIZE)+ "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 								
-						sprintf(_Commande_CpcdosCP, "FIX/ %s = %u", VAR_SOCKET, _NumeroID);
+						sprintf(_Commande_CpcdosCP, "FIX/ %s = %d", VAR_SOCKET, _NumeroID);
 						cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 						
 						
@@ -581,7 +587,7 @@ namespace cpinti
 															 "[OK]",
 															"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 								// EXCEPTION !!
-								cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
+								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
 								doevents(20000);
 							}
 							else
@@ -595,7 +601,7 @@ namespace cpinti
 													"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_action, Date_avec, Ligne_r_normal);
 							fflush(stdout);
 							ENTRER_SectionCritique();
-							while(octets_recu = recv(SocketReseau, buffer, 8192, 0))
+							while((octets_recu = recv(SocketReseau, buffer, 8192, 0)))
 							{
 					
 								// ENTRER_SectionCritique();
@@ -656,7 +662,7 @@ namespace cpinti
 										SORTIR_SectionCritique();
 										doevents(0);
 										
-										STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_EXTRACT_POUR_SERVEUR, "");
+										STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_EXTRACT_POUR_SERVEUR, "");
 										if(STACK_MEMOIRE_STR == "#STOP") 
 										{
 											cpinti_dbg::CPINTI_DEBUG("Fermeture du client en telechargement a la demande du noyau ...", 
@@ -708,7 +714,7 @@ namespace cpinti
 									
 									Position++;
 							
-									NombreOctetsParSec += octets_recu;
+									NombreOctetsParSec += (unsigned int) octets_recu;
 				
 									
 									if((var_speed == true) && (strlen(VAR_SPEED) > 1))
@@ -797,20 +803,20 @@ namespace cpinti
 						{
 												
 							if(_TYPE_CLIENT == 1) /* TCP */
-								cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
+								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
 								
 							else if(_TYPE_CLIENT == 2) /* UDP */
-								cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#UDP " + NumPort_STR + ":" + NumPort_STR + " UDP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
+								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#UDP " + NumPort_STR + ":" + NumPort_STR + " UDP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
 						}
 						else
 						{
 												
 							// Version NON-HTTP
 							if(_TYPE_CLIENT == 1) /* TCP */
-								cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer)); 
+								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer)); 
 								
 							else if(_TYPE_CLIENT == 2) /* UDP */
-								cpinti::cpinti_GEST_BUFF(_NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#UDP " + NumPort_STR + ":" + NumPort_STR + " UDP#" + SocketReseau_STR + "=" + std::string(buffer)); 
+								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#UDP " + NumPort_STR + ":" + NumPort_STR + " UDP#" + SocketReseau_STR + "=" + std::string(buffer)); 
 						}
 					}
 				}
@@ -818,7 +824,7 @@ namespace cpinti
 		  
 			// Fermer le socket
 			Fermer_socket(SocketReseau); 
-			return CLIENT_OK;
+			return (long)CLIENT_OK;
 		}
 	}
 }

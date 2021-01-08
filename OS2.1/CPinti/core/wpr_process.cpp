@@ -39,8 +39,8 @@ namespace cpinti
 
 	namespace gestionnaire_tache
 	{	
-		unsigned int cpinti_creer_processus(unsigned int ID_KERNEL, unsigned int ID_OS, unsigned int ID_USER, 
-												unsigned int PID_Parent, const char* NomProcessus)
+		unsigned long cpinti_creer_processus(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, 
+												unsigned long PID_Parent, const char* NomProcessus)
 		{
 			// Cette fonction va permettre de creer un nouveau processus vierge (Qui hebergera vos threads)
 			//  Etant vierge, et sans thread main, le processus sera inactif.
@@ -51,7 +51,7 @@ namespace cpinti
 			//			> 0 : Numero de PID
 			
 			// On ajoute un thread depuis le CORE
-			unsigned int Resultat = gestionnaire_tache::ajouter_Processus(NomProcessus);
+			unsigned long Resultat = gestionnaire_tache::ajouter_Processus(NomProcessus);
 			
 			
 			// Si la creation est un succes, on remplit les informations du thread
@@ -80,7 +80,7 @@ namespace cpinti
 			}
 			else
 			{
-				std::string Resultat_STR = std::to_string((unsigned int) Resultat);
+				std::string Resultat_STR = std::to_string((unsigned long) Resultat);
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de creer un thread. Retour:" + Resultat_STR, 
 										 "[ERROR] Unable to create thread. Return:" + Resultat_STR,
 									 "core::gestionnaire_tache", "Creer_Processus()",
@@ -92,7 +92,7 @@ namespace cpinti
 			return Resultat;
 		}
 		
-		bool cpinti_arreter_processus(unsigned int ID_KERNEL, unsigned int PID)
+		bool cpinti_arreter_processus(unsigned long ID_KERNEL, unsigned long PID)
 		{
 			// Cette fonction permet d'arreter un processus correctement.
 			//  A utiliser sur un autre thread
@@ -104,7 +104,7 @@ namespace cpinti
 				return gestionnaire_tache::supprimer_Processus(PID, false);
 			else
 			{
-				std::string PID_STR = std::to_string((unsigned int) PID);
+				std::string PID_STR = std::to_string((unsigned long) PID);
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'arreter le processus. Le PID " + PID_STR + " n'existe pas.", 
 										 "[ERROR] Unable to stop the process. PID " + PID_STR + " not exist.",
 										"core::gestionnaire_tache", "Arreter_Processus()",
@@ -115,7 +115,7 @@ namespace cpinti
 
 		}
 		
-		void cpinti_set_etat_processus(unsigned int ID_KERNEL, unsigned int PID, unsigned int ACTION)
+		void cpinti_set_etat_processus(unsigned long ID_KERNEL, unsigned long PID, unsigned long ACTION)
 		{
 			// Cette fonction permet de modifier d'etat d'un processus
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
@@ -125,7 +125,7 @@ namespace cpinti
 			gestionnaire_tache::set_EtatProcessus(PID, ACTION);
 		}
 		
-		unsigned int cpinti_get_etat_processus(unsigned int ID_KERNEL, unsigned int PID)
+		unsigned long cpinti_get_etat_processus(unsigned long ID_KERNEL, unsigned long PID)
 		{
 			// Cette fonction permet de connaitre l'etat du processus
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
@@ -136,7 +136,7 @@ namespace cpinti
 		
 		
 		
-		const char* cpinti_get_nom_processus(unsigned int PID)
+		const char* cpinti_get_nom_processus(unsigned long PID)
 		{
 			// Cette fonction permet de recuperer le nom du processus via son ID
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
@@ -148,10 +148,10 @@ namespace cpinti
 		}
 		
 		
-		unsigned int cpinti_get_nombre_processus()
+		unsigned long cpinti_get_nombre_processus()
 		{
 			// Cette fonction permet d'obtenir le nombre de proccessus en cours
-			unsigned int NombreProcess = gestionnaire_tache::get_NombreProcessus();
+			unsigned long NombreProcess = gestionnaire_tache::get_NombreProcessus();
 			
 			// Corriger
 			if (NombreProcess > MAX_PROCESSUS) 

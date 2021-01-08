@@ -1,1 +1,0 @@
--std=c++17 -O2 -Wl,--stack=0x1000000 -Wl,--heap=0x1000000 -msse3 -ffast-math -march=i486 -DNDEBUG -m32 -Wreturn-type -fno-rtti -fno-exceptions -Werror=return-type -DGZ_tCpcDos -DGZ_tNo_FreeType -DGZ_tTakeEmbedRcOnDrive -DGZ_tMonothread -DGZ_tOverplace=\"[Lib_GZ,Lib_GZ_CpcDos,Lib_GZ_OpenGL,Lib_Demo]\"  -I . -I _Lib/GZE/Lib_GZ/ -I _Lib/GZE/ -I _Lib/GZE/SubLib_System/ 

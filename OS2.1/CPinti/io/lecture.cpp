@@ -31,7 +31,7 @@
 		02/10/2017	- Deplacement du code lecture/ecriture dans 2 fichiers separes
 		08/05/2017 	- Petites correction et ajout du doevents
 		25/01/2017 	- Ajout fonction d'ecriture de fichier 
-		13/01/2017	- Fichier existe renvoie un BOOL au lieu d'un int. std::ios::fail etant un BOOL
+		13/01/2017	- Fichier existe renvoie un BOOL au lieu d'un long. std::ios::fail etant un BOOL
 	
 */
 #include <stdio.h>
@@ -52,7 +52,7 @@ namespace cpinti
 		// ================================= LECTURE =================================
 		// ===========================================================================
 		
-		bool Lire_Fichier_complet(const char* Source, const char* MODE, char *_DONNEES, unsigned int TailleFichier)
+		bool Lire_Fichier_complet(const char* Source, const char* MODE, char *_DONNEES, unsigned long TailleFichier)
 		{
 			// Lire tout le contenu d'un fichier uniquement
 			// Retourne :
@@ -67,8 +67,8 @@ namespace cpinti
 			ENTRER_SectionCritique();
 			
 			// Definit les attributs temporaires		
-			int CompteurDoevents = 0;
-			unsigned int Position = 0;
+			long CompteurDoevents = 0;
+			unsigned long Position = 0;
 			char data = 0;
 			FILE* Instance_Fichier;
 
@@ -117,7 +117,7 @@ namespace cpinti
 			else
 			{
 				// Sinon probleme
-				std::string Erreur_STR = std::to_string((unsigned int) strerror(errno));
+				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
 					cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'ouvrir le fichier '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)), 
 											 "[ERROR] Unable to open file '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)),
 										 "gestionnaire_fichier", "Lire_Fichier_complet()",

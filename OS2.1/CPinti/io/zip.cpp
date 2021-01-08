@@ -39,7 +39,7 @@ namespace cpinti
 		// =============================== DECOMPRESSION =============================
 		// ===========================================================================
 
-		int Fichier_decompress(const char* Source, const char* Destination)
+		long Fichier_decompress(const char* Source, const char* Destination)
 		{
 			// Lire tout le contenu d'un fichier uniquement
 			// Retourne :
@@ -49,7 +49,7 @@ namespace cpinti
 			
 			static const char* VersionLIb = ZLIB_VERSION;
 			Byte *byte_compression, *byte_decompression;
-			uLong compression_taille = 10000*sizeof(int);
+			uLong compression_taille = 10000*sizeof(long);
 			uLong decompression_taille = compression_taille;
 			
 			
@@ -101,7 +101,7 @@ namespace cpinti
 			if(false)
 			{
 				// Sinon probleme
-				std::string Erreur_STR = std::to_string((unsigned int) strerror(errno));
+				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de decompresser '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)), 
 											 "[ERROR] Unable to uncompress file '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)),
 										 "gestionnaire_fichier", "Fichier_decompress()",
@@ -112,7 +112,7 @@ namespace cpinti
 			
 		}
 		
-		int Fichier_compress(const char* Source, const char* Destination)
+		long Fichier_compress(const char* Source, const char* Destination)
 		{
 			return 1;
 		}

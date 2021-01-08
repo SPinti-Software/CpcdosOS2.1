@@ -5,6 +5,8 @@
 	***       00 Fevrier 2021 For public      ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 	
+	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
+		Anciens fichiers prototypes non utilisés (GDT, boot, multicore, network experimentations...) 
 
 	#################
 	#### En bref ####

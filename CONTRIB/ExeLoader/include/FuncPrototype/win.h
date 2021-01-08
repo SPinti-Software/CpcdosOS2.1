@@ -21,7 +21,7 @@
 */
 
 
-#ifdef ImWin
+#if defined( ImWin) && !defined(No_FullWinHeader)
 #undef _WIN32_WINNT
 #define _WIN32_WINNT 0x0600
 //#include <windows.h>
@@ -137,7 +137,7 @@
 #endif
 
 #ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x502
+#define _WIN32_WINNT 0x0600
 #endif
 
 
@@ -1478,6 +1478,62 @@
     HWND hwndTrack;
     DWORD dwHoverTime;
   } TRACKMOUSEEVENT,*LPTRACKMOUSEEVENT;
+
+
+	#if defined (_WIN64)
+	typedef struct DECLSPEC_ALIGN (16) _SLIST_ENTRY
+	{
+	struct _SLIST_ENTRY *Next;
+	}
+	SLIST_ENTRY,*PSLIST_ENTRY;
+	typedef union DECLSPEC_ALIGN (16) _SLIST_HEADER
+	{
+	__C89_NAMELESS struct
+	{
+	ULONGLONG Alignment;
+	ULONGLONG Region;
+	}
+	DUMMYSTRUCTNAME;
+	struct
+	{
+	ULONGLONG Depth:16;
+	ULONGLONG Sequence:9;
+	ULONGLONG NextEntry:39;
+	ULONGLONG HeaderType:1;
+	ULONGLONG Init:1;
+	ULONGLONG Reserved:59;
+	ULONGLONG Region:3;
+	}
+	Header8;
+	struct
+	{
+	ULONGLONG Depth:16;
+	ULONGLONG Sequence:48;
+	ULONGLONG HeaderType:1;
+	ULONGLONG Reserved:3;
+	ULONGLONG NextEntry:60;
+	}
+	HeaderX64;
+	}
+	SLIST_HEADER,*PSLIST_HEADER;
+	#else
+	typedef struct _SINGLE_LIST_ENTRY SLIST_ENTRY,*PSLIST_ENTRY;
+	typedef union _SLIST_HEADER
+	{
+	ULONGLONG Alignment;
+	__C89_NAMELESS struct
+	{
+	SLIST_ENTRY Next;
+	WORD Depth;
+	WORD Sequence;
+	}
+	DUMMYSTRUCTNAME;
+	}
+	SLIST_HEADER,*PSLIST_HEADER;
+	#endif
+
+
+
 
 #endif /*ImWin*/
 

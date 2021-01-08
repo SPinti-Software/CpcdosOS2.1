@@ -33,7 +33,7 @@ typedef struct malloc_info stb_leakcheck_malloc_info;
 struct malloc_info
 {
    const char *file;
-   int line;
+   long line;
    size_t size;
    stb_leakcheck_malloc_info *next,*prev;
 };
@@ -48,11 +48,11 @@ static stb_leakcheck_malloc_info *mi_head;
 #define free(p)       		stb_leakcheck_free(p, __FILE__, __LINE__)
 #define realloc(p,sz) 		stb_leakcheck_realloc(p,sz, __FILE__, __LINE__)
 
-extern void * stb_leakcheck_malloc(size_t sz, const char *file, int line);
-extern void * stb_leakcheck_calloc(size_t sz, size_t e_sz, const char *file, int line);
-extern void * stb_leakcheck_realloc(void *ptr, size_t sz, const char *file, int line);
-extern void   stb_leakcheck_free(void *ptr, const char *file, int line);
-// extern void   stb_leakcheck_memset(void *b, char c, int len, const char *file, int line);
+extern void * stb_leakcheck_malloc(size_t sz, const char *file, long line);
+extern void * stb_leakcheck_calloc(size_t sz, size_t e_sz, const char *file, long line);
+extern void * stb_leakcheck_realloc(void *ptr, size_t sz, const char *file, long line);
+extern void   stb_leakcheck_free(void *ptr, const char *file, long line);
+// extern void   stb_leakcheck_memset(void *b, char c, long len, const char *file, long line);
 extern void   stb_leakcheck_dumpmem(void);
 
 

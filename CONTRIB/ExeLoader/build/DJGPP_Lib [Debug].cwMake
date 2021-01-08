@@ -8,10 +8,10 @@
 -c ../src/ -o obj/cpp_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError -I ../ -I ../include/
 >
 ;Generate executable
--o obj/cpp_{_sOpt}/ -#To _out/{_sOpt}/ExeLoader.*
+; -o obj/cpp_{_sOpt}/ -#To _out/{_sOpt}/ExeLoader.*
 >
 ;Generate executable
--o obj/cpp_{_sOpt}/ -#To _out/{_sOpt}/ExeLoader.*
+; -o obj/cpp_{_sOpt}/ -#To _out/{_sOpt}/ExeLoader.*
 >
 ;-#Run _out/{_sOpt}/ExeLoader.exe "E:/Data/setting/Sokol_Exp/_cwc/sapp/_out/blend-sapp/CpcDos_Debug_wasm/blend-sapp.exe"
 ;-#Run _out/{_sOpt}/ExeLoader.exe sgl-lines-sapp.exe
@@ -19,5 +19,5 @@
 ;-#Run _out/{_sOpt}/ExeLoader.exe "E:/_Project/Vellum/Sokol_Test/_cwc/sapp/_out/blend-sapp/CpcDos_Debug_wasm/blend-sapp.exe"
 ;-#Run _out/{_sOpt}/ExeLoader.exe "E:/_Project/Vellum/Sokol_Test/_cwc/sapp/_out/arraytex-sapp/CpcDos_Debug_wasm/arraytex-sapp.exe"
 ;-#Run _out/{_sOpt}/ExeLoader.exe "E:/_Project/Vellum/Sokol_Test/_cwc/sapp/_out/imgui-highdpi-sapp/CpcDos_Debug_wasm/imgui-highdpi-sapp.exe"
--#Run _out/{_sOpt}/ExeLoader.exe "E:/_Project/Vellum/Sokol_Test/_cwc/sapp/_out/imgui-sapp/CpcDos_Debug_wasm/imgui-sapp.exe"
+; -#Run _out/{_sOpt}/ExeLoader.exe "E:/_Project/Vellum/Sokol_Test/_cwc/sapp/_out/imgui-sapp/CpcDos_Debug_wasm/imgui-sapp.exe"
 >

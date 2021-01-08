@@ -34,7 +34,7 @@ namespace cpinti
 	namespace gestionnaire_fichier
 	{
 		
-		int cpinti_decompress_file(const char* Source, const char* Destination)
+		long cpinti_decompress_file(const char* Source, const char* Destination)
 		{
 			// Cette fonction va permettre de decompresser un fichier ZIP
 			// Retourne 
@@ -48,7 +48,7 @@ namespace cpinti
 							"cpinti::gestionnaire_fichier", "cpinti_decompress_file()",
 							Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
 							
-			int Resultats = Fichier_decompress(Source, Destination);
+			long Resultats = Fichier_decompress(Source, Destination);
 			
 			if(Resultats > 0)
 				cpinti_dbg::CPINTI_DEBUG("Decompresse!", 
@@ -64,7 +64,7 @@ namespace cpinti
 		}
 		
 		
-		int cpinti_compress_file(const char* source, const char* destination)
+		long cpinti_compress_file(const char* source, const char* destination)
 		{
 			// Cette fonction va permettre de compression un fichier source en ZIP
 			//			-2 : Erreur dans la lib (voir debug)
@@ -109,7 +109,7 @@ namespace cpinti
 			return Resultats;
 		} /* FICHIER EXISTE */
 		
-		unsigned int cpinti_Taille_Fichier(const char* Source)
+		unsigned long cpinti_Taille_Fichier(const char* Source)
 		{
 			// Cette fonction va permettre de recuperer la taille d'un fichier
 			// Source 	= Source d'acces au fichier
@@ -118,7 +118,7 @@ namespace cpinti
 			// 			 0 ou 0> : Taille du fichier
 			
 			
-			double Resultats = 0;
+			unsigned long Resultats = 0;
 			std::string TailleFichier_STR;
 			
 			cpinti_dbg::CPINTI_DEBUG("Recuperation taille fichier '" + std::string(Source) + "' ... ", 
@@ -137,7 +137,7 @@ namespace cpinti
 			return Resultats;
 		} /* TAILLE FICHIER */
 		
-		bool cpinti_Lire_Fichier_complet(const char* Source, const char* Mode, char* _DONNEES, unsigned int TailleFichier)
+		bool cpinti_Lire_Fichier_complet(const char* Source, const char* Mode, char* _DONNEES, unsigned long TailleFichier)
 		{
 			// Cette fonction va permettre de lire le contenu complet d'un fichier
 			// Source 	= Source d'acces au fichier
@@ -214,7 +214,7 @@ namespace cpinti
 			}
 		} /* LIRE FICHIER COMPLET */
 		
-		bool cpinti_Ecrire_Fichier_complet(const char* Source, const char* _DONNEES, int Mode)
+		bool cpinti_Ecrire_Fichier_complet(const char* Source, const char* _DONNEES, long Mode)
 		{
 			// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
 			// Source 	= Source d'acces au fichier
@@ -255,7 +255,7 @@ namespace cpinti
 			return Resultat_int;
 		} /* LIRE FICHIER COMPLET */
 		
-		bool cpinti_Supprimer_Fichier(const char* Source, bool Securise, int NombrePasses)
+		bool cpinti_Supprimer_Fichier(const char* Source, bool Securise, long NombrePasses)
 		{
 			// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
 			// Source 		= Source d'acces au fichier
@@ -298,7 +298,7 @@ namespace cpinti
 			
 		} /* SUPPRIMER FICHIER */
 		
-		bool cpinti_Copier_Fichier(const char* Source, const char* Destination, int Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
+		bool cpinti_Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
 		{
 			// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
 			// Source 		= Source d'acces au fichier

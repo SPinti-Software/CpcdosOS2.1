@@ -9,6 +9,7 @@
 #endif
 
 extern "C" int __kbhit(void);
+extern "C" int ftello (FILE *stream);
 extern "C" unsigned short _w32_intel (unsigned short val);
 extern "C" unsigned short _w32_intel16 (unsigned short val);
 
@@ -16,9 +17,9 @@ namespace cpinti
 {
 	
 	void cpinti_doevents					();
-	void cpinti_doevents					(unsigned int Temps);
-	void cpinti_Sleep						(unsigned int secondes);
-	void cpinti_USleep						(unsigned int MicroSecondes);
+	void cpinti_doevents					(unsigned long Temps);
+	void cpinti_Sleep						(unsigned long secondes);
+	void cpinti_USleep						(unsigned long MicroSecondes);
 	
 	namespace Func_Cpinti
 	{
@@ -28,6 +29,7 @@ namespace cpinti
 		std::string 		to_string			(int nombre);
 		std::string 		to_string			(unsigned int nombre);
 		std::string 		to_string			(long unsigned int nombre);
+		
 		std::string 		to_string			(long nombre);
 		std::string 		to_string			(double nombre);
 		std::string 		to_string			(short unsigned int nombre);
@@ -40,6 +42,7 @@ namespace cpinti
 		
 		int 				to_int				(std::string nombre);
 		unsigned int 		to_uint				(std::string nombre);
+		unsigned long 		to_ulong			(std::string nombre);
 		long 				to_long				(std::string nombre);
 		
 		static int 			_kbhit				(void);

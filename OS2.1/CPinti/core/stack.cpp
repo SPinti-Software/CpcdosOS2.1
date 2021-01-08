@@ -30,7 +30,7 @@
 namespace cpinti
 {
 	// Numero des ports (Faut savoir qu'il melange serveur et client, a corriger a l'avenir)
-	// unsigned int Stack__PORT_ATTRIB[_MAX_Stack_instance] = {0};
+	// unsigned long Stack__PORT_ATTRIB[_MAX_Stack_instance] = {0};
 	
 	// Creation des tableau d'instances du stack inverse qui servira de buffer pour Cpcdos et le serveur
 	// std::vector<std::shared_ptr<cpinti_stack_inv>> Stack_CPintiCore__KERNEL;
@@ -53,7 +53,7 @@ namespace cpinti
 	
 	/* ---------------------------------------------------------- */
 	
-	bool cpinti_stack_inv::stack__init(unsigned int Taille)
+	bool cpinti_stack_inv::stack__init(unsigned long Taille)
 	{
 		// Cette fonction permet d'initialiser un nouveau stack
 		// 		Taille	= Taille MAX du stack
@@ -124,10 +124,10 @@ namespace cpinti
 		//		FALSE: Plus de places.. :/
 		
 		// Recuperer la position de fin
-		unsigned int Position_FIN = get_Taille_stack();
+		unsigned long Position_FIN = get_Taille_stack();
 		
 		// On va chercher le premier emplacement vide depuis la fin
-		for(unsigned int boucle = Position_FIN; boucle > 0; boucle--)
+		for(unsigned long boucle = Position_FIN; boucle > 0; boucle--)
 			if(this->Stack_STR.at(boucle) == "")
 			{
 				if(this->Stack_STR.at(boucle) == "")
@@ -152,7 +152,7 @@ namespace cpinti
 	
 	/* ---------------------------------------------------------- */
 	
-	std::string cpinti_stack_inv::get_Stack(int MODE)
+	std::string cpinti_stack_inv::get_Stack(long MODE)
 	{
 		// Cette fonction permet d'obtenir une donnee, la supprimer et puis re-indexer la stack
 		// 		MODE	= 0 : Recuperer le dernier elements (le plus obsolete)
@@ -161,7 +161,7 @@ namespace cpinti
 		// 		Le contenu d'un element de la stack
 		
 		// Recuperer la position de la fin
-		unsigned int Position_FIN = get_Taille_stack();
+		unsigned long Position_FIN = get_Taille_stack();
 		
 		std::string TMP_STR = std::string("");
 		
@@ -179,13 +179,13 @@ namespace cpinti
 			this->Stack_STR.at(1) = "";
 			
 			// Entasser la liste vers la fin -->
-			for(unsigned int boucle = Position_FIN; boucle > 0; boucle--)
+			for(unsigned long boucle = Position_FIN; boucle > 0; boucle--)
 				// Le dernier element est egale a son precedent
 				this->Stack_STR.at(boucle) = this->Stack_STR.at(boucle - 1);
 		}
 		else
 		{
-			for(unsigned int boucle = 1; boucle > 0; boucle++)
+			for(unsigned long boucle = 1; boucle > 0; boucle++)
 				if(this->Stack_STR.at(boucle) != "")
 				{
 					// L'emplacement est occupee! On recupere son contenu
@@ -203,7 +203,7 @@ namespace cpinti
 	} /* GET STACK */
 		
 	// IDEM, compatible style-C ANSI Cpcdos
-	const char* cpinti_stack_inv::get_Stack_c(int MODE)
+	const char* cpinti_stack_inv::get_Stack_c(long MODE)
 	{
 		return (const char*) get_Stack(MODE).c_str();
 		
@@ -213,12 +213,12 @@ namespace cpinti
 	/* ---------------------------------------------------------- */
 	
 	// Obtenir la taille occupee par la stack (nombre d'elements)
-	unsigned int cpinti_stack_inv::get_Taille_occupe()
+	unsigned long cpinti_stack_inv::get_Taille_occupe()
 	{
-		unsigned int Position_FIN 	= get_Taille_stack();
-		unsigned int Taille_occupe 	= 0;
+		unsigned long Position_FIN 	= get_Taille_stack();
+		unsigned long Taille_occupe 	= 0;
 		
-		for(unsigned int boucle = Position_FIN; boucle > 0; boucle--)
+		for(unsigned long boucle = Position_FIN; boucle > 0; boucle--)
 			if(this->Stack_STR.at(boucle) != "")
 				Taille_occupe++;
 			
@@ -226,11 +226,11 @@ namespace cpinti
 	}
 	
 	// Obtenir la taille libre non utilise dans la stack (Nombre d'elements)
-	unsigned int cpinti_stack_inv::get_Taille_libre()
+	unsigned long cpinti_stack_inv::get_Taille_libre()
 	{
-		unsigned int Position_FIN = get_Taille_stack();
-		unsigned int Taille_Libre = 0;
-		for(unsigned int boucle = Position_FIN; boucle > 0; boucle--)
+		unsigned long Position_FIN = get_Taille_stack();
+		unsigned long Taille_Libre = 0;
+		for(unsigned long boucle = Position_FIN; boucle > 0; boucle--)
 			if(this->Stack_STR.at(boucle)=="")
 				Taille_Libre++;
 			
@@ -238,9 +238,9 @@ namespace cpinti
 	}
 	
 	// Obtenir la taille total du stack (nombre d'elements)
-	unsigned int cpinti_stack_inv::get_Taille_stack()
+	unsigned long cpinti_stack_inv::get_Taille_stack()
 	{
-		return (unsigned int) this->Stack_STR.size() - 1;
+		return (unsigned long) this->Stack_STR.size() - 1;
 	}
 	
 	/* ---------------------------------------------------------- */

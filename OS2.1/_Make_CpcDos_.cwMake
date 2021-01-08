@@ -4,5 +4,7 @@
 >
 -#Lauch CPinti/Make_CPinti.cwMake
 >
+-#Lauch ../CONTRIB/Make_Contrib.cwMake
+>
 -#Lauch ../Make_FB.cwMake
 >

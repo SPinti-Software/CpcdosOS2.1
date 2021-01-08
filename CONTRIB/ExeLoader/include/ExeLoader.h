@@ -75,7 +75,7 @@ extern bool is_in_aLibList(HMEMORYMODULE _handle);
 extern "C" bool fStartExeLoader(const char* Source_File);
 
 typedef void* (*FUNC_)();
-typedef struct {const char* sFuncName;FUNC_ dFunc;} sFunc;
+typedef struct {const char* sLib; const char* sFuncName;FUNC_ dFunc;} sFunc;
 
 /// Main Func Ptr ///s
 typedef int (*addNumberProc)(int, int);

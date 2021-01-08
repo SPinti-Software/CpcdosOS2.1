@@ -25,23 +25,24 @@
 #include "debug.h"
 #include "CPC_WPR.h"
 // #include "func_cpi.h"
+// #include "func_cpi.h"
 
 // #include "leakchk.h"
 
 namespace cpinti_dbg
 {
-	void debug_mode(int valeur)
+	void debug_mode(long valeur)
 	{
 		DEBUG_ENABLED = valeur;
 	}
 	
 	
-	void CPINTI_DEBUG_C(const char* TexteFrancais, const char* TexteAnglais, const char* Declencheur, const char* Fonction, int DebutLigne, int NiveauAlerte, int AffDate, int RetourLigneHaut)
+	void CPINTI_DEBUG_C(const char* TexteFrancais, const char* TexteAnglais, const char* Declencheur, const char* Fonction, long DebutLigne, long NiveauAlerte, long AffDate, long RetourLigneHaut)
 	{
 		CPINTI_DEBUG(std::string(TexteFrancais), std::string(TexteAnglais), std::string(Declencheur), std::string(Fonction), DebutLigne, NiveauAlerte, AffDate, RetourLigneHaut);
 	}
 	
-	void CPINTI_DEBUG(std::string TexteFrancais, std::string TexteAnglais, std::string Declencheur, std::string Fonction, int DebutLigne, int NiveauAlerte, int AffDate, int RetourLigneHaut)
+	void CPINTI_DEBUG(std::string TexteFrancais, std::string TexteAnglais, std::string Declencheur, std::string Fonction, long DebutLigne, long NiveauAlerte, long AffDate, long RetourLigneHaut)
 	{
 		// Cette fonction permet de logger les activites du systeme
 		// TexteFrancais 	= Texte en francais
@@ -70,7 +71,7 @@ namespace cpinti_dbg
 		
 		if(DEBUG_ENABLED > 0)
 		{
-			int Cpcdos_Langue = 0; // TEMPORAIRE
+			long Cpcdos_Langue = 0; // TEMPORAIRE
 			
 			std::string Texte_final;
 			char const * File = NULL;

@@ -31,3 +31,8 @@ _out/
 
 # Others
 *.wdat
+
+# C#
+*.pdb
+*.vshost.exe
+*.manifest

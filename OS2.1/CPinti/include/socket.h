@@ -56,62 +56,62 @@ namespace NP_cpinti_socket
 		private:
 			struct TABL_Socket {
 					std::string	 ipv4_STR 	= "0.0.0.0";
-					unsigned int port		= 0;
-					int 		 socket 	= 0;				
+					unsigned long port		= 0;
+					long 		 socket 	= 0;				
 			};
 			
 			time_t statistique_temps_depart;
 	
 			// Priorites des threads reseaux (par defaut)
-			unsigned int THREAD_PRIORITE_YIELD 			= 0;
-			unsigned int THREAD_PRIORITE_DESCRIPTEUR 	= 10;
-			unsigned int THREAD_PRIORITE_SLEEP 			= 100;
+			unsigned long THREAD_PRIORITE_YIELD 			= 0;
+			unsigned long THREAD_PRIORITE_DESCRIPTEUR 	= 10;
+			unsigned long THREAD_PRIORITE_SLEEP 			= 100;
 			
 			// Activite en general
-			unsigned int STATISTIQUES_Activite 	= 0;
+			unsigned long STATISTIQUES_Activite 	= 0;
 			
 			// Temps necessaire pour evaluer la NON activite d'un client
-			unsigned int STATISTIQUES_Client_temps = 2;
-			unsigned int STATISTIQUES_Client_pass = 2;
+			unsigned long STATISTIQUES_Client_temps = 2;
+			unsigned long STATISTIQUES_Client_pass = 2;
 			
 			// Nombre de clients actif durant les x secondes
-			unsigned int STATISTIQUES_Clients 	= 0;
-			unsigned int STATISTIQUES_Clients_Final	= 0;
+			unsigned long STATISTIQUES_Clients 	= 0;
+			unsigned long STATISTIQUES_Clients_Final	= 0;
 			
 			// Nombre de paquets envoyes par secondes
-			unsigned int STATISTIQUES_Envoie 	= 0;
-			unsigned int STATISTIQUES_Envoie_Final 	= 0;
+			unsigned long STATISTIQUES_Envoie 	= 0;
+			unsigned long STATISTIQUES_Envoie_Final 	= 0;
 			
 			// Nombre de paquets receptionnes par secondes
-			unsigned int STATISTIQUES_Reception = 0;
-			unsigned int STATISTIQUES_Reception_Final 	= 0;
+			unsigned long STATISTIQUES_Reception = 0;
+			unsigned long STATISTIQUES_Reception_Final 	= 0;
 	
 	
 			std::vector<cpinti_socket::TABL_Socket> TAB_InfoClient;
 			
-			int 			Type_PROTO;				// Icmp, tcp, udp client, serveur...
-			int 			SocketReseau;			// No du FD du socket courant
-			int				SocketTemporaire;		//  temporaire (ex: pour les clients)
-			int 			FD_MAX;					// Maximum de socket
+			long 			Type_PROTO;				// Icmp, tcp, udp client, serveur...
+			long 			SocketReseau;			// No du FD du socket courant
+			long				SocketTemporaire;		//  temporaire (ex: pour les clients)
+			long 			FD_MAX;					// Maximum de socket
 			
-			int 			Lecture_Client;
+			long 			Lecture_Client;
 
 			
-			int 			NombreClient_Connectes;	// Nombre de clients actuellement connectes
-			int				NombreClients_MAX;		// Maximum de clients
-			unsigned int	PORT;					// Numero de port
+			long 			NombreClient_Connectes;	// Nombre de clients actuellement connectes
+			long				NombreClients_MAX;		// Maximum de clients
+			unsigned long	PORT;					// Numero de port
 			
-			int				Ferm_differe_SOCK[_DEFFERE_FERME];	// Tableau de socket contenant les socket A fermer
-			int				Ferm_differe_COMP[_DEFFERE_FERME];	//  et son compteur de cycle
+			long				Ferm_differe_SOCK[_DEFFERE_FERME];	// Tableau de socket contenant les socket A fermer
+			long				Ferm_differe_COMP[_DEFFERE_FERME];	//  et son compteur de cycle
 			
 
-			int 			Sock_Famille; 			// Famille d'adresse
-			int				Sock_Type; 				// Type de socket
-			int 			Sock_Protocol;			// Protocole
+			long 			Sock_Famille; 			// Famille d'adresse
+			long				Sock_Type; 				// Type de socket
+			long 			Sock_Protocol;			// Protocole
 			
-			int 			Sock_Niveau;			// setsockopt Niveau
-			int 			Sock_Option;			// setsockopt Les options
-			int 			Sock_Option_TAILLE;		// setsockopt Et sa taille
+			long 			Sock_Niveau;			// setsockopt Niveau
+			long 			Sock_Option;			// setsockopt Les options
+			long 			Sock_Option_TAILLE;		// setsockopt Et sa taille
 			void* 			Sock_Option_VAL;		// setsockopt La valeur de l'option
 			
 			fd_set 			FD_socket;				// FD du socket
@@ -119,7 +119,7 @@ namespace NP_cpinti_socket
 			fd_set 			FD_TEMPORAIRE_2;			//  une "copie" temporaire
 			
 			struct timeval 	TempsMAX;				// Temps de delai
-			int				Delai_ms;				// Delai du select
+			long				Delai_ms;				// Delai du select
 			
 			struct hostent *Sock_hostent;			// Information IPv4 a propos de l'host
 			struct sockaddr_in Sock_sockaddr;		// Structure du sock INTERNET
@@ -149,18 +149,18 @@ namespace NP_cpinti_socket
 			
 			void THREAD_EVALUATION();
 			
-			void set_THREAD_PRIORITE_YIELD		(unsigned int valeur);
-			void set_THREAD_PRIORITE_DESCRIPTEUR(unsigned int valeur);
-			void set_THREAD_PRIORITE_SLEEP		(unsigned int valeur);
+			void set_THREAD_PRIORITE_YIELD		(unsigned long valeur);
+			void set_THREAD_PRIORITE_DESCRIPTEUR(unsigned long valeur);
+			void set_THREAD_PRIORITE_SLEEP		(unsigned long valeur);
 
-			unsigned int get_THREAD_PRIORITE_YIELD		();
-			unsigned int get_THREAD_PRIORITE_DESCRIPTEUR();
-			unsigned int get_HREAD_PRIORITE_SLEEP		();
+			unsigned long get_THREAD_PRIORITE_YIELD		();
+			unsigned long get_THREAD_PRIORITE_DESCRIPTEUR();
+			unsigned long get_HREAD_PRIORITE_SLEEP		();
 			
-			unsigned int get_STATISTIQUES_Activite		(); // Activite en general
-			unsigned int get_STATISTIQUES_Clients		(); // Nombre de clients actif durant les 2 secondes
-			unsigned int get_STATISTIQUES_Envoie		(); // Nombre de paquets envoyes par secondes
-			unsigned int get_STATISTIQUES_Reception		(); // Nombre de paquets receptionnes par secondes
+			unsigned long get_STATISTIQUES_Activite		(); // Activite en general
+			unsigned long get_STATISTIQUES_Clients		(); // Nombre de clients actif durant les 2 secondes
+			unsigned long get_STATISTIQUES_Envoie		(); // Nombre de paquets envoyes par secondes
+			unsigned long get_STATISTIQUES_Reception		(); // Nombre de paquets receptionnes par secondes
 			
 			std::string		get_Erreur();			// Obtenir le message d'erreur
 			
@@ -171,35 +171,35 @@ namespace NP_cpinti_socket
 			std::string		get_NOM_dest();			// Obtenir le nom du destinataire
 			std::string		get_NOM_src();			// Obtenir le nom source
 			
-			int	get_Nombre_client_MAX(); 		// Obtenir le nombre de client MAX
-			int	get_Nombre_client(); 			// Obtenir le nombre de client actuel
-			unsigned int	get_Port();						// Obtenir le numero de port
+			long	get_Nombre_client_MAX(); 		// Obtenir le nombre de client MAX
+			long	get_Nombre_client(); 			// Obtenir le nombre de client actuel
+			unsigned long	get_Port();						// Obtenir le numero de port
 			
 			std::string		get_BUFFER();					// Obtenir le contenu du buffer
 			
-			int				get_FD_MAX();					// Obtenir le nombre maximum de FD
-			int				get_FD_SETSIZE();				// Obtenir le FD_SETSIZE
+			long				get_FD_MAX();					// Obtenir le nombre maximum de FD
+			long				get_FD_SETSIZE();				// Obtenir le FD_SETSIZE
 			
-			int				get_NoSocket();					// Obtenir le numero de socket courant
+			long				get_NoSocket();					// Obtenir le numero de socket courant
 			
 			std::string 	get_IP_Client();				// Obtenir l'adresse IP du client courant
 			std::string 	get_PORT_Client();				// Obtenir le port du client courant
-			unsigned int 	get_PORT_Client_uint();			// Obtenir le port du client courant (en uint)
+			unsigned long 	get_PORT_Client_uint();			// Obtenir le port du client courant (en uint)
 			
-			int 			Verifier_descripteur(int Descripteur);	// Savoir s'il le descripteur est bon
-			bool 			Verifier_correspondance(int Descripteur); // Savoir si le descripteur correspond
+			long 			Verifier_descripteur(long Descripteur);	// Savoir s'il le descripteur est bon
+			bool 			Verifier_correspondance(long Descripteur); // Savoir si le descripteur correspond
 
 			void			set_IP_dest(std::string IP);	// Definir l'IP du destinataire
 			void			set_IP_src(std::string IP);		// Definir l'IP de l'envoie source
 			void			set_NOM_dest(std::string IP);	// Definir le nom du destinataire
 			void			set_NOM_src(std::string IP);	// Definir le nom source
 			
-			void			set_Nombre_client_MAX(int NbClient);		// Definir le nombre MAX de clients
+			void			set_Nombre_client_MAX(long NbClient);		// Definir le nombre MAX de clients
 			
-			void			set_Port(unsigned int NumPort); // Definir le numero de port
+			void			set_Port(unsigned long NumPort); // Definir le numero de port
 			
 			// Premiere demarche, initialiser le socket
-			bool 	Initialiser_socket(int Type_Socket);
+			bool 	Initialiser_socket(long Type_Socket);
 			
 			// Ensuite le configurer selon le Type de socket choisis
 			bool	Configurer_socket();
@@ -217,20 +217,20 @@ namespace NP_cpinti_socket
 			bool	Ecouter_socket_FD();
 			
 			// Envoyer une trame reseau
-			bool	Envoyer_TRAME(unsigned int Taille, const void* PAQUET);
+			bool	Envoyer_TRAME(unsigned long Taille, const void* PAQUET);
 			
 			
 			// Envoyer des donnees au socket courant
-			int 	Envoyer_Donnees(std::string DONNEES_STR);
+			long 	Envoyer_Donnees(std::string DONNEES_STR);
 			
 			// IDEM mais des donnees au socket PRINCIPAL ou COURANT 
-			int 	Envoyer_Donnees(std::string DONNEES_STR, bool AuServeur);
+			long 	Envoyer_Donnees(std::string DONNEES_STR, bool AuServeur);
 			
 			// IDEM mais a un socket precis
-			int 	Envoyer_Donnees(std::string DONNEES_STR, int Socket);
+			long 	Envoyer_Donnees(std::string DONNEES_STR, long Socket);
 			
 			// IDEM mais envoyer a tous les sockets
-			int 	Envoyer_Donnees_TOUT_CLIENTS(std::string DONNEES_STR);
+			long 	Envoyer_Donnees_TOUT_CLIENTS(std::string DONNEES_STR);
 			
 			// Reparer la reception de la trame reseau
 			bool 	Preparer_reception_TRAME();
@@ -240,17 +240,17 @@ namespace NP_cpinti_socket
 			bool 	Recevoir_TRAME();
 			
 			// Receptionner les donnes d'un socket client COURANT
-			int 	Recevoir_donnees_client();
+			long 	Recevoir_donnees_client();
 			// Idem
-			int 	Recevoir_donnees_client(bool AuServeur);
+			long 	Recevoir_donnees_client(bool AuServeur);
 			// Idem
-			int 	Recevoir_donnees_client(int Socket);
+			long 	Recevoir_donnees_client(long Socket);
 			
 			// Ceci permet d'obtenir le descripteur "suivant" a gerer (serveur)
-			int		get_Descripteur();
+			long		get_Descripteur();
 			
 			// Ceci permet d'attribuer le descripteur a traiter temporairement
-			bool 	Attribuer_descr_lecture(int descript);
+			bool 	Attribuer_descr_lecture(long descript);
 			
 			// Accepter une connexion
 			bool 	Accepter_connexion();
@@ -271,20 +271,20 @@ namespace NP_cpinti_socket
 			bool	Fermer_SocketClient();
 			
 			//  IDEM mais avec un socket precis
-			bool	Fermer_SocketClient(int SocketClient);
+			bool	Fermer_SocketClient(long SocketClient);
 			
 			// Terminer la connexion
 			bool	Fermer_socket();
 			// IDEM
 			bool 	Fermer_socket(bool AuServeur);
 			// IDEM
-			bool 	Fermer_socket(int Socket);
+			bool 	Fermer_socket(long Socket);
 			
 			// Fermer apres un laps de temps pour garantir la reception des donnees avant fermeture
 			bool	Fermeture_differe_UPDATE();
 			
 			// Ajouter un socket dans la liste
-			bool	Fermeture_differe_ADD(int Socket);
+			bool	Fermeture_differe_ADD(long Socket);
 	};
 	
 	class cpinti_socket_LOCAL

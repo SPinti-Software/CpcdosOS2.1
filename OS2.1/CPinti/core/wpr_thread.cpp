@@ -40,8 +40,8 @@ namespace cpinti
 	namespace gestionnaire_tache
 	{
 		
-		unsigned int cpinti_creer_thread(unsigned int ID_KERNEL, unsigned int ID_OS, unsigned int ID_USER, unsigned int PID, const char* NomThread, 
-																		int Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned int ARG_TH)
+		unsigned long cpinti_creer_thread(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char* NomThread, 
+																		long Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned long ARG_TH)
 		{
 			
 
@@ -55,7 +55,7 @@ namespace cpinti
 			ENTRER_SectionCritique();
 
 			// On ajoute un thread depuis le CORE
-			unsigned int Resultat = gestionnaire_tache::ajouter_Thread(Fonction, NomThread, PID, Priorite, ARG_TH);
+			unsigned long Resultat = gestionnaire_tache::ajouter_Thread(Fonction, NomThread, PID, Priorite, ARG_TH);
 
 			// Si la creation est un succes, on remplit les informations du thread
 			if (Resultat > 0)
@@ -82,7 +82,7 @@ namespace cpinti
 			}
 			else
 			{
-				std::string Resultat_STR = std::to_string((unsigned int) Resultat);
+				std::string Resultat_STR = std::to_string((unsigned long) Resultat);
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de creer un thread. Retour:" + Resultat_STR, 
 										 "[ERROR] Unable to create thread. Return:" + Resultat_STR,
 									 "core::gestionnaire_tache", "free_Thread_zombie()",
@@ -98,19 +98,19 @@ namespace cpinti
 		}
 
 		
-		int cpinti_fin_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+		long cpinti_fin_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)
 		{
 			// Cette fonction permet de finaliser l'execution d'un thread, fermeture forcee
-			return (int) gestionnaire_tache::supprimer_Thread(TID, true);
+			return (long) gestionnaire_tache::supprimer_Thread(TID, true);
 		}
 		
-		int cpinti_arreter_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+		long cpinti_arreter_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)
 		{
 			// Fermeture non forcee (signal)
 			return cpinti_arreter_thread(ID_KERNEL, PID, TID, false);
 		}
 		
-		int cpinti_arreter_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID, bool force)
+		long cpinti_arreter_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID, bool force)
 		{
 			// Cette fonction permet d'arreter un thread correctement.
 			//  A utiliser sur un autre thread
@@ -137,7 +137,7 @@ namespace cpinti
 			return true;
 		}
 		
-		unsigned int cpinti_joindre_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID, int CYCLES)
+		unsigned long cpinti_joindre_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID, long CYCLES)
 		{
 			// Cette fonction permet d'executer directement un thread sans passer par l'ordonanceur
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
@@ -145,7 +145,7 @@ namespace cpinti
 			//	TID				: Numero du thread
 			//	CYCLES			: Nombre de cycles a executer (1 par defaut)
 
-			unsigned int Resultat = 0;
+			unsigned long Resultat = 0;
 			
 			
 			// Retourner le resultat
@@ -153,21 +153,21 @@ namespace cpinti
 			
 		}
 		
-		int cpinti_sortir_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+		long cpinti_sortir_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)
 		{
 			// Cette fonction permet de sortir du thread
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
 			//  PID				: Numero de processus
 			//	TID				: Numero du thread
 			
-			int Resultat = 0;
+			long Resultat = 0;
 			
 			
 			return Resultat;
 		}
 		
 		
-		void* cpinti_thread_args(int NoARG)
+		void* cpinti_thread_args(long NoARG)
 		{
 			// Cette fonction permet de retourner un argument pour les threads venant d'etre crees
 			//	NoARG	: Numero d'argument
@@ -202,7 +202,7 @@ namespace cpinti
 		}
 		
 		
-		int cpinti_gerer_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID, unsigned int ACTION)
+		long cpinti_gerer_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID, unsigned long ACTION)
 		{
 			// Cette fonction permet de modifier l'etat d'un thread
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
@@ -210,7 +210,7 @@ namespace cpinti
 			//	TID				: Numero du thread
 			//	ACTION			: Action a appliquer sur le thread
 			
-			int Resultat = 0;
+			long Resultat = 0;
 			
 			// Gerer le thread
 			// Resultat = this->CPintiCore_Gestionnaire_Taches->Gerer_Threads(ID_KERNEL, PID, TID, ACTION);
@@ -220,7 +220,7 @@ namespace cpinti
 			return Resultat;
 		}
 		
-		unsigned int cpinti_etat_thread(unsigned int ID_KERNEL, unsigned int PID, unsigned int TID)
+		unsigned long cpinti_etat_thread(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)
 		{
 			// Cette fonction permet de connaitre l'etat d'un thread
 			//	TID				: Numero du thread
@@ -228,7 +228,7 @@ namespace cpinti
 			return get_EtatThread(TID);
 		}
 		
-		const char* cpinti_get_nom_thread(unsigned int TID)
+		const char* cpinti_get_nom_thread(unsigned long TID)
 		{
 			// Cette fonction permet de recuperer le nom du thread via son ID
 			//  NomThread		: Variable NULL ou sera stocke le nom de variable
@@ -239,10 +239,10 @@ namespace cpinti
 		}
 		
 		
-		unsigned int cpinti_get_nombre_threads()
+		unsigned long cpinti_get_nombre_threads()
 		{
 			// Cette fonction permet d'obtenir le nombre de threads total en cours
-			unsigned int NombreThread = gestionnaire_tache::get_NombreThreads();
+			unsigned long NombreThread = gestionnaire_tache::get_NombreThreads();
 			
 			// Corriger
 			if (NombreThread > MAX_THREAD) 

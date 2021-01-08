@@ -60,7 +60,7 @@
 
 
 
-extern "C" void __real_sleep (int secondes);
+extern "C" void __real_sleep (long secondes);
 
 namespace cpinti
 {
@@ -69,28 +69,35 @@ namespace cpinti
 		
 		std::string Erreur_STR;
 		
-		void Fermer_socket(int SocketReseau)
+		void Fermer_socket(long SocketReseau)
 		{
-			shutdown(SocketReseau, 2);
-			close(SocketReseau);
+			shutdown((int) SocketReseau, 2);
+			close((int) SocketReseau);
 		}
 		
-		int Demarrer_serveur(unsigned int NumPort, int NombreClients, unsigned int _NumeroID, int _TYPE_SERVEUR)
+		long Demarrer_serveur(unsigned long _NumPort, long _NombreClients, unsigned long __NumeroID, long __TYPE_SERVEUR)
 		{
+			
 			// Cette fonction permet de creer un serveur TCP 
 			//  _TYPE_SERVEUR 	= TCP:1 / UDP:2 / CCP:3 / TELNET:4 / ECHO tcp:5 / ECHO udp:6
 			//  NumPort			= Numero de port
 			//	_NumeroID		= Numero d'itentification unique associe a un processus
 
+			unsigned int 	NumPort 			= (unsigned int) 	_NumPort;
+			int 			NombreClients 		= (int) 			_NombreClients;
+			unsigned int 	_NumeroID 			= (unsigned int) 	__NumeroID;
+			int 			_TYPE_SERVEUR 		= (int) 			__TYPE_SERVEUR;
+			
+			const int NbClient_safe = NombreClients+4;
 			
 			int opt = true;   
 			int SocketReseau , Taille_Adresse , New_Socket;
 			int Resultat, i , TailleLue , SocketClient; 
 
 			// A TESTER 13-04-2020
-			int client_socket[NombreClients+4];
-			int client_PORT[NombreClients+4];
-			std::string client_IP[NombreClients+4];
+			int client_socket		[NbClient_safe];
+			int client_PORT			[NbClient_safe];
+			std::string client_IP	[NbClient_safe];
 			
 			 
 			int FD_MAX;   
@@ -518,7 +525,7 @@ namespace cpinti
 					{   
 						if ((New_Socket = accept(SocketReseau, (struct sockaddr *)&Sock_Adresse, (socklen_t*)&Taille_Adresse))<0)   
 						{   
-							Erreur_STR = std::string(strerror(errno));
+							Erreur_STR = std::string(strerror(errno)) + std::string(" errno(" + std::to_string(errno) + ") srvsck(" + std::to_string(SocketReseau) + ")");
 							cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'accepter le client. Raison:'" + Erreur_STR + "'", 
 													 "[ERROR] Unable to accept client. Reason:'" + Erreur_STR + "'", 
 								"SRV:" + NumPort_STR, "Demarrer_serveur()", Ligne_saute, Alerte_erreur, Date_avec, Ligne_r_normal);

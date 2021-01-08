@@ -1,6 +1,6 @@
 /*	
 	======================================
-	==     CPinti ---> Wrapper reseau   ==
+	==     cpinti ---> Wrapper reseau   ==
 	======================================
 	
 	Developpe entierement par Sebastien FAVIER
@@ -45,7 +45,7 @@ namespace cpinti
 
 	namespace net
 	{
-		bool cpinti_add_net_info(unsigned int NoPort) 
+		bool cpinti_add_net_info(unsigned long NoPort) 
 		{
 			// Permet de mettre a jour les informations des statistiques de la carte reseau 
 			// Pour les variables CpcdosC+
@@ -59,7 +59,7 @@ namespace cpinti
 			
 			bool Trouve = false;
 			
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				
 				// // Numero de port trouve
 				// if(SATATISTIQUES_NET_port[Index] == 0)
@@ -77,7 +77,7 @@ namespace cpinti
 			return Trouve;
 		}
 		
-		bool cpinti_del_net_info(unsigned int NoPort) 
+		bool cpinti_del_net_info(unsigned long NoPort) 
 		{
 			// Permet de mettre a jour les informations des statistiques de la carte reseau 
 			// Pour les variables CpcdosC+
@@ -91,7 +91,7 @@ namespace cpinti
 			
 			bool Trouve = false;
 			
-			/* for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			/* for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				
 				// Numero de port trouve
 				if(SATATISTIQUES_NET_port[Index] == NoPort)
@@ -109,7 +109,7 @@ namespace cpinti
 			return Trouve;
 		}
 		
-		bool cpinti_set_net_info(unsigned int NoPort, unsigned int activite, unsigned int pkt_recu, unsigned int pkt_envoye, unsigned int clients) 
+		bool cpinti_set_net_info(unsigned long NoPort, unsigned long activite, unsigned long pkt_recu, unsigned long pkt_envoye, unsigned long clients) 
 		{
 			// Permet de mettre a jour les informations des statistiques de la carte reseau 
 			// Pour les variables CpcdosC+
@@ -123,7 +123,7 @@ namespace cpinti
 			
 			bool Trouve = false;
 			
-			/* for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			/* for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				
 				// Numero de port trouve
 				if(SATATISTIQUES_NET_port[Index] == NoPort)
@@ -140,11 +140,11 @@ namespace cpinti
 			return Trouve;
 		}
 
-		unsigned int cpinti_get_net_info(unsigned int NoPort, unsigned int _inf)
+		unsigned long cpinti_get_net_info(unsigned long NoPort, unsigned long _inf)
 		{
 			// Obtenir des informations de la carte reseau
 			
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				
 				// // Numero de port trouve
 				// if(SATATISTIQUES_NET_port[Index] == NoPort)
@@ -158,41 +158,41 @@ namespace cpinti
 					// if(_inf == 0x04) /* Nombre de clients connectes */
 						// return SATATISTIQUES_NET_clients[Index];
 					
-					// return 0xFF; // _inf introuvable
+					// return 0xFF; // _inf longrouvable
 				// }
-			return 0xFE; // Port introuvable
+			return 0xFE; // Port longrouvable
 		}
 		
-		unsigned int cpinti_get_net_envoye()
+		unsigned long cpinti_get_net_envoye()
 		{
 			// Obtenir le nombre de paquets envoyes par secondes de tous les ports
-			unsigned int Resultat = 0;
+			unsigned long Resultat = 0;
 			
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				// if(SATATISTIQUES_NET_port[Index] != 0) 
 					// Resultat = Resultat + SATATISTIQUES_NET_envoye [Index];
 			
 			return Resultat;
 		}
 		
-		unsigned int cpinti_get_net_recu()
+		unsigned long cpinti_get_net_recu()
 		{
 			// Obtenir le nombre de paquets recu par secondes de tous les ports
-			unsigned int Resultat = 0;
+			unsigned long Resultat = 0;
 			
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				// if(SATATISTIQUES_NET_port[Index] != 0) 
 					// Resultat = Resultat + SATATISTIQUES_NET_recu [Index];
 			
 			return Resultat;
 		}
 		
-		unsigned int cpinti_get_net_machines()
+		unsigned long cpinti_get_net_machines()
 		{
 			// Obtenir le nombre de machines connectes (clients)
-			unsigned int Resultat = 0;
+			unsigned long Resultat = 0;
 		
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				// if(SATATISTIQUES_NET_port[Index] != 0)
 					// Resultat = Resultat + SATATISTIQUES_NET_clients [Index];
 
@@ -200,12 +200,12 @@ namespace cpinti
 			return Resultat;
 		}
 		
-		unsigned int cpinti_get_net_activite()
+		unsigned long cpinti_get_net_activite()
 		{
 			// Obtenir en pourcentage l'activite de la carte reseau et tous les ports
-			unsigned int Resultat = 0;
+			unsigned long Resultat = 0;
 			
-			// for(unsigned int Index = 0; Index < _MAX_Stack_instance; Index++)
+			// for(unsigned long Index = 0; Index < _MAX_Stack_instance; Index++)
 				// if(SATATISTIQUES_NET_port[Index] != 0)
 				// {
 					// Resultat = Resultat + SATATISTIQUES_NET_activite [Index];
@@ -217,7 +217,7 @@ namespace cpinti
 			return Resultat;
 		}
 		
-		int cpinti_ping_icmp(const char *IP_machine, const char* Message, int timeout)
+		long cpinti_ping_icmp(const char *IP_machine, const char* Message, long timeout)
 		{
 			// Cette fonction va permettre de savoir si une machine existe sur le reseau
 			// Chemin 	= Chemin d'acces au fichier
@@ -226,16 +226,15 @@ namespace cpinti
 			// 			 0 : Fichier non disponible
 			//			 1 : Fichier present
 			
-			
-			int Resultats = 0;
+			long Resultats = 0;
 			std::string IP_machine_STR = std::string(IP_machine);
 			std::string Message_STR = std::string(Message);
-							
+						
 			return cpinti::net_ping::ping(IP_machine, Message, timeout);
 				
 		} /* PING */
 		
-		int cpinti_serveur(unsigned int NumPort, int NombreClients, unsigned int NumeroID, int TYPE_SERVEUR)
+		long cpinti_serveur(unsigned long NumPort, long NombreClients, unsigned long NumeroID, long TYPE_SERVEUR)
 		{
 			// Cette fonction va permettre de demarrer un serveur reseau TCP ou UDP
 			// NumPort 			= Numero de port
@@ -244,7 +243,7 @@ namespace cpinti
 			// TYPE_SERVEUR		= Serveur TCP(3) ou UDP(5)
 
 			
-			int Resultats 					= 0;
+			long Resultats 					= 0;
 			std::string NumPort_STR 		= std::to_string(NumPort);
 			std::string NombreClients_STR 	= std::to_string(NombreClients);
 			std::string NumeroID_STR 		= std::to_string(NumeroID);
@@ -269,7 +268,7 @@ namespace cpinti
 				// Type inconnu
 				cpinti_dbg::CPINTI_DEBUG("Type de serveur inconnu. vous avez que TCP (3) ou UDP (5).", 
 										"Unknow server protocol. You have only TCP (3) or UDP (5).",
-										"__CpintiCore_CpcdosOSx__", "cpinti_serveur()",
+										"__cpintiCore_CpcdosOSx__", "cpinti_serveur()",
 										Ligne_reste, Alerte_erreur, Date_avec, Ligne_r_normal);
 				return -14;
 			}
@@ -307,7 +306,7 @@ namespace cpinti
 
 		} /* SERVEUR RESEAU */
 		
-		int cpinti_client(const char* Adresse, unsigned int NumPort, unsigned int NumeroID, int TYPE_CLIENT)
+		long cpinti_client(const char* Adresse, unsigned long NumPort, unsigned long NumeroID, long TYPE_CLIENT)
 		{
 			// Cette fonction va permettre de demarrer un serveur reseau TCP ou UDP
 			// Adresse 			= Adresse IP du host
@@ -317,7 +316,7 @@ namespace cpinti
 			
 			
 			
-			int Resultats 					= 0;
+			long Resultats 					= 0;
 			std::string NumPort_STR 		= std::to_string(NumPort);
 			std::string AdresseIP_STR 		= std::string(Adresse);
 			std::string NumeroID_STR 		= std::to_string(NumeroID);
@@ -334,7 +333,7 @@ namespace cpinti
 				// Type inconnu
 				cpinti_dbg::CPINTI_DEBUG("Type de client inconnu. vous avez que TCP (2) ou UDP (4).", 
 										"Unknow server protocol. You have only TCP (2) or UDP (4).",
-										"__CpintiCore_CpcdosOSx__", "cpinti_client()",
+										"__cpintiCore_CpcdosOSx__", "cpinti_client()",
 										Ligne_reste, Alerte_erreur, Date_avec, Ligne_r_normal);
 				return -13;
 			}

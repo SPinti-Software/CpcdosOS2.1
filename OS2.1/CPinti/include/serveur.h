@@ -67,8 +67,8 @@ namespace cpinti
 	
 	namespace net_server
 	{
-			void Fermer_socket(int SocketReseau);
-			int Demarrer_serveur(unsigned int NumPort, int NombreClients, unsigned int _NumeroID, int _TYPE_SERVEUR);
+			void Fermer_socket(long SocketReseau);
+			long Demarrer_serveur(unsigned long NumPort, long NombreClients, unsigned long _NumeroID, long _TYPE_SERVEUR);
 			
 		
 	}

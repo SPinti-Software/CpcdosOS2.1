@@ -150,7 +150,8 @@ void pixView_MakeSurface(ContextInf* _context){
 		DeleteObject(_context->hbmp );
 	}
 	_context->hbmp = CreateDIBSection( hdc, &bmi, DIB_RGB_COLORS, (void**)&_context->pixels, NULL, 0 );
-	DeleteDC( hdc );
+	//DeleteDC( hdc );
+	ReleaseDC(_hwnd,  hdc );
 }
 
 void pixView_update(ContextInf* _context){
@@ -173,5 +174,6 @@ void pixView_update(ContextInf* _context){
 
 	SelectObject( hdcMem, hbmOld );
 	DeleteObject(hdcMem);
-	DeleteDC( hdc );
+	//DeleteDC( hdc );
+	ReleaseDC( _hwnd, hdc );
 }

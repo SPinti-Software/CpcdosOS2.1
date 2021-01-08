@@ -1,6 +1,0 @@
--std=c++17 -m32 
--O3 -march=i386 
--s -DNDEBUG -funroll-loops -Wall -ffast-math 
--I .\includes -I ..\includes
--lwatt
--lasan -O0 -fsanitize=address -fno-omit-frame-pointer

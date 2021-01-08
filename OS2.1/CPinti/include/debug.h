@@ -23,17 +23,17 @@
 namespace cpinti_dbg
 {
 
-	void debug_mode(int valeur);
-	static int DEBUG_ENABLED = 0;
+	void debug_mode(long valeur);
+	static long DEBUG_ENABLED = 0;
 								
 	extern void CPINTI_DEBUG_C(const char* TexteFrancais, const char* TexteAnglais, 
 							const char* Declencheur, const char* Fonction, 
-							int DebutLigne, int NiveauAlerte, 
-							int AffDate, int RetourLigneHaut);
+							long DebutLigne, long NiveauAlerte, 
+							long AffDate, long RetourLigneHaut);
 
 	void CPINTI_DEBUG(std::string TexteFrancais, std::string TexteAnglais, 
 						std::string Declencheur, std::string Fonction, 
-						int DebutLigne, int NiveauAlerte,
-						int AffDate, int RetourLigneHaut);
+						long DebutLigne, long NiveauAlerte,
+						long AffDate, long RetourLigneHaut);
 
 }

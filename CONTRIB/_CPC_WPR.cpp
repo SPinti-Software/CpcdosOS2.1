@@ -75,11 +75,12 @@ namespace Wrapper_Cpcdos
 	#define EXAMPLE2			1002
 	#define EXAMPLE3			1003
 	#define EXAMPLE4			1004
+
 	///////////////////////////////////
 	
 
-	int Wrapper_Cpcdos_OSx_CPinti_Core(int FunctionID, double _CLE_, 
-										const char* ARG_1, int ARG_2, 
+	long Wrapper_Cpcdos_OSx_CPinti_Core(long FunctionID, double _CLE_, 
+										const char* ARG_1, long ARG_2, 
 										void* ARG_3, void* ARG_4, void* ARG_5)
 	{
 		switch(FunctionID)
@@ -166,6 +167,7 @@ namespace Wrapper_Cpcdos
 					
 				return 1;
 			}
+
 			
 			default:{
 				/** **/

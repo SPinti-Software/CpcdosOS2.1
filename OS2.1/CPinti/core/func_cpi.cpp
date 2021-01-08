@@ -22,6 +22,7 @@
 */
 
 #include <iostream>
+#include <sstream> 
 #include <sys/select.h>
 
 #include "func_cpi.h"
@@ -40,7 +41,7 @@ extern "C" int fseeko(FILE *_stream, off_t _offset, int _mode)
 	return fseek(_stream, _offset, _mode);
 }
 
-extern "C" long ftello (FILE *stream)
+extern "C" int ftello (FILE *stream)
 {
     long pos;
     pos = ftell (stream);
@@ -97,6 +98,7 @@ namespace cpinti
 			return convertir.str();
 		}
 		
+		
 		std::string to_string(long nombre)
 		{
 			// Cette methode permet de convertir du long --> string
@@ -145,6 +147,14 @@ namespace cpinti
 		{
 			// Cette methode permet de convertir du String --> unsigned int
 			unsigned int Resultat;
+			std::istringstream ( nombre ) >> Resultat;
+			return Resultat;
+		}
+		
+		unsigned long to_ulong(std::string nombre)
+		{
+			// Cette methode permet de convertir du String --> unsigned int
+			unsigned long Resultat;
 			std::istringstream ( nombre ) >> Resultat;
 			return Resultat;
 		}
@@ -246,7 +256,7 @@ namespace cpinti
 		cpinti_doevents(1);
 	}
 	
-	void cpinti_doevents(unsigned int Temps)
+	void cpinti_doevents(unsigned long Temps)
 	{
 
 
@@ -261,7 +271,7 @@ namespace cpinti
 		}
 	}
 	  
-	void cpinti_Sleep(unsigned int secondes)
+	void cpinti_Sleep(unsigned long secondes)
 	{
 
 		// S'il y a 0 secondes on force au switching
@@ -283,7 +293,7 @@ namespace cpinti
 		select(0, NULL, NULL, NULL, &tv);
 	}
 	
-	void cpinti_USleep(unsigned int MicroSecondes)
+	void cpinti_USleep(unsigned long MicroSecondes)
 	{
 
 		// S'il y a 0 us on force au switching

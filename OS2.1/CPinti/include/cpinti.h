@@ -38,32 +38,32 @@
 // =====================================================================
 namespace Wrapper_Cpcdos
 {
-	int Wrapper_Cpcdos_OSx_CPinti_Core(int FunctionID, double _CLE_, const char* ARG_1, 
-										int ARG_2, void* ARG_3, void* ARG_4, void* ARG_5);
+	long Wrapper_Cpcdos_OSx_CPinti_Core(long FunctionID, double _CLE_, const char* ARG_1, 
+										long ARG_2, void* ARG_3, void* ARG_4, void* ARG_5);
 							
-	int cpinti_WRAPPER(int FunctionID, double _CLE_, const char* ARG_1, 
-						int ARG_2, void* ARG_3, void* ARG_4, void* ARG_5);
+	long cpinti_WRAPPER(long FunctionID, double _CLE_, const char* ARG_1, 
+						long ARG_2, void* ARG_3, void* ARG_4, void* ARG_5);
 }
 
 namespace cpinti
 {
 
 	
-	static unsigned int SATATISTIQUES_NET_port		[_MAX_Stack_instance];
-	static unsigned int SATATISTIQUES_NET_recu		[_MAX_Stack_instance];
-	static unsigned int SATATISTIQUES_NET_envoye	[_MAX_Stack_instance];
-	static unsigned int SATATISTIQUES_NET_activite	[_MAX_Stack_instance];
-	static unsigned int SATATISTIQUES_NET_clients	[_MAX_Stack_instance];
+	static unsigned long SATATISTIQUES_NET_port		[_MAX_Stack_instance];
+	static unsigned long SATATISTIQUES_NET_recu		[_MAX_Stack_instance];
+	static unsigned long SATATISTIQUES_NET_envoye	[_MAX_Stack_instance];
+	static unsigned long SATATISTIQUES_NET_activite	[_MAX_Stack_instance];
+	static unsigned long SATATISTIQUES_NET_clients	[_MAX_Stack_instance];
 	
 	struct cpinti_core_checker
 	{
 		public:
 			// Indexeur des etapes (0 a _CHK_TEMPO_MAX)
-			static unsigned int CHECKER_CLOCK;
+			static unsigned long CHECKER_CLOCK;
 			
 			// Quelle etape la fonction doit traiter (Processus, thread..)
-			static unsigned int ETAPE;
-			static unsigned int Index;
+			static unsigned long ETAPE;
+			static unsigned long Index;
 	};
 	
 	

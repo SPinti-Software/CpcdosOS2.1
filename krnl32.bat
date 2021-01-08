@@ -1,6 +1,0 @@
-@echo off
-del DEBUG.LOG
-CPCLDR.EXE "%1" "%2" "%3" "%4" "%5"
-echo.
-echo Termine.
-pause
