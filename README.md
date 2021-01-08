@@ -31,7 +31,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  
 ### Contributeurs principaux
  - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM Viewer).
- - Simon MICHENAUD ([A propos](https://www.simon-micheneau.fr/about) - Principal intégrateur backend du site WEB.
+ - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Principal intégrateur backend du site WEB.
  - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du [groupe Discord](https://discord.com/invite/3Qm8xDp)
 
 ### Ultima testers & Développeurs d'OS Cpcdos
@@ -56,6 +56,6 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - [PolentesAxel](https://github.com/PolentesAxel)
  - [supercyp](https://github.com/Supercip971)
  
- Hésitez pas à vous rajouter s'il manque quelqu'un.
+_Les membres contributeur & ex-contributeurs, s'il manque votre nom, n'hésitez pas à vous rajouter ou modifier votre pseudo_
 
  
