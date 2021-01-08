@@ -51,6 +51,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 
 ### Remerciements & Contribution
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
+ - [Monax](https://github.com/sleepy-monax)
  - [d0p1](https://github.com/d0p1s4m4)
  - [alexbelm48](https://github.com/alexbelm48)
  - [PolentesAxel](https://github.com/PolentesAxel)
