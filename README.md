@@ -9,7 +9,7 @@ Crée le 15 Juillet 2011.
 Code source publié officiellement le 09 Janvier 2021.
 
 ## How to compile
- - Téléchargez et installez la dernière version de ![CWC](https://github.com/VLiance/Cwc)
+ - Téléchargez et installez la dernière version de ![https://github.com/VLiance/Cwc](CWC)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
  - Assurez-vous d'avoir une machine virtuelle ![éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos ![#1](https://www.youtube.com/user/cpcdososx) ![#2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
  - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
