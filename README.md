@@ -11,28 +11,34 @@ Code source publié officiellement le 09 Janvier 2021.
 ## How to compile
  - Téléchargez et installez la dernière version de ![CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
- - Assurez-vous d'avoir une machine virtuelle ![éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos ![#1](https://www.youtube.com/user/cpcdososx) ![#2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos)
+ - Assurez-vous d'avoir une machine virtuelle ![éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos ![#1](https://www.youtube.com/user/cpcdososx) ![#2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
  - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
+ - Executez-le avec votre OS !
+ 
+## How to contribute & Support
+Rejoignez le ![discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 
 ## Liens officiel
 - ![Site web - cpcdos.net](https://cpcdos.net)
 - ![Forum - developpez.net](www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos/)
 
 ## Updates binaires
-- Depuis le site web ci-dessous.
+- Depuis le ![site web](https://cpcdos.net) ci-dessus.
 - Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
 
 ## Développeur(s)
  - Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS & GoatOS
  
 ### Contributeurs principaux
- - Mickael BANVILLE (![Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (ExeLoader, OpenGL / GZE).
+ - Mickael BANVILLE (![Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM Viewer).
  - Simon MICHENAUD (![A propos](https://www.simon-micheneau.fr/about) - Principal intégrateur backend du site WEB.
  - Esteban CADIC (![Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du ![groupe Discord](https://discord.com/invite/3Qm8xDp)
 
 ### Ultima testers & Développeurs d'OS Cpcdos
- - Meaxy - ElieOS & Expériementations
- - Chrapati - Expériementations
+ - Léo VACHET - Un papoune de CraftyOS/GoatOS
+ - Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS
+ - Meaxy - ElieOS
+ - Chrapati
  - Nadir
  - PokeCraft
  - FicelleYTB
@@ -40,8 +46,6 @@ Code source publié officiellement le 09 Janvier 2021.
  - D3nX
  - 04Kylian
  - Léo ENDOR
- - Léo VACHET - Un papoune de CraftyOS/GoatOS
- - Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS
 
 ![Le reste ici](https://cpcdos.net/fr/contributors)
 
