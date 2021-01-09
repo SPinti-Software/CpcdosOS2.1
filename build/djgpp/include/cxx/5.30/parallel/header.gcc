@@ -1,0 +1,3 @@
+for_each_selectors.h foreachselector.h
+omp_loop_static.h omploopstatic.h
+multiway_mergesort.h multiway_mergesort.h2
