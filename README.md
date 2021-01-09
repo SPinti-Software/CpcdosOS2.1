@@ -10,7 +10,7 @@ Code source publié officiellement le 09 Janvier 2021.
 
 
 #### Informations
-_Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code. La version OS2.1 va rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos_
+_Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code. La version OS2.1 va finalement rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos_
 
 
 ## How to compile
