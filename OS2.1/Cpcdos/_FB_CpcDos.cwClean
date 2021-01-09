@@ -1,0 +1,15 @@
+;Register Cwc before using a .cwclean
+>
+-#Remove Core/bios_apm.asm
+-#Remove Core/bitm_dec.asm
+-#Remove Core/console.asm
+-#Remove Core/Cpcdos.asm
+-#Remove Core/cpu.asm
+-#Remove Core/Loader.asm
+-#Remove Core/loadscr.asm
+-#Remove Core/Memory.asm
+-#Remove Core/System.asm
+-#Remove Core/wrapper.asm
+>
+-#Remove LIBcpc.a
+>

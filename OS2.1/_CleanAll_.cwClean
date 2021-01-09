@@ -1,0 +1,10 @@
+;Register Cwc before using a .cwmake
+>
+-#Lauch ../build/_FB.cwClean
+>
+-#Lauch ../CONTRIB/_Contrib.cwClean
+>
+-#Lauch Cpcdos/_FB_CpcDos.cwClean
+>
+-#Lauch CPinti/_CPinti.cwClean
+>

@@ -1,0 +1,7 @@
+;Register Cwc before using a .cwclean
+>
+-#Remove obj/Debug/_CPC_WPR.d
+-#Remove obj/Debug/_CPC_WPR.o
+>
+-#Remove LIBwrp.a
+>
