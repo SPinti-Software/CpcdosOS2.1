@@ -1,0 +1,10 @@
+;Register Cwc before using a .cwclean
+>
+-#Remove djgpp/lib/LIBcpc.a
+-#Remove djgpp/lib/LIBcpnti.a
+-#Remove djgpp/lib/LIBwrp.a
+>
+-#Remove FB/lib/dos/LIBcpc.a
+-#Remove FB/lib/dos/LIBcpnti.a
+-#Remove FB/lib/dos/LIBwrp.a
+>

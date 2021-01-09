@@ -1,6 +1,7 @@
 ;Register Cwc before using a .cwmake
 >
 -#Lauch ../build/_FB.cwClean
+-#Lauch ../build/_Lib.cwClean
 >
 -#Lauch ../CONTRIB/_Contrib.cwClean
 >
