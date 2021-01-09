@@ -43,8 +43,8 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - Léo VACHET - Un papoune de CraftyOS/GoatOS
  - Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS
  - Meaxy - ElieOS
- - Chrapati
- - Nadir
+ - Chrapati - Hexac System
+ - Nadir - MineOSX
  - PokeCraft
  - FicelleYTB
  - Climax
