@@ -2,9 +2,8 @@
 >
 -{_wToolchain}=VLianceTool/DJGPP_RT
 >
-fbc_dos -v -p FB/lib/dos/ @ARGS.CFG 
+fbc_dos -v -p build/FB/lib/dos/ @ARGS.CFG 
 >
--#Copy LIBcpc.a ../../FB/lib/DOS/LIBcpc.a
--#Copy LIBcpc.a ../../djgpp/lib/LIBcpc.a
--#Copy LIBcpc.a ../../../CpcdosSDK/FB/lib/dos/LIBcpc.a
+-#Copy LIBcpc.a ../../build/FB/lib/DOS/LIBcpc.a
+-#Copy LIBcpc.a ../../build/djgpp/lib/LIBcpc.a
 >

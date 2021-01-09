@@ -7,7 +7,7 @@
 >
 -{vIncl}= 
 -I include/
--I ../../djgpp/include/
+-I ../../build/djgpp/include/
 -std=c++11 -m32 
 -O0 -march=i386
 -g3
@@ -34,7 +34,6 @@
 ;Build Lib
 -o  obj/{_sOpt}/ -#To LIBcpnti.a
 >
--#Copy LIBcpnti.a ../../FB/lib/DOS/LIBcpnti.a
--#Copy LIBcpnti.a ../../djgpp/lib/LIBcpnti.a
--#Copy LIBcpnti.a ../../../CpcdosSDK/FB/lib/dos/LIBcpnti.a
+-#Copy LIBcpnti.a ../../build/FB/lib/DOS/LIBcpnti.a
+-#Copy LIBcpnti.a ../../build/djgpp/lib/LIBcpnti.a
 >

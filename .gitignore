@@ -27,3 +27,4 @@ djgpp/
 *.log
 *.wdat
 *.d
+/OS2.1/Copy to VM.bat
