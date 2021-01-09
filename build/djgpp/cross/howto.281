@@ -1,0 +1,116 @@
+Author:  DJ Delorie
+Created:  Mon Mar 1 19:19:28 1999
+Updated:  Sat Apr 3 22:30:47 1999
+
+Step-by-step instructions for setting up a djgpp cross compiler on your linux machine.
+
+
+Lines that start with '$' indicate that you should type in the line as
+shown (except for the '$' of course), substituting paths appropriate
+for your system.
+
+I'm pretty sure this is what I did to install my djgpp cross
+compilers...  let me know if I missed anything - DJ
+
+$ mkdir -p ~/djgpp/cross
+$ cd ~/djgpp/cross
+
+$ unzip -a ~/djcrx202.zip		(get this from simtel)
+
+$ mkdir /usr/local/i586-pc-msdosdjgpp
+$ cd /usr/local/i586-pc-msdosdjgpp
+$ mkdir bin lib
+$ ln -s ~/djgpp/cross/include .
+$ cd lib
+$ ln -s ~/djgpp/cross/lib/* .
+
+If you'll be wanting to delete your djgpp directory later, use "cp -r"
+instead of "ln -s" to copy the directories and libraries instead of
+linking them.
+
+
+$ cd ~/djgpp/cross/src/stub
+$ gcc -O stubify.c -o /usr/local/i586-pc-msdosdjgpp/bin/stubify
+
+$ cd ~/djgpp/cross
+$ tar xvfz ~/gcc-2.8.1.tar.gz		(get this from ftp.gnu.org)
+$ tar xvfz ~/binutils-2.9.1.tar.gz	(get this from ftp.gnu.org)
+$ mkdir binu gcc
+
+Apply this patch in the binutils-2.9.1/gas/config directory.  This
+prevents symbol table bloat:
+
+--- te-go32.h.orig      Thu May 21 10:41:36 1998
++++ te-go32.h   Thu May 21 15:45:14 1998
+@@ -6,7 +6,7 @@
+ #define LOCAL_LABELS_FB 1
+
+ #define TARGET_FORMAT "coff-go32"
+-
++#define TE_GO32
+ /* GAS should treat '.align value' as an alignment of 2**value */
+ #define USE_ALIGN_PTWO
+
+--- tc-i386.h.orig      Thu May 21 10:41:26 1998
++++ tc-i386.h   Thu May 21 16:50:14 1998
+@@ -141,9 +141,11 @@
+ #ifndef BFD_ASSEMBLER
+ #ifndef OBJ_AOUT
+ #ifndef TE_PE
++#ifndef TE_GO32
+ /* Local labels starts with .L */
+ #define LOCAL_LABEL(name) (name[0] == '.' \
+                 && (name[1] == 'L' || name[1] == 'X' || name[1] == '.'))
++#endif
+ #endif
+ #endif
+
+
+You have to do binutils first - and install it - because gcc's build
+requires it.
+
+$ cd ~/djgpp/cross/binu
+$ ../binutils-2.9.1/configure --target=i586-pc-msdosdjgpp --prefix=/usr/local
+$ make
+$ make install
+
+$ cd ../gcc
+$ ../gcc-2.8.1/configure --target=i586-pc-msdosdjgpp --prefix=/usr/local
+
+If you omit the --prefix, it might not find the djgpp headers you installed.
+
+OK, before you build gcc, edit the Makefile to not do the libgcc1-test
+target.  The edited Makefile should look something like this (note the
+#'s):
+
+libgcc1-test: libgcc1-test.o native $(GCC_PARTS)
+        @echo "Testing libgcc1.  Ignore linker warning messages."
+        # $(GCC_FOR_TARGET) $(GCC_CFLAGS) libgcc1-test.o -o libgcc1-test \
+        #  -nostartfiles -nostdlib `$(GCC_FOR_TARGET) --print-libgcc-file-name`
+        touch libgcc1-test
+
+Note: You can omit this step *if* the version of bash you're using
+(type "bash -version") is *less than* version 2.*.
+
+$ make
+$ make install
+
+$ cp ~/djgpp/cross/lib/specs /usr/local/lib/gcc-lib/i586-pc-msdosdjgpp/2.8.1/specs
+
+You should now be able to use "i586-pc-msdosdjgpp-gcc" to
+cross-compile programs from linux to dos!
+
+Note: I did this for convenience:
+
+$ cd /usr/local/bin
+$ for i in i586-pc-msdosdjgpp-*
+do
+ln -s $i `echo $i | sed s/i586-pc-msdosdjgpp/dos/`
+done
+
+Then, you can use "dos-gcc" as well as "i586-pc-msdosdjgpp-gcc"
+
+$ i586-pc-msdosdjgpp-gcc -v
+Reading specs from /usr/local/lib/gcc-lib/i586-pc-msdosdjgpp/2.8.1/specs
+gcc version 2.8.1
+

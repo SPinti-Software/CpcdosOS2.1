@@ -1,0 +1,41 @@
+#
+# DSM for gcc 5.3.0
+#
+
+dsm-file-version: 1.1
+dsm-name: gpp530b
+dsm-version: 0.5.0
+
+dsm-author: @porter@
+dsm-author-email: @e_mail@
+
+name: g++
+version: 5.3.0
+manifest: gpp530b
+type: binaries
+sources-dsm: gcc530s
+short-description: GNU Compiler Collection, C++ compiler
+organisation: Free Software Foundation
+license: GNU General Public License
+web-site: http://gcc.gnu.org
+
+porter: @porter@
+porter-email: @e_mail@
+
+simtelnet-path: v2gnu/
+zip: gpp530b.zip
+
+#
+# Dependencies
+#
+
+replaces: g++ < 5.3.0
+
+requires: DPMI
+requires: djdev >= >=2.05
+requires: binutils >= 2.16
+requires: gcc 5.3.0
+conflicts-with: g++ < 5.3.0
+
+# For reading docs
+depends-on: info-reader

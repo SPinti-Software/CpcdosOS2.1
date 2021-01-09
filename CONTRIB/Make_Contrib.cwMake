@@ -22,6 +22,6 @@
 ;Build Lib
 -o  obj/{_sOpt}/ -#To LIBwrp.a
 >
--#Copy LIBwrp.a ../FB/lib/DOS/LIBwrp.a
--#Copy LIBwrp.a ../djgpp/lib/LIBwrp.a
+-#Copy LIBwrp.a ../build/FB/lib/DOS/LIBwrp.a
+-#Copy LIBwrp.a ../build/djgpp/lib/LIBwrp.a
 >

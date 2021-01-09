@@ -1,0 +1,41 @@
+#
+# DSM for gcc 6.2.0
+#
+
+dsm-file-version: 1.1
+dsm-name: gpp620b
+dsm-version: 0.5.0
+
+dsm-author: @porter@
+dsm-author-email: @e_mail@
+
+name: g++
+version: 6.2.0
+manifest: gpp620b
+type: binaries
+sources-dsm: gcc620s
+short-description: GNU Compiler Collection, C++ compiler
+organisation: Free Software Foundation
+license: GNU General Public License
+web-site: http://gcc.gnu.org
+
+porter: @porter@
+porter-email: @e_mail@
+
+simtelnet-path: v2gnu/
+zip: gpp620b.zip
+
+#
+# Dependencies
+#
+
+replaces: g++ < 6.2.0
+
+requires: DPMI
+requires: djdev >= >=2.06
+requires: binutils >= 2.16
+requires: gcc 6.2.0
+conflicts-with: g++ < 6.2.0
+
+# For reading docs
+depends-on: info-reader

@@ -28,3 +28,4 @@ djgpp/
 *.wdat
 *.d
 /OS2.1/Copy to VM.bat
+/bin/ldopt.tmp

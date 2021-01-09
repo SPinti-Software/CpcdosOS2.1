@@ -1,0 +1,284 @@
+Linux x86 Host Cross Compiler HOWTO for the DJGPP Target (Revised)
+updated 11-14-2002 by Charles Wilkins
+
+
+Step-by-step instructions for setting up a djgpp cross compiler on your linux
+machine
+
+This HOWTO is a revision of the March 1, 1999 HOWTO by DJ Delorie.
+
+_______________________________________________________________________________
+
+[1] Prerequisite Requirements
+
+It is assumed that you have the following already properly installed on your
+Linux operating system.
+
+  a native GCC compiler 2.95.3 or greater
+  gnu make 3.79.1 or greater
+  binutils 2.13 or greater
+  bash 2.05 or greater
+  autoconf-2.13 (not 2.5x)
+  unzip-5.41 or greater ( http://www.info-zip.org )
+
+Earlier versions may work, but were not tested.
+
+The steps performed in this HOWTO were done in Linux Mandrake with
+kernel-2.4.19 on a dual i686.  There are sometimes subtle differences between
+Linux flavors for getting things done.  Please let me know if you find
+something in this HOWTO that doesn't work as expected.  Packages to be
+compiled, as listed below, have been successfully build tested using a native
+gcc-2.95.3 compiler and a native gcc-3.2 compiler.  All of the make commands
+listed below have been also tested with -j2 and -j3 parameters.  This can
+improve compiling time greatly for systems with multiple processors.
+
+_______________________________________________________________________________
+
+[2] Sources and Libraries Needed to Build the Cross Compiler
+
+  gcc-3.2.tar.gz
+  binutils-2.13.1.tar.gz
+
+  djcrx203.zip can be found at:
+  http://www.simtel.net/gnudlpage.php?product=/gnu/djgpp/v2/djcrx203.zip&name=djcrx203.zip
+
+  gcc32s2.zip can be found at:
+  http://www.simtel.net/gnudlpage.php?product=/gnu/djgpp/v2gnu/gcc32s2.zip&name=gcc32s2.zip
+
+Mirrors to GNU sources can be found at http://gcc.gnu.org/mirrors.html
+
+Mirrors to DJGPP packages can be found at
+http://www.delorie.com/djgpp/getting.html
+
+Latest News, Bugs & Workarounds, and Windows XP & Windows 2000 status can be
+found at http://clio.rice.edu/djgpp/win2k/main.htm
+
+_______________________________________________________________________________
+
+[3] Preparing the Source and Target Trees
+
+Set these environment variables according to your configuration:
+
+prefix the directory where you will be installing to
+target canonical target name i.e. i586-pc-msdosdjgpp
+PATH updated for this shell session so that the build can see the cross-binutils
+CC the path to your gcc compiler
+
+assuming sh/bash/ksh
+  export prefix=/usr/local/compiler/cross/djgpp
+  export target=i586-pc-msdosdjgpp
+  export PATH=$PATH:$prefix/bin
+  export CC=/usr/local/compiler/gcc-3.2/bin/gcc
+
+assuming csh
+  setenv prefix /usr/local/compiler/cross/djgpp
+  setenv target i586-pc-msdosdjgpp
+  setenv PATH $PATH:$prefix/bin
+  setenv CC /usr/local/compiler/gcc-3.2/bin/gcc
+
+Make the target directory:
+  mkdir -p $prefix/$target
+
+Make the source directory where you want it:
+  mkdir -p packages/cross
+
+The following files need to be in the 'packages' directory:
+  cd packages
+
+  gcc-3.2.tar.gz
+  binutils-2.13.1.tar.gz
+  djcrx203.zip
+  gcc32s2.zip
+
+Use the following commands to unarchive the packages:
+  cd cross
+
+  unzip -a ../djcrx203.zip
+  unzip -a ../gcc32s2.zip
+  chmod 744 unpack-gcc.sh
+  ./unpack-gcc.sh ../gcc-3.2.tar.gz  ( takes a little while )
+  rm -f gcc32s.zip ( optional step )
+
+  cd gnu
+  tar xzvf ../../binutils-2.13.1.tar.gz
+  mkdir binutils-2.13.1-obj gcc-3.2-obj
+
+_______________________________________________________________________________
+
+[4] Building the Packages
+
+Copy djgpp headers and libraries to the target tree:
+  cd ..
+  mkdir $prefix/$target/bin
+  cp -r lib $prefix/$target
+  cp -r include $prefix/$target
+
+Compile stubify:
+  cd src/stub
+  $CC -O2 stubify.c -o $prefix/$target/bin/stubify
+
+Build cross-binutils:
+  cd ../../gnu/binutils-2.13.1-obj
+
+  ../binutils-2.13.1/configure --prefix=$prefix \
+  --target=$target >& configure.log
+
+  make >& make.log
+  make install >& install.log
+
+Build cross-gcc:
+  cd ../gcc-3.2-obj
+
+  ../gcc-3.2/configure --prefix=$prefix --target=$target \
+  --with-headers=$prefix/$target/include >& configure.log
+
+  make >& make.log
+  make install >& install.log
+
+Make symbolic links:
+  cd $prefix/$target/lib
+
+  ln -s libstdc++.a $prefix/$target/lib/libstdcxx.a
+  ln -s libsupc++.a $prefix/$target/lib/libsupcxx.a
+  ln -s $prefix/bin/$target-gcc /usr/local/bin/djgcc
+  ln -s $prefix/bin/$target-g++ /usr/local/bin/djgpp
+
+Consult your configure.log, make.log, and install.log and make sure that the
+build succeeded as expected.  One built, you can safely delete the files in
+your source tree if you choose.
+
+  cd /path/to/packages
+  rm -rf cross ( optional step )
+
+_______________________________________________________________________________
+
+[5] Using the Compiler
+
+Use djgcc to compile .c (standard C) files.
+Use djgpp to compile .cpp .cc (standard C++) files.
+
+Compiling your executable:
+
+This simple C++ program...
+
+  // welcome.cpp
+  #include <iostream>
+  int main ()
+  {
+  std::cout << "Welcome to GNU C++ for Linux programming!\n" << std::endl;
+  return 0;
+  }
+
+can be compiled using the following command:
+  djgpp -O2 welcome.cpp -o welcome.exe
+
+To compile with debugging information:
+  djgpp -O2 -g welcome.cpp -o welcome.exe
+
+To compile with no debugging information and strip the binary:
+  djgpp -O2 -s welcome.cpp -o welcome.exe
+
+
+Further binary compression can be achieved by compressing your binary with UPX.
+http://upx.sourceforge.net/
+
+Note:  Debugging is not possible with compressed or stripped binaries.
+More information about using the compiler can be found at
+http://www.delorie.com/djgpp/doc/ug/
+
+_______________________________________________________________________________
+
+[6] 'DOS'ifying your .exe file
+
+If your build was successful and you have compiled a C or C++ file into an .exe
+file, it will run under Win32.
+
+There are a couple ways of running your file under real mode DOS or plain doze.
+
+Get these DJGPP packages:
+  djdev203.zip can be found at
+http://www.simtel.net/gnudlpage.php?product=/gnu/djgpp/v2/djdev203.zip&name=djdev203.zip
+
+  csdpmi5b.zip can be found at
+http://www.simtel.net/gnudlpage.php?product=/gnu/djgpp/v2misc/csdpmi5b.zip&name=csdpmi5b.zip
+
+Better sources for this information are included with the above packages, but
+here is a summary of some things you can do.
+
+From within DOS or Windows, unzip both of the above zips from the same
+directory.
+
+To simply run your executable under dos, make sure that CWSDPMI.EXE is in your
+path or in the same directory as the executable.
+
+To add a stub to the executable so that it can run by itself, do the following:
+  cd bin
+  copy /path/to/yourfile.exe .
+
+Create a COFF image of your binary.
+  exe2coff yourfile.exe
+
+Combine the coff image ( yourfile ) with cwsdstub.exe
+  copy /B cwsdstub.exe+yourfile newfile.exe
+
+The newly created file  ( newfile.exe ) will now run under DOS without the
+presence of an external DPMI file.
+
+Consider checking out http://www.delorie.com/djgpp/doc/ for more information on
+the use of DPMI.
+
+_______________________________________________________________________________
+
+[7] Resources helpful to the creation of this HOWTO
+
+ The following Internet Resources played an integral role in developing this
+HOWTO:
+
+ The comp.os.msdos.djgpp newsgroup at news:comp.os.msdos.djgpp
+ The DJGPP Homepage at http://www.delorie.com/djgpp
+ The DJGPP mailing list archives at http://www.delorie.com/djgpp/mail-archives/
+ The RedHat CROSSGCC mailing list archives at
+  http://sources.redhat.com/ml/crossgcc/
+ The Gnu Compiler Collection Online Documents at http://gcc.gnu.org/install/
+ and as always ... Google at http://www.google.com/
+
+_______________________________________________________________________________
+
+[8] Credits
+
+I would like to especially thank the following individuals who gave me their
+time and attention towards helping me troubleshoot various DJGPP build issues
+and develop this HOWTO.
+
+DJ Delorie
+Andris Pavenis
+Andrew Cottrell
+Charles Sandmann
+Kai Ruottu
+Hans-Bernhard Broeker
+Martin Stromberg
+Eli Zaretskii
+
+
+Questions or Comments about this HOWTO? -> mailto:chas@pcscs.com
+Visit the DJGPP homepage at http://www.delorie.com/djgpp/
+
+_______________________________________________________________________________
+
+About Me
+
+My name is Charles Albert Frederick Wilkins Jr and I am 32.
+I am happily married to my wife Linda in Cherry Hill, N.J.
+I have two female boxer dogs, Sugar and Scout.
+
+I am currently a C++ 'developer in training' and am pursuing a Bachelors degree
+in Computer Science.  I am a Master Certified Novell Engineer and am A+
+Certified by CompTIA.  I have an associates degree in automotive technology and
+applied science.  I am a Master Automobile Technician and previously worked for
+Chevrolet for 5 years.  When I am not hacking something up in Linux, playing
+with my dogs, or spending time with my wife, I am playing UT2003 or with the
+Unreal Editor.
+
+Cheers,
+Charles
+
