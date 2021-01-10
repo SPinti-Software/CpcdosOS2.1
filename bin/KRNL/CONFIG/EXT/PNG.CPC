@@ -20,7 +20,7 @@ window/ Img_Viewer
 	.event				= ""
 	@#window_handle create/
 end/ window
-
+ 
 picturebox/ viewer
 	.handle			= "%window_handle%"
 	.parameters		= "IMGAUTO:2"
@@ -29,14 +29,12 @@ picturebox/ viewer
 	.sx				= "%window_x%"
 	.sy				= "%window_y%"
 	.Image			= "%source%"
-	.opaticy		= "255"
+	.opacity		= "255"
 	.event			= ""
 	create/
 end/ Picturebox
 
-
-
-       
+ 
 
 
 
