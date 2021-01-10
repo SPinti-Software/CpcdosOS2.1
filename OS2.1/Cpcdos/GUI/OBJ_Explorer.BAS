@@ -329,7 +329,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 									End if
 								End Scope
 
-								' Fichier en cours
+								' Fichier en cours - CRASH A REVOIR 10-JAN-2021
 								Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 								
 								

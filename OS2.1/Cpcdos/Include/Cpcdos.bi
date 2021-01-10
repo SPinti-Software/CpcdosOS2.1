@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "08" 
+CONST _VJOUR as string 	= "10" 
 CONST _VMOIS as string 	= "01"
 CONST _VANNEE as string = "2021"
 
@@ -596,6 +596,9 @@ Type __Noyau_Cpcdos_OSx__
 
 		' Charger la liste des formats de fichiers
 		Declare Function 	Load_list_format	(source as string) as boolean
+		
+		' Executer un fichier (Image, programme etc...)
+		Declare Function 	Executer_Fichier	(source as String, _CLE_ as double) as boolean
 		
 		
 		Declare sub tester_erreur_memoire()

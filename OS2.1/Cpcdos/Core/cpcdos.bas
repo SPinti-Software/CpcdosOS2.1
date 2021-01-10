@@ -1656,6 +1656,56 @@ Function __Noyau_Cpcdos_OSx__.Load_list_format(source as String) as boolean
 	return true
 End Function
 
+Function __Noyau_Cpcdos_OSx__.Executer_Fichier(source as String, _cle_ as double) as boolean
+	' Cette fonction permet d'executer un fichier avec un format attribué (Image, programme etc...)
+	
+	Dim Extension as string = Ucase(MID(source, InstrREV(source, ".") + 1))
+	
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[CPCDOS] Executer_Fichier() Recherche du format pour '" & source & "' (" & Extension & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	Else
+		DEBUG("[CPCDOS] Executer_Fichier() Checking format for '" & source & "' (" & Extension & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	End if
+	
+	' Rechercher l'index de l'extension enregistre
+	
+	
+	Dim Index_extension as integer = FORMAT_MAX
+	For boucle as integer = 1 to FORMAT_MAX
+	
+		' Si extension correspond
+		if Extension = Ucase(CPCDOS_INSTANCE.FORMAT_Extention(boucle)) Then
+			Index_extension = boucle
+			exit for
+		End if
+	Next boucle
+	
+	if Index_extension = FORMAT_MAX then
+		' Extension inconnue
+		DEBUG("[ERROR]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		
+		return false
+	else
+		DEBUG("[OK] (" & Index_extension & ") --> '" & FORMAT_Programme(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		
+		' Extenxion connue, on lance le programme associe
+		if Len(FORMAT_Programme(Index_extension)) > 1 then
+			if FORMAT_Programme(Index_extension) = "NULL" Then
+				' Pas de programmes associes
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CPCDOS] Executer_Fichier() Extension connue, mais pas de programmes associe", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				Else
+					DEBUG("[CPCDOS] Executer_Fichier() Known extension, but no associated programs", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				End if
+			else
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ _ARG_1 = " & source, _cle_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("EXE/ " & FORMAT_Programme(Index_extension) & "\#SAMEID", _cle_, 3, 0, "")
+			End if
+		End if
+	End if
+	
+
+End function
 
 public sub __Noyau_Cpcdos_OSx__.tester_erreur_memoire()
 	SCOPE

@@ -1139,6 +1139,25 @@ Function _SHELL_Cpcdos_OSx__.Recherche_Fonction_CPCDOS(byval CCP_Fonction_EXEC a
 			END IF
 		End if
 		
+		' ** Executer un fichier CpcdosC+ avec des arguments
+		' IF CCP_Fonction_EXEC = "CPC.EXECUTION" Then 
+			' IF CCP_Fonction_ARGS_N = 1 Then
+					
+					' CCP_Fonction_DATA(1)
+				' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(", This._CLE_, 3, 0, " , _CLE_)
+				
+				' Recherche_Fonction_CPCDOS =
+				' Exit _scope2
+			' ELSE
+				'' Erreur !
+				' ERR_NB_ARG_ACT = CCP_Fonction_ARGS_N
+				' ERR_NB_ARG_MIN = 1
+				' ERR_NB_ARG_MAX = 1
+				' Exit _scope2, _scope
+			' END IF
+		
+		' End if
+		
 	_end_scope2
 	' et quitter
 	Exit function

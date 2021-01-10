@@ -287,9 +287,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 	_scope
 		
 		Dim Slash_FN_Presend 		as boolean = FALSE
+		Dim SAME_ID					as boolean = false
 		Dim Non_Remplace 			as integer = 0
 		Dim Non_Fonction 			as integer = 0
 		Dim Position_CMD 			as integer = 0
+		
 		
 		Dim CommPosition			as integer
 		Dim TailleComm				as Integer
@@ -380,6 +382,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			Commande = MID(Commande, 1, Instr(ucase(Commande), "\#PAUSE")-1)
 		end if
+		
+		' Conserver l'identifiant
+		IF Instr(UCASE(Commande), "\#SAMEID") > 0 Then
+			' Enlever l'argument a la fin
+			Commande = Mid(Commande, 1, Instr(UCASE(Commande), "\#SAMEID") - 1)
+			
+			' Et signaler l'activation de SAME_ID
+			SAME_ID = true
+		End if
 		
 
 		' Executer une fonction d'un fichier (DIRECT)
@@ -12152,17 +12163,33 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							' Nouvelle_Cle = _CLE_
 							
 						Else
-							' Si c'est pas une fonction, on regenere une nouvelle cle
-							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-									DEBUG("[CpcdosC+] Redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-								Else
-									DEBUG("[CpcdosC+] Redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-								End If
+						
+							' On doit conserver l'ID
+							if SAME_ID = true Then
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+										DEBUG("[CpcdosC+] (SAME_ID) Pas de redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									Else
+										DEBUG("[CpcdosC+] (SAME_ID) No redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									End If
+								End if
+								
+								Nouvelle_TID = Auth_TID
+								Nouvelle_Cle = _CLE_
+							Else
+						
+								' Si c'est pas une fonction, si Same_ID, on regenere une nouvelle cle
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+										DEBUG("[CpcdosC+] Redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									Else
+										DEBUG("[CpcdosC+] Redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									End If
+								End if
+				
+								Nouvelle_TID = int(Auth_TID + CPCDOS_INSTANCE.Generer_RND(50, 99))
+								Nouvelle_Cle = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Nouvelle_TID)
 							End if
-			
-							Nouvelle_TID = int(Auth_TID + CPCDOS_INSTANCE.Generer_RND(50, 99))
-							Nouvelle_Cle = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Nouvelle_TID)
 						End if
 						
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -21329,15 +21356,32 @@ _FIN_EXE_CCP_EXE:
 	else
 		IF VerifierLabel = 0 then ' Si ce n'est pas non plus un label
 			IF CommTrouve = 0 then
-				Message_erreur = ERRAVT("ERR_009", 0)
-				IF Numero_de_Ligne > 0 Then Message_erreur = "(lgn:" & Numero_de_Ligne & ") " & Message_erreur
-				DEBUG("[CpcdosC+] " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			
+				' Verifier si c'est pas un fichier a executer
+				dim ProbableFichier as String = _COMMANDE_
+				' Obtenir le path courant si le path n'est pas abolue mais relative
+				if NOT instr(ProbableFichier, ":") > 0 Then ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_ExeEnCours(2) & "\" & ProbableFichier
 				
-				' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-					' CpcdosCP_SHELL("Msgbox/ " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ". /TITLE:ERR_009 : " & Nom_Fichier_DBG & ":" & Numero_de_Ligne & " - CpcdosC+ Shell /ERROR:3", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				' End if
 				
-				CpcdosCP_SHELL = "ERR_009"
+				ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(ProbableFichier, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE)
+				if CPCDOS_INSTANCE.Fichier_Existe(ProbableFichier) = true then
+					' C'est un fichier existant !
+					if CPCDOS_INSTANCE.Executer_Fichier(ProbableFichier, _CLE_) = false then
+						DEBUG("[CpcdosC+] Unknow file format '" & ProbableFichier & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						CpcdosCP_SHELL = "ERR_009"
+					End if
+					
+				else
+					Message_erreur = ERRAVT("ERR_009", 0)
+					IF Numero_de_Ligne > 0 Then Message_erreur = "(lgn:" & Numero_de_Ligne & ") " & Message_erreur
+					DEBUG("[CpcdosC+] " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					
+					' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
+						' CpcdosCP_SHELL("Msgbox/ " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ". /TITLE:ERR_009 : " & Nom_Fichier_DBG & ":" & Numero_de_Ligne & " - CpcdosC+ Shell /ERROR:3", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+					' End if
+					
+					CpcdosCP_SHELL = "ERR_009"
+				End if
 			End if
 		End if
 	END IF

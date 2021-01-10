@@ -1,18 +1,18 @@
 
 fenetre/ APP1
-        .titre                  = "My first window !"
-	.px				= "100"
-	.py				= "100"
-	.tx				= "420"
-	.ty				= "263"
-        .Opacite                        = "100"
-        .Parametres                     = "TYPE:0 ALPHAMODE:0"
-        .CouleurFenetre                 = "050,050,100"
-        .CouleurTitre                   = "255,255,255"
-        .CouleurFond                    = "150,000,220"
-        .Icone                          = "%OS_GUI%/ICO_DEF.png"
-        rem/ .ImgTitre                  = "IMG_TITRE.PNG"
-        .event                          = "%HOST_OS%/TEST.CPC"
+	.titre				= "My first window !"
+	.px					= "100"
+	.py					= "100"
+	.tx					= "420"
+	.ty					= "263"
+	.Opacite			= "100"
+	.Parametres			= "TYPE:0 ALPHAMODE:0"
+	.CouleurFenetre		= "050,050,100"
+	.CouleurTitre		= "255,255,255"
+	.CouleurFond		= "150,000,220"
+	.Icone				= "%OS_GUI%/ICO_DEF.png"
+	rem/ .ImgTitre                  = "IMG_TITRE.PNG"
+	.event				= "%HOST_OS%/TEST.CPC"
 	@#Handle_Fenetre creer/
 Fin/ fenetre
 
@@ -38,7 +38,7 @@ Bouton/ Mon_Bouton
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
-        .texte                  = "OpenGL test"
+	.texte                  = "OpenGL test"
 	.Image			= "%OS_GUI%/Buttons/BTN_BLUE.png"
 	.event			= "%HOST_OS%/TEST.CPC=MouseClick,MouseLeave"
 	creer/
@@ -52,7 +52,7 @@ Bouton/ Mon_Bouton2
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
-        .texte                  = "GZE test"
+	.texte                  = "GZE test"
 	.Image			= "%OS_GUI%/Buttons/BTN_PPOR.png"
 	.event			= "%HOST_OS%/TEST.CPC"
 	creer/
@@ -62,7 +62,7 @@ Bouton/ Mon_Bouton3
 	.Handle			= "%Handle_Fenetre%"
 	.Parametres		= "IMGAUTO:2"
 	.PX				= "180"
-        .PY                             = "120"
+	.PY                             = "120"
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
@@ -92,14 +92,14 @@ fenetre/ APP2
 	.py				= "150"
 	.tx				= "400"
 	.ty				= "226"
-        .Opacite                        = "190"
-        .Parametres                     = "TYPE:0 ALPHAMODE:1"
-        .CouleurFenetre                 = "050,050,100"
-        .CouleurTitre                   = "120,120,210"
-        .CouleurFond                    = "100,240,100"
-        .Icone                          = "%OS_GUI%/ICO_CFT.png"
-        rem/ .ImgTitre                  = "IMG_TITRE.PNG"
-        .event                          = ""
+	.Opacite                        = "190"
+	.Parametres                     = "TYPE:0 ALPHAMODE:1"
+	.CouleurFenetre                 = "050,050,100"
+	.CouleurTitre                   = "120,120,210"
+	.CouleurFond                    = "100,240,100"
+	.Icone                          = "%OS_GUI%/ICO_CFT.png"
+	rem/ .ImgTitre                  = "IMG_TITRE.PNG"
+	.event                          = ""
 	@#Handle_Fenetre creer/
 Fin/ fenetre
 
@@ -109,7 +109,7 @@ rem/ sys/ /debug = 2
 
 picturebox/ Image3
 	.Handle			= "%Handle_Fenetre%"
-	
+
 	.Parametres		= "IMGAUTO:2"
 	.PX				= "0"
 	.PY				= "0"
@@ -141,15 +141,15 @@ Fin/ Imagebox
 
 Textbox/ MonTexteBox
 	.handle			= "%handle_fenetre%"
-        .parametres             = "EDIT:1 MULTILINE:0"
-        .PX                     = "50"
-        .PY                     = "50"
-        .TX                     = "200"
-        .TY                     = "15"
-        .CouleurFond            = "255,255,255"
-        .CouleurTexte           = "000,000,000"
+	.parametres             = "EDIT:1 MULTILINE:0"
+	.PX                     = "50"
+	.PY                     = "50"
+	.TX                     = "200"
+	.TY                     = "15"
+	.CouleurFond            = "255,255,255"
+	.CouleurTexte           = "000,000,000"
 	.texte			= "EDIT me !"
-        // .event                  = "%HOST_OS%/test.cpc"
+	// .event                  = "%HOST_OS%/test.cpc"
 	Creer/
 Fin/ Textebox
 
@@ -164,7 +164,7 @@ Checkbox/ MonCheckbox
 	.PY					= "80"
 	.TX					= "10"
 	.TY					= "10"
-	
+
 	.evenement			= "%_exe_path_%=CLICK"
 	Creer/
 Fin/ checkBox
@@ -181,7 +181,7 @@ Checkbox/ MonCheckbox
 	.PY					= "100"
 	.TX					= "10"
 	.TY					= "10"
-	
+
 	.evenement			= "%_exe_path_%=CLICK"
 	Creer/
 Fin/ checkBox
@@ -198,7 +198,7 @@ Checkbox/ MonCheckbox
 	.PY					= "120"
 	.TX					= "10"
 	.TY					= "10"
-	
+
 	.evenement			= "%_exe_path_%=CLICK"
 	Creer/
 Fin/ checkBox
@@ -206,14 +206,14 @@ Fin/ checkBox
 
 Textbox/ MonTexteBox
 	.handle			= "%handle_fenetre%"
-        .parametres             = "EDIT:1 MULTILINE:1 COL:1"
-        .PX                     = "150"
-        .PY                     = "150"
-        .TX                     = "200"
-        .TY                     = "60"
-        .CouleurFond            = "255,255,255"
-        .CouleurTexte           = "050,100,250"
-        .texte                  = "Multiligne TEST"
+	.parametres             = "EDIT:1 MULTILINE:1 COL:1"
+	.PX                     = "150"
+	.PY                     = "150"
+	.TX                     = "200"
+	.TY                     = "60"
+	.CouleurFond            = "255,255,255"
+	.CouleurTexte           = "050,100,250"
+	.texte                  = "Multiligne TEST"
 	Creer/
 Fin/ Textebox
 

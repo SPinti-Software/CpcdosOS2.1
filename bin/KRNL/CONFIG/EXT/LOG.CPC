@@ -1,0 +1,7 @@
+// This file allow to execute CPC format file
+
+msgbox/ %_ARG_1%
+
+
+
+

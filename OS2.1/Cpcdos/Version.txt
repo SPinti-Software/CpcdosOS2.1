@@ -12,10 +12,10 @@
 	#### En bref ####
 	#################
 
-		--> 5	Ajouts de divers fonctionnalités.
+		--> 7	Ajouts de divers fonctionnalités.
 		--> 3	corrections importantes.
 		--> 0	optimisations.
-		--> 2	corrections et modifications mineures.
+		--> 3	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -51,6 +51,8 @@
 					ou "SYS/ /Fileformat-update MonFichier.ini" pour choisir son propre profile de format.
 		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-gui-load" qui permet de charger graphiquement les icônes associés
 						aux formats des fichier. (Taille minimale et maximale).
+		- [CPCDOSC+] Ajout de la fonction CPC.EXECUTION() permettant en interne, d'exécuter des fichiers .CPC avec des arguments
+		- [CPCDOSC+] Ajout de l'argument \#SAMEID pour EXE/ qui permet de conserver l'ID et ne pas le regénérer.
 		
 
 		[CORRECTIONS]
@@ -62,6 +64,7 @@
 		[MODIFICATIONS]
 		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux
 		- [SYSTEME] Affiche désormais le répertoire ".." dans du listing d'un répertoire.
+		- [SYSTEME] Nouveau logo ASCII-ART de boot - Chrapati
 
 	#######################
 	##### CPinti Core #####
