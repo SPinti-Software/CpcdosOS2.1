@@ -11544,10 +11544,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim CCP_Fonction_DATA		(0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS) as String
 			Dim CCP_Fonction_CLE		(0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS) as double
 			
-			Dim Nom_Fichier 		as String
-			Dim NomLblAAtteindre	as String
-			Dim LabelAChercher 		as String
-			Dim CCP_Fonction_EXEC	as String
+			Dim Nom_Fichier 			as String
+			Dim NomLblAAtteindre		as String
+			Dim LabelAChercher 			as String
+			Dim CCP_Fonction_EXEC		as String
 			Dim NumeroDeLigneAChercher	as Integer = 0
 			Dim PosLabelLigneExec		as Integer = 0
 			

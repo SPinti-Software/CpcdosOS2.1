@@ -1,8 +1,8 @@
-// This file allow to open PNG format file
+// Img viewer test
 
 set/ source = %_ARG_1%
 
-set/ window_x = 520
+set/ window_x = 620
 set/ window_y = 480
 
 window/ Img_Viewer
@@ -34,7 +34,9 @@ picturebox/ viewer
 	create/
 end/ Picturebox
 
- 
+// Force to display img_viewer in front
+refresh/ /window /focus
+
 
 
 
