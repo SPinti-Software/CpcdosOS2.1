@@ -45,14 +45,19 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - Meaxy - ElieOS
  - Chrapati - Hexac System
  - Nadir - MineOSX
- - PokeCraft
+ - PokeCraft - LeviathanOS
+ - iplux - MaverickOS
  - FicelleYTB
  - Climax
  - D3nX
- - 04Kylian
+ - 04Kylian - FireFlyOS
  - Léo ENDOR
+ - MrJackieLok_YT - NoobOS
+ - vip181
 
 [Le reste ici](https://cpcdos.net/fr/contributors)
+
+_La plupart des systèmes cités ci-dessus sont opensource_
 
 ### Remerciements & Contribution
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
