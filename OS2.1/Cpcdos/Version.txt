@@ -13,7 +13,7 @@
 	#################
 
 		--> 7	Ajouts de divers fonctionnalités.
-		--> 3	corrections importantes.
+		--> 4	corrections importantes.
 		--> 0	optimisations.
 		--> 3	corrections et modifications mineures.
 
@@ -59,6 +59,7 @@
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
 		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
 		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
+		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
 		
 		
 		[MODIFICATIONS]

@@ -362,17 +362,21 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Bouton Then
 	
-		Dim _INDEX_PID_ as integer 
+		Dim _INDEX_Fenetre_ as integer 
 		' Verifier si le processus (PID) existe!
-		For _INDEX_PID_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
-			IF _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.Handle Then
-			
-				' Obtenir l'emplacement memoire libre
-				_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
 				
 				exit for
 			END IF
-		Next _INDEX_PID_
+		Next _INDEX_Fenetre_
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
@@ -381,18 +385,34 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			ScreenUnlock
 			exit function
 		End if
+		
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
+			
+		Else
+		
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+		
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
 
-		' Lui donner son numero d'index
-		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Index_Enfant = _INDEX_
-		
-		' Generer un numero handle
-		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
-		
-		' Transferer les proprietes temporaires dans les proprietes definitives
-		this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
+		End if
 		
 		' Creer l'objet
-		CPC__GUI_Init_obj = Creer_Bouton(_Proprietes, _INDEX_, _INDEX_PID_)
+		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = Creer_Bouton(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle
+		
 	
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= PICTURE BOX =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.PictureBox Then
@@ -735,17 +755,21 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Explorer Then
 	
-		Dim _INDEX_PID_ as integer 
+		Dim _INDEX_Fenetre_ as integer 
 		' Verifier si le processus (PID) existe!
-		For _INDEX_PID_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
-			IF _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.Handle Then
-			
-				' Obtenir l'emplacement memoire libre
-				_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
 				
 				exit for
 			END IF
-		Next _INDEX_PID_
+		Next _INDEX_Fenetre_
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
@@ -755,19 +779,34 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			exit function
 		End if
 
-		' Lui donner son numero d'index
-		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Index_Enfant = _INDEX_
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			
+		Else
 		
-		' Generer un numero handle
-		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
 		
-		' Transferer les proprietes temporaires dans les proprietes definitives
-		this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			
+
+		End if
 		
 		' Creer l'objet
-		CPC__GUI_Init_obj = Creer_Explorer(_Proprietes, _INDEX_, _INDEX_PID_)
-		
-	END IF
+		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = Creer_Explorer(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle
+	end if
 	
 	ScreenUnlock
 End Function

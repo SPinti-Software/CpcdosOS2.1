@@ -224,7 +224,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "10" 
+CONST _VJOUR as string 	= "13" 
 CONST _VMOIS as string 	= "01"
 CONST _VANNEE as string = "2021"
 
@@ -290,7 +290,7 @@ Type _TYPES_Cpcdos_OSx__
 	As String _RTC_Nom_Jour_EN		(0 To 7) 	= {"Sunday","Monday","Thesday","Wednesday","Thursday","Friday","Saturday","Sunday"}
 	As String _RTC_Nom_Jour_EN_min	(0 To 7) 	= {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"}
 	
-	As String _RTC_Separateur		(0 to 4) 	= {"/", "\", ".", "-", ":"}
+	As String _RTC_Separateur		(0 to 4) 	= {"/", "\", ".", "-", ":"} '"
 	As String _RTC_Secondes					 	= "SS"
 	As String _RTC_Minutes					 	= "MM"
 	As String _RTC_Heure					 	= "HH"
@@ -469,7 +469,7 @@ Type __Noyau_Cpcdos_OSx__
 		LOGGER_TOUT_AU_DEMARRAGE as boolean = FALSE ' Logger TOUT dans tous les cas dans le fichier debug.log
 		
 		' *** Explorer GUI object ***
-		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 64 	' Nombre d'elements par pages
+		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 128 	' Nombre d'elements par pages
 		
 		' *** Liste des formats programmes et icones associes **
 		const FORMAT_MAX					as integer = 24

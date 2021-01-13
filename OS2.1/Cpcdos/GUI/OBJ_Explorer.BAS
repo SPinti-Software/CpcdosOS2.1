@@ -100,7 +100,15 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Couleur_FNT_V as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_V
 			Dim Couleur_FNT_B as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Couleur_FNT_B
 			
+
 			Dim Couleur_ALPHA 	as integer
+			
+			' Position des colonnes
+			Dim POS_Col_Icone 		as integer = 1
+			Dim POS_Col_Nom 		as integer = 24
+			Dim POS_Col_Taille 		as integer = (Siz_X/2) - (Siz_X / 8) ' 200
+			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
+			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
 			
 			
 			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
@@ -127,12 +135,34 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim CPY_Source		as String 
 			if Couleur_ALPHA = 0 Then alpha_buffer = 0
 			
+			' Supprimer le buffer si la taille a changee
+			if IMG_BUFFER_ID > 0 Then
+				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(IMG_BUFFER_ID) <> Siz_X Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(IMG_BUFFER_ID)
+					IMG_BUFFER_ID = 0
+				elseif CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(IMG_BUFFER_ID) <> Siz_Y Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(IMG_BUFFER_ID)
+					IMG_BUFFER_ID = 0
+				End if
+				
+				' Afficher que la taille a changee
+				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+					if IMG_BUFFER_ID = 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] La taille a changee, rechargement du buffer en " & Siz_X & "x" & Siz_Y, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						Else
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Size has changed, reloading buffer to " & Siz_X & "x" & Siz_Y, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						End if
+					END IF
+				End if
+			End if
+			
 			if IMG_BUFFER_ID = 0 Then
 				this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Explorer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, Couleur_ALPHA, this.INST_INIT_GUI.GUI__EXPLORER(_index_).Identification_Objet.Handle)
 				IMG_BUFFER_ID = this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID
 			End if
 			
-			
+			DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Explorer(" & _index_ & ") --> Buffer size " & Siz_X & "x" & Siz_Y, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
 			
 			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = 0 Then
 				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.BACKGROUND", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
@@ -206,9 +236,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							Else
-								DEBUG("[CpcdosC+] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							End if
 						END IF
 
@@ -216,18 +246,18 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						Source = "."
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							Else
-								DEBUG("[CpcdosC+] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							End if
 						END IF
 					End if
 				Else
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[CpcdosC+] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						Else
-							DEBUG("[CpcdosC+] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						End if
 					END IF
 				End if
@@ -245,9 +275,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						
 						Dim Message_erreur as String = ERRAVT("ERR_064", 0)
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						Else
-							DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						End if
 						
 					Else
@@ -288,10 +318,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 		
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								
 								' Icone MIN
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), IMG_BUFFER_ID, 0, 0 + Pos_lst_Y)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
 								
 							Else
 
@@ -315,16 +345,16 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 													IF (TailleFichier/1024) < 1 Then ' Kilo
 														TexteTaille = TailleFichier & " " & octets ' OCTETS
 													Else
-														TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 3) & " " & kilo ' KILOS
+														TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 1) & " " & kilo ' KILOS
 													End if
 												Else
-													TexteTaille = Left(str(TailleFichier/1024^2), instr(str(TailleFichier/1024^2), ".") + 3) & " " & mega ' MEGA
+													TexteTaille = Left(str(TailleFichier/1024^2), instr(str(TailleFichier/1024^2), ".") + 1) & " " & mega ' MEGA
 												End if
 											Else
-												TexteTaille = Left(str(TailleFichier/1024^3), instr(str(TailleFichier/1024^3), ".") + 3) & " " & giga ' GIGA
+												TexteTaille = Left(str(TailleFichier/1024^3), instr(str(TailleFichier/1024^3), ".") + 1) & " " & giga ' GIGA
 											End if
 										Else
-											TexteTaille = Left(str(TailleFichier/1024^4), instr(str(TailleFichier/1024^4), ".") + 3) & " " & tera ' TERA
+											TexteTaille = Left(str(TailleFichier/1024^4), instr(str(TailleFichier/1024^4), ".") + 1) & " " & tera ' TERA
 										End if
 									End if
 								End Scope
@@ -335,12 +365,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								
 								if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
 									' Si le nom est trop grand pour etre affiche
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								else
 									' Sinon on l'affiche normalement
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 24 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								End if
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, 200 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, POS_Col_Taille , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								
 								Dim Extension as string
 								' Index de l'extension fichier
@@ -368,15 +398,15 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
 								
 								' Icone fichier
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, 0, 0 + Pos_lst_Y)
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
 								
 								' Afficher la description
 								if Len(CPCDOS_INSTANCE.FORMAT_Description(Index_extension)) > 32 Then
 									' Si trop grand
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", 260 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								Else
 									' Sinon on display normal
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), 260 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								End if
 								
 							end if
@@ -401,41 +431,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							
 							
 							' Afficher l'attribut de fichier
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, 520 , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, POS_Col_Attribut , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 						next b
 						
-						
-						
-						' Attribuer l'unite correspondante a la taille
-						' IF TailleFinal < 1 Then
-							' Fichier VIDE
-							' TexteTaille_FINAL = "0 " & octets
-						' Else
-							' IF (TailleFinal/1024^4) < 1 Then ' Tera
-								' IF (TailleFinal/1024^3) < 1 Then ' Giga
-									' IF (TailleFinal/1024^2) < 1 Then ' Mega
-										' IF (TailleFinal/1024) < 1 Then ' Kilo
-											' TexteTaille_FINAL = TailleFinal & " " & octets ' OCTETS
-										' Else
-											' TexteTaille_FINAL = Left(str(TailleFinal/1024), instr(str(TailleFinal/1024), ".") + 3) & " " & kilo ' KILOS
-										' End if
-									' Else
-										' TexteTaille_FINAL = Left(str(TailleFinal/1024^2), instr(str(TailleFinal/1024^2), ".") + 3) & " " & mega ' MEGA
-									' End if
-								' Else
-									' TexteTaille_FINAL = Left(str(TailleFinal/1024^3), instr(str(TailleFinal/1024^3), ".") + 3) & " " & giga ' GIGA
-								' End if
-							' Else
-								' TexteTaille_FINAL = Left(str(TailleFinal/1024^4), instr(str(TailleFinal/1024^4), ".") + 3) & " " & tera ' TERA
-							' End if
-						' End if
-
-						' Resultats totaux
-						' instance_FICHER_DOSSIER_.nb_Dossiers
-						' instance_FICHER_DOSSIER_.nb_Fichiers
-						' instance_FICHER_DOSSIER_.nb_Elements
-						' TexteTaille_FINAL
-
 
 					End if
 				End scope
