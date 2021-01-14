@@ -773,7 +773,14 @@ Function _SYSTEME_Cpcdos_OSx__.creer_Repertoire__fbcrt(NomDossier as String, Att
 	End if
 End Function
 
+
 Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) as Boolean
+	return lister_Repertoire(RepertoireSource, Filtre, _FICHER_DOSSIER_, 0)
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_, jump as integer) as Boolean
+
+
 	' Cette fonction permet de lister le contenu d'un repertoire 
 
 	Dim retour_attributs 			as UInteger
@@ -795,86 +802,91 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 		instance_FICHIER_DOSSIER.Est_OK = TRUE
 	End if
 
-	
+	Dim Sauts_ as integer = 0
 	ENTRER_SectionCritique()
 	Do Until Len(NomElement) = 0 ' Boucle jsuqu'a qu'il n'y a plus d'elements
 		' If (NomElement <> ".") And (NomElement <> "..") Then ' Ignorer les "." et ".."
-		If (NomElement <> ".") Then ' Ignorer le "." uniquement
-	
-	
-			' Si le nombre d'elements a memoriser sort de la limite, on arrete
-			if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
-				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
-				Else
-					DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
-				End if
-				exit do
-			End if
-			
-			' Incrementer le nombre d'elements
-			instance_FICHIER_DOSSIER.nb_elements += 1
 
-			
-			' Stocker le nom d'element actuel
-			instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
+		Sauts_ += 1
+
+		if Sauts_ >= jump Then 
+			If (NomElement <> ".") Then ' Ignorer le "." uniquement
 		
 
-			If (retour_attributs And fbDirectory) <> 0 Then
-				' S'il s'agit d'un dossier
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
-				instance_FICHIER_DOSSIER.nb_dossiers += 1
-				
-			Else
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = False
-				' Autrement il s'agit d'un fichier
-				instance_FICHIER_DOSSIER.nb_fichiers += 1
-
-				' Combler le probleme d'affichage des tailles a cause du chemin relatif qui se tranforme comme ceci "\Fichier.cpc"
-				Dim FichierACalculer as String = instance_FICHIER_DOSSIER.path & "\" & NomElement
-				IF instance_FICHIER_DOSSIER.path = "" Then
-					FichierACalculer = NomElement
+				' Si le nombre d'elements a memoriser sort de la limite, on arrete
+				if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+					Else
+						DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+					End if
+					exit do
 				End if
 				
-				' Recuperer la taille du fichier actuel avec son chemin "absolue" mais relatif au repertoire courant
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).taille = CPCDOS_INSTANCE.Taille_Fichier(FichierACalculer)
+				' Incrementer le nombre d'elements
+				instance_FICHIER_DOSSIER.nb_elements += 1
 
+				
+				' Stocker le nom d'element actuel
+				instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
+			
+
+				If (retour_attributs And fbDirectory) <> 0 Then
+					' S'il s'agit d'un dossier
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
+					instance_FICHIER_DOSSIER.nb_dossiers += 1
+					
+				Else
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = False
+					' Autrement il s'agit d'un fichier
+					instance_FICHIER_DOSSIER.nb_fichiers += 1
+
+					' Combler le probleme d'affichage des tailles a cause du chemin relatif qui se tranforme comme ceci "\Fichier.cpc"
+					Dim FichierACalculer as String = instance_FICHIER_DOSSIER.path & "\" & NomElement
+					IF instance_FICHIER_DOSSIER.path = "" Then
+						FichierACalculer = NomElement
+					End if
+					
+					' Recuperer la taille du fichier actuel avec son chemin "absolue" mais relatif au repertoire courant
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).taille = CPCDOS_INSTANCE.Taille_Fichier(FichierACalculer)
+
+				End If
+				
+				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre = 0
+				
+				' Normal
+				If (retour_attributs And fbNormal ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Normal 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Lecture seule
+				If (retour_attributs And fbReadOnly) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_ReadOnly 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Cache
+				If (retour_attributs And fbHidden  ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Hidden 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Systeme
+				If (retour_attributs And fbSystem  ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_System 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Archive
+				If (retour_attributs And fbArchive ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Archive 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+		
 			End If
-			
-			instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre = 0
-			
-			' Normal
-			If (retour_attributs And fbNormal ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Normal 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Lecture seule
-			If (retour_attributs And fbReadOnly) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_ReadOnly 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Cache
-			If (retour_attributs And fbHidden  ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Hidden 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Systeme
-			If (retour_attributs And fbSystem  ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_System 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Archive
-			If (retour_attributs And fbArchive ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Archive 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-	
-		End If
+		End if
 
 		' Chercher le prochain nom d'element
 		NomElement = Dir(retour_attributs)

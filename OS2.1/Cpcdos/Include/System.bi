@@ -647,6 +647,8 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function creer_Repertoire		(ByVal NomDossierABS as String, Attributs as String) 																	as integer
 		Declare Function creer_Repertoire__fbcrt(NomDossier as String, Attributs as String) 																			as boolean
 		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_) 										as boolean
+		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_, jump as integer) 					as boolean
+		
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean, Check_SFN as boolean, SFN as boolean) 								as String
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean) 																	as boolean
 

@@ -118,8 +118,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
 			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
 
-			Dim Scrol_Bar_SX		as integer = 25
-			Dim Scrol_Bar_SY		as integer = Siz_Y
+			Dim Scrol_Bar_SX		as integer = 20
+			Dim Scrol_Bar_SY		as integer = 40
 			
 			Dim Scrol_Bar_PX		as integer = Siz_X - Scrol_Bar_SX
 			Dim Scrol_Bar_PY		as integer = SCROLLING_Y
@@ -303,7 +303,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 				scope
 					
-					Dim Resultat as Boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_)
+					Dim Resultat as Boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)
 					
 					If instance_FICHER_DOSSIER_.Est_OK = False Then
 						' ERREUR
@@ -340,6 +340,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 							giga = "gb"
 							tera = "tb"
 						End if
+
+
 						
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
 			
@@ -503,7 +505,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 					Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
 
 					' Clic AVANT le scrool bar
-					if Position_clic_X < (Siz_X - Scrol_Bar_SX) Then
+					if Position_clic_X < Scrol_Bar_PX - 80 Then ' 80 : marge anti-fausse manoeuvre
 						for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
 							dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 							
@@ -561,18 +563,25 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								End if
 							End if
 						Next boucle
-					Else
-						' Clic SUR le scroll bar
-
-						' Put la position du curseur sur la barre
-						this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = Position_clic_Y - (Scrol_Bar_SY / 2)
 					End if
-
-					' Afficher la position du clic
-					
-					
 				End if ' Mouse state
 			End if 
+
+			' Si l'utilisateur a clique (mais pas dans les fichiers)
+			if cpc_mouse_state(0) = 1 AND reload = false Then
+				' Clic SUR le scroll bar
+
+				' Recuperer la position du curseur RELATIF a la position du picturebox
+				Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
+				Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+
+				if Position_clic_X > Scrol_Bar_PX AND Position_clic_X < Scrol_Bar_PX + Scrol_Bar_SX Then
+					' Put la position du curseur sur la barre
+					this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = Position_clic_Y - (Scrol_Bar_SY / 2)
+				End if
+
+				' reload = true
+			End if
 			
 			
 			' Rechargement de l'objet

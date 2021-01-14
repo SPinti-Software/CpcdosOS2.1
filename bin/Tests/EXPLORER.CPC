@@ -25,9 +25,9 @@ picturebox/ img_Drive
 	.handle		= "%window_handle%"
 	.parameters	= "IMGAUTO:0"
 	.PX		= "2"
-	.PY		= "4"
-	.sx		= "13"
-	.sy		= "13"
+	.PY		= "0"
+	.sx		= "22"
+	.sy		= "22"
 	.Image		= "OS/MEDIA/GUI/MDRIVE.PNG"
 	.opacity	= "255"
         .events         = "%_exe_path_%"
@@ -37,7 +37,7 @@ end/ Picturebox
 picturebox/ img_Previous
 	.handle		= "%window_handle%"
 	.parameters	= "IMGAUTO:0"
-	.PX		= "20"
+	.PX		= "28"
 	.PY		= "4"
 	.sx		= "13"
 	.sy		= "13"
@@ -50,7 +50,7 @@ end/ Picturebox
 picturebox/ img_Next
 	.handle		= "%window_handle%"
 	.parameters	= "IMGAUTO:0"
-	.PX		= "36"
+	.PX		= "45"
 	.PY		= "4"
 	.sx		= "13"
 	.sy		= "13"
@@ -64,13 +64,13 @@ Textbox/ txt_path
         .Handle         = "%window_handle%"
         .Parameters     = "BORD:1 COL:1"
         .Text           = "%actual_path%"
-        .PX             = "52"
-        .PY             = "4"
-        .BackColor      = "100,100,100"
+        .PX             = "64"
+        .PY             = "2"
+        .BackColor      = "110,110,110"
         .TextColor      = "250,250,250"
-        .sx             = "300"
+        .sx             = "400"
         .sy             = "18"
-        .events         = "%_exe_path_%"
+        .events         = "%_exe_path_%=KeyEnter"
         create/
 End/ Textbox
 
@@ -80,7 +80,7 @@ explorer/ explore_gui
         .px             = "0"
         .py             = "23"
         .sx             = "500"
-        .sy             = "300"
+        .sy             = "279"
         .opacity        = "255"
         .textcolor      = "250,250,250"
         .backcolor      = "100,100,100"
@@ -91,23 +91,23 @@ End/ explorer
 
 // ===== GUI events =====
 
-Function/ img_Drive.clic()
+Function/ img_Drive.MouseClic()
         // Display drive list
 
 End/ Function
 
-Function/ img_Previous.clic()
+Function/ img_Previous.MouseClic()
         // Back path
 
 End/ Function
 
-Function/ img_Next.clic()
+Function/ img_Next.MouseClic()
         // fordward path
 
 End/ Function
 
 
-Function/ txt_path.enter()
+Function/ txt_path.KeyEnter()
         // Valid and display wrote path from textbox
 
         // Getting path from textbox
@@ -143,7 +143,7 @@ Function/ file_explorer_window.Resize(sizeup)
 
 End/ function
 
-Function/ file_explorer_window.Clic()
+Function/ file_explorer_window.MouseClic()
         // Update textbox path
 
         // Get path text
