@@ -1606,7 +1606,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "    Vous pouvez utiliser les filtres . et *"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Lister le repertoire courant :"
-					Mess_Aide = Mess_Aide & CRLF & "     rep/    ou    rep/ .     ou    rep/ .\"
+					Mess_Aide = Mess_Aide & CRLF & "     rep/    ou    rep/ .     ou    rep/ .\" '"
 					Mess_Aide = Mess_Aide & CRLF & "   Lister le contenu d'un autre repertoire :"
 					Mess_Aide = Mess_Aide & CRLF & "     Rep/ MonDossier1/MonDossier2"
 					Mess_Aide = Mess_Aide & CRLF & "   Lister les fichier avec l'extension .CPC :"
@@ -1650,7 +1650,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "    You can also use filters . and *"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  List the current directory"
-					Mess_Aide = Mess_Aide & CRLF & "    dir/ .   or   dir/ .\"
+					Mess_Aide = Mess_Aide & CRLF & "    dir/ .   or   dir/ .\" '"
 					Mess_Aide = Mess_Aide & CRLF & "  List the content of another directory"
 					Mess_Aide = Mess_Aide & CRLF & "    dir/ MyFolder1/MyFolder2"
 					Mess_Aide = Mess_Aide & CRLF & "  List files with .CPC extention:"
@@ -1759,17 +1759,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			
 			
-			IF Instr(CPY_Source, "\") > 0 Then
+			IF Instr(CPY_Source, "\") > 0 Then '"
 				' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
 				'  --> REP/ Dossier\*.*
-				SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
+				SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1) '"
 				
 				If SourceRecherche = "" Then SourceRecherche = "\*.*"
 				
 				IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
 					SourceRecherche = "\*.*"
 				Else
-					Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
+					Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1) 
 					IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
 				End if
 	
@@ -12383,6 +12383,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						Dim GUI__PROP_IMG_BUFFER_ID		as integer = 0	
 						Dim GUI__PROP_IMG_SELECTEUR_ID	as integer = 0
+						Dim GUI__PROP_IMG_SCROLL_ID		as integer = 0
+						Dim GUI__PROP_SCROLLING_Y		as integer = 0	
+						
 						
 
 						Dim GUI__PROP_IMAGE_SURVOLE_ID	as Integer 	= 0
@@ -14897,7 +14900,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															GUI__PROP_IMG_BUFFER_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_BUFFER_ID
 															GUI__PROP_IMG_SELECTEUR_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_SELECTEUR_ID
-	
+															GUI__PROP_IMG_SCROLL_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_SCROLL_ID
+															
+
+															GUI__PROP_SCROLLING_Y		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).SCROLLING_Y
 															
 															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).BIT_ORG
 															
@@ -16241,6 +16247,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_BUFFER_ID				= GUI__PROP_IMG_BUFFER_ID
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SELECTEUR_ID 			= GUI__PROP_IMG_SELECTEUR_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SCROLL_ID 			= GUI__PROP_IMG_SCROLL_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.SCROLLING_Y 				= GUI__PROP_SCROLLING_Y
+
+												
+												
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
 
@@ -16368,6 +16380,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											
 											GUI__PROP_IMG_BUFFER_ID		= 0
 											GUI__PROP_IMG_SELECTEUR_ID	= 0
+											GUI__PROP_IMG_SCROLL_ID	= 0
+
+											GUI__PROP_SCROLLING_Y = 0
+											
 											
 											' Pour eviter la redondance.
 											GUI__PROP_EVENEMENT			= "" 

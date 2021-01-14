@@ -588,6 +588,8 @@ Type Cpcdos_GUI__EXPLORER
 	
 	IMG_BUFFER_ID			as integer	' Buffer de l'explorer
 	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
+	IMG_SCROLL_ID			as integer	' Image du selecteur quand la souris survole un element
+	SCROLLING_Y				as integer 	' Position du scroller bar
 
 	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
@@ -703,6 +705,8 @@ Type _SCI_Cpcdos_OSx__
 		FORMAT_file_icon_MAX_ID(FORMAT_MAX)	as integer
 		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer
 		EXP_BACKGROUND_ID					as integer
+		EXP_SCROLL_ID						as integer
+		
 		
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__

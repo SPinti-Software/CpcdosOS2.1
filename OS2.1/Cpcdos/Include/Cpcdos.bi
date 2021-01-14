@@ -203,6 +203,8 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
 ' 	- Rendre dechargeable les icones & background de l'explorateur
+'	- Explorer : Ajouter event clic (pour mettre a jour un txtbox par exemple)
+'	- Explorer : Ajouter mouse selection par clavier aussi
 
 '
 ' =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=

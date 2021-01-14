@@ -1,6 +1,6 @@
 // This file allow to execute CPC format file
 
-exe/ /win32 %_ARG_1%'
+exe/ /win32 %_ARG_1%
 
 
 

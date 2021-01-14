@@ -84,11 +84,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Pos_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_X + Pos_Fenetre_X
 			
 			Dim Pos_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).POS_Y + Pos_Fenetre_Y
+
+			' Correction
+			if this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y < 1 Then this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 1
+			Dim SCROLLING_Y 	as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y
 			
 			Dim Siz_X 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_X
 			Dim Siz_Y 			as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).SIZ_Y
 		
 			Dim IMG_BUFFER_ID	as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_BUFFER_ID
+
+			
+
+			Dim IMG_SCROLL_ID	as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SCROLL_ID
 			
 			Dim AutoSizeIMG		as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.AutoSizeIMG
 			
@@ -109,6 +117,13 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim POS_Col_Taille 		as integer = (Siz_X/2) - (Siz_X / 8) ' 200
 			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
 			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
+
+			Dim Scrol_Bar_SX		as integer = 25
+			Dim Scrol_Bar_SY		as integer = Siz_Y
+			
+			Dim Scrol_Bar_PX		as integer = Siz_X - Scrol_Bar_SX
+			Dim Scrol_Bar_PY		as integer = SCROLLING_Y
+			
 			
 			
 			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
@@ -165,8 +180,29 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Explorer(" & _index_ & ") --> Buffer size " & Siz_X & "x" & Siz_Y, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
 			
 			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = 0 Then
+				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Premier chargement du background", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					else
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] First background loading", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					End if
+				end if
 				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.BACKGROUND", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
 			End if
+
+			' Charger ler scroll bar si pas charge
+			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID = 0 Then
+				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Premier chargement du scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					else
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] First scroll bar loading", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					End if
+				end if
+				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+			End if
+			
+			
 			
 			' Push l'image background sur le buffer
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
@@ -437,6 +473,20 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 					End if
 				End scope
+
+				if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID > 0 Then
+					' Dessiner le scroll bar
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID, IMG_BUFFER_ID, Scrol_Bar_PX, Scrol_Bar_PY)
+
+
+
+				Else
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Impossible de dessiner le scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+					else
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Unable to drax scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+					End if
+				End if
 			End scope
 			
 			
@@ -452,64 +502,72 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 					Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
 					Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
 
-					for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
-						dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
-						
-						if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
-
+					' Clic AVANT le scrool bar
+					if Position_clic_X < (Siz_X - Scrol_Bar_SX) Then
+						for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
+							dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 							
-							IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
+							if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
 
-								Dim element as String = Mid(Lines_array(boucle), 3)
-
-								If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-									Dim path_fichier as string
-									' FICHIER
-									' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, "Clic FICHIER : " & element, 0 , 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-										path_fichier = CPY_Source & element
-									else 
-										path_fichier = CPY_Source & "\" & element
-									End if
-									
-									' On execute le fichier
-									CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
-									
-								elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
-									' DOSSIER
 								
-									if element = ".." OR element = "..\" Then
-										' Recuperer le dernier \
+								IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
+
+									Dim element as String = Mid(Lines_array(boucle), 3)
+
+									If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+										Dim path_fichier as string
+										' FICHIER
+										' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, "Clic FICHIER : " & element, 0 , 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-											CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+											path_fichier = CPY_Source & element
+										else 
+											path_fichier = CPY_Source & "\" & element
 										End if
 										
-										' Chercher le dernier \
-										CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
-										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
-									else
-										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
-										Else
-											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
-										End if
-									End if
+										' On execute le fichier
+										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
+										
+									elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
+										' DOSSIER
 									
-									reload = true ' Recharger l'objet
-									
-									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-											DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										if element = ".." OR element = "..\" Then
+											' Recuperer le dernier \
+											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+												CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+											End if
+											
+											' Chercher le dernier \
+											CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
+											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
 										else
-											DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
+											Else
+												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+											End if
 										End if
-									end if
-									exit for
+										
+										reload = true ' Recharger l'objet
+										
+										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+											else
+												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+											End if
+										end if
+										exit for
+									End if
 								End if
 							End if
-						End if
-					Next boucle
-				
+						Next boucle
+					Else
+						' Clic SUR le scroll bar
+
+						' Put la position du curseur sur la barre
+						this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = Position_clic_Y - (Scrol_Bar_SY / 2)
+					End if
+
 					' Afficher la position du clic
 					
 					
