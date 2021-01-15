@@ -3499,7 +3499,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
-														' Actualiser graphiquement le bouton pour l'effet de "pression"
+														' Actualiser graphiquement le bouton pour l'effet de "survole"
 														Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
@@ -3515,25 +3515,28 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												
 												IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
 													
-													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
-														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
-															if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
-																":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
-																= "ERR_050" Then
-																		
-																' Black LIST EVENT !
-																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
-																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+													IF 0 Then ' Desactiver l'event mousemove de
+														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
+															IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
+																if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																			
+																	' Black LIST EVENT !
+																	CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
+																	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																		DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																	End if
 																End if
 															End if
 														End if
 													End if
 													
-													
 													' L'objet est en cours de survole
 													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
 													
+													' Actualiser graphiquement le explorer pour l'effet de "pression"
+													Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
 
 													' On quitte cette boucle
 													exit for

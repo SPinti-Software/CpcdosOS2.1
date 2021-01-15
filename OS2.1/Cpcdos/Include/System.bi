@@ -294,6 +294,7 @@ Type _memoire_bitmap
 		Declare Function Modifier_BITMAP_depuis_PTR	(byval NumeroID as integer, Pointeur as Any PTR)								as boolean
 		Declare Function Modifier_BITMAP_depuis_PTR_CP(byval NumeroID as integer, Pointeur as Any ptr) 								as boolean
 		Declare Function Modifier_BITMAP_CP			(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer) as boolean
+		Declare Function Modifier_BITMAP_CP			(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer, alpha_ as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval Pointeur as any ptr, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval NumeroID as integer, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Recuperer_BITMAP_PTR		(byval NumeroID as integer) 														as any ptr

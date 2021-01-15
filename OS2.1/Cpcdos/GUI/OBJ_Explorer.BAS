@@ -123,6 +123,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 			Dim Scrol_Bar_PX		as integer = Siz_X - Scrol_Bar_SX
 			Dim Scrol_Bar_PY		as integer = SCROLLING_Y
+
+			Dim Marge_Secu			as integer = 80
+
+			' Recuperer la position du curseur RELATIF a la position du picturebox
+			Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
+			Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
 			
 			
 			
@@ -200,6 +206,25 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 					End if
 				end if
 				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+			End if
+
+
+			' Charger ler survole si pas charge
+			if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID = 0 Then
+				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Premier chargement du SURVOL bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					else
+						DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] First SURVOL bar loading", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					End if
+				end if
+				
+				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_LEFT_BORDER", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+
+				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID, Scrol_Bar_PX - Marge_Secu, val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_SIZE_Y", 3, _CLE_)))
+
+				CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_RIGHT_BORDER", 3, _CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
 			End if
 			
 			
@@ -500,12 +525,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 				
 					this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = true
 					
-					' Recuperer la position du curseur RELATIF a la position du picturebox
-					Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
-					Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
 
 					' Clic AVANT le scrool bar
-					if Position_clic_X < Scrol_Bar_PX - 80 Then ' 80 : marge anti-fausse manoeuvre
+					if Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge anti-fausse manoeuvre
 						for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
 							dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 							
@@ -572,8 +594,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 				' Clic SUR le scroll bar
 
 				' Recuperer la position du curseur RELATIF a la position du picturebox
-				Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
-				Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
+				
 
 				if Position_clic_X > Scrol_Bar_PX AND Position_clic_X < Scrol_Bar_PX + Scrol_Bar_SX Then
 					' Put la position du curseur sur la barre
@@ -582,7 +603,32 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 				' reload = true
 			End if
-			
+
+			' Surligne uniquement s'il suvole
+			IF this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Survole = TRUE Then
+				if Position_clic_X > 0 AND Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge securite
+
+					if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID > 0 Then
+						dim Position_Y as integer = (1 + (Position_clic_Y/espacement) * (espacement)) - espacement/2
+
+						Dim alpha_ as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_OPACITY", 3, _CLE_))
+						if alpha_ < 1 Then alpha_ = 1
+
+						' Dessiner le scroll bar
+						' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
+						' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID, IMG_BUFFER_ID, Scrol_Bar_PX - 80, Position_Y, alpha_)
+						
+					Else
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Impossible de dessiner le scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+						else
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Unable to drax scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+						End if
+					End if
+
+				End if
+			End if
 			
 			' Rechargement de l'objet
 			if reload = true then

@@ -706,7 +706,10 @@ Type _SCI_Cpcdos_OSx__
 		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer
 		EXP_BACKGROUND_ID					as integer
 		EXP_SCROLL_ID						as integer
-		
+
+		EXP_Survole_LEFT_BORDER_ID			as integer
+		EXP_Survole_ID						as integer
+		EXP_Survole_RIGHT_BORDER_ID			as integer
 		
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__

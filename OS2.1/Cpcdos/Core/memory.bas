@@ -763,6 +763,11 @@ Function _memoire_bitmap.Modifier_BITMAP_depuis_PTR_CP(byval NumeroID as integer
 End Function
 
 Function _memoire_bitmap.Modifier_BITMAP_CP(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer) as boolean
+	return Modifier_BITMAP_CP(NumeroID, NumeroID_Dest, PX, PY, 0)
+End function
+
+
+Function _memoire_bitmap.Modifier_BITMAP_CP(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer, alpha_ as integer) as boolean
 	' Permet de dupliquer pointeur bitmap
 
 	
@@ -798,7 +803,11 @@ Function _memoire_bitmap.Modifier_BITMAP_CP(byval NumeroID as integer, byval Num
 	
 	if this.donnees_RVBA(NumeroID_Dest) <> 0 AND this.donnees_RVBA(NumeroID) <> 0 Then
 		' Placer l'image dans l'autre buffer
-		put this.donnees_RVBA(NumeroID_Dest), (PX, PY), this.donnees_RVBA(NumeroID), alpha
+		if alpha_ > 0 Then
+			put this.donnees_RVBA(NumeroID_Dest), (PX, PY), this.donnees_RVBA(NumeroID), alpha, alpha_
+		Else
+			put this.donnees_RVBA(NumeroID_Dest), (PX, PY), this.donnees_RVBA(NumeroID), alpha
+		End if
 	Else
 	
 		return false
