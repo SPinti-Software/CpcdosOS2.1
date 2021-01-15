@@ -4,13 +4,25 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Compilation",
+            "label": "COMPILATION and COPY",
             "type": "shell",
             "command": "explorer",
-            "args": ["C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Make_CpcDos_.cwMake"]
+            "args": [
+                "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Copy to VM",
+            "type": "shell",
+            "command": "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Update ALL to VM.bat"
+        },
+        {
+            "label": "Compilation only",
             "type": "shell",
             "command": "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Update ALL to VM.bat"
         }
