@@ -4,11 +4,24 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "COMPILATION and COPY",
+            "label": "COMPILATION and COPY [Command Line]",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/C OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+		{
+            "label": "COMPILATION and COPY [GUI]",
             "type": "shell",
             "command": "explorer",
             "args": [
-                "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
+                "OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
             ],
             "problemMatcher": [],
             "group": {
@@ -19,12 +32,12 @@
         {
             "label": "Copy to VM",
             "type": "shell",
-            "command": "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Update ALL to VM.bat"
+            "command": "OS2.1\\_Update ALL to VM.bat"
         },
         {
             "label": "Compilation only",
             "type": "shell",
-            "command": "C:\\CPCDOS\\CpcdosOS2.1\\OS2.1\\_Update ALL to VM.bat"
+            "command": "OS2.1\\_Update ALL to VM.bat"
         }
     ]
 }
