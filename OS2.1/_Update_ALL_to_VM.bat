@@ -10,4 +10,3 @@ xcopy /S /Y "..\bin" "C:\CPCDOS\VM\Cpcdos OSx-disk1_Mount\CPCDOS"
 
 echo.
 echo Ok !
-@pause

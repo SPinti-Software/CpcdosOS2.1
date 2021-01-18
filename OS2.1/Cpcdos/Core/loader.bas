@@ -298,6 +298,16 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 
 		DEBUG("[0x" & HEX(@__CPCDOS_INIT_1, 8) & "] Starting cpcdos osx kernel ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")	
 		
+		' Mettre a jour les disques presents
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.update_drives()
+
+		' Afficher les disques presents
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Display_all_drives()
+		
+		sleep 10000
+		
+
+
 		ZERO_FILL = String(128, 0)
 		
 		' Definir repertoires
@@ -397,9 +407,6 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		end if
 		
 		intro()
-		
-		
-		
 		
 		
 		

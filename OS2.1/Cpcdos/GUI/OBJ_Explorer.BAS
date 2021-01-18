@@ -112,26 +112,27 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Couleur_ALPHA 	as integer
 			
 			' Position des colonnes
-			Dim POS_Col_Icone 		as integer = 1
-			Dim POS_Col_Nom 		as integer = 24
+			Dim POS_Col_Icone 		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_COL_PX", 3, _CLE_))
+			Dim POS_Col_Nom 		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.NAME_COL_PX", 3, _CLE_))
 			Dim POS_Col_Taille 		as integer = (Siz_X/2) - (Siz_X / 8) ' 200
 			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
 			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
 
-			Dim Scrol_Bar_SX		as integer = 20
-			Dim Scrol_Bar_SY		as integer = 40
+			' Taille de la BAR
+			Dim Scrol_Bar_SX		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR_SIZE_X", 3, _CLE_))
+			Dim Scrol_Bar_SY		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR_SIZE_Y", 3, _CLE_))
 			
+			' Position de la BAR (selon sa taille)
 			Dim Scrol_Bar_PX		as integer = Siz_X - Scrol_Bar_SX
 			Dim Scrol_Bar_PY		as integer = SCROLLING_Y
 
-			Dim Marge_Secu			as integer = 80
+			' Marge 'anti-clic'
+			Dim Marge_Secu			as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.NO_CLICABLE_ZONE", 3, _CLE_))
 
 			' Recuperer la position du curseur RELATIF a la position du picturebox
 			Dim Position_clic_X as integer = cpc_mouse_state(1) - Pos_X
 			Dim Position_clic_Y as integer = cpc_mouse_state(2) - Pos_Y
-			
-			
-			
+
 			Dim Bordure as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Bordure
 			
 			Dim Lines_array(CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS) as string
@@ -402,10 +403,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 										' Fichier VIDE
 										TexteTaille = "0 " & octets
 									Else
-										IF (TailleFichier/1024^4) < 1 Then ' Tera
-											IF (TailleFichier/1024^3) < 1 Then ' Giga
-												IF (TailleFichier/1024^2) < 1 Then ' Mega
-													IF (TailleFichier/1024) < 1 Then ' Kilo
+										IF (TailleFichier/CPCDOS_INSTANCE._TERA_OCTETS) < 1 Then ' Tera
+											IF (TailleFichier/CPCDOS_INSTANCE._GIGA_OCTETS) < 1 Then ' Giga
+												IF (TailleFichier/CPCDOS_INSTANCE._MEGA_OCTETS) < 1 Then ' Mega
+													IF (TailleFichier/CPCDOS_INSTANCE._KILO_OCTETS) < 1 Then ' Kilo
 														TexteTaille = TailleFichier & " " & octets ' OCTETS
 													Else
 														TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 1) & " " & kilo ' KILOS

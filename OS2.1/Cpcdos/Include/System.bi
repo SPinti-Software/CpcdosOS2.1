@@ -448,6 +448,33 @@ Type _FICHER_DOSSIER_
 		
 End Type
 
+' Structure MID - Structure temporaire
+type _info_disques field = 1
+	level_info 				as ushort ' Toujours 0
+	serial_number 			as uinteger
+	volume_label(0 to 10) 	as ubyte
+	sysfile_nom(0 to 7) 	as ubyte   ' FAT, FAT16, FAT32, ?
+end type
+
+Type _DRIVES_ 
+	public:
+		Est_OK										as boolean
+		
+		CONST nb_MAX_elements						as Integer = 26 ' Temporaire
+		
+		nb_elements									as Integer = 0
+		nb_drives									as integer = 0
+
+		Drives_LETTER		(0 to nb_MAX_elements)	as String
+		Drives_LABEL		(0 to nb_MAX_elements)	as String
+		Drives_SYSFILE		(0 to nb_MAX_elements)	as String
+		Drives_SERIAL_No	(0 to nb_MAX_elements)	as String
+
+		Drives_SIZE			(0 to nb_MAX_elements)	as integer
+		Drives_FREE_SIZE	(0 to nb_MAX_elements)	as integer
+
+End Type
+
 Type _SYSTEME_Cpcdos_OSx__ 
 	private:
 		CONST _MAX_PROCESSUS 	as integer = 128 ' fixe temporairement a 128
@@ -557,6 +584,13 @@ Type _SYSTEME_Cpcdos_OSx__
 		cpu_pourcentage				as uinteger
 		
 		COM_INSTANCE	(0 to 8)	as _COM_PORT__	' Ports COM pour le debogage ou autre
+
+		' Liste des lecteurs, cdrom, floppy etc..
+		drives_list 				as _DRIVES_
+
+		' Ignorer les lecteurs de disquettes trop lente
+		Ignore_FLOPPY_A				as boolean = true
+		Ignore_FLOPPY_B				as boolean = true
 		
 		Declare Function get_cpu_pourcent() as uinteger
 		
@@ -649,6 +683,15 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function creer_Repertoire__fbcrt(NomDossier as String, Attributs as String) 																			as boolean
 		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_) 										as boolean
 		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_, jump as integer) 					as boolean
+
+		' Lecteurs
+		Declare Function Display_all_drives		() 																														as boolean
+		Declare Function Display_drive			(index as integer) 																														as boolean
+		Declare Function update_drives			() 																														as boolean
+
+		Declare Function get_Drives				() 																														as boolean
+		Declare Function get_Size_drive			(lettre_lecteur as string, index as integer) 																			as boolean		
+		Declare Function get_MID_drive			(lettre_lecteur as string, index as integer) 																			as boolean
 		
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean, Check_SFN as boolean, SFN as boolean) 								as String
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean) 																	as boolean
