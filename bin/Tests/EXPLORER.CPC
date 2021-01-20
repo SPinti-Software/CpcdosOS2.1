@@ -60,10 +60,11 @@ picturebox/ img_Next
 	create/
 end/ Picturebox
 
+// %actual_path%
 Textbox/ txt_path
         .Handle         = "%window_handle%"
         .Parameters     = "BORD:1 COL:1"
-        .Text           = "%actual_path%"
+        .Text           = ""
         .PX             = "64"
         .PY             = "2"
         .BackColor      = "110,110,110"
@@ -84,48 +85,68 @@ explorer/ explore_gui
         .opacity        = "255"
         .textcolor      = "250,250,250"
         .backcolor      = "100,100,100"
-        .text           = "%actual_path%"
+        .text           = ""
         .events         = "%_exe_path_%"
         create/
 End/ explorer
 
 // ===== GUI events =====
 
-Function/ img_Drive.MouseClic()
+Function/ img_Drive.MouseClick()
         // Display drive list
+
+        // Modify explorer path
+	explorer/ /modif:explore_gui
+		.text = ""
+		create/
+	end/ explorer
 
 End/ Function
 
-Function/ img_Previous.MouseClic()
+Function/ img_Previous.MouseClick()
         // Back path
 
 End/ Function
 
-Function/ img_Next.MouseClic()
+Function/ img_Next.MouseClick()
         // fordward path
 
 End/ Function
 
 
-Function/ txt_path.KeyEnter()
+Function/ txt_path.KeyEnter(texte)
         // Valid and display wrote path from textbox
-
-        // Getting path from textbox
-        textbox/ /modif:txt_path
-		@#path_text .text
-	end/ textbox
+        
+        // Stay in level 1, because for read variable %texte%, this is in level 1
+        ccp/ /set.level = 1
 
         // Modify explorer path
 	explorer/ /modif:explore_gui
-		.text = "%path_text%"
+		.text = "%texte%"
 		create/
 	end/ explorer
+
+End/ Function
+
+Function/ explore_gui.MouseClick()
+        // Update textbox path
+
+        // Get path text
+        explorer/ /modif:explore_gui
+                @#new_path .text
+        end/ explorer
+
+        // Modify path text in the textbox
+        textbox/ /modif:txt_path
+		.text = "%new_path%"
+		create/
+	end/ textbox
 End/ Function
 
 Function/ file_explorer_window.Resize(sizeup)
 	// If user change window size
 
-	// Getting size informations of window
+	// Getting window size informations
 	window/ /modif:file_explorer_window
 		@#Win_Size_X .sx
 		@#Win_Size_Y .sy
@@ -143,20 +164,6 @@ Function/ file_explorer_window.Resize(sizeup)
 
 End/ function
 
-Function/ file_explorer_window.MouseClic()
-        // Update textbox path
-
-        // Get path text
-        explorer/ /modif:explore_gui
-                @#new_path .text
-        end/ explorer
-
-        // Modify path text in the textbox
-        textbox/ /modif:txt_path
-		.text = "%new_path%"
-		create/
-	end/ textbox
-End/ Function
 
 
 

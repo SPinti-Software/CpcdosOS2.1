@@ -226,7 +226,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "18" 
+CONST _VJOUR as string 	= "20" 
 CONST _VMOIS as string 	= "01"
 CONST _VANNEE as string = "2021"
 
@@ -475,6 +475,10 @@ Type __Noyau_Cpcdos_OSx__
 		
 		' *** Liste des formats programmes et icones associes **
 		const FORMAT_MAX					as integer = 24
+		const FORMAT_INDEX_DIR				as integer = 0
+		const FORMAT_INDEX_DRIVE			as integer = 24
+		const FORMAT_INDEX_UNKNOW			as integer = 23
+		
 		FORMAT_nombre						as integer = 0
 		
 		FORMAT_Extention	(FORMAT_MAX)	as String
@@ -482,6 +486,8 @@ Type __Noyau_Cpcdos_OSx__
 		FORMAT_Icones_min	(FORMAT_MAX)	as String
 		FORMAT_Icones_max	(FORMAT_MAX)	as String
 		FORMAT_Programme	(FORMAT_MAX)	as String
+
+
 		
 		
 		' *** Instanciation des classes du systeme ***

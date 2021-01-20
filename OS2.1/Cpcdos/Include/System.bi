@@ -686,6 +686,7 @@ Type _SYSTEME_Cpcdos_OSx__
 
 		' Lecteurs
 		Declare Function Display_all_drives		() 																														as boolean
+		Declare Function Drive_list_to_dir_instance (ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) 																as boolean
 		Declare Function Display_drive			(index as integer) 																														as boolean
 		Declare Function update_drives			() 																														as boolean
 

@@ -110,6 +110,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 
 			Dim Couleur_ALPHA 	as integer
+
+			Dim DisplayDrives 	as boolean
 			
 			' Position des colonnes
 			Dim POS_Col_Icone 		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_COL_PX", 3, _CLE_))
@@ -243,59 +245,102 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 				Dim SourceRecherche as String
 				Dim Source_exe_path as String
 				
-				
+
 				Source 			= Rtrim(Rtrim(Ltrim(Ltrim(Texte, CHR(09))), CHR(09)))
 				CPY_Source		= CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source, TRUE, TRUE, FALSE)
+
+				' if len(Texte) > 0 Then
+				' 	if NOT Instr(Texte, "\") = Len(Texte) Then
+				'		Texte = "\"
+				' 	End if
+				' End if
+
+				' No path ! We displaying drives :-)
+				IF CPY_Source = "" Then DisplayDrives = true
+				IF Source = "" Then DisplayDrives = true
+			
 				
-				
-				
-				IF Instr(CPY_Source, "\") > 0 Then
-					' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
-					'  --> REP/ Dossier\*.*
-					SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
-					
-					If SourceRecherche = "" Then SourceRecherche = "\*.*"
-					
-					IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
-						SourceRecherche = "\*.*"
-					Else
-						Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
-						IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
-					End if
-		
-				Else
-					' Ex: REP/ .
-					' --> REP/ .\*.*
-					IF Len(CPY_Source) = 1 Then
-						IF CPY_Source = "." Then
-							SourceRecherche = ".\*.*"
-							Source = ""
+				if DisplayDrives = false Then
+					IF Instr(CPY_Source, "\") > 0 Then
+
+						
+
+						' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
+						'  --> REP/ Dossier\*.*
+						SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
+						
+						If SourceRecherche = "" Then SourceRecherche = "\*.*"
+						
+						IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
+							SourceRecherche = "\*.*"
 						Else
-							SourceRecherche = ".\*.*"
-							Source = ""
+							Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
+							IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
+						End if
+			
+					Else
+						' Ex: REP/ .
+						' --> REP/ .\*.*
+						IF Len(CPY_Source) = 1 Then
+							IF CPY_Source = "." Then
+								SourceRecherche = ".\*.*"
+								Source = ""
+							Else
+								SourceRecherche = ".\*.*"
+								Source = ""
+							End if
+						Else
+							' EX: REP/
+							' --> REP/ *.*
+							SourceRecherche = "\*.*"
+							' Source = ""
+						End if
+					End if
+
+				End if
+
+				' S'il y a par erreur un \ avant le lecteur, on delete!
+				IF Instr(CPY_Source, "\") = 1 AND Instr(CPY_Source, ":") > 1 Then
+					CPY_Source = Mid(CPY_Source, 2)
+				End if
+
+				IF Instr(Source, "\") = 1 AND Instr(Source, ":") > 1 Then
+					Source = Mid(Source, 2)
+				End if
+
+
+				if DisplayDrives = false Then
+					' Si rien n'a ete precise
+					if Source = "" Then
+						' Si on ne precise rien, alors c'est le dossier courant dans l'executable
+						Source_exe_path = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
+						
+						' Verifier si la variable existe
+						if Source_exe_path = Ucase(CPCDOS_INSTANCE._CONTENU_IMPROPABLE) Then Source_exe_path = ""
+						
+						' Optimisation
+						IF NOT Source_exe_path = "" Then
+							Source = Source_exe_path
+							Source = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source_exe_path, TRUE, TRUE, FALSE)
+
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Else
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							END IF
+						Else
+							Source = "."
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Else
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							END IF
 						End if
 					Else
-						' EX: REP/
-						' --> REP/ *.*
-						SourceRecherche = "\*.*"
-						' Source = ""
-					End if
-				End if
-				
-				' Si rien n'a ete precise
-				if Source = "" Then
-					' Si on ne precise rien, alors c'est le dossier courant dans l'executable
-					Source_exe_path = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
-					
-					' Verifier si la variable existe
-					if Source_exe_path = Ucase(CPCDOS_INSTANCE._CONTENU_IMPROPABLE) Then Source_exe_path = ""
-					
-					' Optimisation
-					IF NOT Source_exe_path = "" Then
-						Source = Source_exe_path
-						Source = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source_exe_path, TRUE, TRUE, FALSE)
-					
-						
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
@@ -303,33 +348,28 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							End if
 						END IF
-
-					Else
-						Source = "."
-						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-							Else
-								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-							End if
-						END IF
 					End if
-				Else
-					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-						Else
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-						End if
-					END IF
 				End if
-			
 				' Afficher le path
 				' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, CPY_Source, 32 , 1, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 			
 				scope
 					
-					Dim Resultat as Boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)
+					Dim Resultat as Boolean
+					
+					if DisplayDrives = false Then
+						' Getting files and dirs
+						Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)
+					Else
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "]  Recuperations de la liste des lecteurs", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+						Else
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "]  Getting drive list", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+						End if
+
+						' Getting drives
+						Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Drive_list_to_dir_instance(instance_FICHER_DOSSIER_)
+					End if
 					
 					If instance_FICHER_DOSSIER_.Est_OK = False Then
 						' ERREUR
@@ -337,9 +377,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 						
 						Dim Message_erreur as String = ERRAVT("ERR_064", 0)
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						Else
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						End if
 						
 					Else
@@ -370,22 +410,27 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 						
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
-			
+
+							DEBUG(" ****** liste_Elements(" & b & ")" & instance_FICHER_DOSSIER_.liste_Elements(b), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+							
 							' Positionnement label
 							dim Pos_lst_Y as integer = (b * (8 + espacement))
-							
-							
-							
+
+
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
-							
+								DEBUG(" ****** DOSSIER/DRIVE !!!!!!" & instance_FICHER_DOSSIER_.liste_Elements(b), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
 								TexteTaille = ""
-		
+
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-								
+
 								' Icone MIN
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(0), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+								if DisplayDrives = true Then
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+								Else
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+								End if
 								
 							Else
 
@@ -441,12 +486,14 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								Dim Index_extension as integer = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
 							
 								For boucle as integer = 1 to CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
-									Extension = Ucase(MID(instance_FICHER_DOSSIER_.liste_Elements(b), InstrREV(instance_FICHER_DOSSIER_.liste_Elements(b), ".") + 1))
-									
-									' Si extension correspond
-									if Extension = CPCDOS_INSTANCE.FORMAT_Extention(boucle) Then
-										Index_extension = boucle
-										exit for
+									if NOT CPCDOS_INSTANCE.FORMAT_Extention(boucle) = "" Then
+										Extension = Ucase(MID(instance_FICHER_DOSSIER_.liste_Elements(b), InstrREV(instance_FICHER_DOSSIER_.liste_Elements(b), ".") + 1))
+										
+										' Si extension correspond
+										if Extension = CPCDOS_INSTANCE.FORMAT_Extention(boucle) Then
+											Index_extension = boucle
+											exit for
+										End if
 									End if
 								Next boucle
 								
@@ -459,7 +506,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 								end if
 								
 								' Si pas d'icone, on met l'icone inconnu 
-								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
+								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
 								
 								' Icone fichier
 								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
@@ -540,9 +587,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 									Dim element as String = Mid(Lines_array(boucle), 3)
 
 									If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+										
 										Dim path_fichier as string
+										
 										' FICHIER
-										' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, "Clic FICHIER : " & element, 0 , 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
 											path_fichier = CPY_Source & element
 										else 
@@ -568,7 +616,11 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
 												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
 											Else
-												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+												if DisplayDrives = false Then
+													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+												else
+													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
+												End if
 											End if
 										End if
 										
@@ -576,9 +628,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 										
 										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 											else
-												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & CPY_Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 											End if
 										end if
 										exit for

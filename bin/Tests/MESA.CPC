@@ -22,7 +22,7 @@ Window/ bitmap_test
 End/ Window
 
 
-// mesa
+// Executer OpenGL Win32 dans un nouveau thread
 @#NumeroThread cmd/ /thread[MAX] exe/ /Win32 cube.exe
 
 // Convertir en handle

@@ -304,7 +304,7 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		' Afficher les disques presents
 		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Display_all_drives()
 		
-		sleep 10000
+		' sleep 10000
 		
 
 

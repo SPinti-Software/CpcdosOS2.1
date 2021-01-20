@@ -1638,11 +1638,16 @@ Function __Noyau_Cpcdos_OSx__.Load_list_format(source as String) as boolean
 		FORMAT_Icones_max	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "ICON_MAX")
 		FORMAT_Programme	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "PROGRAM")
 		
-		FORMAT_nombre = FORMAT_nombre+1
-		
+		FORMAT_nombre = FORMAT_nombre + 1
 	Next boucle
 	
 	
+	FORMAT_Extention	(23) = Read_INI_value(source, "DRIVE", "FORMAT")
+	FORMAT_Programme	(23) = Read_INI_value(source, "DRIVE", "PROGRAM")
+	FORMAT_Description	(23) = Read_INI_value(source, "DRIVE", "DESCRIPTION")
+	FORMAT_Icones_min	(23) = Read_INI_value(source, "DRIVE", "ICON_MIN")
+	FORMAT_Icones_max	(23) = Read_INI_value(source, "DRIVE", "ICON_MAX")
+
 	FORMAT_Extention	(24) = Read_INI_value(source, "EXT_DEF", "FORMAT")
 	FORMAT_Programme	(24) = Read_INI_value(source, "EXT_DEF", "PROGRAM")
 	FORMAT_Description	(24) = Read_INI_value(source, "EXT_DEF", "DESCRIPTION")

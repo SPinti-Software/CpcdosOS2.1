@@ -957,6 +957,71 @@ Function _SYSTEME_Cpcdos_OSx__.Display_drive(index as integer) as boolean
 	End if
 End function
 
+Function _SYSTEME_Cpcdos_OSx__.Drive_list_to_dir_instance(ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) as boolean
+	' Cette fonction permet de placer la liste des lecteurs dans l'instance d'affichage de dossier/fichier compatible pour l'explorer
+
+	Dim NomElement 	as String
+	dim index		as integer = 0
+
+	' if Ignore_FLOPPY_A = true Then index += 1
+	' if Ignore_FLOPPY_B = true Then index += 1
+
+	instance_FICHIER_DOSSIER.path = ""
+	instance_FICHIER_DOSSIER.Est_OK = true
+
+	' Remettre a zero la liste des elements
+	instance_FICHIER_DOSSIER.nb_dossiers = 0
+	instance_FICHIER_DOSSIER.nb_elements = 0
+
+	NomElement = "NULL"
+
+	ENTRER_SectionCritique()
+	for boucle as integer = 0 to drives_list.nb_drives
+
+		' Recuperer la lettre du lecteur
+		NomElement = drives_list.Drives_LETTER(index)
+
+		
+
+		DEBUG(" ****** NomElement:" & NomElement & " (" & index & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR_resolution )
+
+		' S'il n'y a plus d'elements
+		if NOT NomElement = "" Then
+
+			' Incrementer le nombre d'elements
+			instance_FICHIER_DOSSIER.nb_dossiers += 1
+			instance_FICHIER_DOSSIER.nb_elements += 1
+
+			' Ajouter a la liste
+			instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement & ":\"
+			
+			' Considerer comme un dossier
+			instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
+
+
+			DEBUG(" ****** Drive_list_to_dir_instance() liste_Elements(" & instance_FICHIER_DOSSIER.nb_elements & ") = " & instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			index += 1
+			
+
+			' Si le nombre d'elements a memoriser sort de la limite, on arrete
+			if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				Else
+					DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				End if
+				exit for
+			End if
+		End if
+
+	Next boucle
+	SORTIR_SectionCritique()
+
+	Function = instance_FICHIER_DOSSIER.Est_OK
+
+End function
+
 Function _SYSTEME_Cpcdos_OSx__.update_drives() as boolean
 	' Cette fonction permet de mettre a jour la liste des lecteurs
 	' disponibles dans une structure
@@ -965,6 +1030,25 @@ Function _SYSTEME_Cpcdos_OSx__.update_drives() as boolean
 
 	' Mettre a jour la lettre des lecteurs dispo
 	get_Drives()
+
+	' Afficher si les disquettes sont ignores
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		if Ignore_FLOPPY_A = true then
+			DEBUG("[SYSTEME] update_drives() Lecteur disquette A: ignore", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+
+		if Ignore_FLOPPY_B = true then
+			DEBUG("[SYSTEME] update_drives() Lecteur disquette B: ignore", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+	Else
+		if Ignore_FLOPPY_A = true then
+			DEBUG("[SYSTEME] update_drives() Floppy drive A: ignored", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+
+		if Ignore_FLOPPY_B = true then
+			DEBUG("[SYSTEME] update_drives() Floppy drive B: ignored", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+	End if
 
 	' Mettre a jour les infos va leur MID
 	for index as integer = 0 to drives_list.nb_drives
@@ -1000,8 +1084,9 @@ Function _SYSTEME_Cpcdos_OSx__.get_Drives() as boolean
 
 	ENTRER_SectionCritique()
 
-    DIM Reg AS __dpmi_regs
-	Dim Lecteur as String
+    DIM Reg 		as __dpmi_regs
+	Dim Lecteur 	as String
+	
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		DEBUG("[SYSTEME] get_Drives() Mise a jour de la liste des lecteurs ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
@@ -1013,6 +1098,9 @@ Function _SYSTEME_Cpcdos_OSx__.get_Drives() as boolean
 	drives_list.nb_drives = 0
 
     FOR index as byte = 1 TO 26
+		
+		Dim LectIgnore 	as boolean = false
+
 		' IOCTL --> Device driver control
         Reg.x.AX = &H4409	
 
@@ -1029,21 +1117,42 @@ Function _SYSTEME_Cpcdos_OSx__.get_Drives() as boolean
         Lecteur = CHR(64 + Reg.x.BX)
 
 		if NOT Lecteur = "" Then
+			
+			' Ignorer les lecteur disquettes
+			if Lecteur = "A" Then
+				If Ignore_FLOPPY_A = true Then 
+					LectIgnore = true
+				end if
+			End if
 
-		drives_list.nb_drives += 1
+			if Lecteur = "B" Then
+				If Ignore_FLOPPY_B = true Then 
+					LectIgnore = true
+				end if
+			End if
+			
+			' Si c'est une disquette ignoree
+			if LectIgnore = true Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG(" - " & drives_list.nb_drives & " [TROUVE] '" & Lecteur & ":' (ID:" & index & "') semble disponible", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+					DEBUG(" LECTEUR IGNORE", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				Else
+					DEBUG(" - " & drives_list.nb_drives & " [FOUND] '" & Lecteur & ":' (ID:" & index & "') seem avaiable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+					DEBUG(" IGNORED DRIVE", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				End if
+			else
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG(" - " & drives_list.nb_drives & " [TROUVE] '" & Lecteur & ":' (ID:" & index & "') semble disponible", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				Else
+					DEBUG(" - " & drives_list.nb_drives & " [FOUND] '" & Lecteur & ":' (ID:" & index & "') seem avaiable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				End if
 
-			' Ajouter jour 1 par 1
-			drives_list.Drives_LETTER(index) = Lecteur
-
-			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG(" - " & index & " [TROUVE] '" & Lecteur & "' semble disponible", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-			Else
-				DEBUG(" - " & index & " [FOUND] '" & Lecteur & "' seem avaiable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				' Ajouter jour 1 par 1
+				drives_list.Drives_LETTER(drives_list.nb_drives) = Lecteur
+				drives_list.nb_drives += 1
 			End if
 		End if
-
     NEXT
-
 
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -1117,7 +1226,7 @@ Function _SYSTEME_Cpcdos_OSx__.get_MID_drive(lettre_lecteur as string, index as 
 	dim drive 			as string
 	dim dpmi_register 	as __dpmi_regs 
 	dim _mid 			as _info_disques
-	Dim num_erreur		as double
+	Dim num_erreur		as integer
 
 	' Recuperer la lettre du lecteur
 	Dim numero_lecteur as ushort = asc(lettre_lecteur) - asc("@")
@@ -1156,7 +1265,7 @@ Function _SYSTEME_Cpcdos_OSx__.get_MID_drive(lettre_lecteur as string, index as 
 	End if
 
 	
-	'RM Call register
+	' Preparer l'interruption en RM
 	dpmi_register.x.ax = &h440d       ' API
 	dpmi_register.x.bx = numero_lecteur
 	dpmi_register.h.ch = 8            ' Categorie du lecteur
@@ -1164,10 +1273,10 @@ Function _SYSTEME_Cpcdos_OSx__.get_MID_drive(lettre_lecteur as string, index as 
 	dpmi_register.x.ds = segment      ' RM segment
 	dpmi_register.x.dx = 0            ' Offset de depart
 
-	' Recuperer la structure MID
+	' Executer la structure en rm tout en recuperer la structure MID
 	asm
-		mov ax, 0x300				' API
-		mov bx, 0x21				' Function
+		mov ax, 0x300				' API d'appel RM
+		mov bx, 0x21				' Interruption a executer
 		xor cx, cx
 		lea edi, [dpmi_register]
 
