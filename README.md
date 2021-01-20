@@ -25,7 +25,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 
 ## Liens officiel
 - [Site web - cpcdos.net](https://cpcdos.net)
-- [Forum - developpez.net](www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos/)
+- [Forum - developpez.net](https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos)
 
 ## Updates binaires
 - Depuis le [site web](https://cpcdos.net) ci-dessus.
