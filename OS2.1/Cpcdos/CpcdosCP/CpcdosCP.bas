@@ -14795,7 +14795,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											End if
 											
 										ElseIF Instr(RetourCCP, ":EXPLORER_NOM=") > 0 Then
-											IUG_CREATION_EXPLORER = MID(RetourCCP, Instr(RetourCCP, ":EXPLORER_NOM=") + 12)
+											IUG_CREATION_EXPLORER = MID(RetourCCP, Instr(RetourCCP, ":EXPLORER_NOM=") + 14)
 											
 											
 											IF Modification_IUG = True Then
