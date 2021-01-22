@@ -229,36 +229,36 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(index_PID).Identification_Objet.OS_id Then
 		If Type_IUG = GUI_TYPE.Fenetre then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Fenetre(this.INST_INIT_GUI, index) 'Actualiser si focus
+				Creer_Fenetre( index) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.Bouton then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Bouton(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_Bouton(index, index_PID) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.PictureBox then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_PictureBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_PictureBox(index, index_PID) 'Actualiser si focus
 			else
 				IF this.MULTI_PICTUREBOX = TRUE then
-					Creer_PictureBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+					Creer_PictureBox(index, index_PID) 'Actualiser si focus
 					ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
 				End if
 			End if
 		ElseIf Type_IUG = GUI_TYPE.TextBlock then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBlock(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_TextBlock(index, index_PID) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.TextBox then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_TextBox(index, index_PID) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.ProgressBar then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_ProgressBar(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_ProgressBar(index, index_PID) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.Explorer then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Explorer(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
+				Creer_Explorer(index, index_PID) 'Actualiser si focus
 			End if
 		Else
 		
@@ -354,7 +354,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.Index_Enfant = _INDEX_
 
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle = Creer_Fenetre(_Proprietes, _INDEX_)
+		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle = Creer_Fenetre(_INDEX_)
 					
 		
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle
@@ -408,7 +408,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = Creer_Bouton(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = Creer_Bouton(_INDEX_, _INDEX_Fenetre_)
 
 		' Transferer le handle
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle
@@ -526,7 +526,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle = Creer_PictureBox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle = Creer_PictureBox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -581,7 +581,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle = Creer_TextBlock(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle = Creer_TextBlock(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -636,7 +636,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.handle = Creer_TextBox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.handle = Creer_TextBox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -691,7 +691,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.handle = Creer_ProgressBar(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.handle = Creer_ProgressBar(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -746,7 +746,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle = Creer_Checkbox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle = Creer_Checkbox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -802,7 +802,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = Creer_Explorer(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = Creer_Explorer(_INDEX_, _INDEX_Fenetre_)
 
 		' Transferer le handle
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle
@@ -1770,7 +1770,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -1816,7 +1816,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 													
@@ -1881,7 +1881,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
 														' Actualiser graphiquement le bouton pour l'effet de "pression"
-														Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+														Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
 														exit for
@@ -1931,7 +1931,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -1993,7 +1993,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 											
 											' On quitte cette boucle
 											exit for
@@ -2090,7 +2090,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Pression = False
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_PictureBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_PictureBox(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2195,7 +2195,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_PictureBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_PictureBox(The_Objet_index, _INDEX_FENETRE_)
 											IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
 												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
@@ -2305,7 +2305,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -2350,7 +2350,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2457,7 +2457,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2571,7 +2571,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_Y = Pos_Y
 											
 											' Actualiser graphiquement le textebox pour l'effet de ""
-											Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 											
 											
 											' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
@@ -2621,7 +2621,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 												
 												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
 												if NOT Fichier_evenement = "" Then
@@ -2738,7 +2738,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = False
 										
 										' Actualiser graphiquement le bouton pour l'effet de "pression"
-										Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+										Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 								
 										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
 										if NOT Fichier_evenement = "" Then
@@ -2852,7 +2852,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le textebox pour l'effet de ""
-												Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -2897,7 +2897,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3005,7 +3005,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3114,7 +3114,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le checkbox pour l'effet de ""
-												Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -3164,7 +3164,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													End if
 													
 													' Actualiser graphiquement le checkbox pour l'effet de "pression"
-													Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3225,7 +3225,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
 														' Actualiser graphiquement le checkbox pour l'effet de "pression"
-														Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+														Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
 														exit for
@@ -3277,7 +3277,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3336,7 +3336,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le checkbox pour l'effet de "pression"
-											Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 											
 											' On quitte cette boucle
 											exit for
@@ -3349,10 +3349,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								' ******************************************
 								
 								ElseIf The_Objet = "EXPLORER" Then 
-								
-									
-									
-									
+
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement
 								
 									if NOT Fichier_evenement = "" Then
@@ -3379,7 +3376,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
 
-												' On indique qu'on FOCUS un picturebox
+												' On indique qu'on FOCUS un explorer
 												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer
 												
 												' Avec son index
@@ -3390,7 +3387,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement l'explorer pour l'effet de "pression"
-												Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -3436,7 +3433,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 													
@@ -3500,7 +3497,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
 														' Actualiser graphiquement le bouton pour l'effet de "survole"
-														Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
 														exit for
@@ -3536,7 +3533,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
 													
 													' Actualiser graphiquement le explorer pour l'effet de "pression"
-													Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 
 													' On quitte cette boucle
 													exit for
@@ -3553,7 +3550,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le explorer pour l'effet de "pression"
-											Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3615,7 +3612,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le explorer pour l'effet de "pression"
-											Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 											
 											' On quitte cette boucle
 											exit for
@@ -4317,7 +4314,7 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_POS(POS_X as integer, POS_Y as int
 
 		
 		' Redessiner la fenetre
-		Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.DEPLACEMENT)
+		Creer_Fenetre(this.INST_INIT_GUI.DEPLACEMENT)
 	End if
 	DeplacerFenetre_TO_POS = 1
 
@@ -4346,14 +4343,14 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 				
 				IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.OS_id Then
-					Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+					Creer_Fenetre(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 				
 					' Si le handle correspond a la fenetre, alors on trace le PictureBox
 					For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PICTUREBOX
 						IF this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_PictureBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_PictureBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4362,7 +4359,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_Bouton(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_Bouton(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4372,7 +4369,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_TextBlock(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_TextBlock(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4381,7 +4378,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_TextBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_TextBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4390,7 +4387,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_ProgressBar(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_ProgressBar(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4399,7 +4396,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_CheckBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_CheckBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4408,7 +4405,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_Explorer(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_Explorer(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 
@@ -4431,14 +4428,14 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 				IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> index Then ' Si c'est pas la fenetre
 					
 					IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.OS_id Then
-						Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+						Creer_Fenetre(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 
 						' Si le PID correspond a la fenetre, alors on trace le bouton
 						For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 							IF this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 									AND this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_Bouton(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_Bouton( b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4447,7 +4444,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_PictureBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_PictureBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4456,7 +4453,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_TextBlock(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_TextBlock(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4465,7 +4462,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_ProgressBar(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_ProgressBar(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4474,7 +4471,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_CheckBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_CheckBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4483,7 +4480,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 									AND this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_Explorer(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_Explorer(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						

@@ -3,7 +3,7 @@
 
 ' Reflechir qu'aussi en cas de changement d'image a chaud l'image ne vas pas changer puisse ce qu'il est deja en memoire
 '  il faudra(si changement) desallouer et recharger l'image
-Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 	Dim CreerBuffer as boolean
 	

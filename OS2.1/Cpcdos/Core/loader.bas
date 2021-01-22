@@ -291,9 +291,6 @@ End sub
 
 #print * ENTRY POINT - __CPCDOS_INIT_1
 public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as integer
-	
-
-		
 		On local Error Goto Intercept_Error
 
 		DEBUG("[0x" & HEX(@__CPCDOS_INIT_1, 8) & "] Starting cpcdos osx kernel ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")	
@@ -303,10 +300,6 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 
 		' Afficher les disques presents
 		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Display_all_drives()
-		
-		' sleep 10000
-		
-
 
 		ZERO_FILL = String(128, 0)
 		
@@ -394,11 +387,11 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		
 		' Mettre a jour les informations de CPU
 		Maj_CPUINFO()
-		Sleep 1500 ' Laisser l'utilisateur visualiser
+		Sleep 1000 ' Laisser l'utilisateur visualiser
 		
 		' Mettre a jours les informations BIOS APM
 		Maj_APM_info()
-		Sleep 1500 ' Laisser l'utilisateur visualiser
+		Sleep 1000 ' Laisser l'utilisateur visualiser
 	
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 			DEBUG("* Le systeme s'est initialise correctement. ID_KERNEL:" & CPCDOS_INSTANCE.get_id_kernel() & " [0x" & HEX(CPCDOS_INSTANCE.get_id_kernel(), 4) & "] - BUILD:" & _VERSION_BUILD, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")	
@@ -423,9 +416,7 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		DEBUG("[OK] ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		DEBUG(" --> " & cpinti.gestionnaire_tache.get_cycle_MAX_cpu() & " cycles", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		
-		
-		
-		
+
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 			DEBUG("[__CPCDOS_INIT_1] Noyau en execution.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		else

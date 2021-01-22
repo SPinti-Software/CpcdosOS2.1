@@ -1,7 +1,7 @@
 #print * TexteBloc
 #include once "Cpcdos.bi"
 
-Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

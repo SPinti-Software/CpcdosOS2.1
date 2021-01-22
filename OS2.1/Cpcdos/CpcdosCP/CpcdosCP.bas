@@ -5297,8 +5297,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 								CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, Numero_INDEX)
 							Else
-
-								
 								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 										DEBUG("[CpcdosC+] Actualisation graphique de la fenetre '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -5322,7 +5320,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5334,7 +5332,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Picturebox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Picturebox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 						
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBlock Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5346,7 +5344,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5358,7 +5356,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ProgressBar Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5370,7 +5368,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.CheckBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5382,7 +5380,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5394,7 +5392,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					End if
 					
 				End if
@@ -11973,7 +11971,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Si_Non_EXE_FONCT = 1
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Appelle de la fonction '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						DEBUG("[CpcdosC+] Appel de la fonction '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					Else
 						DEBUG("[CpcdosC+] Calling function '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					End If

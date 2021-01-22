@@ -3,7 +3,7 @@
 
 Declare Function 	cpc_mouse_state					cdecl Alias "cpc_mouse_state" 					(param as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
 
-Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 	dim Message_erreur as String
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -410,15 +410,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_Proprietes as CPCDOS_GUI_INIT__, _ind
 
 						
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
-
-							DEBUG(" ****** liste_Elements(" & b & ")" & instance_FICHER_DOSSIER_.liste_Elements(b), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
-							
 							' Positionnement label
 							dim Pos_lst_Y as integer = (b * (8 + espacement))
 
 
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
-								DEBUG(" ****** DOSSIER/DRIVE !!!!!!" & instance_FICHER_DOSSIER_.liste_Elements(b), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+
 								TexteTaille = ""
 
 								' Dossier en cours

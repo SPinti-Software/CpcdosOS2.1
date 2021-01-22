@@ -114,20 +114,6 @@ Function/ img_Next.MouseClick()
 End/ Function
 
 
-Function/ txt_path.KeyEnter(texte)
-        // Valid and display wrote path from textbox
-        
-        // Stay in level 1, because for read variable %texte%, this is in level 1
-        ccp/ /set.level = 1
-
-        // Modify explorer path
-	explorer/ /modif:explore_gui
-		.text = "%texte%"
-		create/
-	end/ explorer
-
-End/ Function
-
 Function/ explore_gui.MouseClick()
         // Update textbox path
 
@@ -142,6 +128,23 @@ Function/ explore_gui.MouseClick()
 		create/
 	end/ textbox
 End/ Function
+
+
+Function/ txt_path.KeyEnter(texte)
+        // Valid and display wrote path from textbox
+        
+        // Stay in level 1, because for read variable %texte%, this is in level 1
+        ccp/ /set.level = 1
+
+        // Modify explorer path
+	explorer/ /modif:explore_gui
+		.text = "%texte%"
+		create/
+	end/ explorer
+
+End/ Function
+
+
 
 Function/ file_explorer_window.Resize(sizeup)
 	// If user change window size

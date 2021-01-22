@@ -766,14 +766,14 @@ Type _SCI_Cpcdos_OSx__
 		
 		
 		' *** OBJ ***
-		Declare Function Creer_Fenetre				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer) 							as integer
-		Declare Function Creer_Bouton				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_PictureBox			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_TextBlock			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_TextBox				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_ProgressBar			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_CheckBox				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_Explorer				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_Fenetre				(_index_ as integer) 							as integer
+		Declare Function Creer_Bouton				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_PictureBox			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_TextBlock			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_TextBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_ProgressBar			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_CheckBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_Explorer				(_index_ as integer, _INDEX_PID_ as integer)	as integer
 		
 		Declare Constructor()
 		Declare Destructor()

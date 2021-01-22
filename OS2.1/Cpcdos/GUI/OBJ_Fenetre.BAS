@@ -1,7 +1,7 @@
 #print * Fenetre
 #include once "Cpcdos.bi"
 
-Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
  
 	dim Message_erreur as String
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

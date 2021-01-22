@@ -981,9 +981,6 @@ Function _SYSTEME_Cpcdos_OSx__.Drive_list_to_dir_instance(ByRef instance_FICHIER
 		' Recuperer la lettre du lecteur
 		NomElement = drives_list.Drives_LETTER(index)
 
-		
-
-		DEBUG(" ****** NomElement:" & NomElement & " (" & index & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR_resolution )
 
 		' S'il n'y a plus d'elements
 		if NOT NomElement = "" Then
@@ -997,9 +994,6 @@ Function _SYSTEME_Cpcdos_OSx__.Drive_list_to_dir_instance(ByRef instance_FICHIER
 			
 			' Considerer comme un dossier
 			instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
-
-
-			DEBUG(" ****** Drive_list_to_dir_instance() liste_Elements(" & instance_FICHIER_DOSSIER.nb_elements & ") = " & instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 			index += 1
 			
