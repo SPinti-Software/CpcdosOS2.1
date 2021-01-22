@@ -577,8 +577,6 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 							dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 							
 							if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
-
-								
 								IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 
 									Dim element as String = Mid(Lines_array(boucle), 3)
