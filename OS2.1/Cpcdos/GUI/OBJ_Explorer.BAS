@@ -609,6 +609,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 											' Chercher le dernier \
 											CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
 											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+
 										else
 											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
 												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
@@ -620,7 +621,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 												End if
 											End if
 										End if
-										
+
+										' Put scrolling at 0 when it change directory
+										this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 0
 										reload = true ' Recharger l'objet
 										
 										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
