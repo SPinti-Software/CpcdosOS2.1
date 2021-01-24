@@ -149,7 +149,6 @@ Sub _SHELL_Cpcdos_OSx__._INIT_CpcdosCP_CMD()
 	this.Liste_CMD_FR(48) = "DECOMPRESSER/"		: this.Liste_CMD_EN(48) = "DECOMPRESS/"
 	this.Liste_CMD_FR(49) = "COMPRESSER/"		: this.Liste_CMD_EN(49) = "COMPRESS/"
 	this.Liste_CMD_FR(50) = "EXPLORER/"			: this.Liste_CMD_EN(50) = "EXPLORER/"
-	this.Liste_CMD_FR(51) = "CONTEXTEBLOC/"		: this.Liste_CMD_EN(51) = "CONTEXTBLOCK/"
 	' this.Liste_CMD_FR(52) = "fix/"			: this.Liste_CMD_EN(52) = "set/"
 	' this.Liste_CMD_FR(53) = "fix/"			: this.Liste_CMD_EN(53) = "set/"
 	' this.Liste_CMD_FR(54) = "fix/"			: this.Liste_CMD_EN(54) = "set/"
