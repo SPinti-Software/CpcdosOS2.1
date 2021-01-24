@@ -37,10 +37,14 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/checkbox.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/explorer.cpc
 
 
-
 // [FR] Configuration du msgbox
 // [EN] Msgbox configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/msgbox.cpc
+
+
+// [FR] Configuration du menu contextuel
+// [EN] Contextual configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/CONTEXT.cpc
 
 
 

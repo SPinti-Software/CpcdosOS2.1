@@ -171,7 +171,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 					end if
 					
 					this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ORG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Bouton(" & _index_ & ")_DYN_PTR", IMG_ORIGINE, this.INST_INIT_GUI.GUI__BOUTON(_index_).Identification_Objet.Handle)
-				
+
 				Else
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

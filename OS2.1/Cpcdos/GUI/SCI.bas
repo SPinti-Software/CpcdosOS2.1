@@ -377,8 +377,83 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 	Function = 1
 End Function
 
+Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer) as boolean
+	' Cette fonction permet d'afficher un menu contextuel a un emplacement
+	
+	' Temporaire
+	Dim Size_X as integer = 200
+	Dim Size_Y as integer = 400
+
+	Dim texte_array(0 to 24) as string
+
+	texte_array(0) = "Element 1"
+	texte_array(1) = "Blabla 2"
+	texte_array(2) = "Machin 3"
+
+	dim Couleur_FNT_R as integer = 0
+	dim Couleur_FNT_V as integer = 0
+	dim Couleur_FNT_B as integer = 0
+
+	' Recuperer le nom de fichier du fond d'ecran du menu contextuel
+	dim Image as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.BACKGROUND", 3, this._CLE_)
+
+	ContextMenu_IsOpen = true
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] creer_ContextMenu() Chargement de l'image de fond de " & Image, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		else
+			DEBUG("[SCI] creer_ContextMenu() Loading background image from " & Image, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		End if
+	end if
+	
+	' Charger l'image et recuperer son ID
+	ContextMenu_Background_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image, 123)
+
+	
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] creer_ContextMenu() " & Image & " --> id:" & ContextMenu_Background_ID & " charge en memoire a l'adresse [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ContextMenu_Background_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		else
+			DEBUG("[SCI] creer_ContextMenu() " & Image & " --> id:" & ContextMenu_Background_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ContextMenu_Background_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		End if
+	end if
+
+
+	
+	
+	' Creer un nouveau bitmap temporaire avec les nouvelles dimentions
+	Dim ContextMenu_Background_ID_TEMP as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(ContextMenu_Background_ID, Size_X, Size_Y)
+
+	' Ajouter du texte
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Background_ID_TEMP, texte_array(0), Pos_X + 24 , Pos_Y + 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Background_ID_TEMP, texte_array(1), Pos_X + 24 , Pos_Y + 30, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Background_ID_TEMP, texte_array(2), Pos_X + 24 , Pos_Y + 50, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] creer_ContextMenu() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X & "," & Pos_Y & "-" & Size_X & "," & Size_Y & " : Buffer video [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ContextMenu_Background_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		else
+			DEBUG("[SCI] creer_ContextMenu() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X & "," & Pos_Y & "-" & Size_X & "," & Size_Y & " : Buffer video [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ContextMenu_Background_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		End if
+	end if
+
+
+	' Hop on dessine dans le buffer video
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(ContextMenu_Background_ID_TEMP, Pos_X, Pos_Y, 0, 0, Size_X, Size_Y)
+
+	' Supprimer le bitmap temporaire
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(ContextMenu_Background_ID_TEMP)
+
+	return true
+End Function
+
+
 Function _SCI_Cpcdos_OSx__.creer_Msgbox(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
 	
+
+
 	return 1
 End Function
 
@@ -1042,7 +1117,23 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 					' Si la fenetre n'est pas en etat de deplacement
 					IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
 						
-						CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+						If(TypeClic AND 255) Then ' DESACTIVATED
+							DEBUG(" ****** CLIIQUUEEE DRROOOOIIIT", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+
+							' Verifier si le menu contextuel est dejà ouvert
+							if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false Then
+
+								DEBUG(" ****** IsOpen() ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								' Creer menu contextuel
+								CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 5, Pos_Y - 5)
+							End if
+						else
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
+							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+		
+						End if
 					else
 
 						' Si la souris a bouge

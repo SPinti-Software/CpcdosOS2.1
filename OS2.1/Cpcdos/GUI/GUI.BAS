@@ -1643,7 +1643,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						' Si l'utilisateur a encore le bouton presse = deplacement
 						Presente = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
-						IF (TypeClic AND 1) Then 
+						IF TypeClic = 1 Then ' Clic gauche
 							this.INST_INIT_GUI.DEPLACEMENT = _INDEX_FENETRE_
 							
 							ScreenLock
@@ -1664,7 +1664,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							
 							this.INST_INIT_GUI.RELATIF_X = Pos_X - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X
 							this.INST_INIT_GUI.RELATIF_Y = Pos_Y - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y
-						else 
+						else
+
 							' Flip 3, 1
 							' ActualiserGUI(0, 0)
 							this.INST_INIT_GUI.DEPLACEMENT = 0

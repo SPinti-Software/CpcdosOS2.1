@@ -714,7 +714,12 @@ Type _SCI_Cpcdos_OSx__
 		EXP_Survole_LEFT_BORDER_ID			as integer
 		EXP_Survole_ID						as integer
 		EXP_Survole_RIGHT_BORDER_ID			as integer
-		
+
+		' ID de l'mage de fond du menu contextuel
+		ContextMenu_Background_ID			as integer
+
+		' Si le menu contextuel est ouvert ou non
+		ContextMenu_IsOpen					as boolean
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__
 		
@@ -758,6 +763,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Initialiser_ECRAN			(Res_X as integer, Res_Y as integer, Bits as integer) 		as integer
 		Declare Function charger_Curseurs			(Handle as integer) as integer
 		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 											as integer
+		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer) 						as boolean
 		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string
 		Declare Function IMG_Recuperer_Taille_X		(byref Source as any ptr) 									as integer
