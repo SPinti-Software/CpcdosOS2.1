@@ -16,7 +16,7 @@
                 "isDefault": true
             }
         },
-		{
+        {
             "label": "COMPILATION and COPY [GUI]",
             "type": "shell",
             "command": "explorer",
@@ -30,14 +30,17 @@
             }
         },
         {
-            "label": "Copy to VM",
+            "label": "COPY files ONLY BIN to VM",
             "type": "shell",
-            "command": "OS2.1\\_Update ALL to VM.bat"
-        },
-        {
-            "label": "Compilation only",
-            "type": "shell",
-            "command": "OS2.1\\_Update ALL to VM.bat"
+            "command": "explorer",
+            "args": [
+                "OS2.1\\_Update_ALL_to_VM.bat"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

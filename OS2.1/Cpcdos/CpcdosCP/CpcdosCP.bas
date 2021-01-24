@@ -12382,7 +12382,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim GUI__PROP_IMG_BUFFER_ID		as integer = 0	
 						Dim GUI__PROP_IMG_SELECTEUR_ID	as integer = 0
 						Dim GUI__PROP_IMG_SCROLL_ID		as integer = 0
-						Dim GUI__PROP_SCROLLING_Y		as integer = 0	
+						Dim GUI__PROP_SCROLLING_Y		as integer = 0
+						Dim GUI__PROP_Mode_Affichage	as integer = 0	
 						
 						
 
@@ -14902,6 +14903,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 
 															GUI__PROP_SCROLLING_Y		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).SCROLLING_Y
+															GUI__PROP_Mode_Affichage	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).Mode_Affichage
 															
 															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).BIT_ORG
 															
@@ -15086,6 +15088,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:0") > 0 Then GUI__PROP_AUTOSIZE = 0 ' Par defaut
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:1") > 0 Then GUI__PROP_AUTOSIZE = 1 ' Adapte a l'image
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:2") > 0 Then GUI__PROP_AUTOSIZE = 2 ' Adapte au picturebox appel les fonctions de resize
+
+												' Mode affichage Explorer
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:0") > 0 Then GUI__PROP_Mode_Affichage = 0 ' Mode petite liste
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:1") > 0 Then GUI__PROP_Mode_Affichage = 1 ' Mode moyenne liste
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:2") > 0 Then GUI__PROP_Mode_Affichage = 2 ' Mode icones
 												
 												' Type de fenetre
 												IF INSTR(GUI__PROP_TYPE, "TYPE:0") > 0 Then GUI__PROP_TYPE_OBJ = 0
@@ -16248,6 +16255,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SCROLL_ID 			= GUI__PROP_IMG_SCROLL_ID
 
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.SCROLLING_Y 				= GUI__PROP_SCROLLING_Y
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.Mode_Affichage 			= GUI__PROP_Mode_Affichage
 
 												
 												
@@ -16381,6 +16389,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											GUI__PROP_IMG_SCROLL_ID	= 0
 
 											GUI__PROP_SCROLLING_Y = 0
+											GUI__PROP_Mode_Affichage = 0
 											
 											
 											' Pour eviter la redondance.

@@ -591,6 +591,8 @@ Type Cpcdos_GUI__EXPLORER
 	IMG_SCROLL_ID			as integer	' Image du selecteur quand la souris survole un element
 	SCROLLING_Y				as integer 	' Position du scroller bar
 
+	Mode_Affichage			as integer 	' 0:Petite Liste,  1:Moyenne liste,  2:Icones
+
 	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
 										'  Ce qui permet en cas de changeent de resolutin d'ecran, de recharger l'image

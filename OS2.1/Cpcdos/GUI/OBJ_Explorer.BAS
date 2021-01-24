@@ -112,6 +112,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			Dim Couleur_ALPHA 	as integer
 
 			Dim DisplayDrives 	as boolean
+
+			Dim Mode_Affichage 	as integer = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Mode_Affichage
 			
 			' Position des colonnes
 			Dim POS_Col_Icone 		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_COL_PX", 3, _CLE_))
@@ -119,6 +121,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			Dim POS_Col_Taille 		as integer = (Siz_X/2) - (Siz_X / 8) ' 200
 			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
 			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
+
+			Dim Pos_Col_X_STEP		as integer = 80
 
 			' Taille de la BAR
 			Dim Scrol_Bar_SX		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR_SIZE_X", 3, _CLE_))
@@ -411,7 +415,23 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 						
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
 							' Positionnement label
-							dim Pos_lst_Y as integer = (b * (8 + espacement))
+							dim Pos_lst_Y as integer = 0
+							dim Pos_lst_X as integer = 1
+
+							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
+								' Mode Petite liste et moyenne liste
+								Pos_lst_Y = (b * (8 + espacement))
+							Else
+								' Mode icone
+								Pos_lst_X = b * Pos_Col_X_STEP
+
+								' Si on arrive au rebord de l'explorer
+								if Pos_lst_X >= Siz_X Then
+									Pos_lst_X = 1
+									Pos_lst_Y = (b * (16 + espacement))
+								End if
+							End if
+
 
 
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
@@ -420,13 +440,25 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
-								' Icone MIN
-								if DisplayDrives = true Then
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+								if Mode_Affichage = 0 Then
+									' Icone MIN
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+									if DisplayDrives = true Then
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+									Else
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+									End if
 								Else
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+									' Icone MAX
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), Pos_lst_X , 0 + Pos_lst_Y + 50, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+									if DisplayDrives = true Then
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_lst_X, 0 + Pos_lst_Y)
+									Else
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, Pos_lst_X, 0 + Pos_lst_Y)
+									End if
 								End if
 								
 							Else
@@ -468,16 +500,30 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								' Fichier en cours - CRASH A REVOIR 10-JAN-2021
 								Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 								
-								
-								if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
-									' Si le nom est trop grand pour etre affiche
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-								else
-									' Sinon on l'affiche normalement
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								if Mode_Affichage = 0 or Mode_Affichage = 1 Then
+									' Mode petite liste et mode moyenne liste
+
+									if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
+										' Si le nom est trop grand pour etre affiche
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									else
+										' Sinon on l'affiche normalement
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									End if
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, POS_Col_Taille , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								Else
+									' Mode icones
+
+									if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
+										' Si le nom est trop grand pour etre affiche
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", Pos_lst_X , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									else
+										' Sinon on l'affiche normalement
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), Pos_lst_X , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									End if
 								End if
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, POS_Col_Taille , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-								
+
+
 								Dim Extension as string
 								' Index de l'extension fichier
 								Dim Index_extension as integer = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
@@ -502,21 +548,32 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 									End if
 								end if
 								
-								' Si pas d'icone, on met l'icone inconnu 
-								if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
-								
-								' Icone fichier
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-								
-								' Afficher la description
-								if Len(CPCDOS_INSTANCE.FORMAT_Description(Index_extension)) > 32 Then
-									' Si trop grand
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								if Mode_Affichage = 0 or Mode_Affichage = 1 Then
+									' Mode Petite icone et Moyenne icone
+
+									' Si pas d'icone, on met l'icone inconnu 
+									if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
+									
+									' Icone fichier
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+									
+									' Afficher la description
+									if Len(CPCDOS_INSTANCE.FORMAT_Description(Index_extension)) > 32 Then
+										' Si trop grand
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									Else
+										' Sinon on display normal
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									End if
 								Else
-									' Sinon on display normal
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									' Mode Icone
+
+									' Si pas d'icone, on met l'icone inconnu 
+									if CPCDOS_INSTANCE.FORMAT_Icones_max(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
+									
+									' Icone fichier
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
 								End if
-								
 							end if
 							
 							' ** Ajouter les autres attributs **
@@ -573,69 +630,77 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 					' Clic AVANT le scrool bar
 					if Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge anti-fausse manoeuvre
-						for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
-							dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
-							
-							if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
-								IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
+						
+						If Mode_Affichage = 0 or Mode_Affichage = 1 Then
+							' Mode Petite liste et Moyenne liste
 
-									Dim element as String = Mid(Lines_array(boucle), 3)
+							for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
+								dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
+								
+								if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
+									IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 
-									If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-										
-										Dim path_fichier as string
-										
-										' FICHIER
-										if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-											path_fichier = CPY_Source & element
-										else 
-											path_fichier = CPY_Source & "\" & element
-										End if
-										
-										' On execute le fichier
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
-										
-									elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
-										' DOSSIER
-									
-										if element = ".." OR element = "..\" Then
-											' Recuperer le dernier \
+										Dim element as String = Mid(Lines_array(boucle), 3)
+
+										If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
+											
+											Dim path_fichier as string
+											
+											' FICHIER
 											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-												CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+												path_fichier = CPY_Source & element
+											else 
+												path_fichier = CPY_Source & "\" & element
 											End if
 											
-											' Chercher le dernier \
-											CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
-											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+											' On execute le fichier
+											CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
+											
+										elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
+											' DOSSIER
+										
+											if element = ".." OR element = "..\" Then
+												' Recuperer le dernier \
+												if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+													CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+												End if
+												
+												' Chercher le dernier \
+												CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
+												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
 
-										else
-											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
-											Else
-												if DisplayDrives = false Then
-													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
-												else
-													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
+											else
+												if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
+												Else
+													if DisplayDrives = false Then
+														this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+													else
+														this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
+													End if
 												End if
 											End if
-										End if
 
-										' Put scrolling at 0 when it change directory
-										this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 0
-										reload = true ' Recharger l'objet
-										
-										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-											else
-												DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-											End if
-										end if
-										exit for
+											' Put scrolling at 0 when it change directory
+											this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 0
+											reload = true ' Recharger l'objet
+											
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+												else
+													DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+												End if
+											end if
+											exit for
+										End if
 									End if
 								End if
-							End if
-						Next boucle
+							Next boucle
+						Else 
+							' Mode icone
+							
+						End if ' Mode affichage
 					End if
 				End if ' Mouse state
 			End if 
@@ -656,29 +721,36 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			End if
 
 			' Surligne uniquement s'il suvole
-			IF this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Survole = TRUE Then
-				if Position_clic_X > 0 AND Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge securite
+			if Mode_Affichage = 0 or Mode_Affichage = 1 Then
+				' Mode petite et moyenne liste
 
-					if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID > 0 Then
-						dim Position_Y as integer = (1 + (Position_clic_Y/espacement) * (espacement)) - espacement/2
+				IF this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Survole = TRUE Then
+					if Position_clic_X > 0 AND Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge securite
 
-						Dim alpha_ as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_OPACITY", 3, _CLE_))
-						if alpha_ < 1 Then alpha_ = 1
+						if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID > 0 Then
+							dim Position_Y as integer = (1 + (Position_clic_Y/espacement) * (espacement)) - espacement/2
 
-						' Dessiner le scroll bar
-						' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
-						' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID, IMG_BUFFER_ID, Scrol_Bar_PX - 80, Position_Y, alpha_)
-						
-					Else
-						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Impossible de dessiner le scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
-						else
-							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Unable to drax scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+							Dim alpha_ as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SURVOLE_OPACITY", 3, _CLE_))
+							if alpha_ < 1 Then alpha_ = 1
+
+							' Dessiner le scroll bar
+							' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
+							' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID, IMG_BUFFER_ID, Scrol_Bar_PX - 80, Position_Y, alpha_)
+							
+						Else
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Impossible de dessiner le scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+							else
+								DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Unable to drax scroll bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+							End if
 						End if
-					End if
 
+					End if
 				End if
+			else
+				' Mode icone
+
 			End if
 			
 			' Rechargement de l'objet

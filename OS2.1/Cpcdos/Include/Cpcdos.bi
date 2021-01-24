@@ -137,7 +137,10 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Event agrandissement/retrecissement fenetre! [OK]
 ' 	- Fonction replication caractere (Meaxy) [OK]
 '	- Crach Meaxy + KeyMap manuel [OK]
-'	- Textbox evenement ENTRER
+'	- Textbox evenement ENTRER [OK]
+' 	- Rendre dechargeable les icones & background de l'explorateur [OK]
+'	- Explorer : Ajouter event clic (pour mettre a jour un txtbox par exemple) [OK]
+'	- Explorer : Ajouter mouse selection par clavier aussi [OK]
 
 ' =-=-=-=-=-=-= A FAIRE =-=-=-=-=-=
 '	- CRASH telechargement fichier avec un à ou bug avec les % %
@@ -202,9 +205,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Enlever le texte en trop quand l'update ne marche pas
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
-' 	- Rendre dechargeable les icones & background de l'explorateur
-'	- Explorer : Ajouter event clic (pour mettre a jour un txtbox par exemple)
-'	- Explorer : Ajouter mouse selection par clavier aussi
+
 
 '
 ' =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=
@@ -226,7 +227,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "22" 
+CONST _VJOUR as string 	= "24" 
 CONST _VMOIS as string 	= "01"
 CONST _VANNEE as string = "2021"
 

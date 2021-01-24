@@ -74,10 +74,10 @@ Textbox/ txt_path
         .events         = "%_exe_path_%=KeyEnter"
         create/
 End/ Textbox
-
+ 
 explorer/ explore_gui
         .handle         = "%window_handle%"
-        .parameters     = ""
+        .parameters     = "EXPLOREMODE:2"
         .px             = "0"
         .py             = "23"
         .sx             = "500"
