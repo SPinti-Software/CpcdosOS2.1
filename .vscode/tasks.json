@@ -32,9 +32,9 @@
         {
             "label": "COPY files ONLY BIN to VM",
             "type": "shell",
-            "command": "explorer",
+            "command": "cmd",
             "args": [
-                "OS2.1\\_Update_ALL_to_VM.bat"
+                "/C OS2.1\\_Update_ALL_to_VM.bat"
             ],
             "problemMatcher": [],
             "group": {

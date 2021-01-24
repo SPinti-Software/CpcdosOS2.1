@@ -77,6 +77,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 			
 			Dim Taille_X_ecran as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
 			
+
+
 			
 			' Icone application
 			Dim ICONE_CHEMIN as String 			= this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE
@@ -149,6 +151,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 			Dim SIZ_BT_REDUCT_T 	as boolean		= this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_BT_REDUCT
 			Dim BT_Reduct_DejaSize as boolean	= this.INST_INIT_GUI.GUI__FENETRE(_index_).BT_REDUCT_DejaSize
 			
+
+			Dim Menu_Context		as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.ContextMenu
+
+			DEBUG(" ****** Menu_Context:" & Menu_Context & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+
 			Dim SizeUP 				as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.SizeUP
 			Dim Sizeable 			as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Sizeable
 			Dim Sizeable_ANGL 		as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Sizeable_ANGL

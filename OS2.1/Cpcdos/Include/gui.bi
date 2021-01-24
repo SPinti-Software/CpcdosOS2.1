@@ -48,7 +48,9 @@ Type Proprietes_Objet
 	EV_KeyPress			as boolean = true
 	EV_Resize			as boolean = true
 	
-	
+	' Si l'objet peut avoir un menu contextuel
+	ContextMenu		as integer ' 0:Disable  1:Default  2:personalised
+
 	Pression_Bouton as integer
 	Pression		as boolean ' Clic enfonce
 	Pressable		as boolean

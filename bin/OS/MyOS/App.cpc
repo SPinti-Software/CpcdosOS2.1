@@ -1,12 +1,12 @@
 
 fenetre/ APP1
 	.titre				= "My first window !"
-	.px					= "100"
-	.py					= "100"
+	.px					= "150"
+	.py					= "150"
 	.tx					= "420"
 	.ty					= "263"
 	.Opacite			= "100"
-	.Parametres			= "TYPE:0 ALPHAMODE:0"
+	.Parametres			= "TYPE:0 ALPHAMODE:0 MENUCONTEXT:2"
 	.CouleurFenetre		= "050,050,100"
 	.CouleurTitre		= "255,255,255"
 	.CouleurFond		= "150,000,220"
