@@ -12276,6 +12276,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim GUI__PROP_TYPE_Editable		as boolean	= TRUE
 						Dim GUI__PROP_TYPE_MultiLignes	as boolean	= FALSE
 						Dim GUI__PROP_TYPE_Console		as boolean 	= FALSE
+						Dim  GUI__PROP_TYPE_MenuContext as integer	= Val(CCP_Lire_Variable("CPC_GUI.CONTEXTMENU", 3, _CLE_))
 						Dim GUI__PROP_TYPE_Ombre_RVB	as String	= CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_RGB", 3, _CLE_)
 						
 						Dim GUI__PROP_OMBRE_PX			as integer = Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_PX", 3, _CLE_))
@@ -15146,6 +15147,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:0") > 0 Then GUI__PROP_TYPE_Console = FALSE
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:1") > 0 Then GUI__PROP_TYPE_Console = TRUE
 
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:0") > 0 Then GUI__PROP_TYPE_MenuContext = 0
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:1") > 0 Then GUI__PROP_TYPE_MenuContext = 1
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:2") > 0 Then GUI__PROP_TYPE_MenuContext = 2
+
 												
 												
 											End if
@@ -15867,6 +15872,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Multi_Lignes = GUI__PROP_TYPE_MultiLignes
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Console = GUI__PROP_TYPE_Console
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MenuContext = GUI__PROP_TYPE_MenuContext
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_X				= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_Y				= GUI__PROP_PY
