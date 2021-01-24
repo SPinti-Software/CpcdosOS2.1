@@ -16,18 +16,18 @@
 ' 14-12-2017	: AJOUT des parametres SYS/ /OS:NomDeOS pour switcher sur un autre OS
 '						Demarrer/ NomDeOS pour demarrer un OS
 '						IUG/ /OS:NomDeOS Pour afficher le graphique d'un OS
-' 11-12-2017	: CORRECTION des arguments de fonctions qui étaient ressortait toujours en majuscule.
+' 11-12-2017	: CORRECTION des arguments de fonctions qui ï¿½taient ressortait toujours en majuscule.
 ' 06-12-2017	: CORRECTION IMPORTANTE de bugs d'allocation memoire a chaud
 '					Ajout des scopes pour separer les bloc de memoires prives
 ' 22-11-2017	: AJOUT de BarreProgression/ (ProgressBar/ en anglais) et de la propriete .VALEUR (.VALUE en anglais)
 ' 21-11-2017 	: AJOUT de la commande REP/ (DIR/ en anglais) pour lister le contenu des repertoires avec les filtres '.\*'
 ' 19-11-2017	: MODIFICATION/OPTIMISATION de la leture des commentaires completement jumpe
 '					+ CORRECTION de la lecture des fonctions en commentaires
-' 14-11-2017	: CORRECTION de la commande anglaise "TextBlock/" qui n'était pas reconnue par le SHELL
+' 14-11-2017	: CORRECTION de la commande anglaise "TextBlock/" qui n'ï¿½tait pas reconnue par le SHELL
 '					Modification des varariables des executables "_EXE_**"
 ' 11-11-2017	: AJOUT (fin) des commandes SUPPRIMER/ RENOMMER/ DOSSIER/ COPIER/
-' 07-11-2017	: CORRECTION d'un bug interne lors d'utilisation de variables après l'utilisation d'une commande graphique
-'					qui remplaçait le numéro de TID par celui de l'objet graphique en cours d'opération.
+' 07-11-2017	: CORRECTION d'un bug interne lors d'utilisation de variables aprï¿½s l'utilisation d'une commande graphique
+'					qui remplaï¿½ait le numï¿½ro de TID par celui de l'objet graphique en cours d'opï¿½ration.
 ' 19-10-2017	: AJOUT de la possibilite de recuperer le contenu des proprietes graphiques via @#
 '					+ Correction le 31-10-2017 en ajoutant le nom de variable apres le '#' et lancer un FIX/
 ' 19-09-2017	: AJOUT du parametre SYS/ /PROCESSUS pour creer un nouveau processus et donc nouveau PID
@@ -47,12 +47,12 @@
 ' 29-05-2017	: AJOUT des proprietes ICONE et environnement graphique personnalisables depuis EV_GUI.CPC
 ' 26-05-2017	: AJOUT du support evenementielle du CLIC sur picturebox
 ' 11-05-2017	: CORRECTIONS Sleeps + "SYS/ /DEBUG"
-' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crée" alors que non
+' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crï¿½e" alors que non
 ' 08-05-2017	: CORRECTION des problemes lie aux niveau de publicites
 ' 19-04-2017	: Correction du changement de resolution si /MENU = 1
 '					+ Le 'recherche en mode standard' encombrant pour le debugage
 ' 18-04-2017	: Ajout de \#NON-FN et \#NO-FN pour ne pas executer les fonctions /F:
-'					+ Correction de l'écran noir après un stopK/
+'					+ Correction de l'ï¿½cran noir aprï¿½s un stopK/
 ' 14-04-2017	: Correction de \#PAUSE
 ' 11-04-2017	: Serveur/ Renvoie '1' s'il a bien ete cree.
 ' 07-04-2017	: Ajout de la section critique CpcdosC+.
@@ -149,9 +149,9 @@ Sub _SHELL_Cpcdos_OSx__._INIT_CpcdosCP_CMD()
 	this.Liste_CMD_FR(48) = "DECOMPRESSER/"		: this.Liste_CMD_EN(48) = "DECOMPRESS/"
 	this.Liste_CMD_FR(49) = "COMPRESSER/"		: this.Liste_CMD_EN(49) = "COMPRESS/"
 	this.Liste_CMD_FR(50) = "EXPLORER/"			: this.Liste_CMD_EN(50) = "EXPLORER/"
-	' this.Liste_CMD_FR(51) = "fix/"			: this.Liste_CMD_EN(51) = "set/"
 	' this.Liste_CMD_FR(52) = "fix/"			: this.Liste_CMD_EN(52) = "set/"
 	' this.Liste_CMD_FR(53) = "fix/"			: this.Liste_CMD_EN(53) = "set/"
+	' this.Liste_CMD_FR(54) = "fix/"			: this.Liste_CMD_EN(54) = "set/"
 
 	' Proprietes de la GUI toujours a partir de 128. Ce qui laisse 127 Commande cpcdosc+
 	this.Liste_CMD_FR(128) = ".COULEURTITRE"	: this.Liste_CMD_EN(128) = ".TITLECOLOR"
@@ -328,7 +328,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			testCMD = 1
 			CommTrouve = 1
 			exit _scope
-		ElseIF INSTR(Commande, "þÿ") > 0 Then ' UTF 16 Big Endian
+		ElseIF INSTR(Commande, "ï¿½ï¿½") > 0 Then ' UTF 16 Big Endian
 			Message_erreur = ERRAVT("AVT_079", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 				DEBUG("[CpcdosC+] " & Message_erreur & ". Des erreurs peuvent se produire.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
@@ -339,7 +339,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			testCMD = 1
 			CommTrouve = 1
 			exit _scope
-		ElseIF INSTR(Commande, "ÿþ") > 0 Then ' UTF 16 Little Endian
+		ElseIF INSTR(Commande, "ï¿½ï¿½") > 0 Then ' UTF 16 Little Endian
 			Message_erreur = ERRAVT("AVT_079", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 				DEBUG("[CpcdosC+] " & Message_erreur & ". Des erreurs peuvent se produire.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
@@ -651,7 +651,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'REMarque'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande n'a aucun effet, vous pouvez mettre autant de conneries"
 					Mess_Aide = Mess_Aide & CRLF & "   que vous-voulez!"
 					Mess_Aide = Mess_Aide & CRLF
@@ -712,7 +712,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		rem Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " cls/                       Effacer l'‚cran console LC"
+				CommandesAide = CommandesAide & CRLF & " cls/                       Effacer l'ï¿½cran console LC"
 			Else
 				CommandesAide = CommandesAide & CRLF & " cls/                       Clear LC console screen"
 			END IF
@@ -725,8 +725,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CLear Screen'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'‚ffacer l'‚cran de la console LC"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'ï¿½ffacer l'ï¿½cran de la console LC"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Ce texte va disparaitre"
@@ -836,7 +836,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Supprimer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de supprimer un fichier d'un support"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -966,7 +966,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Copier'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de copier un fichier source dans un dossier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres disponibles :"
@@ -1301,7 +1301,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Renommer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de renommer un fichier source ou un dossier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -1456,7 +1456,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'dossier'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un repertoire de maniere complete"
 					Mess_Aide = Mess_Aide & CRLF & "    par exemple si vous voulez creer le dossier A, puis le dossier B"
 					Mess_Aide = Mess_Aide & CRLF & "    dans A puis le dossier C dans B, vous pouvez tout specifier en 1 ligne"
@@ -1599,7 +1599,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'rep'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de lister le contenu d'un repertoire"
 					Mess_Aide = Mess_Aide & CRLF & "    Vous pouvez lister les dossier et fichiers presents"
 					Mess_Aide = Mess_Aide & CRLF & "     ainsi que leur attributs."
@@ -2058,9 +2058,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TeXTe'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher du texte sur la console LC"
-					Mess_Aide = Mess_Aide & CRLF & "   ou sur une sortie redirig‚e " & CHR(34) & "@#Ma_Variable" & CHR(34) & " ou " & CHR(34) & "@$Mon_Fichier.abc" & CHR(34) & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   ou sur une sortie redirigï¿½e " & CHR(34) & "@#Ma_Variable" & CHR(34) & " ou " & CHR(34) & "@$Mon_Fichier.abc" & CHR(34) & CRLF
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Hello world!"
@@ -2193,7 +2193,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FIXer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou modifier une variable ou de(s) tableau(x)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
@@ -2476,8 +2476,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				END IF
 			End if
 
-			' Si l'utilisateur rentre tard le soir d'une soirée bien arrosée et
-			' complètement torché entre une commande du type :
+			' Si l'utilisateur rentre tard le soir d'une soirï¿½e bien arrosï¿½e et
+			' complï¿½tement torchï¿½ entre une commande du type :
 			' fix/ /s mariable = contenu wtf
 			if PosEgale > PosSupprimer THEN
 				IF PosEgale > 0 then
@@ -2746,7 +2746,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				
 				IF PremiereParenthese > 0 Then
 					DeuxiemeParenthese = INSTR(Nom_Variable_a_FIXER, "]")
-					' Si la première parenthese '[' est bien avant la deuxieme ']'
+					' Si la premiï¿½re parenthese '[' est bien avant la deuxieme ']'
 					if PremiereParenthese >= DeuxiemeParenthese Then 
 						Message_erreur = ERRAVT("AVT_073", 0)
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -3114,7 +3114,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'DEMARRER'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'entamer la premiere etape de demarrage d'un OS."
 					Mess_Aide = Mess_Aide & CRLF & "   Les procedures de demarrage se different entre les OS."
 					Mess_Aide = Mess_Aide & CRLF & "   Le loader execute en premier est le fichier 'OS/OS.CPC'"
@@ -3298,7 +3298,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Interface Utilisateur Graphique'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer l'interface graphique de Cpcdos"
 					Mess_Aide = Mess_Aide & CRLF & "    et d'arreter l'animation du boot screen"
 					Mess_Aide = Mess_Aide & CRLF
@@ -3633,7 +3633,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Fenetre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une fenetre graphique sur l'IUG"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -3768,7 +3768,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'ImageBox'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une imagebox dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -3919,7 +3919,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Bouton'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un bouton graphique dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4067,7 +4067,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TexteBloc'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer graphiquement un bloc de texte pour les applications"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec un pid de 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4218,7 +4218,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TexteBloc'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer graphiquement un bloc de texte pour les applications"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec un handle de 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4364,7 +4364,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'BarreProgression'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une barre de progression dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4515,7 +4515,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CheckBox'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une boite cochable dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4665,7 +4665,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Explorer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un explorateur de fichiers dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4799,7 +4799,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Actualiser'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'actualiser graphiquement un objet contenu dans une fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "    ou bien la fenetre elle meme avec tous ses objets, ou l'arriere plan de l'interface."
 					Mess_Aide = Mess_Aide & CRLF
@@ -5447,7 +5447,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'decompresser'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de decompresser un fichier ZIP, GZ .."
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -5601,7 +5601,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Titre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique t-elle qu'une fenetre, permet de nommer la barre de titre de la fenetre"
 					Mess_Aide = Mess_Aide & CRLF & ""
@@ -5705,7 +5705,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Nom'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de nommer le nom du processus si vous creez une fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "    ou bien le nom d'instance si c'est un objet"
@@ -5809,7 +5809,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Texte'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet d'inclure du texte dans une propriete le supportant."
 					Mess_Aide = Mess_Aide & CRLF
@@ -5912,7 +5912,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.ProcessusIDentification'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de selectionner un processus parent. Ceci vous permet"
 					Mess_Aide = Mess_Aide & CRLF & "    d'heberger votre fenetre graphique."
@@ -6024,9 +6024,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Handle'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
-					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de préciser sous quel numero de handle l'objet devra"
+					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de prï¿½ciser sous quel numero de handle l'objet devra"
 					Mess_Aide = Mess_Aide & CRLF & "    etre heberge. Fonctionne uniquement si le numero handle correspond a une fenetre"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Si ce parametre est NUL :"
@@ -6136,9 +6136,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Valeur'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
-					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de préciser une valeur attendue"
+					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de prï¿½ciser une valeur attendue"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Si ce parametre est NULL ou non indiquee, par defaut elle sera a '0'"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6243,7 +6243,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Parametres'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet d'ajouter des parametres a la creation d'un objet ou fenetre."
 					Mess_Aide = Mess_Aide & CRLF
@@ -6378,7 +6378,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurFenetre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur de la fenetre de maniere general en RVB."
 					Mess_Aide = Mess_Aide & CRLF
@@ -6490,7 +6490,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurFond'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur du fond du conteneur de la fenetre."
 					Mess_Aide = Mess_Aide & CRLF & "    Le conteneur c'est la ou vont se trouver vos objets graphiques"
@@ -6603,7 +6603,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurTitre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur des caracteres du titre de la fenetre"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6715,7 +6715,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurTitre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur des caracteres du texte de l'objet"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6822,7 +6822,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.ICONE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir une icone representative a la fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "   Format PNG, BMP et JPG accepte! Les dimentions recommandes est de 16x16"
@@ -6935,7 +6935,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.IMGTITRE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir votre image de la barre de titre de fond"
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -7045,7 +7045,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.IMAGE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir votre image du conteneur de votre objet ou "
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -7156,7 +7156,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.OPACITE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la transparence de votre fenetre ou objet"
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -7266,7 +7266,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.PositionX'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la position horizontale de la fenetre sur la zone"
 					Mess_Aide = Mess_Aide & CRLF & "    horizontale de l'ecran, ou votre object sur la zone horizontale de la fenetre."
@@ -7373,7 +7373,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.PositionY'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la position verticale de la fenetre sur la zone"
 					Mess_Aide = Mess_Aide & CRLF & "    verticale de l'ecran, ou votre object sur la zone verticale de la fenetre."
@@ -7481,7 +7481,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.TailleX'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la taille horizontale de votre fenetre ou objet."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7587,7 +7587,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.TailleY'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la taille verticale de votre fenetre ou objet."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7693,7 +7693,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Evenement'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de definir le fichier source contenant les fonctions evenementielles."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7804,7 +7804,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CREER/'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement avant la fin de l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de creer votre fenetre ou votre objet." 
 					Mess_Aide = Mess_Aide & CRLF
@@ -7905,7 +7905,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'SI'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer du code sous une condition seulement"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & " Conditions disponible :"
@@ -8173,7 +8173,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			SI_Expression_1 = MID(Param, 1, LA_Condition - 1)
 			SI_Expression_2 = MID(Param, LA_Condition + Taille_Condition, SI_PosAlors - (LA_Condition + Taille_Condition))
 
-			' On recupere la position du premier " et le deuxième " pour la PREMIERE expression
+			' On recupere la position du premier " et le deuxiï¿½me " pour la PREMIERE expression
 			SI_POSGuil_EXP_1 = Instr(SI_Expression_1, CHR(34)) ' guillemet de gauche
 			SI_POSGuil_EXP_2 = InstrRev(SI_Expression_1, CHR(34)) ' guillemet de droit
 
@@ -8193,7 +8193,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			SI_Expression_1 = MID(SI_Expression_1, SI_POSGuil_EXP_1 + 1, (SI_POSGuil_EXP_2 - SI_POSGuil_EXP_1) - 1)
 
 
-			' On recupere la position du premier " et le deuxième " pour la DEUXIEME expression
+			' On recupere la position du premier " et le deuxiï¿½me " pour la DEUXIEME expression
 			SI_POSGuil_EXP_1 =  Instr(SI_Expression_2, CHR(34)) ' guillemet de gauche
 			SI_POSGuil_EXP_2 =  Instrrev(SI_Expression_2, CHR(34)) ' guillemet de droit
 
@@ -8472,7 +8472,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FIN'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de delimiter la fin d'une fonction"
 					Mess_Aide = Mess_Aide & CRLF & "   ou d'une condition"
 					Mess_Aide = Mess_Aide & CRLF
@@ -8662,7 +8662,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'STOP'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de mettre fin a la lecture d'un"
 					Mess_Aide = Mess_Aide & CRLF & "   fichier CpcdosC+."
 					Mess_Aide = Mess_Aide & CRLF
@@ -8748,7 +8748,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'POSitionner'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher ou changer de place le curseur console en X / Y"
 					Mess_Aide = Mess_Aide & CRLF & "    ou votre curseur graphique quand elle est executee."
 					Mess_Aide = Mess_Aide & CRLF
@@ -8956,7 +8956,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'stopKernel'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'arreter NET, le kernel ( en urgence )"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : "
@@ -9065,8 +9065,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'atteindre un label sp‚cifi‚ dans le code"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'atteindre un label spï¿½cifiï¿½ dans le code"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Coucou"
@@ -9176,7 +9176,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'RETOUR'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de retourner une valeur non type"
 					Mess_Aide = Mess_Aide & CRLF & "    depuis une fonction CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
@@ -9291,7 +9291,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FONCTION'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une fonction"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple:"
@@ -9383,7 +9383,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer une commande CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Elle est capable d'executer une commande dans un autre thread independant"
@@ -9391,11 +9391,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres disponibles :"
 					Mess_Aide = Mess_Aide & CRLF & "   /thread       : Execute la commande dans un nouveau thread independant"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MAX]  : Idem, mais avec une priorit‚e MAXimale"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[ST+]  : Idem, mais avec une priorit‚e superieur au STanDard"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[STD]  : Idem, mais avec une priorit‚e STanDard (Meme effet que /thread)"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MI+]  : Idem, mais avec une priorit‚e superieur au MINimale"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MIN]  : Idem, mais avec une priorit‚e MINimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MAX]  : Idem, mais avec une prioritï¿½e MAXimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[ST+]  : Idem, mais avec une prioritï¿½e superieur au STanDard"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[STD]  : Idem, mais avec une prioritï¿½e STanDard (Meme effet que /thread)"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MI+]  : Idem, mais avec une prioritï¿½e superieur au MINimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MIN]  : Idem, mais avec une prioritï¿½e MINimale"
 					Mess_Aide = Mess_Aide & CRLF & "   /pid:123		 : Execute l'instruction dans le PID numero '123'"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
@@ -9408,7 +9408,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread exe/ MonProgramme"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread Ping/ www.google.fr"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Meme exemple mais avec une priorit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Meme exemple mais avec une prioritï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[MIN] txt/ coucou!"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[STD] exe/ MonProgramme"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[MAX] Ping/ www.google.fr"
@@ -9623,7 +9623,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					If Thread_MaxStdMin = 1 Then ' Execution dans un thread de priorite minimale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e minimale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e minimale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Minimal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9637,7 +9637,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 2 Then ' Execution dans un thread de priorite minimale+
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9651,7 +9651,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 3 Then ' Execution dans un thread de priorite normale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9665,7 +9665,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 4 Then ' Execution dans un thread de priorite normale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9679,7 +9679,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 5 Then ' Execution dans un thread de priorite normale+
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de haute priorit‚e de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de haute prioritï¿½e de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Hight priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9748,7 +9748,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de lire le contenu d'un fichier et transferer le flux"
 					Mess_Aide = Mess_Aide & CRLF & "    de donnees a l'ecran ou dans une autre direction '@#, @$..'"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande est aussi pratique puisse que cpcdos ouvre, lit et ferme le fichier"
@@ -9759,13 +9759,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ Dossier\Texte.txt"
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ C:\Temp\resultats.log"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  2eme exemple (R‚cuperation du texte -> Variable)"
+					Mess_Aide = Mess_Aide & CRLF & "  2eme exemple (Rï¿½cuperation du texte -> Variable)"
 					Mess_Aide = Mess_Aide & CRLF & "   @#MonTexte Ouvrir/ C:\Redaction.txt"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Voici le contenu du fichier : %MonTexte%"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  3eme exemple (R‚cuperation du texte -> Autre fichier)"
+					Mess_Aide = Mess_Aide & CRLF & "  3eme exemple (Rï¿½cuperation du texte -> Autre fichier)"
 					Mess_Aide = Mess_Aide & CRLF & "   @$C:\Copie.txt Ouvrir/ C:\Redaction.txt"
-					Mess_Aide = Mess_Aide & CRLF & "   txt/ Redaction.txt a ete copi‚!"
+					Mess_Aide = Mess_Aide & CRLF & "   txt/ Redaction.txt a ete copiï¿½!"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  4eme exemple (Lire la 4eme ligne) :"
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ texte.txt/ligne:4"
@@ -10035,7 +10035,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement d'ecrire dans un fichier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres diponibles:"
@@ -10258,8 +10258,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'envoyer une requete ICMP sur une machine connect‚e"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'envoyer une requete ICMP sur une machine connectï¿½e"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Ping/ 192.168.1.1"
@@ -10405,8 +10405,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de t‚l‚charger un fichier sur un serveur HTTP"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de tï¿½lï¿½charger un fichier sur un serveur HTTP"
 					Mess_Aide = Mess_Aide & CRLF & "   Par defaut, les fichiers telecharges se trouve dans le dossier TEMP\NET"
 					Mess_Aide = Mess_Aide & CRLF & "    Variable utilisee pour cette operation %CPC_TEMP.NET%"
 					Mess_Aide = Mess_Aide & CRLF
@@ -11065,21 +11065,21 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de modifier des Parametres du CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /fix.niveau"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de configurer le niveau de la variable (niveau de privacit‚)"
-					Mess_Aide = Mess_Aide & CRLF & "       Priv‚ procedure&fonction --> ccp/ /fix.niveau = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Priv‚ Application        --> ccp/ /fix.niveau = 2"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de configurer le niveau de la variable (niveau de privacitï¿½)"
+					Mess_Aide = Mess_Aide & CRLF & "       Privï¿½ procedure&fonction --> ccp/ /fix.niveau = 1"
+					Mess_Aide = Mess_Aide & CRLF & "       Privï¿½ Application        --> ccp/ /fix.niveau = 2"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique Utilisateur     --> ccp/ /fix.niveau = 3"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique OS              --> ccp/ /fix.niveau = 4"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique Kernel          --> ccp/ /fix.niveau = 5"
-					Mess_Aide = Mess_Aide & CRLF & "      Et toutes les variables cr‚es seront affect‚s par le niveau indiqu‚"
-					Mess_Aide = Mess_Aide & CRLF & "      Penser donc a r‚tablir le niveau souhait‚ pour ne pas affecter le reste"
+					Mess_Aide = Mess_Aide & CRLF & "      Et toutes les variables crï¿½es seront affectï¿½s par le niveau indiquï¿½"
+					Mess_Aide = Mess_Aide & CRLF & "      Penser donc a rï¿½tablir le niveau souhaitï¿½ pour ne pas affecter le reste"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /lang"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de d‚finir la langue du systeme"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de dï¿½finir la langue du systeme"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "      Exemples :"
 					Mess_Aide = Mess_Aide & CRLF & "       Retourne la langue en cours [FR] ou [EN]"
@@ -11131,7 +11131,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "       jusqu'a la fin de la section critique. (Voir ci-dessous)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /FIN_SECTION_CRITIQUE"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de débloquer toutes les interruptions et les autres threads"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de dï¿½bloquer toutes les interruptions et les autres threads"
 					Mess_Aide = Mess_Aide & CRLF & "       afin de reprendre l'execution NORMALE du code CpcdosC+."
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /DISCRETION = 1"
@@ -11376,7 +11376,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 			
 			IF Instr(UCASE(Param), "/DEBUT_SECTION_CRITIQUE") > 0 OR Instr(UCASE(Param), "/BEGIN_CRITICAL_SECTION") > 0 Then
-				' Permet de rendre l'exécution d'un morceau de code PRIORITAIRE sans autres interruptions
+				' Permet de rendre l'exï¿½cution d'un morceau de code PRIORITAIRE sans autres interruptions
 				this.SECTION_CRITIQUE = TRUE
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -11464,7 +11464,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer un fichier de type CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF & "    ou un executable PE (Experimentale!!)"
 					Mess_Aide = Mess_Aide & CRLF
@@ -11479,7 +11479,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   exe/ /win32 Program.exe"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Executer un programme IR/LLVM (Format BC ou LL)"
-					Mess_Aide = Mess_Aide & CRLF & "   via du code g‚n‚r‚ par compilateur CLANG 3.8."
+					Mess_Aide = Mess_Aide & CRLF & "   via du code gï¿½nï¿½rï¿½ par compilateur CLANG 3.8."
 					Mess_Aide = Mess_Aide & CRLF & "   (LLVM:Low-Level-Virtual-Machine / Machine virtuel de bas niveau)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   exe/ /llvm Programme.ll"
@@ -11779,7 +11779,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 
 			IF ExecMultiTHREAD = 1 Then
-				' Executer un fichier CpcdosC+ dans un autre thread avec celui cifi‚
+				' Executer un fichier CpcdosC+ dans un autre thread avec celui cifiï¿½
 				' de maniere "ascynchrome"
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -12275,6 +12275,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim GUI__PROP_TYPE_Editable		as boolean	= TRUE
 						Dim GUI__PROP_TYPE_MultiLignes	as boolean	= FALSE
 						Dim GUI__PROP_TYPE_Console		as boolean 	= FALSE
+						Dim  GUI__PROP_TYPE_MenuContext as integer	= Val(CCP_Lire_Variable("CPC_GUI.CONTEXTMENU", 3, _CLE_))
 						Dim GUI__PROP_TYPE_Ombre_RVB	as String	= CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_RGB", 3, _CLE_)
 						
 						Dim GUI__PROP_OMBRE_PX			as integer = Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_PX", 3, _CLE_))
@@ -15152,6 +15153,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:0") > 0 Then GUI__PROP_TYPE_Console = FALSE
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:1") > 0 Then GUI__PROP_TYPE_Console = TRUE
 
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:0") > 0 Then GUI__PROP_TYPE_MenuContext = 0
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:1") > 0 Then GUI__PROP_TYPE_MenuContext = 1
+												IF INSTR(GUI_PROP_TYPE, "MENU_CONTEXT:2") > 0 Then GUI__PROP_TYPE_MenuContext = 2
+
 												
 												
 											End if
@@ -15873,6 +15878,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Multi_Lignes = GUI__PROP_TYPE_MultiLignes
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Console = GUI__PROP_TYPE_Console
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MenuContext = GUI__PROP_TYPE_MenuContext
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_X				= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_Y				= GUI__PROP_PY
@@ -16518,7 +16525,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'MeSsaGe'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher une boite de dialogue graphique"
 					Mess_Aide = Mess_Aide & CRLF & "    pour l'utilisateur. Il en existe 5 types avec 4 modes differents"
 					Mess_Aide = Mess_Aide & CRLF
@@ -16872,7 +16879,7 @@ _FIN_EXE_CCP_EXE:
 		'Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " Serveur/                   Demarre ou stoppe un serveur TCP avec un numero de port desir‚"
+				CommandesAide = CommandesAide & CRLF & " Serveur/                   Demarre ou stoppe un serveur TCP avec un numero de port desirï¿½"
 			Else
 				CommandesAide = CommandesAide & CRLF & " Server/                    Start or stop a TCP server with your port number"
 			END IF
@@ -16883,7 +16890,7 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou stopper un serveur TCP/UDP"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Mode CCP=Interpretation en ligne de commandes CpcdosC+"
@@ -17129,7 +17136,7 @@ _FIN_EXE_CCP_EXE:
 			if PosSrvMode > 0 then
 				ModeDuServeurR = Ucase(MID(Param, PosSrvMode + 6, 3))
 				If ModeDuServeurR = "CCP" OR ModeDuServeurR = "TEL" OR ModeDuServeurR = "ECH" then
-					' Accès a la console d'administration en CpcdosC+
+					' Accï¿½s a la console d'administration en CpcdosC+
 					
 					if Type_Serveur = 3 then
 						' Serveur d'administrateur en UDP --> A eviter!
@@ -17350,7 +17357,7 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou stopper un client TCP ou UDP"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemples connexion a un serveur tant que client: (TCP par defaut)"
@@ -17814,15 +17821,15 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de gerer les compte utilisateurs de Cpcdos"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   * Les droits administrateur vous permet d'acces total du systeme, des commande et des autres comptes"
 					Mess_Aide = Mess_Aide & CRLF & "   * Les droits standard vous permet l'acces assez etendu sur le systeme a l'exception de certains"
 					Mess_Aide = Mess_Aide & CRLF & "     parametres.."
-					Mess_Aide = Mess_Aide & CRLF & "   * Les droits limit‚s ne permet que d'executer les application et parametres, impos‚s par l'administrateur"
+					Mess_Aide = Mess_Aide & CRLF & "   * Les droits limitï¿½s ne permet que d'executer les application et parametres, imposï¿½s par l'administrateur"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Si une action requiert les droits Administrateur, vous serez invit‚ a entrer le mot de passe Admin"
+					Mess_Aide = Mess_Aide & CRLF & "   Si une action requiert les droits Administrateur, vous serez invitï¿½ a entrer le mot de passe Admin"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemples :"
 					Mess_Aide = Mess_Aide & CRLF & "   Se connecter tant que 'admin' (Sans mot de passe)"
@@ -17847,7 +17854,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur administrateur"
 					Mess_Aide = Mess_Aide & CRLF & "    Login/ /creer /admin Thomas"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur limit‚"
+					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur limitï¿½"
 					Mess_Aide = Mess_Aide & CRLF & "    Login/ /creer /lim Thomas"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : "
@@ -17959,8 +17966,8 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de fermer un ou plusieurs processuss sp‚cifi‚s par son nom ou par son PID"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de fermer un ou plusieurs processuss spï¿½cifiï¿½s par son nom ou par son PID"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture basique. Ferme tous les processus ayant le meme nom"
@@ -17970,7 +17977,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture du processus par numero PID"
 					Mess_Aide = Mess_Aide & CRLF & "    Fermer/ /PID 1234"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Femeture par le handle²"
+					Mess_Aide = Mess_Aide & CRLF & "   Femeture par le handleï¿½"
 					Mess_Aide = Mess_Aide & CRLF & "    Fermer/ /handle 1234"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture du processus/handle par CleID"
@@ -18804,18 +18811,18 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'SYSteme'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de configurer des Parametres, ou bien afficher"
 					Mess_Aide = Mess_Aide & CRLF & "   des informations du systeme."
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Afficher la memoire libre restante / Utilis‚e en octets, Ko, Mo, Go"
+					Mess_Aide = Mess_Aide & CRLF & "   Afficher la memoire libre restante / Utilisï¿½e en octets, Ko, Mo, Go"
 					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire restante en octets"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /mem"
-					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilis‚e en octets"
+					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilisï¿½e en octets"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /memu"
 					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire restante en Mo"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /mem mo"
-					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilis‚e en Mo"
+					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilisï¿½e en Mo"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /memu mo"
 					Mess_Aide = Mess_Aide & CRLF & "     ... aussi avec Go pour Giga Octets, To pour Tera Octets"
 					Mess_Aide = Mess_Aide & CRLF
@@ -18824,18 +18831,18 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "      SYS/ /DEBUG {COMn} {/CPINTICORE} {/SERVEUR:TCP} = { 0, 1, 2, 3 }"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "      Exemples :"
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activit‚es detaill‚es du noyau"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activitï¿½es detaillï¿½es du noyau"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Enregistre les activit‚es detaill‚es du noyau dans un fichier DEBUG.LOG"
+					Mess_Aide = Mess_Aide & CRLF & "       Enregistre les activitï¿½es detaillï¿½es du noyau dans un fichier DEBUG.LOG"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 2"
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche et enregistre les activit‚es detaill‚es du noyau dans un fichier DEBUG.LOG"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche et enregistre les activitï¿½es detaillï¿½es du noyau dans un fichier DEBUG.LOG"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 3"
-					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des informatons detaill‚es"
+					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des informatons detaillï¿½es"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 0"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activit‚es detaill‚es de CPinti core"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activitï¿½es detaillï¿½es de CPinti core"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug /CPintiCore = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des activit‚es detaill‚es de CPinti core"
+					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des activitï¿½es detaillï¿½es de CPinti core"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug /CPintiCore = 0"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "	   Affiche le menu d'informations systeme CPinti Core"
@@ -19533,7 +19540,7 @@ _FIN_EXE_CCP_EXE:
 			
 				IF Instr(UCASE(Param), "/GC") > 0 OR Instr(UCASE(Param), "/GARBAGECOLLECTOR") > 0 Then
 					
-					' Rechercher les bitmaps non références en memoire
+					' Rechercher les bitmaps non rï¿½fï¿½rences en memoire
 					Dim Resultat as String = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.GarbageCollector()
 					
 					IF NOT Resultat = "" Then
@@ -19603,7 +19610,7 @@ _FIN_EXE_CCP_EXE:
 					' ' CPCDOS_INSTANCE.utf_actif = -1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices desactiv‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices desactivï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19613,7 +19620,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = -1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices deactiv‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices deactivï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19623,7 +19630,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = 1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices activï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19633,7 +19640,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = 1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices activï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19651,7 +19658,7 @@ _FIN_EXE_CCP_EXE:
 
 				' IF ListerLesPolices = 1 Then
 					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG(" Liste des polices install‚es  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						' DEBUG(" Liste des polices installï¿½es  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					' else
 						' DEBUG(" List installed fonts  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					' End if
@@ -20762,7 +20769,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CouleurCaracteres'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de changer la couleur des caracteres de la console LC2, LC3 et IUG"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple graphique :"
@@ -20929,7 +20936,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CouleurFond'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de changer la couleur de fond de la console LC"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -21095,7 +21102,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'DECLARER'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de declarer une fonction CpcdosC+ avec un niveau de"
 					Mess_Aide = Mess_Aide & CRLF & "    visibilite (publicite) personnalisable."
 					Mess_Aide = Mess_Aide & CRLF
@@ -21247,7 +21254,7 @@ _FIN_EXE_CCP_EXE:
 
 			' On recherche le niveau de publicite.
 			'  REMARQUE: Niveau 2 et 1 ne peuvent etre definit puisse que par defaut
-			'				les fonctions sont déjà au niveau 2 et le 1 le voit.
+			'				les fonctions sont dï¿½jï¿½ au niveau 2 et le 1 le voit.
 			IF instr(Param, ":") < Instr(Ucase(Param), "NIVEAU(5)") OR instr(Param, ":") < Instr(Ucase(Param), "LEVEL(5)") Then
 				this.MEMOIRE_CCP.TAB_FONCTION_CCP_NIV(Boucle) = 5
 			ElseIF instr(Param, ":") < Instr(Ucase(Param), "NIVEAU(4)") OR instr(Param, ":") < Instr(Ucase(Param), "LEVEL(4)") Then
@@ -21315,7 +21322,7 @@ _FIN_EXE_CCP_EXE:
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer un fichier ou une commande DOS"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
