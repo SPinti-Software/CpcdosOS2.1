@@ -122,7 +122,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			Dim POS_Col_Description as integer = (Siz_X/2) ' 260
 			Dim POS_Col_Attribut 	as integer = (Siz_X/2) + (Siz_X / 3) ' 520
 
-			Dim Pos_Col_X_STEP		as integer = 80
+			Dim Pos_Col_X_STEP		as integer = 100
+			Dim Pos_Col_Y_STEP		as integer = 80
 
 			' Taille de la BAR
 			Dim Scrol_Bar_SX		as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.SCROLLBAR_SIZE_X", 3, _CLE_))
@@ -363,7 +364,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 					
 					if DisplayDrives = false Then
 						' Getting files and dirs
-						Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)
+
+						if Mode_Affichage = 0 or Mode_Affichage = 1 Then
+							Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)
+						Else
+							Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, (this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y / 8)) ' + abs((Siz_X / Pos_Col_X_STEP) - 1))
+						End if
 					Else
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 							DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "]  Recuperations de la liste des lecteurs", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
@@ -412,27 +418,48 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 						End if
 
 
-						
+						dim Increment_X_icones as integer = 0
+						dim Increment_Y_icones as integer = 0
+
+
+						dim Pos_lst_X as integer = 0
+						dim Pos_lst_Y as integer = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
+
 						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
-							' Positionnement label
-							dim Pos_lst_Y as integer = 0
-							dim Pos_lst_X as integer = 1
+							
+							
 
 							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
 								' Mode Petite liste et moyenne liste
 								Pos_lst_Y = (b * (8 + espacement))
 							Else
 								' Mode icone
-								Pos_lst_X = b * Pos_Col_X_STEP
+
+								' Incrementer 1 par 1 position X des icones
+								Increment_X_icones += 1
+
+								' Calculer en pixels
+								Pos_lst_X = ((Increment_X_icones * Pos_Col_X_STEP) + 1) - (Pos_Col_X_STEP / 2)
 
 								' Si on arrive au rebord de l'explorer
-								if Pos_lst_X >= Siz_X Then
-									Pos_lst_X = 1
-									Pos_lst_Y = (b * (16 + espacement))
+								if Pos_lst_X + Pos_Col_X_STEP >= Siz_X Then
+									
+									' On remet X a 1
+									Increment_X_icones = 0
+
+									' Re-calculer en pixels
+									Pos_lst_X = ((Increment_X_icones * Pos_Col_X_STEP) + 1) - (Pos_Col_X_STEP / 2)
+
+									' et on decend d'un etage Y
+									Increment_Y_icones += 1
+									
+									' Calculer en pixels
+									Pos_lst_Y = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
 								End if
 							End if
 
-
+							DEBUG(" ****** Increment_X_icones:" & Increment_X_icones & " --> " & Pos_lst_X & " >= " & Siz_X, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+							DEBUG(" ****** Increment_Y_icones:" & Increment_Y_icones & " --> " & Pos_lst_Y, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
 
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
 
@@ -452,12 +479,17 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 									End if
 								Else
 									' Icone MAX
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), Pos_lst_X , 0 + Pos_lst_Y + 50, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
+
+									dim Pos_X_icon_item as integer = Pos_lst_X - (40/2)
+									dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
+
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
 									if DisplayDrives = true Then
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_lst_X, 0 + Pos_lst_Y)
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
 									Else
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, Pos_lst_X, 0 + Pos_lst_Y)
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
 									End if
 								End if
 								
@@ -514,13 +546,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								Else
 									' Mode icones
 
-									if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
+									Dim Nom_Element as string = instance_FICHER_DOSSIER_.liste_Elements(b)
+
+									if len(Nom_Element) > 12 Then
 										' Si le nom est trop grand pour etre affiche
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", Pos_lst_X , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-									else
-										' Sinon on l'affiche normalement
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), Pos_lst_X , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+										Nom_Element = Mid(Nom_Element, 1, 8) & "..."
 									End if
+									
+									' Le positionner au centre de l'item
+									dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_Element)*8) / 2)
+
+									' Et le dessier dans le buffer
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_Element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+	
 								End if
 
 
@@ -568,11 +606,13 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								Else
 									' Mode Icone
 
+									dim Pos_X_icon_item as integer = Pos_lst_X - (40/2)
+
 									' Si pas d'icone, on met l'icone inconnu 
 									if CPCDOS_INSTANCE.FORMAT_Icones_max(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
 									
 									' Icone fichier
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(Index_extension), IMG_BUFFER_ID, Pos_X_icon_item, Pos_lst_Y)
 								End if
 							end if
 							
@@ -594,9 +634,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 							if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Attribut_str += ""
 
 							
-							
-							' Afficher l'attribut de fichier
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, POS_Col_Attribut , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							if Mode_Affichage = 0 or Mode_Affichage = 1 Then
+								' Afficher l'attribut de fichier
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, POS_Col_Attribut , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							End if
 						next b
 						
 
@@ -631,79 +672,102 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 					' Clic AVANT le scrool bar
 					if Position_clic_X < Scrol_Bar_PX - Marge_Secu Then ' 80 : marge anti-fausse manoeuvre
 						
+						Dim Clic_FICHIER as boolean
+						Dim Clic_DOSSIER as boolean
+						Dim Element as String
+						Dim boucle as integer
+
 						If Mode_Affichage = 0 or Mode_Affichage = 1 Then
 							' Mode Petite liste et Moyenne liste
 
-							for boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
+							for boucle = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS
 								dim Pos_lst_Y as integer = (1 + boucle * (8 + espacement))
 								
 								if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
 									IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 
-										Dim element as String = Mid(Lines_array(boucle), 3)
+										element = Mid(Lines_array(boucle), 3)
 
 										If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-											
-											Dim path_fichier as string
-											
 											' FICHIER
-											if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-												path_fichier = CPY_Source & element
-											else 
-												path_fichier = CPY_Source & "\" & element
-											End if
-											
-											' On execute le fichier
-											CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
-											
+
+											Clic_FICHIER = true
+											exit for
 										elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
 											' DOSSIER
-										
-											if element = ".." OR element = "..\" Then
-												' Recuperer le dernier \
-												if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-													CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
-												End if
-												
-												' Chercher le dernier \
-												CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
-												this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
 
-											else
-												if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-													this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
-												Else
-													if DisplayDrives = false Then
-														this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
-													else
-														this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
-													End if
-												End if
-											End if
-
-											' Put scrolling at 0 when it change directory
-											this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 0
-											reload = true ' Recharger l'objet
-											
-											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-													DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-												else
-													DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-												End if
-											end if
+											Clic_DOSSIER = true
 											exit for
 										End if
 									End if
 								End if
 							Next boucle
-						Else 
+						Else
 							' Mode icone
-							
+
+
 						End if ' Mode affichage
-					End if
+
+						' --------------------------------------------------------------
+
+						if Clic_FICHIER = true Then
+							' ==== C ' E S T   U N   F I C H I E R ====
+
+							Dim path_fichier as string
+							
+							' FICHIER
+							if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+								path_fichier = CPY_Source & element
+							else 
+								path_fichier = CPY_Source & "\" & element
+							End if
+							
+							' On execute le fichier
+							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
+						ElseIf Clic_DOSSIER = true Then
+							' ==== C ' E S T    U N    D O S S I E R ====
+
+							if element = ".." OR element = "..\" Then
+								' Recuperer le dernier \
+								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
+									CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
+								End if
+								
+								' Chercher le dernier \
+								CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
+								this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+
+							else
+								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
+								Else
+									if DisplayDrives = false Then
+										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & "\" & element & "\"
+									else
+										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
+									End if
+								End if
+							End if
+
+							' Put scrolling at 0 when it change directory
+							this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = 0
+							reload = true ' Recharger l'objet
+							
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								else
+									DEBUG("[SCI] Creer_Explorer() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							end if
+
+						End if ' Clic Fichier/Dossier
+
+					End if ' Marge securite
+
 				End if ' Mouse state
-			End if 
+
+			End if ' Press = false
 
 			' Si l'utilisateur a clique (mais pas dans les fichiers)
 			if cpc_mouse_state(0) = 1 AND reload = false Then
@@ -714,6 +778,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 				if Position_clic_X > Scrol_Bar_PX AND Position_clic_X < Scrol_Bar_PX + Scrol_Bar_SX Then
 					' Put la position du curseur sur la barre
+
 					this.INST_INIT_GUI.GUI__EXPLORER(_index_).SCROLLING_Y = Position_clic_Y - (Scrol_Bar_SY / 2)
 				End if
 
