@@ -339,6 +339,7 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _PAGE_VIDEO_WORK		as integer = 1 ' La page invisible ou tout traitements est rassemble
 		CONST _PAGE_VIDEO_FOND_WRK	as integer = 2 ' Image de fond prepare avec les fenetre arriere plan (Deplacement fenetre...)
 		CONST _PAGE_VIDEO_FOND_IMG	as integer = 3 ' Image fond d'ecran NEUTRE
+		CONST _PAGE_VIDEO_DESKTOPMODE as integer = 4 ' Page pour fenetre en mode DESKTOP
 		
 		' *** CpcdosC+ ***
 		CONST _MAX_FONCTION_ARGS	as integer = 24 ' 16 arguments etant temporaire

@@ -1430,12 +1430,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 
 					
 					IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 4) Then
-						' Mettre cette fenetre au premier plan seulement en cas de clic :)
-						IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
-							Fenetre_FOCUS(_INDEX_FENETRE_)
-							NoDeplacer = 1
-						Else
-							NoDeplacer = 0
+
+						if NOT _INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre Then
+							' Mettre cette fenetre au premier plan seulement en cas de clic :)
+							IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+								Fenetre_FOCUS(_INDEX_FENETRE_)
+								NoDeplacer = 1
+							Else
+								NoDeplacer = 0
+							End if
 						End if
 
 						
@@ -3384,8 +3387,12 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												
 												this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
+												
 												' Actualiser graphiquement l'explorer pour l'effet de "pression"
-												Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+												'if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+													' Actualiser graphiquement le bouton pour l'effet de "survole"
+													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+												'End if
 												
 												IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -3494,9 +3501,11 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
-														' Actualiser graphiquement le bouton pour l'effet de "survole"
-														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
-														
+														if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+															' Actualiser graphiquement le bouton pour l'effet de "survole"
+															Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+														End if
+
 														' On quitte cette boucle
 														exit for
 														
@@ -3531,7 +3540,10 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
 													
 													' Actualiser graphiquement le explorer pour l'effet de "pression"
-													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+													if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+														' Actualiser graphiquement le bouton pour l'effet de "survole"
+														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+													End if
 
 													' On quitte cette boucle
 													exit for
@@ -3610,7 +3622,10 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le explorer pour l'effet de "pression"
-											Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+											if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+												' Actualiser graphiquement le bouton pour l'effet de "survole"
+												Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+											End if
 											
 											' On quitte cette boucle
 											exit for
@@ -4337,6 +4352,9 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		
 		' Afficher les fenetre relatif a l'ordre fenetrale
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0 _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 				
@@ -4420,6 +4438,9 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		
 		' Afficher les fenetre relatif a l'ordre fenetrale
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0  _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 						

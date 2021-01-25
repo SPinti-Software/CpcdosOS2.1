@@ -47,4 +47,11 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/msgbox.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/CONTEXT.cpc
 
 
+// [FR] Configuration du desktop
+// [EN] Desktop configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/DESKTOP.cpc
+
+
+
+
 

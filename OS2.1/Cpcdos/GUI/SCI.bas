@@ -357,6 +357,8 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(ImageID) <> 0 Then
 			' Placer l'image 
 			put (PosX, PosY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(ImageID), Alpha
+
+			CPCDOS_INSTANCE.SCI_INSTANCE.BACKGROUND_IMAGE = ImageID
 		else
 			Message_erreur = ERRAVT("AVT_082", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -367,7 +369,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 		End if
 		
 		' Detruire l'ancienne adresse memoire
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Supprimer_BITMAP(ImageID)
+		' CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Supprimer_BITMAP(ImageID)
 	
 	END IF
 

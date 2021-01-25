@@ -83,7 +83,8 @@ Type Proprietes_Objet
 	
 	Editable		as boolean
 	
-	
+	' Mode bureau
+	DESKTOPMODE		as boolean
 	
 	UserEdit_Pos	as uinteger
 	
@@ -713,6 +714,7 @@ Type _SCI_Cpcdos_OSx__
 
 		EXP_Survole_LEFT_BORDER_ID			as integer
 		EXP_Survole_ID						as integer
+		EXP_Survole_ICO_ID					as integer
 		EXP_Survole_RIGHT_BORDER_ID			as integer
 
 		' ID de l'mage de fond du menu contextuel
@@ -720,6 +722,9 @@ Type _SCI_Cpcdos_OSx__
 
 		' Si le menu contextuel est ouvert ou non
 		ContextMenu_IsOpen					as boolean
+
+		DESKTOPMODE_Index_Fenetre			as integer
+		BACKGROUND_IMAGE					as integer
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__
 		

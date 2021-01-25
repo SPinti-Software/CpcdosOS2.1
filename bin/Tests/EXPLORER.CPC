@@ -1,6 +1,16 @@
 // Explorer GUI program test
 
+
 set/ actual_path = C:\CPCDOS\OS
+
+set/ DisplayMode = 0
+
+ccp/ /set.level = 3
+set/ Displaymode_ICO_Path = OS/MEDIA/GUI/btn_ico.PNG
+set/ Displaymode_LIST_Path = OS/MEDIA/GUI/btn_list.PNG
+ccp/ /set.level = 1
+
+
 
 // ===== Build window =====
 Window/ file_explorer_window
@@ -69,15 +79,37 @@ Textbox/ txt_path
         .PY             = "2"
         .BackColor      = "110,110,110"
         .TextColor      = "250,250,250"
-        .sx             = "400"
+        .sx             = "370"
         .sy             = "18"
         .events         = "%_exe_path_%=KeyEnter"
         create/
 End/ Textbox
+
+
+picturebox/ img_display_mode
+	.handle		= "%window_handle%"
+	.parameters	= "IMGAUTO:0"
+	.PX		= "440"
+	.PY		= "1"
+	.sx		= "22"
+	.sy		= "22"
+
+        if/ "%DisplayMode%" == "0" then:
+	        .Image	= "%Displaymode_ICO_Path%"
+        else:
+                .Image	= "%Displaymode_LIST_Path%"
+        End/ if
+
+	.opacity	= "255"
+        .events         = "%_exe_path_%=MouseClick"
+	create/
+end/ Picturebox
+
+
  
 explorer/ explore_gui
         .handle         = "%window_handle%"
-        .parameters     = "EXPLOREMODE:2"
+        .parameters     = "EXPLOREMODE:%DisplayMode%"
         .px             = "0"
         .py             = "23"
         .sx             = "500"
@@ -113,6 +145,45 @@ Function/ img_Next.MouseClick()
 
 End/ Function
 
+
+Function/ img_display_mode.MouseClick()
+        // Switch between list / icon mode display
+
+
+        
+        explorer/ /modif:explore_gui
+
+                // Getting actual parameter
+		@#ParamActuel .parameters
+                
+                if/ "%ParamActuel%" == "EXPLOREMODE:0" then:
+                        set/ DisplayMode = 2
+                else:
+                        set/ DisplayMode = 0
+                End/ if
+
+                // Edit displaying mode
+                .parameters = "EXPLOREMODE:%DisplayMode%"
+
+                create/
+	end/ explorer
+
+
+        // Update picturebox display
+        picturebox/ /modif:img_display_mode
+
+                if/ "%DisplayMode%" == "0" then:
+                        set/ path_img = %Displaymode_ICO_Path%
+                else:
+                        set/ path_img = %Displaymode_LIST_Path%
+                End/ if
+
+                .Image	= "%path_img%"
+
+                create/
+        end/ Picturebox
+
+End/ function
 
 Function/ explore_gui.MouseClick()
         // Update textbox path

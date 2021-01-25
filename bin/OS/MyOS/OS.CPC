@@ -54,7 +54,13 @@ sys/ /fileformat-gui-load
 // Creer un 2eme nouveau processus nomme '_APP_'
 @#PID_APP SYS/ /processus _APP_
 
+// Creer un bureau de fond avec les icones
+set/ pos_x = 0
+set/ pos_y = 30
+set/ size_x = %CPC.SCR.X%
+set/ size_y = %CPC.SCR.Y%
 
+set/ handle_desktop = /F:Init_Desktop(MyDesktop, %pos_x%, %pos_y%, %size_X%, %size_Y%)
 
 // Executer barre.CPC dans le processus "_MENUS_" via son PID
 CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
@@ -63,9 +69,12 @@ CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
 
+
 exe/ & test.cpc
 exe/ & tests/tchat.cpc
 exe/ & tests/explorer.cpc
+
+
 
 
 
