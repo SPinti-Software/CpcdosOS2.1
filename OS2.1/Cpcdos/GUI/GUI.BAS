@@ -4,6 +4,7 @@
 ' Reecriture le 13/10/2016
 ' Mise a jour le 14/12/2017
 
+' 27-01-2021	: AJOUT du support explorer + desktop
 ' 14-14-2017	: AJOUT du support multi-OS.
 ' 22-11-2017 	: AJOUT du support d'interaction evenementielle de la barre de progression
 ' 26-10-2017	: AJOUT du support d'interaction evenementielle du TexteBox

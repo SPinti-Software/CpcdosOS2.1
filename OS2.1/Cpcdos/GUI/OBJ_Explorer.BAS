@@ -146,7 +146,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			Dim Lines_array(CPCDOS_INSTANCE._MAX_GUI_EXPLORER_ELEMENTS) as string
 			Dim ZoneClic as integer = 16
 			dim Espacement as integer = 16
-		
+
+			Dim Size_ICON_Text_MAX as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_MODE.NAME_SIZE_MAX", 3, _CLE_))
+			Dim Espacement_POS_X_icon as integer  = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_MODE.SPACING", 3, _CLE_))
 			Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 			
 			
@@ -491,7 +493,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								' Dossier en cours
 								Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
 
-								if Mode_Affichage = 0 Then
+								if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
 									' Icone MIN
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
@@ -504,7 +506,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 									' Icone MAX
 									Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
 
-									dim Pos_X_icon_item as integer = Pos_lst_X - (40/2)
+									dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
 									dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
 
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
@@ -571,7 +573,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 									Dim Nom_Element as string = instance_FICHER_DOSSIER_.liste_Elements(b)
 
-									if len(Nom_Element) > 12 Then
+									if len(Nom_Element) > Size_ICON_Text_MAX Then
 										' Si le nom est trop grand pour etre affiche
 										Nom_Element = Mid(Nom_Element, 1, 8) & "..."
 									End if
@@ -629,7 +631,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								Else
 									' Mode Icone
 
-									dim Pos_X_icon_item as integer = Pos_lst_X - (40/2)
+									dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
 
 									' Si pas d'icone, on met l'icone inconnu 
 									if CPCDOS_INSTANCE.FORMAT_Icones_max(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
@@ -759,7 +761,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 								End if
 
 								' Checker la position du clic en X
-								if Position_clic_X > Pos_lst_X - ((12*8) / 2) 	AND 	Position_clic_X < Pos_lst_X + ((12*8) / 2) Then
+								if Position_clic_X > Pos_lst_X - ((Size_ICON_Text_MAX*8) / 2) 	AND 	Position_clic_X < Pos_lst_X + ((Size_ICON_Text_MAX*8) / 2) Then
 
 									' Checker la position du clic en Y
 									If Position_clic_Y > Pos_lst_Y 		AND 	Position_clic_Y < Pos_lst_Y + Pos_Col_Y_STEP Then
@@ -943,7 +945,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 									End if
 
 									' Checker la position en X
-									if Position_clic_X > Pos_lst_X - ((12*8) / 2) 	AND 	Position_clic_X < Pos_lst_X + ((12*8) / 2) Then
+									if Position_clic_X > Pos_lst_X - ((Size_ICON_Text_MAX*8) / 2) 	AND 	Position_clic_X < Pos_lst_X + ((Size_ICON_Text_MAX*8) / 2) Then
 
 										' Checker la position en Y
 										If Position_clic_Y > Pos_lst_Y 		AND 	Position_clic_Y < Pos_lst_Y + (Pos_Col_Y_STEP / 2) + 20 Then
@@ -952,7 +954,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 											if alpha_ < 1 Then alpha_ = 1
 
 											' Dessiner le scroll bar
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ICO_ID, IMG_BUFFER_ID, Pos_lst_X - ((12*8) / 2), Pos_lst_Y, alpha_)
+											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ICO_ID, IMG_BUFFER_ID, Pos_lst_X - ((Size_ICON_Text_MAX*8) / 2), Pos_lst_Y, alpha_)
 
 										End if
 

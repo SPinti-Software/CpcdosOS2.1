@@ -703,6 +703,7 @@ Type _SCI_Cpcdos_OSx__
 		
 		MULTI_PICTUREBOX					as boolean ' Permet de synchoniser les picturesbox animes n'ayant pas le focus
 		
+		' ---- EXPLOREUR DE FICHIERS -----
 		' Liste des icones de taille MAX et MIN pour l'explorateur de fichiers
 		const icon_ID						as integer = 11111
 		const FORMAT_MAX					as integer = 24 ' a display identique a celui de cpcdos.bi
@@ -717,13 +718,38 @@ Type _SCI_Cpcdos_OSx__
 		EXP_Survole_ICO_ID					as integer
 		EXP_Survole_RIGHT_BORDER_ID			as integer
 
+		' Mode desktop
+		DESKTOPMODE_Index_Fenetre			as integer
+
+		' ------------ WINDOWS ---------------
+		
+		BT_CLOSE_IMG_ID						as integer
+		BT_CLOSE_ORG_IMG_ID					as integer
+
+		BT_SIZEUP_IMG_ID					as integer
+		BT_SIZEUP_IMG_ORG_ID				as integer
+
+		BT_SIZEDOWN_IMG_ID					as integer
+		BT_SIZEDOWN_IMG_ORG_ID				as integer
+
+		BT_REDUCT_IMG_ID					as integer
+		BT_REDUCT_IMG_ORG_ID				as integer
+
+		ICONE_IMG_ID						as integer
+		ICONE_ORG_IMG_ID					as integer
+
+		TITRE_ORG_IMG_ID					as integer
+		
+
+		
+
 		' ID de l'mage de fond du menu contextuel
 		ContextMenu_Background_ID			as integer
 
 		' Si le menu contextuel est ouvert ou non
 		ContextMenu_IsOpen					as boolean
 
-		DESKTOPMODE_Index_Fenetre			as integer
+		
 		BACKGROUND_IMAGE					as integer
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__

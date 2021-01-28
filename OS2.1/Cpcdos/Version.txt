@@ -12,9 +12,9 @@
 	#### En bref ####
 	#################
 
-		--> 7	Ajouts de divers fonctionnalités.
+		--> 8	Ajouts de divers fonctionnalités.
 		--> 4	corrections importantes.
-		--> 0	optimisations.
+		--> 1	optimisations.
 		--> 3	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
@@ -40,7 +40,8 @@
 		[AJOUTS]
 		- [GUI] Ajout de  la première version de l'objet Explorer. 
 				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
-				
+		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones
+
 		- [SYSTEME] Ajout du support de lecture de fichiers .INI
 		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
 					Il est possible de personnaliser les formats de fichiers .CPC .EXE .PNG .DLL etc... avec 
@@ -66,6 +67,8 @@
 		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux
 		- [SYSTEME] Affiche désormais le répertoire ".." dans du listing d'un répertoire.
 		- [SYSTEME] Nouveau logo ASCII-ART de boot - Chrapati
+		- [SCI] Optimisation lors du chargement des elements graphiques d'une fenetre. Tous les elements commun tels que
+				les boutons fermeture, agrandissement, barre titre etc.. seront chargés qu'une seule fois dans une mémoire partagée.
 
 	#######################
 	##### CPinti Core #####
