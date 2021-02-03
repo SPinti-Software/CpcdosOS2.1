@@ -1,105 +1,107 @@
 Declare/ Afficher_Menu_CFT() : NIVEAU(4)
 
-fenetre/ MENU_BARRE
-	.titre 			= "MENU_BARRE"
+window/ MENU_BARRE
+	.title 			= "MENU_BARRE"
 	.px				= "0"
 	.py				= "0"
-	.tx				= "%CPC.SCR.X%"
-	.ty				= "21"
-	.Opacite 		= "100"
-	.Parametres		= "TYPE:5 CTN:1 BORD:0 OMBRE:10"
-	.CouleurFenetre	= "050,050,100"
-	.CouleurTitre	= "255,255,255"
-	.CouleurFond	= "255,255,050"
+	.SX				= "%CPC.SCR.X%"
+	.SY				= "21"
+	.Opacity 		= "100"
+	.parameters		= "SYPE:5 CTN:1 BORD:0 OMBRE:10"
+	.windowcolor	= "050,050,100"
+	.titlecolor	= "255,255,255"
+	.backcolor	= "255,255,050"
 	rem/ .Icone			= "ICO_DEF.png"
-	.ImgTitre		= ""
+	rem/ .Imgtitle		= ""
 	.event			= ""
-	@#Handle_Fenetre creer/
-Fin/ fenetre
+	@#Handle_window creer/
+end/ window
 
 
 picturebox/ BARRE_PNG
-	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "IMGAUTO:2"
+	.Handle			= "%Handle_window%"
+	.parameters		= "IMGAUTO:2"
 	.PX				= "0"
 	.PY				= "0"
-	.tx				= "%CPC.SCR.X%"
-	.ty				= "21"
-	rem/ .opacite		= "200"
+	.SX				= "%CPC.SCR.X%"
+	.SY				= "21"
+	rem/ .Opacity		= "200"
 	.Image			= "%OS_GUI%/BAR_MENU.PNG"
 	rem/ .event			= "OS/CFT_EV.CPC"
 	creer/
-Fin/ Picturebox
+end/ Picturebox
 
 
-picturebox/ BTN_CRAFTYOS
-	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "IMGAUTO:1"
+picturebox/ BTN_CRAFSYOS
+	.Handle			= "%Handle_window%"
+	.parameters		= "IMGAUTO:1"
 	.PX				= "4"
 	.PY				= "0"
-	.tx				= "19"
-	.ty				= "19"
-	.opacite		= "255"
+	.SX				= "19"
+	.SY				= "19"
+	.Opacity		= "255"
 	.Image			= "%OS_GUI%/BTN_CFT.PNG"
 	.event			= "%HOST_OS%/CFT_EV.CPC=MouseEnter,MouseLeave,MouseClick"
 	creer/
-Fin/ Picturebox
+end/ Picturebox
 
 
 FIX/ POS_BARRE_BAS = /C(%CPC.SCR.Y% - 19)
 
-fenetre/ MENU_BARRE_BAS
-	.titre 			= "MENU_BARRE_BAS"
+window/ BAS_MENU_BARRE
+	.title 			= "BAS_MENU_BARRE"
 	.px				= "0"
 	.py				= "%POS_BARRE_BAS%"
-	.tx				= "%CPC.SCR.X%"
-	.ty				= "19"
-	.Opacite 		= "100"
-	.Parametres		= "TYPE:5 CTN:1 BORD:0 OMBRE:0 TASKBAR:1"
-	.CouleurFenetre	= "050,050,100"
-	.CouleurTitre	= "255,255,255"
-	.CouleurFond	= "255,255,050"
+	.SX				= "%CPC.SCR.X%"
+	.SY				= "19"
+	.Opacity 		= "100"
+	.parameters		= "SYPE:5 CTN:1 BORD:0 OMBRE:0 TASKBAR:1"
+	.windowcolor	= "050,050,100"
+	.titlecolor	= "255,255,255"
+	.backcolor	= "255,255,050"
 	rem/ .Icone			= "ICO_DEF.png"
-	.ImgTitre		= ""
+	rem/ .Imgtitle		= ""
 	.event			= ""
-	@#Handle_Fenetre creer/
-Fin/ fenetre
+	@#Handle_window creer/
+end/ window
 
 picturebox/ BARRE_PNG
-	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "IMGAUTO:2"
+	.Handle			= "%Handle_window%"
+	.parameters		= "IMGAUTO:2"
 	.PX				= "0"
 	.PY				= "0"
-	.tx				= "%CPC.SCR.X%"
-	.ty				= "21"
-	rem/ .opacite		= "200"
+	.SX				= "%CPC.SCR.X%"
+	.SY				= "21"
+	rem/ .Opacity		= "200"
 	.Image			= "%OS_GUI%/BAR_MENU.PNG"
 	.event			= ""
 	creer/
-Fin/ Picturebox
+end/ Picturebox
 
 
 
 FUNCTION/ Afficher_Menu_CFT()
-	// Afficher le menu craftyOS
+	// Afficher le menu crafSYOS
 	
-	fenetre/ MENU_CFT
-		.titre 			= "MENU_CFT"
+	window/ MENU_CFT
+		.title 			= "MENU_CFT"
 		.px				= "2"
 		.py				= "21"
-		.tx				= "100"
-		.ty				= "200"
-		.Opacite 		= "100"
-		.Parametres		= "TYPE:4 OMBRE:10"
-		.CouleurFenetre	= "050,150,100"
-		.CouleurTitre	= "255,255,255"
-		.CouleurFond	= "050,150,100"
+		.SX				= "100"
+		.SY				= "200"
+		.Opacity 		= "100"
+		.parameters		= "SYPE:4 OMBRE:10"
+		.windowcolor	= "050,150,100"
+		.titlecolor	= "255,255,255"
+		.backcolor	= "050,150,100"
 		rem/ .Icone			= "ICO_DEF.png"
-		.ImgTitre		= ""
+		.Imgtitle		= ""
 		.event			= ""
-		@#Handle_Fenetre creer/
-	Fin/ fenetre
+		@#Handle_window creer/
+	end/ window
 End/ Function
+
+
 
 
 

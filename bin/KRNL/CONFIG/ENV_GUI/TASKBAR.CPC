@@ -1,0 +1,13 @@
+// USER
+CCP/ /SET.LEVEL = 3
+
+// ---- Cursor ----
+
+// [FR] Image item non focus
+// [EN] No focus item image
+SET/ CPC_GUI.TASKBAR.NORMAL = %OS_GUI%\TaskB.png
+
+// [FR] Image item focus
+// [EN] Focus item image
+SET/ CPC_GUI.TASKBAR.FOCUS = %OS_GUI%\TackB_F.png
+

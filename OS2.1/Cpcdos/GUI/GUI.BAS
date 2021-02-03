@@ -4531,37 +4531,156 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 
 	' Verifier si c'est autorise
 	if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar > 0 Then
-		
+
+		' Position de la barre des taches
+		Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_X + 20
+		Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_Y + 2
+
+		' Taille de la barre des taches
+		Dim Size_X as integer = 500
+		Dim Size_Y as integer = 25
+
+		if Size_X > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X Then Size_X = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X
+		if Size_Y > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X Then Size_Y = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y
+
+		' Taille des elements de la barre des taches
+		Dim Size_X_item as integer = 150
+		Dim Size_Y_item as integer = 24
+
+		' Couleur des elements textuels
+		dim Couleur_FNT_R as integer = 255
+		dim Couleur_FNT_V as integer = 255
+		dim Couleur_FNT_B as integer = 255
+
+		' Recuperer le nom de fichier du fond d'ecran du menu contextuel
+		dim Image_Normal as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.NORMAL", 3, this._CLE_)
+		dim Image_Focus as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.FOCUS", 3, this._CLE_)
+
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID < 1 Then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() Chargement image taskbar normal de " & Image_Normal, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() Loading normal taskbar image from de " & Image_Normal, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+			
+			' Charger l'image et recuperer son ID
+			CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image_Normal, 123)
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.ReSize_BITMAP(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID, Size_X_item, Size_Y_item)
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() " & Image_Normal & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID & " charge en memoire a l'adresse [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() " & Image_Normal & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		Else
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() image taskbar normal de " & Image_Normal & " deja chargee", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() normal taskbar image " & Image_Normal & " already loaded", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID < 1 Then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() Chargement image taskbar focus de" & Image_Focus, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() Loading focus taskbar image from de " & Image_Focus, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+
+			' Charger l'image et recuperer son ID
+			CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image_Focus, 123)
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.ReSize_BITMAP(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID, Size_X_item, Size_Y_item)
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() " & Image_Focus & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID & " charge en memoire a l'adresse [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() " & Image_Focus & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		Else
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() image taskbar normal de " & Image_Focus & " deja chargee", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() normal taskbar image " & Image_Focus & " already loaded", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+
 		if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 1 Then
 			' Horizontale
 
 			DEBUG(" ****** Display_Taskbar(" & index_fenetre & ") : '" & this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Titre & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
-			For boucle_X as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			Dim Positionnement_X as integer = 1
+			For boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 
 				' Si c'est pas une taskbar, ni un desktop
-				if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 0 AND this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.DESKTOPMODE = 0 Then
+				if this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.TaskBar = 0 AND this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.DESKTOPMODE = 0 Then
 					
 					' Recuperer tous les elements pour creer un item
 
 					' ID de l'icone de fenetre deja charge
-					Dim Icone_Fenetre_ID as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).ICONE_IMG_ID
+					Dim Icone_Fenetre_ID as integer = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_ID
 
 					' Titre de la fenetre
-					Dim Titre_Fenetre as String = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).TITRE
+					Dim Titre_Fenetre as String = this.INST_INIT_GUI.GUI__FENETRE(boucle).TITRE
+					if Len(Titre_Fenetre) > 12 Then Titre_Fenetre = Mid(Titre_Fenetre, 1, 9) & "..."
 
 					' Si la fenetre est FOCUS ou non, l'apparence ne sera pas la meme
 					Dim Focus_Fenetre as boolean
-					if this.INST_INIT_GUI.POSITION(1) = index_fenetre Then 
+					if this.INST_INIT_GUI.POSITION(1) = boucle Then 
 						Focus_Fenetre = true
 					else
 						Focus_Fenetre = false
 					End if
 
-					DEBUG(" ****** Fenetre : '" & Titre_Fenetre & "' FOCUS --> " & Focus_Fenetre & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X + Positionnement_X & "," & Pos_Y & " " & Size_X_item & "," & Size_Y_item , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						else
+							DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X + Positionnement_X & "," & Pos_Y & " " & Size_X_item & "," & Size_Y_item , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						End if
+					end if
+
+					if Focus_Fenetre = true Then
+						' Image de l'item selected
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(TaskBar_Focus_ID, Pos_X + Positionnement_X, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+					Else
+						' Image de l'item non selected
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(TaskBar_Standard_ID, Pos_X + Positionnement_X, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+					End if
+
+					' Ajouter l'icone de l'application
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Icone_Fenetre_ID, Pos_X + Positionnement_X + 4, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+
+					' Ajouter le nom de l'application
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, Pos_X + Positionnement_X + 32 , Pos_Y + 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Fin du dessin" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						else
+							DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] End drawing" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						End if
+					end if
+
+					DEBUG(" ****** Fenetre ( " & boucle & "): '" & Titre_Fenetre & "' FOCUS --> " & Focus_Fenetre & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+					Positionnement_X += Size_X_item + 5
 				End if
-			Next boucle_X
+			Next boucle
 
 			DEBUG(" ****** FIN", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
@@ -4576,7 +4695,7 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 	End if
 
 	' Pas de barre des taches dans l'OS !
-	
+
 	return false
 End Function
 

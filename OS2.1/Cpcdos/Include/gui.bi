@@ -724,6 +724,21 @@ Type _SCI_Cpcdos_OSx__
 		' Mode desktop
 		DESKTOPMODE_Index_Fenetre			as integer
 
+		' TaskBar
+
+		' Positionnement sur la barre
+		TaskBar_PosX						as integer
+		TaskBar_PosY						as integer
+
+		' Taille
+		TaskBar_SizX						as integer
+		TaskBar_SizY						as integer
+
+		' ID des images
+		TaskBar_Standard_ID					as integer
+		TaskBar_Focus_ID					as integer
+
+
 		' ------------ WINDOWS ---------------
 		
 		BT_CLOSE_IMG_ID						as integer

@@ -52,6 +52,12 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/CONTEXT.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/DESKTOP.cpc
 
 
+// [FR] Configuration du TaskBar
+// [EN] TaskBar configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/TASKBAR.cpc
+
+
+
 
 
 
