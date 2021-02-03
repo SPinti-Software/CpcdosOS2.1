@@ -4426,6 +4426,11 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						END IF
 					Next b
 
+					' Afficher la taskbar si disponible
+					if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.TaskBar > 0 Then
+						Display_Taskbar(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+
+					End if
 					
 				End if
 			End if
@@ -4520,6 +4525,60 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 	
 	ActualiserGUI = 1
 End function
+
+Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
+	' Cette fonction permet d'afficher la barre de taches au dessus des objets d'une fenetre dediee
+
+	' Verifier si c'est autorise
+	if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar > 0 Then
+		
+		if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 1 Then
+			' Horizontale
+
+			DEBUG(" ****** Display_Taskbar(" & index_fenetre & ") : '" & this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Titre & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			For boucle_X as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+				' Si c'est pas une taskbar, ni un desktop
+				if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 0 AND this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.DESKTOPMODE = 0 Then
+					
+					' Recuperer tous les elements pour creer un item
+
+					' ID de l'icone de fenetre deja charge
+					Dim Icone_Fenetre_ID as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).ICONE_IMG_ID
+
+					' Titre de la fenetre
+					Dim Titre_Fenetre as String = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).TITRE
+
+					' Si la fenetre est FOCUS ou non, l'apparence ne sera pas la meme
+					Dim Focus_Fenetre as boolean
+					if this.INST_INIT_GUI.POSITION(1) = index_fenetre Then 
+						Focus_Fenetre = true
+					else
+						Focus_Fenetre = false
+					End if
+
+					DEBUG(" ****** Fenetre : '" & Titre_Fenetre & "' FOCUS --> " & Focus_Fenetre & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+				End if
+			Next boucle_X
+
+			DEBUG(" ****** FIN", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			return true
+		Elseif this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 2 Then
+			' Verticale
+
+
+			return true
+		End if
+
+	End if
+
+	' Pas de barre des taches dans l'OS !
+	
+	return false
+End Function
 
 Function _SCI_Cpcdos_OSx__.Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) as integer
 	REM Cette fonction permet de mettre la fenetre indique au premier plan

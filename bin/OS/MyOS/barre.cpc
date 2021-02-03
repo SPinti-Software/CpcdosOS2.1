@@ -55,7 +55,7 @@ fenetre/ MENU_BARRE_BAS
 	.tx				= "%CPC.SCR.X%"
 	.ty				= "19"
 	.Opacite 		= "100"
-	.Parametres		= "TYPE:5 CTN:1 BORD:0 OMBRE:0"
+	.Parametres		= "TYPE:5 CTN:1 BORD:0 OMBRE:0 TASKBAR:1"
 	.CouleurFenetre	= "050,050,100"
 	.CouleurTitre	= "255,255,255"
 	.CouleurFond	= "255,255,050"

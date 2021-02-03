@@ -51,12 +51,15 @@ Type Proprietes_Objet
 	' Si l'objet peut avoir un menu contextuel
 	ContextMenu		as integer ' 0:Disable  1:Default  2:personalised
 
+	TaskBar			as integer ' 0:disable  1:Horizontale 2:verticale
+
 	Pression_Bouton as integer
 	Pression		as boolean ' Clic enfonce
 	Pressable		as boolean
 	
 	Press			as boolean
 	Release			as boolean
+	
 	
 	Active			as boolean
 	Activable		as boolean
@@ -786,6 +789,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Sizing_window_button		(SizeUP as boolean, index as integer) 						as boolean
 		Declare Function DeplacerFenetre_TO_POS		(POS_X as integer, POS_Y as integer) 						as integer
 		Declare Function ActualiserGUI				(ModeActu as integer, index as integer) 					as integer
+		Declare Function Display_Taskbar			(index_fenetre as integer) 									as boolean
 		Declare Function Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) 						as integer
 		Declare Function Interaction_SOURIS_OBJ		(Index_Fenetre as integer) 									as integer
 		

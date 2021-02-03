@@ -12269,7 +12269,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_REDUCTABLE 		as boolean 	= true
 						DIM GUI__PROP_FERMABLE 			as boolean 	= true
 
-						
+						Dim GUI__PROP_TASKBAR			as integer = 0
 						
 						
 						DIM GUI__PROP_TYPE_BORDURE		as integer	= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
@@ -12414,6 +12414,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_TX 				as Integer 	= 150
 						DIM GUI__PROP_TY 				as Integer 	= 100
 						DIM GUI__PROP_TTITRE			as Integer 	= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.TITLE_SY", 3, _CLE_))
+
+						
 						
 						DIM GUI__PROP_EVENEMENT			as String 	= ""
 						DIM GUI__PROP_EVENEMENT_DISPO	as String 	= ""
@@ -13568,6 +13570,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_SIZEABLE		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable
 															GUI__PROP_SIZEABLE_ANGL	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL
 															GUI__PROP_FERMABLE		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable
+
+															GUI__PROP_TASKBAR		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar
+															
 															
 															' Ombre sous la fenetre
 															GUI__PROP_TYPE_Ombre	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Ombre
@@ -15164,6 +15169,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												IF INSTR(GUI__PROP_TYPE, "CLOSE:1") > 0 Then GUI__PROP_FERMABLE = True
 												IF INSTR(GUI__PROP_TYPE, "CLOSE:0") > 0 Then GUI__PROP_FERMABLE = false
+
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:0") > 0 Then GUI__PROP_TASKBAR = 0
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:1") > 0 Then GUI__PROP_TASKBAR = 1
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:2") > 0 Then GUI__PROP_TASKBAR = 2
+
 												
 												IF INSTR(GUI__PROP_TYPE, "SIZBTN:0") > 0 Then GUI__PROP_SIZEABLE = False
 												IF INSTR(GUI__PROP_TYPE, "SIZBTN:1") > 0 Then GUI__PROP_SIZEABLE = True
@@ -15473,6 +15483,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Sizeable 		= GUI__PROP_SIZEABLE
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Sizeable_ANGL 	= GUI__PROP_SIZEABLE_ANGL
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Fermable 		= GUI__PROP_FERMABLE
+
+												' Barre des taches (Toujours au premier plan)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.TaskBar			= GUI__PROP_TASKBAR
 												
 												' Ombre sous la fenetre
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Ombre = GUI__PROP_TYPE_Ombre
@@ -16485,6 +16498,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											GUI__PROP_SIZEABLE			= true
 											GUI__PROP_SIZEABLE_ANGL	 	= true
 											GUI__PROP_FERMABLE	 		= true
+											GUI__PROP_TASKBAR			= 0
 											GUI__PROP_TYPE_BORDURE 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
 											GUI__PROP_TYPE_Ombre 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW", 3, _CLE_))
 											GUI__PROP_COULEURALPHA 		= CCP_Lire_Variable("CPC_GUI.WINDOW.ALPHA", 3, _CLE_)
