@@ -512,6 +512,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' DEV temporaire: Si commande vide alors on saute
 			'  directement aux commandes graphiques
 			IF this.Liste_CMD_FR(boucle) = "" AND boucle < 128 Then boucle = 128
+
+			' Chercher la syntaxe Anglophone
+			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
+				TailleComm = LEN(this.Liste_CMD_EN(Boucle))
+				CommPosition = Position_CMD
+				OnCherche = Lcase(this.Liste_CMD_EN(Boucle))
+				Exit for
+			End if
 			
 			' Chercher la syntaxe Francophone
 			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
@@ -519,14 +527,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				TailleComm = LEN(this.Liste_CMD_FR(Boucle))
 				CommPosition = Position_CMD
 				OnCherche = Lcase(this.Liste_CMD_FR(Boucle))
-				Exit for
-			End if
-			
-			' Chercher la syntaxe Anglophone
-			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
-				TailleComm = LEN(this.Liste_CMD_EN(Boucle))
-				CommPosition = Position_CMD
-				OnCherche = Lcase(this.Liste_CMD_EN(Boucle))
 				Exit for
 			End if
 			
