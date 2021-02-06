@@ -12284,6 +12284,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_FERMABLE 			as boolean 	= true
 
 						Dim GUI__PROP_TASKBAR			as integer = 0
+						Dim GUI__PROP_No_TASKBAR		as boolean = false
 						
 						
 						DIM GUI__PROP_TYPE_BORDURE		as integer	= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
@@ -13586,6 +13587,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_FERMABLE		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable
 
 															GUI__PROP_TASKBAR		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar
+															GUI__PROP_No_TASKBAR	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.NoTaskBar
 															
 															
 															' Ombre sous la fenetre
@@ -15154,6 +15156,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:0") > 0 Then GUI__PROP_Mode_Affichage = 0 ' Mode petite liste
 												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:1") > 0 Then GUI__PROP_Mode_Affichage = 1 ' Mode moyenne liste
 												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:2") > 0 Then GUI__PROP_Mode_Affichage = 2 ' Mode icones
+
+												IF INSTR(GUI__PROP_TYPE, "DESKTOPMODE:1") > 0 Then GUI__PROP_TYPE_DESKTOPMODE = true
+												IF INSTR(GUI__PROP_TYPE, "DESKTOPMODE:0") > 0 Then GUI__PROP_TYPE_DESKTOPMODE = false
 												
 												' Type de fenetre
 												IF INSTR(GUI__PROP_TYPE, "TYPE:0") > 0 Then GUI__PROP_TYPE_OBJ = 0
@@ -15166,7 +15171,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "TYPE:7") > 0 Then GUI__PROP_TYPE_OBJ = 7
 												IF INSTR(GUI__PROP_TYPE, "TYPE:8") > 0 Then GUI__PROP_TYPE_OBJ = 8
 
-												IF INSTR(GUI__PROP_TYPE, "DESKTOPMODE") > 0 Then GUI__PROP_TYPE_DESKTOPMODE = true
 												
 												IF INSTR(GUI__PROP_TYPE, "BORD:0") > 0 Then GUI__PROP_TYPE_BORDURE = 0
 												IF INSTR(GUI__PROP_TYPE, "BORD:1") > 0 Then GUI__PROP_TYPE_BORDURE = 1
@@ -15187,6 +15191,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "TASKBAR:0") > 0 Then GUI__PROP_TASKBAR = 0
 												IF INSTR(GUI__PROP_TYPE, "TASKBAR:1") > 0 Then GUI__PROP_TASKBAR = 1
 												IF INSTR(GUI__PROP_TYPE, "TASKBAR:2") > 0 Then GUI__PROP_TASKBAR = 2
+												
+												IF INSTR(GUI__PROP_TYPE, "TASKBARHIDE:0") > 0 Then GUI__PROP_No_TASKBAR = false
+												IF INSTR(GUI__PROP_TYPE, "TASKBARHIDE:1") > 0 Then GUI__PROP_No_TASKBAR = true
 
 												
 												IF INSTR(GUI__PROP_TYPE, "SIZBTN:0") > 0 Then GUI__PROP_SIZEABLE = False
@@ -15500,6 +15507,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 												' Barre des taches (Toujours au premier plan)
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.TaskBar			= GUI__PROP_TASKBAR
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.NoTaskBar		= GUI__PROP_No_TASKBAR
 												
 												' Ombre sous la fenetre
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Ombre = GUI__PROP_TYPE_Ombre
@@ -16513,6 +16521,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											GUI__PROP_SIZEABLE_ANGL	 	= true
 											GUI__PROP_FERMABLE	 		= true
 											GUI__PROP_TASKBAR			= 0
+											GUI__PROP_No_TASKBAR		= false
 											GUI__PROP_TYPE_BORDURE 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
 											GUI__PROP_TYPE_Ombre 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW", 3, _CLE_))
 											GUI__PROP_COULEURALPHA 		= CCP_Lire_Variable("CPC_GUI.WINDOW.ALPHA", 3, _CLE_)

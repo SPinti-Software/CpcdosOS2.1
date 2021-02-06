@@ -7,19 +7,19 @@ window/ MENU_BARRE
 	.SX				= "%CPC.SCR.X%"
 	.SY				= "21"
 	.Opacity 		= "100"
-	.parameters		= "SYPE:5 CTN:1 BORD:0 OMBRE:10"
+	.parameters		= "SYPE:5 CTN:1 BORD:0 SHADOW:10 TASKBARHIDE:1"
 	.windowcolor	= "050,050,100"
 	.titlecolor	= "255,255,255"
 	.backcolor	= "255,255,050"
 	rem/ .Icone			= "ICO_DEF.png"
 	rem/ .Imgtitle		= ""
 	.event			= ""
-	@#Handle_window creer/
+	@#Handle_window_menu creer/
 end/ window
 
 
-picturebox/ BARRE_PNG
-	.Handle			= "%Handle_window%"
+picturebox/ BARRE_PNG_MENU
+	.Handle			= "%Handle_window_menu%"
 	.parameters		= "IMGAUTO:2"
 	.PX				= "0"
 	.PY				= "0"
@@ -32,8 +32,8 @@ picturebox/ BARRE_PNG
 end/ Picturebox
 
 
-picturebox/ BTN_CRAFSYOS
-	.Handle			= "%Handle_window%"
+picturebox/ BTN_CRAFTYOS
+	.Handle			= "%Handle_window_menu%"
 	.parameters		= "IMGAUTO:1"
 	.PX				= "4"
 	.PY				= "0"
@@ -59,8 +59,6 @@ window/ BAS_MENU_BARRE
 	.windowcolor	= "050,050,100"
 	.titlecolor		= "255,255,255"
 	.backcolor		= "255,255,050"
-	rem/ .Icone			= "ICO_DEF.png"
-	rem/ .Imgtitle		= ""
 	.event			= ""
 	@#Handle_window creer/
 end/ window
@@ -72,7 +70,6 @@ picturebox/ BARRE_PNG
 	.PY				= "0"
 	.SX				= "%CPC.SCR.X%"
 	.SY				= "21"
-	rem/ .Opacity		= "200"
 	.Image			= "%OS_GUI%/BAR_MENU.PNG"
 	.event			= ""
 	creer/

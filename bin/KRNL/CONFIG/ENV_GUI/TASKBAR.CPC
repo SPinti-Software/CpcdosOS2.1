@@ -9,12 +9,12 @@ SET/ CPC_GUI.TASKBAR.NORMAL = %OS_GUI%\TaskB.png
 
 // [FR] Image item focus
 // [EN] Focus item image
-SET/ CPC_GUI.TASKBAR.FOCUS = %OS_GUI%\TackB_F.png
+SET/ CPC_GUI.TASKBAR.FOCUS = %OS_GUI%\TaskB_F.png
 
 // [FR] Position de depart des items
 // [EN] Starting position items
 SET/ CPC_GUI.TASKBAR.POS_X = 10
-SET/ CPC_GUI.TASKBAR.POS_Y = 2
+SET/ CPC_GUI.TASKBAR.POS_Y = 1
 
 // [FR] Taille de la taskbar
 // [EN] Taskbar size
@@ -33,7 +33,7 @@ SET/ CPC_GUI.TASKBAR.SIZ_ITEM_Y = 24
 // [FR] Espacement entre les items
 // [EN] Spacing between items
 SET/ CPC_GUI.TASKBAR.SPACING_X = 20
-SET/ CPC_GUI.TASKBAR.SPACING_Y = 2
+SET/ CPC_GUI.TASKBAR.SPACING_Y = 0
 
 // [FR] Couleur du titre
 // [EN] Title color

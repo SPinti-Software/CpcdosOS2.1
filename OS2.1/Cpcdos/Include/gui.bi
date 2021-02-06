@@ -52,6 +52,7 @@ Type Proprietes_Objet
 	ContextMenu		as integer ' 0:Disable  1:Default  2:personalised
 
 	TaskBar			as integer ' 0:disable  1:Horizontale 2:verticale
+	NoTaskBar		as boolean ' 0:Display	1:No displayed
 
 	Pression_Bouton as integer
 	Pression		as boolean ' Clic enfonce
