@@ -17,8 +17,9 @@
 		11/07/2019
 
 	Mise a jour
-		13-AOUT-2020
+		06-FEV-2021
 		
+		06-FEV-2021	: Corrections mineures (warnings) VAR_xxx
 		13-AOU-2020 : CORRECTION telechargement fichiers binaire (mauvaise condition) ~530
 		21-MAR-2020 : Corrections pour les fichiers sans le header http "Content-Length:"
 		12-MAR-2020 : Readaptation et correction pour la beta 1.2
@@ -184,12 +185,12 @@ namespace cpinti
 			struct sockaddr_in servaddr, cli; 
 			struct timeval 	TempsMAX;				// Temps de delai
 			fd_set FD_socket;
-			int FD_MAX;   
+			int FD_MAX = 0;   
 			unsigned int NB_Message_SENT = 0;
 			unsigned int NB_Message_RECEIVE = 0;
 			bool Simple_TrameHTTP = false;
 			
-			int CompteurDoevents;
+			int CompteurDoevents = 0;
 			char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 128);
 			std::string AdresseIP_DNS = "";
 			std::string _NumeroID_STR = std::to_string(_NumeroID);
@@ -327,16 +328,16 @@ namespace cpinti
 			char buffer[TailleBuffer+1]; 
 			std::string Fichier_TEMP_STR = "";
 			
-			char* VAR_PROGRESSION;
+			char* VAR_PROGRESSION = NULL;
 			bool var_progression = false;
 			
-			char* VAR_SPEED;
+			char* VAR_SPEED = NULL;
 			bool var_speed = false;
 			
-			char* VAR_SIZE;
+			char* VAR_SIZE = NULL;
 			bool var_size = false;
 			
-			char* VAR_SOCKET;
+			char* VAR_SOCKET = NULL;
 			bool var_socket = false;
 			
 			
@@ -565,7 +566,7 @@ namespace cpinti
 							clock_t	TempsDebut;
 							clock_t	TempsFin;
 							
-							FILE* FD_fichiertemp;
+							FILE* FD_fichiertemp = NULL;
 
 							int Octets = 0;
 							int octets_recu = 0;
