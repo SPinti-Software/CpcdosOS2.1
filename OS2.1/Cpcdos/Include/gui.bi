@@ -726,7 +726,7 @@ Type _SCI_Cpcdos_OSx__
 		DESKTOPMODE_Index_Fenetre			as integer
 
 		' TaskBar
-
+		TaskBar_clic						as boolean
 		' Positionnement sur la barre
 		TaskBar_PosX						as integer
 		TaskBar_PosY						as integer
