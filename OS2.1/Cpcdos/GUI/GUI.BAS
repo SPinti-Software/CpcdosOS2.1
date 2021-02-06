@@ -1411,6 +1411,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	
 		 _INDEX_FENETRE_ = this.INST_INIT_GUI.POSITION(_INDEX_)
 
+		If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true Then Continue for
 		
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Identification_Objet.OS_id Then
 			' Si la position de la souris est superieur au bord gauche ET inferieur au bord droit (Relatif a l'odre fenetrale)
@@ -1421,23 +1422,91 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 					' L'utiliateur a clique dans la fenetre!
 
 					
+					
 					IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 4) Then
 
-						if NOT _INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre Then
-							' Mettre cette fenetre au premier plan seulement en cas de clic :)
-							IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
-								Fenetre_FOCUS(_INDEX_FENETRE_)
-								NoDeplacer = 1
-							Else
-								NoDeplacer = 0
+						
+
+						' if ClicElementTaskBar = false Then
+							if NOT _INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre Then
+								' Mettre cette fenetre au premier plan seulement en cas de clic :)
+								IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+									Fenetre_FOCUS(_INDEX_FENETRE_)
+									NoDeplacer = 1
+								Else
+									NoDeplacer = 0
+								End if
 							End if
-						End if
+						' End if
 
 
+						Dim ClicElementTaskBar as boolean = false
 						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar > 0 Then
+								
+							' On parourt tous les elements de la barre des taches jusqu'a tomber sur celui ou la souris se trouve.
+							for indexage as integer = 0 to _MAX_Taskbar_Elements
+
+								' S'il clique dans l'espace X
+								if Pos_X > CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px(indexage) AND Pos_X < (CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px(indexage) + CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sx(indexage)) Then
+
+									' Puis dans l'espace Y
+									if Pos_Y > CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py(indexage) AND Pos_Y < (CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py(indexage) + CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sy(indexage)) Then
+										' L'utilisateur a clique dans un element de la taskbar!
+
+										ClicElementTaskBar = true
+										
+										locate 2, 2 : print "this.INST_INIT_GUI.POSITION(1) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(1)).titre & "          ."
+										locate 3, 2 : print "this.INST_INIT_GUI.POSITION(2) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(2)).titre & "          ."
+										locate 4, 2 : print "this.INST_INIT_GUI.POSITION(3) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(3)).titre & "          ."
+										locate 5, 2 : print "this.INST_INIT_GUI.POSITION(4) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(4)).titre & "          ."
+										locate 5, 2 : print "this.INST_INIT_GUI.POSITION(4) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(5)).titre & "          ."
 
 
+										if this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = true Then
+
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Restauration de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' depuis la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window restauration (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' from the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+
+											' Si elle etait pas focus, hop on la restaure!
+											this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = false
+											Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
+
+										Elseif this.INST_INIT_GUI.POSITION(2) = CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) Then
+
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Reduction de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window minimization (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' to the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+										else
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Focus de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window focus (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' to the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+
+											' Focuser la fenetre
+											Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
+										End if
+
+										exit for
+
+									End if
+								End if
+							Next Indexage
+							if ClicElementTaskBar = true Then return 1
 						End if
+
+
+						
 						
 						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
 							' ==== On ferme la fenetre par le bouton X ====
@@ -1597,7 +1666,17 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
 										
 										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
+										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+										End if
+										' Si la fenetre est deja FOCUS et pas reduite
+										' Hop on reduit la fenetre dans la barre des taches
+										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+										ActualiserGUI(0, 0)
 										NoDeplacer = 1
 									End if
 								End if
@@ -1611,7 +1690,17 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
 										
 										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
+										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+										End if
+										' Si la fenetre est deja FOCUS et pas reduite
+										' Hop on reduit la fenetre dans la barre des taches
+										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+										ActualiserGUI(0, 0)
 										NoDeplacer = 1
 									End if
 								End if
@@ -1625,7 +1714,17 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
 										
 										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
+										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											else
+												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+											End if
+										End if
+										' Si la fenetre est deja FOCUS et pas reduite
+										' Hop on reduit la fenetre dans la barre des taches
+										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+										ActualiserGUI(0, 0)
 										NoDeplacer = 1
 									End if
 								End if
@@ -4148,7 +4247,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 		
 	Next _INDEX_
 	
-	Interaction_SOURIS_FENETRE = 1
+	return 1
 End Function
 
 Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souris_Y as integer, _INDEX_FENETRE_ as integer, POSITION_X as integer, POSITION_Y as integer, TAILLE_X as integer, TAILLE_Y as integer) as Boolean
@@ -4353,6 +4452,8 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 
 			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
 
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
+
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0 _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 				
@@ -4443,6 +4544,8 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 
 			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
 
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0  _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
@@ -4617,9 +4720,12 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 		if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 1 Then
 			' Horizontale
 
-
+			Dim indexage as integer = 0
 			Dim Positionnement_X as integer = 1
 			For boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+				' Pas la peine d'afficher plus si y'en a deja assez !
+				if indexage > CPCDOS_INSTANCE.SCI_INSTANCE._MAX_Taskbar_Elements Then exit for
 
 				' Si c'est pas une taskbar, ni un desktop
 				if this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.TaskBar = 0 AND this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.DESKTOPMODE = 0 Then
@@ -4649,6 +4755,15 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 							DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X + Positionnement_X & "," & Pos_Y & " " & Size_X_item & "," & Size_Y_item , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						End if
 					end if
+
+					CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position	(indexage) = boucle
+					CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px				(indexage) = Pos_X + Positionnement_X
+					CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py				(indexage) = Pos_Y
+
+					CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sx				(indexage) = Size_X_item
+					CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sy				(indexage) = Size_Y_item
+
+					indexage += 1
 
 					if Focus_Fenetre = true Then
 						' Image de l'item selected

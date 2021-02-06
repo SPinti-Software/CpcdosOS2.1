@@ -690,6 +690,7 @@ Type _SCI_Cpcdos_OSx__
 	public:
 	
 		CONST _MAX_NOMBRE_OS		as integer = 8
+		CONST _MAX_Taskbar_Elements as integer = 24
 	
 		RetourVAR as String
 	
@@ -737,6 +738,13 @@ Type _SCI_Cpcdos_OSx__
 		' ID des images
 		TaskBar_Standard_ID					as integer
 		TaskBar_Focus_ID					as integer
+
+		TaskBar_index_Position	(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_px				(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_py				(0 to _MAX_Taskbar_Elements)	as integer
+
+		TaskBar_sx				(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_sy				(0 to _MAX_Taskbar_Elements)	as integer
 
 
 		' ------------ WINDOWS ---------------
