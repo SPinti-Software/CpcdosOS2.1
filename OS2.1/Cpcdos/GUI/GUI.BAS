@@ -1456,13 +1456,6 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											' L'utilisateur a clique dans un element de la taskbar!
 
 											ClicElementTaskBar = true
-											
-											locate 2, 2 : print "this.INST_INIT_GUI.POSITION(1) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(1)).titre & "          ."
-											locate 3, 2 : print "this.INST_INIT_GUI.POSITION(2) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(2)).titre & "          ."
-											locate 4, 2 : print "this.INST_INIT_GUI.POSITION(3) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(3)).titre & "          ."
-											locate 5, 2 : print "this.INST_INIT_GUI.POSITION(4) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(4)).titre & "          ."
-											locate 5, 2 : print "this.INST_INIT_GUI.POSITION(4) : " & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(5)).titre & "          ."
-
 
 											if this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = true Then
 
@@ -1475,6 +1468,11 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' Si elle etait pas focus, hop on la restaure!
 												this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = false
 												Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
+
+												DEBUG(" ****** this.INST_INIT_GUI.POSITION(1) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(1)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												DEBUG(" ****** this.INST_INIT_GUI.POSITION(2) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(2)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												DEBUG(" ****** this.INST_INIT_GUI.POSITION(3) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(3)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												DEBUG(" ****** this.INST_INIT_GUI.POSITION(4) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(4)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
 												ActualiserGUI(0, 0)
 
 											Elseif this.INST_INIT_GUI.POSITION(2) = CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) Then
@@ -4651,28 +4649,30 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 	' Verifier si c'est autorise
 	if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar > 0 Then
 
-		Dim Espacement_X as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_X", 3, this._CLE_)
-		Dim Espacement_Y as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_Y", 3, this._CLE_)
+		Dim Espacement_X as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_X", 3, this._CLE_))
+		Dim Espacement_Y as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_Y", 3, this._CLE_))
 
 		' Position de la barre des taches
-		Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_X + CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_X", 3, this._CLE_)
-		Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_Y + CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_Y", 3, this._CLE_)
+		Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_X + Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_X", 3, this._CLE_))
+		Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_Y + Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_Y", 3, this._CLE_))
 
 		' Taille de la barre des taches
-		Dim Size_X as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_X", 3, this._CLE_)
-		Dim Size_Y as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_Y", 3, this._CLE_)
+		Dim Size_X as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_X", 3, this._CLE_))
+		Dim Size_Y as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_Y", 3, this._CLE_))
 
 		if Size_X > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X Then Size_X = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X
 		if Size_Y > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y Then Size_Y = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y
 
+		Dim Size_text	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_TEXT", 3, this._CLE_))
+
 		' Taille des elements de la barre des taches
-		Dim Size_X_item as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_X", 3, this._CLE_)
-		Dim Size_Y_item as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_Y", 3, this._CLE_)
+		Dim Size_X_item as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_X", 3, this._CLE_))
+		Dim Size_Y_item as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_Y", 3, this._CLE_))
 
 		' Couleur des elements textuels
-		dim Couleur_FNT_R as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_R", 3, this._CLE_)
-		dim Couleur_FNT_V as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_G", 3, this._CLE_)
-		dim Couleur_FNT_B as integer = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_B", 3, this._CLE_)
+		dim Couleur_FNT_R as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_R", 3, this._CLE_))
+		dim Couleur_FNT_V as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_G", 3, this._CLE_))
+		dim Couleur_FNT_B as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_B", 3, this._CLE_))
 
 		' Recuperer le nom de fichier du fond d'ecran du menu contextuel
 		dim Image_Normal as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.NORMAL", 3, this._CLE_)

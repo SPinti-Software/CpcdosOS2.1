@@ -21,6 +21,10 @@ SET/ CPC_GUI.TASKBAR.POS_Y = 2
 SET/ CPC_GUI.TASKBAR.SIZ_X = 500
 SET/ CPC_GUI.TASKBAR.SIZ_Y = 2
 
+// [FR] Nombre de caractere max
+// [EN] Max char numbers
+SET/ CPC_GUI.TASKBAR.SIZ_TEXT = 12
+
 // [FR] Taille de chaque items
 // [EN] Size for each items
 SET/ CPC_GUI.TASKBAR.SIZ_ITEM_X = 150
