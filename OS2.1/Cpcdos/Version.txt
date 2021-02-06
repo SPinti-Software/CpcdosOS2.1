@@ -64,6 +64,7 @@
 		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif
 		- [MEMORY] Prevention corrective de probables crachs avec un meilleur traçage du debug.
 		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
+		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
 		
 		
 		[MODIFICATIONS]

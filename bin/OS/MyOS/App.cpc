@@ -30,7 +30,7 @@ Textebloc/ Mon_Textebloc
 	creer/
 Fin/ Textebloc
 
-Bouton/ Mon_Bouton
+Bouton/ Bouton_OpenGL1
 	.Handle			= "%Handle_Fenetre%"
 	.Parametres		= "IMGAUTO:2"
 	.PX				= "130"
@@ -38,13 +38,13 @@ Bouton/ Mon_Bouton
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
-	.texte                  = "OpenGL test"
+	.texte                  = "OpenGL 1.2"
 	.Image			= "%OS_GUI%/Buttons/BTN_BLUE.png"
 	.event			= "%HOST_OS%/TEST.CPC=MouseClick,MouseLeave"
 	creer/
 Fin/ Bouton
 
-Bouton/ Mon_Bouton2
+Bouton/ Bouton_OpenGL3
 	.Handle			= "%Handle_Fenetre%"
 	.Parametres		= "IMGAUTO:2"
 	.PX				= "180"
@@ -52,7 +52,7 @@ Bouton/ Mon_Bouton2
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
-	.texte                  = "GZE test"
+	.texte			= "OpenGL 3.3"
 	.Image			= "%OS_GUI%/Buttons/BTN_PPOR.png"
 	.event			= "%HOST_OS%/TEST.CPC"
 	creer/
@@ -62,7 +62,7 @@ Bouton/ Mon_Bouton3
 	.Handle			= "%Handle_Fenetre%"
 	.Parametres		= "IMGAUTO:2"
 	.PX				= "180"
-	.PY                             = "120"
+	.PY				= "120"
 	.tx				= "100"
 	.ty				= "30"
 	rem/ .opacite		= "100"
@@ -88,16 +88,16 @@ Fin/ Picturebox
 
 fenetre/ APP2
 	.titre 			= "Application test 2"
-	.px				= "200"
+	.px				= "300"
 	.py				= "150"
 	.tx				= "400"
 	.ty				= "226"
-	.Opacite                        = "190"
-	.Parametres                     = "TYPE:0 ALPHAMODE:1"
-	.CouleurFenetre                 = "050,050,100"
-	.CouleurTitre                   = "120,120,210"
-	.CouleurFond                    = "100,240,100"
-	.Icone                          = "%OS_GUI%/ICO_CFT.png"
+	.Opacite        = "190"
+	.Parametres     = "TYPE:0 ALPHAMODE:1"
+	.CouleurFenetre	= "050,050,100"
+	.CouleurTitre	= "120,120,210"
+	.CouleurFond	= "100,240,100"
+	.Icone			= "%OS_GUI%/ICO_CFT.png"
 	rem/ .ImgTitre                  = "IMG_TITRE.PNG"
 	.event                          = ""
 	@#Handle_Fenetre creer/

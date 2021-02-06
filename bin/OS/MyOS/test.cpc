@@ -1,5 +1,19 @@
 rem/ ...
 
+
+FUNCTION/ Bouton_OpenGL1.Click(bouton)
+	
+        Exe/ & tests/OpenGL.CPC
+
+End/ Function
+
+FUNCTION/ Bouton_OpenGL3.Click(bouton)
+	
+        // exe/ & GZE.CPC
+        exe/ & tests/mesa.cpc
+
+End/ Function
+
 FONCTION/ MonTexteBox.KeyPress(touche_pressee)
 
 	
@@ -28,19 +42,7 @@ FUNCTION/ Mon_Bouton3.Click(bouton)
 End/ Function
 
 
-FUNCTION/ Mon_Bouton2.Click(bouton)
-	
-        // exe/ & GZE.CPC
-        exe/ & mesa.cpc
 
-End/ Function
-
-
-FUNCTION/ Mon_Bouton.Click(bouton)
-	
-        Exe/ & OpenGL.CPC
-
-End/ Function
 
 
 FONCTION/ APP1.MouseMove()

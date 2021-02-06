@@ -5280,6 +5280,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 						IF Numero_INDEX = 99999 Then
 							' Actualiser absolument TOUT !
+							Flip 3, 2 ' + Ajouter desktop background si possible
+
 							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
 							
 						Else
