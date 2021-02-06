@@ -60,6 +60,7 @@ set/ pos_y = 30
 set/ size_x = %CPC.SCR.X%
 set/ size_y = %CPC.SCR.Y%
 
+// Execute desktop function
 set/ handle_desktop = /F:Init_Desktop(MyDesktop, %pos_x%, %pos_y%, %size_X%, %size_Y%)
 
 // Executer barre.CPC dans le processus "_MENUS_" via son PID
@@ -68,11 +69,11 @@ CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 // Executer app.cpc dans le processus "_APP_" via son PID
 CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
-
-
 exe/ & test.cpc
 exe/ & tests/tchat.cpc
 exe/ & tests/explorer.cpc
+
+refresh/ /all
 
 
 

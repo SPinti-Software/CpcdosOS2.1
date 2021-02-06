@@ -4950,6 +4950,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Numero_INDEX = 99999
 				TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TOUT
 
+
 			' ===== Numero Handle =====
 			ElseIF PosNumHandle > 0 Then ' Numero de handle
 				IF Instr(Ucase(Param), "0X") > 0 Then
@@ -4960,7 +4961,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Numero_Handle = Val(MID(Param, PosNumHandle + 8))
 				End if
 			End if
-				
+			
+
 			If Numero_Handle > 0 Then
 				' Supprimer l'objet correspondant au handle
 				
@@ -5107,9 +5109,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				
 			
 			Else
+
 				IF NOT Param = "" Then
-					
-					TypeObjet = 0
+					Dim Trouve as boolean = false
+	
 					' Si les parametres ont quelque chose on cherche par le nom
 					
 					' Nettoyer
@@ -5124,6 +5127,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							' Et son numero d'index
 							Numero_INDEX = boucle
+
+							Trouve = true
+
 							
 							exit for
 						End if
@@ -5131,7 +5137,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les boutons
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(boucle).Identification_Objet.Nom = Param Then
@@ -5148,7 +5154,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les picturebox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PICTUREBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5165,7 +5171,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les textbloc
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_TEXTBLOCK
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(boucle).Identification_Objet.Nom = Param Then
@@ -5182,7 +5188,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les TextBox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5199,7 +5205,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les checkbox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_CHECKBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5216,7 +5222,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les Progressbar
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PROGRESSBAR
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(boucle).Identification_Objet.Nom = Param Then
@@ -5232,7 +5238,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Next boucle
 					End if
 					
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les explorer
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(boucle).Identification_Objet.Nom = Param Then
@@ -5247,6 +5253,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							End if
 						Next boucle
 					End if
+
 				Else
 				
 					' L'utilisateur n'a rien indique
@@ -5262,10 +5269,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Si on a trouve quelque chose
 			if Numero_INDEX > 0 Then
+
+
 				IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
+
 					If TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TOUT Then
 						' Si l'interface graphique est executee
-					
+
+
 						IF Numero_INDEX = 99999 Then
 							' Actualiser absolument TOUT !
 							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)

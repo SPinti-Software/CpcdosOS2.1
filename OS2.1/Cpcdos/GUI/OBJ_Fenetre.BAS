@@ -48,7 +48,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 			End if
 		end if
 
-		
+		' return this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle
+
 		' Mode bureau
 		Dim DESKTOPMODE as boolean = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.DESKTOPMODE
 		

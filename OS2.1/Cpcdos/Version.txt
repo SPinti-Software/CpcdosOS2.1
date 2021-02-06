@@ -12,10 +12,10 @@
 	#### En bref ####
 	#################
 
-		--> 8	Ajouts de divers fonctionnalités.
-		--> 4	corrections importantes.
+		--> 10	Ajouts de divers fonctionnalités.
+		--> 5	corrections importantes.
 		--> 1	optimisations.
-		--> 3	corrections et modifications mineures.
+		--> 5	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -24,13 +24,13 @@
 		--> Note de performances : 13/20
 
 		--> Probabilités de crash
-				Réseau	: 10% (Plus stable!)
-				SHELL	: 12%
-				GUI		: 8%
-				3D		: 2%
-				I/O		: 28%
-				Win32	: 25%
-				GENERAL	: 30%
+				Réseau	: 10%
+				SHELL	: 15%
+				GUI		: 25%
+				3D		: 1%
+				I/O		: 10%
+				Win32	: 20%
+				GENERAL	: 40%
 			
 			
 	#############################
@@ -40,7 +40,8 @@
 		[AJOUTS]
 		- [GUI] Ajout de  la première version de l'objet Explorer. 
 				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
-		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones
+		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones. Attribuable depuis la propriete fenetre "DESKTOPMODE:1"
+		- [GUI] Ajout de la barre des taches. Attribuable depuis la propriete fenetre "TASKBAR:1" (horizontale) ou "TASKBAR:2" (Verticale)
 
 		- [SYSTEME] Ajout du support de lecture de fichiers .INI
 		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
@@ -60,6 +61,8 @@
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
 		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
 		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
+		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif
+		- [MEMORY] Prevention corrective de probables crachs avec un meilleur traçage du debug.
 		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
 		
 		
@@ -69,6 +72,7 @@
 		- [SYSTEME] Nouveau logo ASCII-ART de boot - Chrapati
 		- [SCI] Optimisation lors du chargement des elements graphiques d'une fenetre. Tous les elements commun tels que
 				les boutons fermeture, agrandissement, barre titre etc.. seront chargés qu'une seule fois dans une mémoire partagée.
+
 
 	#######################
 	##### CPinti Core #####
@@ -83,7 +87,7 @@
 		
 		[MODIFICATIONS]
 		- [Exeloader] Intégration de la nouvelle mise à jour permettant l'exécution native de programmes
-						OpenGL mesa avec emulation des shaders GPU sur CPU et plus...
+						OpenGL mesa LLVM pipe avec emulation des shaders GPU sur CPU et plus...
 
 		
 		
@@ -103,10 +107,9 @@
 			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
 			!!! Cette limitation pour le développement est temporaire!!!
 			
-		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
-			 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
-				Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
-				pour supprimer manuellement la variable et ses données en memoire.
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant est de libérer manuellement 
+		  	les ressources utilisées via la commande FIX/ ou SET/. Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" 
+			  à la fin de votre programme pour supprimer manuellement la variable et ses données en memoire.
 			
 		2) Entracelage PNG non supporté.
 			

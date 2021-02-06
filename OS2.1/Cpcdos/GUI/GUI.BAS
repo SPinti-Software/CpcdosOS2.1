@@ -4620,7 +4620,6 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 		if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 1 Then
 			' Horizontale
 
-			DEBUG(" ****** Display_Taskbar(" & index_fenetre & ") : '" & this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Titre & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 			Dim Positionnement_X as integer = 1
 			For boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
@@ -4676,7 +4675,6 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 						End if
 					end if
 
-					DEBUG(" ****** Fenetre ( " & boucle & "): '" & Titre_Fenetre & "' FOCUS --> " & Focus_Fenetre & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 					Positionnement_X += Size_X_item + 5
 				End if
