@@ -441,8 +441,18 @@ namespace cpinti
 					Liste_Processus[pid].Threads_Enfant[tid] = false;
 				}
 				
+				cpinti_dbg::CPINTI_DEBUG("P4", 
+										"P4", 
+										"", "",
+										Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+
 				// Attendre 10ms pour etre SAFE
-				usleep(1000);
+				// usleep(1000);
+
+				cpinti_dbg::CPINTI_DEBUG("P5", 
+										"P5", 
+										"", "",
+										Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 				
 				if(compteur_thread > 0)
 				{

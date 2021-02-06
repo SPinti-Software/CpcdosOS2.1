@@ -174,7 +174,6 @@ Public Function cpc_Creer_Contexte cdecl Alias "cpc_Creer_Contexte" (TailleX as 
 			DEBUG("[cpc_Creer_Contexte] [OK] ID:" & Resultat & " [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(Resultat), 8) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		End if
 		Function = Resultat
-		' SORTIR_SectionCritique()
 	Else
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -183,14 +182,14 @@ Public Function cpc_Creer_Contexte cdecl Alias "cpc_Creer_Contexte" (TailleX as 
 				DEBUG("[cpc_Creer_Contexte] [ERROR] Unable to create bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 			End if
 		End if
-		SORTIR_SectionCritique()
 		Function = 0
 	End if
 	
+	SORTIR_SectionCritique()
 End function
 
 Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte" (ID as integer) as any ptr
-	' ENTRER_SectionCritique()
+	ENTRER_SectionCritique()
 	
 	Dim Resultat as any ptr
 	

@@ -203,19 +203,10 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String
 		
 		' Actualiser tout
 		ActualiserGUI(0, 0)
-
-	End if
-	
-	' ///////////////////////////////////////
-	
-	
-	
-	if Test_Resolution = 1 Then ' OK
-		Function = 1
-	Else
-	
+		return 1
+	else
 		SORTIR_SectionCritique()
-		Function = 0
+		return 0
 	End if
 	
 End function
@@ -4342,6 +4333,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 	' 2		: Actualise TOUT sauf la fenetre undique dans index
 	' 3		: Actualise uniquement via le buffer 2
 	
+
 	ENTRER_SectionCritique()
 	
 	
@@ -4523,7 +4515,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 	
 	SORTIR_SectionCritique()
 	
-	ActualiserGUI = 1
+	return 1
 End function
 
 Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean

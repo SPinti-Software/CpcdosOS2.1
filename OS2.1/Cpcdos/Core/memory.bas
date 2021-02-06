@@ -170,7 +170,7 @@ Function _memoire_bitmap.Creer_BITMAP(byval NumeroID as integer, Nom_ as String,
 		End if
 			
 		' Si les coordonees X,Y sont inferieur a 1
-		if TX_ < 1 OR TY_ < 1 Then Function = 0 : Exit function
+		if TX_ < 1 OR TY_ < 1 Then  SORTIR_SectionCritique() : Return 0
 		
 		Dim Bits_ as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels(TRUE)
 		

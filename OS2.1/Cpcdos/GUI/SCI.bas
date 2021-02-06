@@ -1758,7 +1758,7 @@ Function _SCI_Cpcdos_OSx__.IMG_Changer_taille(byref Source as any ptr, byref Des
 	
 	Function = Destination
 
-	ENTRER_SectionCritique()
+	SORTIR_SectionCritique()
 End function
 
 

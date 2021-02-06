@@ -8,6 +8,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 		' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		DEBUG("[SCI] Creer_Fenetre() IND:" & _index_ & " [0x" & hex(this._CLE_) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 	end if
+
 	IF this.GUI_Mode = TRUE Then
 	
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
