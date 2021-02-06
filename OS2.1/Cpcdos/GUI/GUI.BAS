@@ -1433,6 +1433,11 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							End if
 						End if
 
+
+						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar > 0 Then
+
+
+						End if
 						
 						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
 							' ==== On ferme la fenetre par le bouton X ====
