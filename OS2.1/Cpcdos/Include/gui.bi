@@ -728,6 +728,8 @@ Type _SCI_Cpcdos_OSx__
 
 		' TaskBar
 		TaskBar_clic						as boolean
+		TaskBar_List_win					as integer ' Fenetre taskbar
+
 		' Positionnement sur la barre
 		TaskBar_PosX						as integer
 		TaskBar_PosY						as integer

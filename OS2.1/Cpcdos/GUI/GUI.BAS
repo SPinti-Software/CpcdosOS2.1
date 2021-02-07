@@ -276,7 +276,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= FENETRE =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	IF Type_De_GUI = this.GUI_TYPE.Fenetre Then
-		
+
 		' Si le handle est superieur a 0, donc verifier si ce handle existe! 
 		IF _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle > 0 Then
 			IF _INDEX_MODIF_ = 0 Then
@@ -289,10 +289,15 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 						exit for
 					END IF
 				Next _BOUCLE_
-			
+
 				' Verifier si le PID parent a ete trouve
 				IF _INDEX_ = 0 Then 
-					Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " est introuvable!"
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					Else
+						DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					End if
+
 					CPC__GUI_Init_obj = -1
 					ScreenUnlock
 					exit function
@@ -333,6 +338,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			
 			' Associer son numero de handle unique de la fenetre
 			_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle	= CPCDOS_INSTANCE.Generer_RND(100, 999)
+
+			' SI c'est un taskbar
+			if _Proprietes.TEMP_GUI__FENETRE.PROP_TYPE.TaskBar > 0 Then
+				CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_
+			End if
 			
 			' /!\ Transferer les proprietes temporaires dans les proprietes definitives /!\
 			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_) 					= _Proprietes.TEMP_GUI__FENETRE
@@ -345,11 +355,26 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		' Lui donner son index
 		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.Index_Enfant = _INDEX_
 
+		
+
 		' Creer l'objet
 		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle = Creer_Fenetre(_INDEX_)
 					
 		
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle
+
+		' Sil y a une taskbar
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win > 0 Then
+			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_ Then ' Et que c'est pas elle même
+				' On actualise le contenu de la taskbar
+				ActualiserGUI(1, CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win)
+				
+			End if
+		End if
+
+		
+
+
 
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Bouton Then
@@ -372,7 +397,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le PID fenetre parent " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -427,7 +456,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -545,7 +578,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -600,7 +637,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -655,7 +696,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -710,7 +755,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -765,7 +814,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le PID fenetre parent " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -1469,10 +1522,6 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = false
 												Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
 
-												DEBUG(" ****** this.INST_INIT_GUI.POSITION(1) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(1)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-												DEBUG(" ****** this.INST_INIT_GUI.POSITION(2) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(2)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-												DEBUG(" ****** this.INST_INIT_GUI.POSITION(3) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(3)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-												DEBUG(" ****** this.INST_INIT_GUI.POSITION(4) : '" & this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(4)).Titre & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
 												ActualiserGUI(0, 0)
 
 											Elseif this.INST_INIT_GUI.POSITION(2) = CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) Then
