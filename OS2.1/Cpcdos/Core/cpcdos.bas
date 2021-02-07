@@ -184,10 +184,11 @@ Sub __Noyau_Cpcdos_OSx__.En_Charge(oui as boolean)
 		
 	End if
 
-	
-	' Forcer le blittage uniquement s'il y a 1 ou 0 en load
-	if CURSEUR_LOAD_AFFICHER = 0 OR CURSEUR_LOAD_AFFICHER = 1 Then
-		CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
+	if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode Then
+		' Forcer le blittage uniquement s'il y a 1 ou 0 en load
+		if CURSEUR_LOAD_AFFICHER = 0 OR CURSEUR_LOAD_AFFICHER = 1 Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
+		End if
 	End if
 	
 	if CURSEUR_LOAD_AFFICHER < 0 Then CURSEUR_LOAD_AFFICHER = 0
