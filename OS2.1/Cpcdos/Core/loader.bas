@@ -1029,8 +1029,8 @@ Sub intro()
 	Print "	       |_|    						             "
 	Print "								                     "
 	Print "    CPCDOS OSx                                    "
-	Print "                       Cree Pour Concevoir Des OS "
-	Print "                           Created for develop OS "
+	Print "                       Cree pour concevoir des OS "
+	Print "                            Created to develop OS "
 	Print " Version :                                        "
 	Print "  - Date        : " 		&   _VERSION_DATEV                  
 	Print "  - Kernel base : OS" 	& 	_VERSION_MAJEUR & " " & _VERSION_MINEUR
