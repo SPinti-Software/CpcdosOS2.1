@@ -17,6 +17,7 @@ _Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnen
  - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
  - Assurez-vous d'avoir une machine virtuelle [éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
+   N'hésitez pas à utiliser une ancienne VM cpcdos déjà configurée pour la mettre à jour.
  - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
  - Executez-le avec votre OS !
  
