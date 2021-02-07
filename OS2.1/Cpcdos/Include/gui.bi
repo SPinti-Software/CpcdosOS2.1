@@ -251,6 +251,8 @@ Type Cpcdos_GUI__FENETRE
 	ICONE_IMG_ID				as integer
 	ICONE_ORG_IMG_ID			as integer
 
+	ICONE_IMG_Resized_TaskBar	as integer ' ID icone taskbar resized
+
 	
 	POS_ICONE_X					as integer 	' Position horizontale de l'icone
 	POS_ICONE_Y					as integer 	' Position verticale de l'icone

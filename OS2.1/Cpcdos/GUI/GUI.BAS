@@ -368,7 +368,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_ Then ' Et que c'est pas elle même
 				' On actualise le contenu de la taskbar
 				ActualiserGUI(1, CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win)
-				
+
 			End if
 		End if
 
@@ -4698,6 +4698,12 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 	' Verifier si c'est autorise
 	if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar > 0 Then
 
+		' ------------ TASKBAR ------------
+
+		' Recuperer le nom de fichier du fond d'ecran du menu contextuel
+		dim Image_Normal as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.NORMAL", 3, this._CLE_)
+		dim Image_Focus as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.FOCUS", 3, this._CLE_)
+
 		Dim Espacement_X as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_X", 3, this._CLE_))
 		Dim Espacement_Y as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_Y", 3, this._CLE_))
 
@@ -4712,7 +4718,24 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 		if Size_X > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X Then Size_X = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X
 		if Size_Y > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y Then Size_Y = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y
 
+
+
+		' ------------ PAR ITEMS ------------
+
+		' Taille max du texte
 		Dim Size_text	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_TEXT", 3, this._CLE_))
+
+		' Position du texte
+		Dim Pos_Text_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_TEXT_X", 3, this._CLE_))
+		Dim Pos_Text_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_TEXT_Y", 3, this._CLE_))
+
+		' Position de l'icone
+		Dim Pos_Icon_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_ICON_X", 3, this._CLE_))
+		Dim Pos_Icon_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_ICON_Y", 3, this._CLE_))
+
+		' Taille de l'icone
+		Dim Siz_Icon_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ICON_X", 3, this._CLE_))
+		Dim Siz_Icon_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ICON_Y", 3, this._CLE_))
 
 		' Taille des elements de la barre des taches
 		Dim Size_X_item as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_X", 3, this._CLE_))
@@ -4722,10 +4745,6 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 		dim Couleur_FNT_R as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_R", 3, this._CLE_))
 		dim Couleur_FNT_V as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_G", 3, this._CLE_))
 		dim Couleur_FNT_B as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_B", 3, this._CLE_))
-
-		' Recuperer le nom de fichier du fond d'ecran du menu contextuel
-		dim Image_Normal as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.NORMAL", 3, this._CLE_)
-		dim Image_Focus as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.FOCUS", 3, this._CLE_)
 
 
 		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID < 1 Then
@@ -4806,7 +4825,46 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 							' Recuperer tous les elements pour creer un item
 
 							' ID de l'icone de fenetre deja charge
-							Dim Icone_Fenetre_ID as integer = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_ID
+							Dim Icone_Fenetre_ID as integer = 0
+
+							if this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar > 0 Then
+								' S'il y a deja un profil avec une icone traitee, on prend celle la !
+								Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar
+
+							Else
+								' Sinon on prend l'originale
+								Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_ID
+							
+								Dim tmp_sx as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(Icone_Fenetre_ID)
+								Dim tmp_sy as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(Icone_Fenetre_ID)
+
+								' Si sa taille est differente a ce que l'utilisateur souhaite
+								if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(Icone_Fenetre_ID) <> Siz_Icon_X OR CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(Icone_Fenetre_ID) <> Siz_Icon_Y Then
+
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Taille icone differente (" & tmp_sx & "x" & tmp_sy & ") resizing en (" & Siz_Icon_X & "x" & Siz_Icon_Y & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Size different icon (" & tmp_sx & "x" & tmp_sy & ") resizing to (" & Siz_Icon_X & "x" & Siz_Icon_Y & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+
+									' On la resize et on l'enregistre
+									this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Icone_Fenetre_ID, Siz_Icon_X, Siz_Icon_Y)
+
+									' Et on le recupere
+									Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar
+
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										if Icone_Fenetre_ID > 0 Then
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Ok ! ICONE_IMG_Resized_TaskBar : " & Icone_Fenetre_ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										Else
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] [ERROR] ! ICONE_IMG_Resized_TaskBar : " & Icone_Fenetre_ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+
+								End if
+							End if
 
 							' Titre de la fenetre
 							Dim Titre_Fenetre as String = this.INST_INIT_GUI.GUI__FENETRE(boucle).TITRE
@@ -4847,10 +4905,10 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 							End if
 
 							' Ajouter l'icone de l'application
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Icone_Fenetre_ID, Pos_X + Positionnement_X + 4, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Icone_Fenetre_ID, Pos_X + Positionnement_X + Pos_Icon_X, Pos_Y + Pos_Icon_Y, 0, 0, Size_X_item, Size_Y_item)
 
 							' Ajouter le nom de l'application
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, Pos_X + Positionnement_X + 32 , Pos_Y + 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, Pos_X + Positionnement_X + Pos_Text_X, Pos_Y + Pos_Text_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
 							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
