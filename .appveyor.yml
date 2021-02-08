@@ -1,0 +1,14 @@
+version: '2.1.{build}'
+
+image: Visual Studio 2017
+
+install:
+  - ps: "wget https://github.com/VLiance/Cwc/archive/debug.zip -OutFile ./cwc.zip"
+  - "7z x cwc.zip -oC:\\CWC -y"
+
+build: false
+
+build_script:
+  - ps: "C:\\CWC\\Cwc-debug\\cwc-console.exe .\\OS2.1\\_Make_CpcDos_.cwMake"
+  - ps: "if (-not (Test-Path .\\bin\\CPCLDR.EXE)) { throw 'CPCLDR.EXE was not built' }"
+
