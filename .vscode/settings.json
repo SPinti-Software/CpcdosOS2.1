@@ -58,6 +58,11 @@
         "xmemory": "cpp",
         "xstddef": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "*.inc": "cpp",
+        "cinttypes": "cpp",
+        "*.ipp": "cpp",
+        "rope": "cpp",
+        "regex": "cpp"
     }
 }

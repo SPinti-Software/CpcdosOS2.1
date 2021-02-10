@@ -112,6 +112,83 @@ namespace cpinti
 			shutdown((int) SocketReseau, 2);
 			close((int) SocketReseau);
 		}
+
+		/*
+
+		std::string get_http_element(const char* element)
+		{
+			// Cette fonction permet de recuperer le contenu d'un element head http
+			
+				Les requetes possibles
+				"CONTENT-TYPE: "
+				"CONNECTION: "
+				"DATE: "
+				"SERVER: "
+				"CONTENT-LENGTH: "
+			
+
+			std::string element_STR = std::string(element);
+
+			// Tout mettre en MAJ
+			std::for_each(element_STR.begin(), element_STR.end(), [](char & c){ c = ::toupper(c); });
+
+			if(Request_content.find(element_STR) != std::string::npos)
+			{
+				std::string str_temp = Request_content.substr(Request_content.find(element_STR) + element_STR.length());
+				str_temp = str_temp.substr(0, str_temp.find("\r\n"));
+
+				// Retourner la reponse
+				return str_temp;
+			}
+			else
+				// Non present!
+				return "";
+		}
+
+		bool capture_head_content(long socket)
+		{
+			// Permet de recuperer les elements http
+
+			
+			char *buff = (char*) calloc(1024, (size_t)sizeof(char));
+			char* ptr = 0;
+			int indexchar = 0;
+			
+			
+			int octets_recu;
+			while((octets_recu = recv((int) socket, ptr, 1, 0)))
+			{
+				if(octets_recu  == -1){
+					perror("Parse Header");
+					break;
+				}
+				
+				buff[indexchar] = (char) *ptr;
+				indexchar++;
+
+				if(indexchar >= 1024) break;
+
+				if(strstr(buff, "\r\n\r\n"))
+				{
+					Request_content = std::string(buff);
+
+					cpinti_dbg::CPINTI_DEBUG("Header HTTP : \r\n" + Request_content + "-- END --\r\n", 
+										 	"Header HTTP : \r\n" + Request_content + "-- END --\r\n", 
+										 "HTTP", "get_content()", Ligne_saute, Alerte_ok, Date_avec, Ligne_r_normal);
+					
+					// Tout mettre en MAJ
+					std::for_each(Request_content.begin(), Request_content.end(), [](char & c){ c = ::toupper(c); });
+
+					return true;
+
+				}
+			}
+
+			return false;
+
+		}
+
+		*/
 		
 		
 		long Taille_Contenu(long socket)
@@ -140,20 +217,24 @@ namespace cpinti
 			*ptr=0;
 			ptr=buff+4;
 
-			if(octets_recu){
+			if(octets_recu)
+			{
+
 				ptr=strstr(ptr,"Content-Length:");
-				if(ptr){
-					// sscanf(ptr,"%*s %d", &octets_recu);
+				if(ptr)
+				{
 					sscanf(ptr,"%*s %d", &octets_recu);
 
 				}else
 					octets_recu=-2; // Taille inconnue
 			}
 			
-			
+
 			return (int) octets_recu ;
 
 		}
+
+		
 
 		long Demarrer_client(std::string AdresseIP, unsigned long _NumPort, unsigned long __NumeroID, long __TYPE_CLIENT)
 		{
@@ -328,16 +409,16 @@ namespace cpinti
 			char buffer[TailleBuffer+1]; 
 			std::string Fichier_TEMP_STR = "";
 			
-			char* VAR_PROGRESSION = NULL;
+			char* VAR_PROGRESSION = (char*) calloc(16, sizeof(char));
 			bool var_progression = false;
 			
-			char* VAR_SPEED = NULL;
+			char* VAR_SPEED = (char*) calloc(16, sizeof(char));
 			bool var_speed = false;
 			
-			char* VAR_SIZE = NULL;
+			char* VAR_SIZE = (char*) calloc(16, sizeof(char));
 			bool var_size = false;
 			
-			char* VAR_SOCKET = NULL;
+			char* VAR_SOCKET = (char*) calloc(16, sizeof(char));
 			bool var_socket = false;
 			
 			
@@ -398,10 +479,13 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_POURCENT ");
 
-						VAR_PROGRESSION = (char*) (BUFFER.substr(posCFG+18).c_str());
+						std::string _tmp_cpy = BUFFER.substr(posCFG+18);
+
+						memcpy(VAR_PROGRESSION, _tmp_cpy.c_str(), _tmp_cpy.length());
 						
-						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable progression en poucentage '" + std::string(VAR_PROGRESSION) + "'",
-												 "STATS : Variable definition in pourcent '" + std::string(VAR_PROGRESSION) + "'",
+						
+						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable progression en poucentage '" + _tmp_cpy + "'",
+												 "STATS : Variable definition in pourcent '" + _tmp_cpy + "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 
 						BUFFER = "";
@@ -413,10 +497,12 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SPEED ");
 
-						VAR_SPEED = (char*) (BUFFER.substr(posCFG+15).c_str());
+						std::string _tmp_cpy = (BUFFER.substr(posCFG+15).c_str());
+
+						memcpy(VAR_SPEED, _tmp_cpy.c_str(), _tmp_cpy.length());
 						
-						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets par secondes '" + std::string(VAR_SPEED) + "'",
-												 "STATS : Variable bytes per sec '" + std::string(VAR_SPEED) + "'",
+						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets par secondes '" + _tmp_cpy + "'",
+												 "STATS : Variable bytes per sec '" + _tmp_cpy + "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 												
 						BUFFER = "";
@@ -429,10 +515,12 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SIZE ");
 
-						VAR_SIZE = (char*) (BUFFER.substr(posCFG+14).c_str());
+						std::string _tmp_cpy = (BUFFER.substr(posCFG+14).c_str());
+
+						memcpy(VAR_SIZE, _tmp_cpy.c_str(), _tmp_cpy.length());
 						
-						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets copies '" + std::string(VAR_SIZE) + "'",
-												 "STATS : Variable definition for copied bytes'" + std::string(VAR_SIZE)+ "'",
+						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets copies '" + _tmp_cpy + "'",
+												 "STATS : Variable definition for copied bytes'" + _tmp_cpy + "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 												
 						BUFFER = "";
@@ -444,10 +532,12 @@ namespace cpinti
 						
 						size_t posCFG = BUFFER.find("#CFG_VAR_SOCKET ");
 
-						VAR_SOCKET = (char*) (BUFFER.substr(posCFG+16).c_str());
+						std::string _tmp_cpy = (BUFFER.substr(posCFG+16).c_str());
+
+						memcpy(VAR_SOCKET, _tmp_cpy.c_str(), _tmp_cpy.length());
 						
-						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable socket'" + std::string(VAR_SIZE) + "'",
-												 "STATS : Variable definition for socket '" + std::string(VAR_SIZE)+ "'",
+						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable socket'" + _tmp_cpy + "'",
+												 "STATS : Variable definition for socket '" + _tmp_cpy + "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 								
 						sprintf(_Commande_CpcdosCP, "SET/ %s = %d", VAR_SOCKET, _NumeroID);
