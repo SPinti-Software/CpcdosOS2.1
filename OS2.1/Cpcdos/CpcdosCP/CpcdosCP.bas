@@ -569,7 +569,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -764,7 +764,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -875,7 +875,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1044,7 +1044,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1344,7 +1344,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1506,7 +1506,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1699,7 +1699,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -2114,7 +2114,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -2263,7 +2263,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -2544,7 +2544,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							VariableCalc += 1
 							
-							CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
+							CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
 						Else
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
 								DEBUG("[CpcdosC+] Impossible d'additionner. " & CHR(34) & Commande & CHR(34) & ".", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -2563,7 +2563,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							VariableCalc -= 1
 							
-							CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
+							CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
 						Else
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
 								DEBUG("[CpcdosC+] Impossible de soustraire. " & CHR(34) & Commande & CHR(34) & ".", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -2600,7 +2600,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				
 				if KeyBuffer = "" then KeyBuffer = "\#NULL"
 				
-				CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableQuestion & " = " & KeyBuffer, _CLE_, Niveau_2, Param_1, Param_2)
+				CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableQuestion & " = " & KeyBuffer, _CLE_, Niveau_2, Param_1, Param_2)
 			
 				exit _scope_CMD, _scope
 			End if
@@ -3161,7 +3161,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3376,7 +3376,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3694,7 +3694,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3842,7 +3842,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3989,7 +3989,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4140,7 +4140,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4290,7 +4290,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4440,7 +4440,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4590,7 +4590,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4723,7 +4723,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4894,7 +4894,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5501,7 +5501,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5649,7 +5649,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5754,7 +5754,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5857,7 +5857,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5969,7 +5969,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6081,7 +6081,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6188,7 +6188,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6323,7 +6323,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6436,7 +6436,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6549,7 +6549,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6661,7 +6661,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6768,7 +6768,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6881,7 +6881,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6991,7 +6991,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7101,7 +7101,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7212,7 +7212,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7320,7 +7320,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7427,7 +7427,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7533,7 +7533,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7639,7 +7639,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7750,7 +7750,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7857,7 +7857,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -8030,7 +8030,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -8538,7 +8538,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF testCMD < 6 then
 					Affichage = 0
 					' 3 = On nettoie / Cree la variable avant de le definir comme sortie
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite (autorisation d'acces)?
 				Else
 					Affichage = 1
@@ -8711,7 +8711,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF testCMD < 6 then
 					Affichage = 0
 					' 3 = On nettoie / Cree la variable avant de le definir comme sortie
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite (autorisation d'acces)?
 				Else
 					Affichage = 1
@@ -8812,7 +8812,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -8996,7 +8996,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9124,7 +9124,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'Affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9247,7 +9247,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9342,7 +9342,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9491,7 +9491,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9828,7 +9828,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10124,7 +10124,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10305,7 +10305,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10510,7 +10510,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -11243,7 +11243,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -11535,7 +11535,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -12210,15 +12210,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Nouvelle_Cle_GUI = Nouvelle_Cle
 
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PATH_F_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PATH_F_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_TID_ = " & CPCDOS_INSTANCE.get_ThreadEnCours(), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_TID_ = " & CPCDOS_INSTANCE.get_ThreadEnCours(), Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_DATE_ = " & CPCDOS_INSTANCE.get_Date("AAAA-MM-JJ") & " " & CPCDOS_INSTANCE.get_Heure("HH:MM:SS"), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_DATE_ = " & CPCDOS_INSTANCE.get_Date("AAAA-MM-JJ") & " " & CPCDOS_INSTANCE.get_Heure("HH:MM:SS"), Nouvelle_Cle, 2, Param_1, Param_2)
 						
 						IF ModeAnalyse = 1 then
 							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -13062,7 +13062,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										si_EXE_FIXE_VARIABLES = 0
 										For Boucle_FIXER as integer = 1 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
 											IF NOT CCP_Fonction_ARGS_2(Boucle_FIXER) = "" THEN
-												CpcdosCP_SHELL("FIX/ " & CCP_Fonction_ARGS_2(Boucle_FIXER) & " = " & CCP_Fonction_DATA(Boucle_FIXER), Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & CCP_Fonction_ARGS_2(Boucle_FIXER) & " = " & CCP_Fonction_DATA(Boucle_FIXER), Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 											End if
 										Next Boucle_FIXER
 									End if
@@ -15085,42 +15085,42 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										' **** Proprietes graphiques ****
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TITRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_TITRE=") + 12)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TEXTE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TEXTE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TEXTE = MID(RetourCCP, Instr(RetourCCP, ":PROP_TEXTE=") + 12)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_NOM=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Nom, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Nom, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__Nom, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__Nom = MID(RetourCCP, Instr(RetourCCP, ":PROP_NOM=") + 10)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PID=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PID_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PID_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PID_PARENT), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PID_PARENT = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PID=") + 10))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_HANDLE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Handle_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Handle_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__Handle_PARENT), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__Handle_PARENT = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_HANDLE=") + 13))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TYPE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TYPE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TYPE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TYPE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TYPE = ucase(MID(RetourCCP, Instr(RetourCCP, ":PROP_TYPE=") + 11))
@@ -15235,77 +15235,77 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURFENETRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFENETRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFENETRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURFENETRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURFENETRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURFENETRE=") + 21)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURFOND=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFOND, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFOND, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURFOND, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURFOND = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURFOND=") + 18)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURTITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURTITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURTITRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURTITRE=") + 19)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURTEXTE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURTEXTE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURTEXTE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURTEXTE=") + 19)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PX=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_PX), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_PX = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PX=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PY=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_PY), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_PY = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PY=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TX=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_TX), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TX = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_TX=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TY=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_TY), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TY = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_TY=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:ICONE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_ICONE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_ICONE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_ICONE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_ICONE = MID(RetourCCP, Instr(RetourCCP, ":ICONE=") + 7)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:IMGTITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMGTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMGTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_IMGTITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_IMGTITRE = MID(RetourCCP, Instr(RetourCCP, ":IMGTITRE=") + 10)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:IMAGE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMAGE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMAGE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_IMAGE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_IMAGE = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":IMAGE=") + 7))
@@ -15314,7 +15314,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
 
 												
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_VALEUR, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_VALEUR, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_VALEUR), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_VALEUR = val(LTRIM(MID(RetourCCP, Instr(RetourCCP, ":VALEUR=") + 8)))
@@ -15322,7 +15322,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_ALPHA=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURALPHA, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURALPHA, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURALPHA, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURALPHA = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":PROP_ALPHA=") + 12))
@@ -15330,7 +15330,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										ELSEIF Instr(RetourCCP, "IUG:PROP_EVENEMENT=") > 0 Then
 											
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_EVENEMENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_EVENEMENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_EVENEMENT, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_EVENEMENT = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":PROP_EVENEMENT=") + 16))
@@ -16772,7 +16772,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -17101,7 +17101,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -17560,7 +17560,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -18056,7 +18056,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -18162,7 +18162,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -19317,7 +19317,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -20296,7 +20296,7 @@ _FIN_EXE_CCP_EXE:
 				if Instr(UCASE(Param), "/UPDATE-INSTALL") > 0 Then Install_flag = true
 				if Instr(UCASE(Param), "/UPDATE-GET-INSTALL") > 0 Then Download_AND_Install = true
 
-				DEBUG("[UPDATE] Current LOCAL version '" & _VER_NET_BUILD & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				DEBUG("[UPDATE] Current LOCAL version  '" & _VER_NET_BUILD & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				
 				
 				
@@ -20992,7 +20992,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21159,7 +21159,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'Affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21341,7 +21341,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21499,7 +21499,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1

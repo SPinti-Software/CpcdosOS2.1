@@ -450,7 +450,7 @@ namespace cpinti
 												 "STATS : Variable definition for socket '" + std::string(VAR_SIZE)+ "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 								
-						sprintf(_Commande_CpcdosCP, "FIX/ %s = %d", VAR_SOCKET, _NumeroID);
+						sprintf(_Commande_CpcdosCP, "SET/ %s = %d", VAR_SOCKET, _NumeroID);
 						cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 						
 						
@@ -684,7 +684,7 @@ namespace cpinti
 										{
 
 											valeur = ((double) NombreOctets / (double) TailleFichier) * 100;
-											sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
+											sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
 											cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 										}
 										
@@ -693,7 +693,7 @@ namespace cpinti
 										{
 
 											valeur = (double) NombreOctets;
-											sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
+											sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
 											cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 										}
 									
@@ -703,7 +703,7 @@ namespace cpinti
 											if((var_speed == true) && (strlen(VAR_SPEED) > 1))
 											{
 	
-												sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_SPEED, vitesse);
+												sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SPEED, vitesse);
 												cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 												vitesse = 0;
 											}
@@ -764,7 +764,7 @@ namespace cpinti
 									{
 
 										valeur = 100;
-										sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
+										sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
 										cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									}
 									
@@ -773,7 +773,7 @@ namespace cpinti
 									{
 
 										valeur = (double) NombreOctets;
-										sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
+										sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
 										cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									}
 								}
