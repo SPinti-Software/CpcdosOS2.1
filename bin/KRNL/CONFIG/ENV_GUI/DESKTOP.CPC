@@ -6,9 +6,9 @@ CCP/ /SET.LEVEL = 3
 // Alpha background
 SET/ CPC_GUI.DESKTOP.BACKGROUND = %OS_GUI%\DESKTOP.PNG
 
-Declare/ Init_Desktop(obj_name, Pos_X, Pos_Y, Size_X, Size_Y) : LEVEL(3)
+Declare/ Init_Desktop(obj_name, path, Pos_X, Pos_Y, Size_X, Size_Y) : LEVEL(3)
 
-Function/ Init_Desktop(obj_name, Pos_X, Pos_Y, Size_X, Size_Y)
+Function/ Init_Desktop(obj_name, path, Pos_X, Pos_Y, Size_X, Size_Y)
     // Allow to create desktop with icons. And return handle number
 
     ccp/ /set.level = 1
@@ -43,7 +43,7 @@ Function/ Init_Desktop(obj_name, Pos_X, Pos_Y, Size_X, Size_Y)
         .opacity        = "255"
         .textcolor      = "250,250,250"
         .backcolor      = "100,100,100"
-        .text           = "C:/cpcdos/OS/Media/"
+        .text           = "%path%"
         .events         = "%_exe_path_%"
         create/
     End/ explorer

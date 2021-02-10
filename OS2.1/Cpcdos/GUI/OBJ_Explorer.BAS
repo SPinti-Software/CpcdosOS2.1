@@ -58,8 +58,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 			if cpc_mouse_state(0) = 0 Then this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Press = false
 		End if
 		
-		
-		if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_PID_ Then ' Si la fenetre est focus
+		' Si la fenetre est focus ou qu'il s'agit celui du desktop
+		if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_PID_ OR CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = _INDEX_PID_ Then 
 			dim Reload as boolean = true
 			While(Reload)
 				Reload = false
