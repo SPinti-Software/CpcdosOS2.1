@@ -13,12 +13,12 @@
 	#################
 
 		--> 10	Ajouts de divers fonctionnalités.
-		--> 5	corrections importantes.
+		--> 8	corrections importantes.
 		--> 1	optimisations.
-		--> 5	corrections et modifications mineures.
+		--> 6	corrections et modifications mineures.
 
-		--> Gain de stabilité : +2%
-		--> Note de stabilité : 13/20
+		--> Gain de stabilité : +10%
+		--> Note de stabilité : 14/20
 
 		--> Gain de performances : +2%
 		--> Note de performances : 13/20
@@ -26,11 +26,11 @@
 		--> Probabilités de crash
 				Réseau	: 10%
 				SHELL	: 15%
-				GUI		: 25%
+				GUI		: 20%
 				3D		: 1%
 				I/O		: 10%
 				Win32	: 20%
-				GENERAL	: 40%
+				GENERAL	: 30%
 			
 			
 	#############################
@@ -38,12 +38,13 @@
 	#############################
 	
 		[AJOUTS]
-		- [GUI] Ajout de  la première version de l'objet Explorer. 
+		- [GUI] Ajout de  la première version de l'objet Explorer. ( Mode Liste & Icones )
 				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
+				+ Association graphique des extentions + programmes associés modifiable.
 		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones. Attribuable depuis la propriete fenetre "DESKTOPMODE:1"
 		- [GUI] Ajout de la barre des taches. Attribuable depuis la propriete fenetre "TASKBAR:1" (horizontale) ou "TASKBAR:2" (Verticale)
 
-		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
+		
 
 		- [SYSTEME] Ajout du support de lecture de fichiers .INI
 		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
@@ -63,10 +64,11 @@
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
 		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
 		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
-		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif
-		- [MEMORY] Prevention corrective de probables crachs avec un meilleur traçage du debug.
+		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif.
+		- [MEMORY] GROSSES corrections préventives de probables crachs + amélioration tracage debug.
 		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
 		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
+		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
 		
 		
 		[MODIFICATIONS]
@@ -83,7 +85,7 @@
 	
 			
 		[CORRECTIONS]
-		
+		- [NETWORK] Correction de problèmes d'actualisation des statistiques de téléchargement.
 		
 		[AJOUT]
 		
