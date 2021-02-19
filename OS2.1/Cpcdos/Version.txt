@@ -15,7 +15,7 @@
 		--> 10	Ajouts de divers fonctionnalités.
 		--> 8	corrections importantes.
 		--> 1	optimisations.
-		--> 6	corrections et modifications mineures.
+		--> 7	corrections et modifications mineures.
 
 		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
@@ -58,17 +58,22 @@
 						aux formats des fichier. (Taille minimale et maximale).
 		- [CPCDOSC+] Ajout de la fonction CPC.EXECUTION() permettant en interne, d'exécuter des fichiers .CPC avec des arguments
 		- [CPCDOSC+] Ajout de l'argument \#SAMEID pour EXE/ qui permet de conserver l'ID et ne pas le regénérer.
+		- [CPCDOSC+] Ajout d'un avertissement lors de l'utilisation de la syntaxe française.
 		
 
 		[CORRECTIONS]
 		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
 		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
+
 		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
 		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif.
 		- [MEMORY] GROSSES corrections préventives de probables crachs + amélioration tracage debug.
+
 		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
 		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
 		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
+
+		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques.
 		
 		
 		[MODIFICATIONS]
