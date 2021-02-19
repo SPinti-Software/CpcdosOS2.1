@@ -73,10 +73,16 @@ TXT/ * Updating OS list...
 SYS/ /OS /UPDATE /LISTE
 
 txt/ -> BUILD:%CPC.VER.BUILD%
+txt/ -> DATE :%CPC.VER.DATE%
 txt/ 
 txt/ Hello ADMIN :-)
 txt/
-
+txt/ Your update authenticator from '%CPC_SYS.NET.UPDATE.SERVER%' servers :
+sys/ /netid
+txt/
+txt/ You can change your NetID with 'sys/ /netid {Your Pseudo}'
+txt/   
+txt/
 
 // [FR] Demarrer l'OS numéro 0. Ne pas oublier de supprimer la ligne 'GUI/ /CONSOLE'
 // [EN] Starting OS number 0. Not forget to delete 'GUI/ /CONSOLE' line

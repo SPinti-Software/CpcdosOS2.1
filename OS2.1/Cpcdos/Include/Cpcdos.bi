@@ -390,6 +390,12 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _CLIENT_UDP				as integer = 2
 		CONST _DOSBOX					as integer = -23
 		CONST _SANS_Reseau				as integer = -24
+
+		NETWORK_DRIVERCARD				as boolean = false
+		NETWORK_LOCAL					as boolean = false
+		NETWORK_ROUTER					as boolean = false
+		NETWORK_INTERNET				as boolean = false
+		NETWORK_INTERNET_AND_DNS		as boolean = false
 		
 		CONST _STACK_STOCKER_POUR_CPCDOS	as integer = 1 ' Serveur --> STACK Cpcdos
 		CONST _STACK_STOCKER_POUR_SERVEUR 	as integer = 2 ' Cpcdos  --> STACK Serveur

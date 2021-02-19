@@ -418,9 +418,17 @@ Function _SHELL_Cpcdos_OSx__.Recherche_Fonction_Var(byval Buffer_lecture_VAR as 
 
 	' ======================= SYSTEME : RESEAU =======================
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.INST" Then ' Verifier presence pilote reseau
-		Contenu_Variable = Str(9999)
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_DRIVERCARD
+	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.LOCAL" Then ' Verifier presence du reseau local
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_LOCAL
+	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.GATEWAY" Then ' Verifier presence de la passerelle/routeur
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_ROUTER
+	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.INTERNET" Then ' Verifier presence du reseau internet
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_INTERNET
+	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.INTERNET_DNS" Then ' Verifier presence du reseau internet et DNS
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_INTERNET_DNS
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.DRV" Then ' Nom du pilote utilise
-		Contenu_Variable = "<Nom pilote reseau/network driver name>"
+		Contenu_Variable = "<Chuck norris>"
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.ACT" Then ' Activite en % du reseau
 		Contenu_Variable = Str(abs(0)) 'CPCDOS_INSTANCE.CPintiCore_INSTANCE.cpinti_get_net_activite()))
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.THREAD" Then ' Thread utilisant le reseau actuellement

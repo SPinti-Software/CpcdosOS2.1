@@ -12,7 +12,7 @@
 	#### En bref ####
 	#################
 
-		--> 10	Ajouts de divers fonctionnalités.
+		--> 14	Ajouts de divers fonctionnalités.
 		--> 8	corrections importantes.
 		--> 1	optimisations.
 		--> 7	corrections et modifications mineures.
@@ -59,6 +59,12 @@
 		- [CPCDOSC+] Ajout de la fonction CPC.EXECUTION() permettant en interne, d'exécuter des fichiers .CPC avec des arguments
 		- [CPCDOSC+] Ajout de l'argument \#SAMEID pour EXE/ qui permet de conserver l'ID et ne pas le regénérer.
 		- [CPCDOSC+] Ajout d'un avertissement lors de l'utilisation de la syntaxe française.
+		- [CPCDOSC+] Ajout des variables d'état du network :
+						%CPC.SYS.NET.INST% 			--> Network Installé ? (Pilote réseau OK)
+						%CPC.SYS.NET.LOCAL% 		--> Réseau local répondant (Ping vers une quelconque machine)
+						%CPC.SYS.NET.GATEWAY% 		--> Réseau avec passerelle uniquement
+						%CPC.SYS.NET.INTERNET% 		--> Accès au réseau internet
+						%CPC.SYS.NET.INTERNET_DNS% 	--> Accès au réseau internet + DNS ! 
 		
 
 		[CORRECTIONS]

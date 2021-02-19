@@ -10330,6 +10330,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim AdresseIP 	as String
 			Dim TestPing	as Integer
 			Dim TempsPris	as Integer
+
 ' --------------------- if 1 = 1 then ''if Demarrage_OK = 1 then ----------------------------------------
 			if 1 = 1 then
 				IF Param <> "" Then
@@ -10354,7 +10355,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DEBUG("[CPinti] Reseau Ping " & AdresseIP & " a repondu! (" & TestPing & " ms)", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					Else
 						DEBUG("[CPinti] Network Ping: Reponse from " & AdresseIP & "! (" & TestPing & " ms)" , Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					End If
+					End If					
 				elseif TestPing < -1 then
 					' Probleme reseau
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -10387,6 +10388,27 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				END IF
 			end if
+
+			if TestPing >= 0 Then 
+				' Si ca ping
+
+				' Carte dispo
+				CPCDOS_INSTANCE.NETWORK_DRIVERCARD 	= true
+				if NOT INSTR(AdresseIP, "127.0.0") > 0 Then 
+					CPCDOS_INSTANCE.NETWORK_LOCAL 	= true
+				End if
+
+			else
+				' Si adresse loopback
+				if INSTR(AdresseIP, "127.0.0") > 0 Then 
+					' Et ca ping pas LAISSE BET' ET CASSE TOI FDP NETWORK TU ES MAUUUUVAIS WILLY, TU EST MAUUUVAIS
+					CPCDOS_INSTANCE.NETWORK_DRIVERCARD 	= false
+					CPCDOS_INSTANCE.NETWORK_LOCAL 		= false
+					NETWORK_ROUTER						= false
+					NETWORK_INTERNET					= false
+					NETWORK_INTERNET_AND_DNS			= false
+				End if
+			End if
 			
 			' ===================================================================
 			END SCOPE
