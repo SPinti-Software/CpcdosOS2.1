@@ -515,6 +515,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 			' Chercher la syntaxe Anglophone
 			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
+				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
+					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
+					if Instr(tst_Cap, ".") > 1 Then exit for ' C'est pas une commande GUI-properties
+				End if
 				TailleComm = LEN(this.Liste_CMD_EN(Boucle))
 				CommPosition = Position_CMD
 				OnCherche = Lcase(this.Liste_CMD_EN(Boucle))
@@ -523,6 +527,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Chercher la syntaxe Francophone
 			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
+				if Mid(this.Liste_CMD_FR(Boucle), 1, 1) = "." Then 
+					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
+					if Instr(tst_Cap, ".") > 1 Then exit for ' C'est pas une commande GUI-properties
+				End if
+
 				Debug("/!\ French syntax is deprecated and will be removed in future major release ! You should use " & this.Liste_CMD_EN(Boucle) & " instead", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				TailleComm = LEN(this.Liste_CMD_FR(Boucle))
 				CommPosition = Position_CMD
@@ -21521,10 +21530,8 @@ _FIN_EXE_CCP_EXE:
 			exit _scope_CMD, _scope
 		End if ' **** DOS/ ****
 		
-			
 		
 	_end_scope_CMD
-		
 		
 	_end_scope
 	
@@ -21532,14 +21539,14 @@ _FIN_EXE_CCP_EXE:
 	' =========================================================
 	' ========================= F I N =========================
 	' =========================================================
-
 	
 	IF LEN(CommandesAide) > 1 then
 	REM IF CommandesAide <> "" then
-		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 		CommandesAide = ""
 	else
+
 		IF VerifierLabel = 0 then ' Si ce n'est pas non plus un label
 			IF CommTrouve = 0 then
 			
@@ -21548,8 +21555,10 @@ _FIN_EXE_CCP_EXE:
 				' Obtenir le path courant si le path n'est pas abolue mais relative
 				if NOT instr(ProbableFichier, ":") > 0 Then ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_ExeEnCours(2) & "\" & ProbableFichier
 				
+
 				
 				ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(ProbableFichier, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE)
+
 				if CPCDOS_INSTANCE.Fichier_Existe(ProbableFichier) = true then
 					' C'est un fichier existant !
 					if CPCDOS_INSTANCE.Executer_Fichier(ProbableFichier, _CLE_) = false then

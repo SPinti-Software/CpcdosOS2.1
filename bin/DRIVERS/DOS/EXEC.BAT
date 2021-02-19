@@ -33,6 +33,6 @@ echo.
 rem Uncomment this if you want run automatically
 rem call netinst
 
-rem call krnl32.bat
+call krnl32.bat
 
 

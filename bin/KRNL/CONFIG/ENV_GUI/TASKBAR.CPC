@@ -51,8 +51,8 @@ SET/ CPC_GUI.TASKBAR.POS_ICON_Y = 0
 
 // [FR] Positionnement du texte dans l'item
 // [EN] Text position on item
-SET/ CPC_GUI.TASKBAR.SIZ_ICON_X = 32
-SET/ CPC_GUI.TASKBAR.SIZ_ICON_Y = 32
+SET/ CPC_GUI.TASKBAR.SIZ_ICON_X = 16
+SET/ CPC_GUI.TASKBAR.SIZ_ICON_Y = 16
 
 // [FR] Couleur du titre
 // [EN] Title color
