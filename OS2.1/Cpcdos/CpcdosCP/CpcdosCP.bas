@@ -10402,11 +10402,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				' Si adresse loopback
 				if INSTR(AdresseIP, "127.0.0") > 0 Then 
 					' Et ca ping pas LAISSE BET' ET CASSE TOI FDP NETWORK TU ES MAUUUUVAIS WILLY, TU EST MAUUUVAIS
-					CPCDOS_INSTANCE.NETWORK_DRIVERCARD 	= false
-					CPCDOS_INSTANCE.NETWORK_LOCAL 		= false
-					NETWORK_ROUTER						= false
-					NETWORK_INTERNET					= false
-					NETWORK_INTERNET_AND_DNS			= false
+					CPCDOS_INSTANCE.NETWORK_DRIVERCARD 			= false
+					CPCDOS_INSTANCE.NETWORK_LOCAL 				= false
+					CPCDOS_INSTANCE.NETWORK_ROUTER				= false
+					CPCDOS_INSTANCE.NETWORK_INTERNET			= false
+					CPCDOS_INSTANCE.NETWORK_INTERNET_AND_DNS	= false
 				End if
 			End if
 			
@@ -19111,6 +19111,10 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers"
 					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger la liste des icones GUI"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Lister les variables en memoire depuis son numero de visibilite"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
 					Mess_Aide = Mess_Aide & CRLF
@@ -19283,6 +19287,9 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Update file format list"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Load GUI icon list"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   List variables in memory with visibility level"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
