@@ -426,7 +426,7 @@ Function _SHELL_Cpcdos_OSx__.Recherche_Fonction_Var(byval Buffer_lecture_VAR as 
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.INTERNET" Then ' Verifier presence du reseau internet
 		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_INTERNET
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.INTERNET_DNS" Then ' Verifier presence du reseau internet et DNS
-		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_INTERNET_DNS
+		Contenu_Variable = "" & CPCDOS_INSTANCE.NETWORK_INTERNET_AND_DNS
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.DRV" Then ' Nom du pilote utilise
 		Contenu_Variable = "<Chuck norris>"
 	ElseIf Buffer_lecture_VAR = "CPC.SYS.NET.ACT" Then ' Activite en % du reseau
