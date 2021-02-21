@@ -88,6 +88,7 @@
 		- [SYSTEME] Nouveau logo ASCII-ART de boot - Chrapati
 		- [SCI] Optimisation lors du chargement des elements graphiques d'une fenetre. Tous les elements commun tels que
 				les boutons fermeture, agrandissement, barre titre etc.. seront chargés qu'une seule fois dans une mémoire partagée.
+		- [SCI] Amélioration de la tracabilité du debug lors de la création des elements graphiques.
 
 
 	#######################
