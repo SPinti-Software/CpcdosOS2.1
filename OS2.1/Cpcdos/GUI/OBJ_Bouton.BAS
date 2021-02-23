@@ -5,7 +5,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 	
 	dim Message_erreur as String
 
-	DEBUG("[SCI] Creer_Bouton() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__BOUTON(_index_).Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+	DEBUG("[SCI] Creer_Bouton() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__BOUTON(_index_).identification_objet.Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).identification_objet.Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 
 	IF this.GUI_Mode = TRUE Then
 	
