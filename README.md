@@ -3,17 +3,20 @@
 ![](https://cpcdos.net/user/themes/cpcdos/images/logo.png)
 
 Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx.
-Cette version sera maintenue à jour jusqu'à que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête. (Without FreeDos)
+Cette version sera maintenue à jour jusqu'à ce que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête. (Without FreeDos)
 
-Crée le 15 Juillet 2011.
+Créé le 15 Juillet 2011.
 Code source publié officiellement le 09 Janvier 2021.
-
 
 #### Informations
 _Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code ou bien des morceaux de copyright, vous pouvez y passer outre. La version OS2.1 va finalement rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos_
 
 
-## How to compile
+Platform  | Build Status
+ --- | --- 
+Windows | [![Build status](https://ci.appveyor.com/api/projects/status/nfkdxmis9s2s4d4s?svg=true)](https://ci.appveyor.com/project/Maeiky/cpcdosos2-1)
+
+## Comment compiler
  - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
  - Assurez-vous d'avoir une machine virtuelle [éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
@@ -21,14 +24,14 @@ _Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnen
  - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
  - Executez-le avec votre OS !
  
-## How to contribute & Support
+## Comment participer au projet
 Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 
 ## Liens officiel
 - [Site web - cpcdos.net](https://cpcdos.net)
 - [Forum - developpez.net](https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos)
 
-## Updates binaires
+## Mettre à jour
 - Depuis le [site web](https://cpcdos.net) ci-dessus.
 - Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
 
@@ -36,7 +39,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS & GoatOS
  
 ### Contributeurs principaux
- - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM Viewer).
+ - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).
  - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Principal intégrateur backend du site WEB.
  - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du [groupe Discord](https://discord.com/invite/3Qm8xDp)
 
@@ -60,7 +63,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 
 _La plupart des systèmes cités ci-dessus sont opensource_
 
-### Remerciements & Contribution
+### Remerciements & Contributions
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
  - [Monax](https://github.com/sleepy-monax)
  - [d0p1](https://github.com/d0p1s4m4)
