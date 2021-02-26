@@ -79,7 +79,7 @@
 		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
 		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
 
-		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques.
+		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques et les nom de fichiers.
 		
 		
 		[MODIFICATIONS]

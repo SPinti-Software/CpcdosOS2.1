@@ -492,13 +492,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		' A partir d'ici, nous n'avions plus d'espaces au debut
 		'  On cherche donc le prochain espace et on a la CMD!
 		Position_CMD = 0
+
+		Dim Arrob as boolean = false
 		
 		' Capturer la cmd au la prochaine espace apres '/'
 		tst_Cap = MID(CMD_tst, 1, Instr(CMD_tst, CHR(32)) - 1)
 		IF NOT tst_Cap = "" then
 			IF MID(tst_Cap, 1, 1) = CHR(64) Then ' Caractere '@'
 				Position_CMD = Instr(CMD_tst, CHR(32))
-				
+				Arrob = true
+
 				' Chercher le prochain espace apres l'espace precedent
 				tst_Cap = MID(CMD_tst, 1, Instr(Position_CMD + 1, CMD_tst, CHR(32)) - 1)
 			End if
@@ -517,8 +520,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
 				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
 					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
-					if Instr(tst_Cap, ".") > 1 Then exit for ' C'est pas une commande GUI-properties
+					if NOT Instr(tst_Cap, ".") > 0 Then
+						if Arrob = true Then
+							if NOT Instr(tst_Cap, " .") OR NOT Instr(tst_Cap, chr(09) & ".") Then exit for ' C'est pas une commande GUI-properties
+						End if
+					End if
 				End if
+
 				TailleComm = LEN(this.Liste_CMD_EN(Boucle))
 				CommPosition = Position_CMD
 				OnCherche = Lcase(this.Liste_CMD_EN(Boucle))
@@ -527,9 +535,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Chercher la syntaxe Francophone
 			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
-				if Mid(this.Liste_CMD_FR(Boucle), 1, 1) = "." Then 
+				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
 					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
-					if Instr(tst_Cap, ".") > 1 Then exit for ' C'est pas une commande GUI-properties
+
+					if Instr(tst_Cap, ".") > 1 Then
+						if Arrob = true Then
+							if NOT Instr(tst_Cap, " .") OR NOT Instr(tst_Cap, chr(09) & ".") Then exit for ' C'est pas une commande GUI-properties
+						End if
+					End if
 				End if
 
 				Debug("/!\ French syntax is deprecated and will be removed in future major release ! You should use " & this.Liste_CMD_EN(Boucle) & " instead", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
