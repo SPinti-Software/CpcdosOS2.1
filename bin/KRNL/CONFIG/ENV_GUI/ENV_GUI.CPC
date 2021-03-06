@@ -24,6 +24,10 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/window.cpc
 // [EN] Button configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/button.cpc
 
+// [FR] Configuration du picturebox
+// [EN] Picturebox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/IMGBOX.cpc
+
 // [FR] Configuration du textebox
 // [EN] Textbox configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/txtbox.cpc

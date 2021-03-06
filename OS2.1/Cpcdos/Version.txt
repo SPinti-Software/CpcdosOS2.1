@@ -15,7 +15,7 @@
 		--> 14	Ajouts de divers fonctionnalités.
 		--> 8	corrections importantes.
 		--> 1	optimisations.
-		--> 7	corrections et modifications mineures.
+		--> 8	corrections et modifications mineures.
 
 		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
@@ -77,7 +77,9 @@
 
 		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
 		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
+
 		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
+		- [SCI] Correction de l'impossibilité de fermer le desktop et taskbar depuis son Handle ID.
 
 		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques et les nom de fichiers.
 		

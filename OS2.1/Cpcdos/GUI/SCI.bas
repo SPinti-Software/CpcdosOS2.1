@@ -1374,7 +1374,9 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 				For _INDEX_PID_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).Identification_Objet.Handle_PARENT = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.handle Then
 						
-						
+
+							
+
 						Dim LibererTemps 	as integer = 0
 						Dim ACU 			as integer = 0
 						Dim temps_precedent as double = timer
@@ -1388,7 +1390,6 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 						
 						SORTIR_SectionCritique()
 						return CPCDOS_INSTANCE.__THREAD_OK
-						
 					end if
 				Next _INDEX_PID_
 			End if

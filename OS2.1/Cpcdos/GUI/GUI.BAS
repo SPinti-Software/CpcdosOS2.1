@@ -231,10 +231,10 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
 				Creer_PictureBox(index, index_PID) 'Actualiser si focus
 			else
-				IF this.MULTI_PICTUREBOX = TRUE then
-					Creer_PictureBox(index, index_PID) 'Actualiser si focus
-					ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
-				End if
+				'IF this.MULTI_PICTUREBOX = TRUE then
+				'	Creer_PictureBox(index, index_PID) 'Actualiser si focus
+				'	ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
+				'End if
 			End if
 		ElseIf Type_IUG = GUI_TYPE.TextBlock then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
@@ -502,6 +502,12 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 						DEBUG("[CpcdosC+] Creating PictureBox thread [" & "_CPCDOS_THREAD_PICTUREBOX~" & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & "] ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					End if
 				END IF
+
+				if Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX", 3, _CLE_)) = 1 Then
+					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = true
+				Else
+					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false
+				End if
 
 				Scope
 				
