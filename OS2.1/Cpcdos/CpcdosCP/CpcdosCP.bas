@@ -18293,7 +18293,17 @@ _FIN_EXE_CCP_EXE:
 					
 						' Indiquer que c'est une fenetre qu'on veut supprimer
 						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
-						
+
+						' Si cest un desktop
+						if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+						End if
+
+						' Si c'est une taskbar
+						if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+						end if
+	
 						' Et son numero d'index
 						Numero_INDEX = boucle
 						
@@ -18424,6 +18434,16 @@ _FIN_EXE_CCP_EXE:
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
 							
+							' Si cest un desktop
+							if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+							End if
+
+							' Si c'est une taskbar
+							if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+							end if
+
 							' Et son numero d'index
 							Numero_INDEX = boucle
 							
@@ -18629,7 +18649,17 @@ _FIN_EXE_CCP_EXE:
 					
 						' Indiquer que c'est une fenetre qu'on veut supprimer
 						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
-						
+
+						' Si c'est une fenêtre desktop, on delete!
+						if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+						End if
+
+						' Si c'est une taskbar
+						if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+						end if
+					
 						' Et son numero d'index
 						Numero_INDEX = boucle
 						
@@ -18777,6 +18807,16 @@ _FIN_EXE_CCP_EXE:
 						
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
+
+							' Si c'est une fenêtre desktop, on delete!
+							if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+							End if
+
+							' Si c'est une taskbar
+							if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							 	CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+							end if
 							
 							' Et son numero d'index
 							Numero_INDEX = boucle
