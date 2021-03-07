@@ -43,7 +43,8 @@
 				+ Association graphique des extentions + programmes associés modifiable.
 		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones. Attribuable depuis la propriete fenetre "DESKTOPMODE:1"
 		- [GUI] Ajout de la barre des taches. Attribuable depuis la propriete fenetre "TASKBAR:1" (horizontale) ou "TASKBAR:2" (Verticale)
-
+		- [GUI] Ajout de la possibilité de desactiver le multithreading d'un picturebox quand la fenêtre parent n'est pas focus.
+				--> %CPC_GUI.PICTUREBOX.MULTITHREAD.NOFOCUS%
 		
 
 		- [SYSTEME] Ajout du support de lecture de fichiers .INI
