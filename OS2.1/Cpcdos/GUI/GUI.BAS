@@ -3644,21 +3644,63 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' *** EVENEMENT : Si l'utilisateur ENTRE la souris dans l'objet pour la premiere fois (MouseEnter) ***
 												' *****************************************************************************************************
 												
-												IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
-													IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = FALSE Then
-													
-														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
-															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
-																if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
-																		":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
-																		= "ERR_050" Then
-																			
-																	' Black LIST EVENT !
-																	CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
-																	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-																		DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+													IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+														
+															IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
+																if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																		
 																	End if
-																	
+																End if
+															End if
+															
+															' L'objet est en cours de survole
+															this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
+															
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
+															
+															if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+																' Actualiser graphiquement le bouton pour l'effet de "survole"
+																Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+															End if
+
+															' On quitte cette boucle
+															exit for
+															
+														End if
+													End if
+													
+													
+													' *****************************************************************************
+													' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
+													' *****************************************************************************
+													
+													IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														
+														IF 0 Then ' Desactiver l'event mousemove de
+															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
+																IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																	End if
 																End if
 															End if
 														End if
@@ -3666,9 +3708,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														' L'objet est en cours de survole
 														this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
 														
-														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
-														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
-														
+														' Actualiser graphiquement le explorer pour l'effet de "pression"
 														if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
 															' Actualiser graphiquement le bouton pour l'effet de "survole"
 															Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
@@ -3678,46 +3718,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														exit for
 														
 													End if
-												End if
-												
-												
-												' *****************************************************************************
-												' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
-												' *****************************************************************************
-												
-												IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
-													
-													IF 0 Then ' Desactiver l'event mousemove de
-														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
-															IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
-																if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
-																	":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
-																	= "ERR_050" Then
-																			
-																	' Black LIST EVENT !
-																	CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
-																	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-																		DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-																	End if
-																End if
-															End if
-														End if
-													End if
-													
-													' L'objet est en cours de survole
-													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
-													
-													' Actualiser graphiquement le explorer pour l'effet de "pression"
-													if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
-														' Actualiser graphiquement le bouton pour l'effet de "survole"
-														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
-													End if
-
-													' On quitte cette boucle
-													exit for
-													
-												End if
-											End if
+												End if ' IF FOCUS
+											End if 
 										End if
 										
 										' *******************************************************************

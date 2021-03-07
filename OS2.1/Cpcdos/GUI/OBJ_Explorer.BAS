@@ -58,7 +58,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 		End if
 		
 		' Si la fenetre est focus ou qu'il s'agit celui du desktop
-		if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_PID_ OR CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = _INDEX_PID_ Then 
+		' if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_PID_ OR CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = _INDEX_PID_ Then 
+		' if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = _INDEX_PID_ Then 
+		if true then
 			dim Reload as boolean = true
 			While(Reload)
 				Reload = false
