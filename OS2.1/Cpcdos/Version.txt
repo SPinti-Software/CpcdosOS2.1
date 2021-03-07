@@ -13,7 +13,7 @@
 	#################
 
 		--> 14	Ajouts de divers fonctionnalités.
-		--> 8	corrections importantes.
+		--> 9	corrections importantes.
 		--> 1	optimisations.
 		--> 8	corrections et modifications mineures.
 
@@ -83,6 +83,7 @@
 		- [SCI] Correction de l'impossibilité de fermer le desktop et taskbar depuis son Handle ID.
 
 		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques et les nom de fichiers.
+		- [CPCDOSC+] Correction de la commande DIR/ qui ne fonctionnait pas correctement.
 		
 		
 		[MODIFICATIONS]

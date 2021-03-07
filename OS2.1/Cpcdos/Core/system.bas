@@ -776,7 +776,7 @@ End Function
 
 
 Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) as Boolean
-	return lister_Repertoire(RepertoireSource, Filtre, _FICHER_DOSSIER_, 0)
+	return lister_Repertoire(RepertoireSource, Filtre, instance_FICHIER_DOSSIER, 0)
 End function
 
 Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_, jump as integer) as Boolean
@@ -795,8 +795,8 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Normal Or _
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Hidden Or _
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_System Or _
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Directory, retour_attributs) '' Get first file name/attributes, according to supplied file spec and attribute mask
-	
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Directory, retour_attributs)
+
 	If NomElement = "" Then 
 		instance_FICHIER_DOSSIER.Est_OK = FALSE
 	Else
@@ -831,6 +831,7 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 				' Stocker le nom d'element actuel
 				instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
 			
+				print "Nom:" & instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements)
 
 				If (retour_attributs And fbDirectory) <> 0 Then
 					' S'il s'agit d'un dossier
