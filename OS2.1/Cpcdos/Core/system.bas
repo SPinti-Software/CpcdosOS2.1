@@ -830,8 +830,6 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 				
 				' Stocker le nom d'element actuel
 				instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
-			
-				print "Nom:" & instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements)
 
 				If (retour_attributs And fbDirectory) <> 0 Then
 					' S'il s'agit d'un dossier
