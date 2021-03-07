@@ -4,7 +4,7 @@ CCP/ /SET.LEVEL = 3
 // ---- PICTUREBOX ----
 
 // Enable picturebox multi-threading when window is not focused (Can cause gui artefacts)
-set/ CPC_GUI.PICTUREBOX.MULTI_THREAD.NO_FOCUS = 1
+set/ CPC_GUI.PICTUREBOX.MULTITHREAD.NOFOCUS = 1
 
 
 

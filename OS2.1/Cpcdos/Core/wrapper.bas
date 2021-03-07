@@ -109,6 +109,7 @@ End function
 Public Function cpc_Blitter cdecl Alias "cpc_Blitter" (ID as integer) as integer
 	
 	ENTRER_SectionCritique()
+	
 								
 	' Si le bitmap s'est actualise
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
@@ -116,52 +117,57 @@ Public Function cpc_Blitter cdecl Alias "cpc_Blitter" (ID as integer) as integer
 		' Reduit ?
 		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID)).PROP_TYPE.Reduit = false Then
 			
+			Dim YesItCan as boolean = true
+
 			' Si multi-thread no focus est disable
 			if CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false Then
 
-				' ET qu'on est pas focus, ON QUITTE !
-				IF Fenetre_FOCUS(0) = _INDEX_PID_ Then return 0
-
-			End if
-
-			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT <= 0 Then
-				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID) > 0 Then
-			
-					' L'index de l'objet + index TID parent trouve, on execute!
-					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).Identification_Objet.Handle_PARENT > 0 Then
-						' Tant que son TID est en vie, on continue d'actualiser!
-						
-						if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_FPS(temps_precedent, ACU) > 0 Then
-							' Afficher le nombre de FPS
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).TEXTE = _
-										"SOFTWARE RENDERING - PTR:0x" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).IMG_ID) & _
-										" FPS:" & ACU & _
-										" RAM:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Memoire_libre(CPCDOS_INSTANCE._MEGA_OCTETS) & " Mb free " & _
-										" CPU:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_cpu_pourcent() & " %" & _
-										" GPU: na%"
-
-							ACU = 0
-							temps_precedent = timer
-						else
-							ACU = ACU + 1
-						End if
-						
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_PictureBox(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID))
-						
-						' CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE(ID), _
-																	' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID), _
-																	' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID))
-					End if
+				' ET qu'on est PAS focus, ON QUITTE !
+				IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID) Then 
+					YesItCan = false
 				End if
-			Else
+			 End if
 
-				if Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX", 3, _CLE_)) = 1 Then
-					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = true
-				Else
-					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false
-				End if
+			If YesItCan = true Then
+				if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT <= 0 Then
+					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID) > 0 Then
 				
-			End if ' En deplacement
+						' L'index de l'objet + index TID parent trouve, on execute!
+						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).Identification_Objet.Handle_PARENT > 0 Then
+							' Tant que son TID est en vie, on continue d'actualiser!
+							
+							if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_FPS(temps_precedent, ACU) > 0 Then
+								' Afficher le nombre de FPS
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).TEXTE = _
+											"SOFTWARE RENDERING - PTR:0x" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID)).IMG_ID) & _
+											" FPS:" & ACU & _
+											" RAM:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Memoire_libre(CPCDOS_INSTANCE._MEGA_OCTETS) & " Mb free " & _
+											" CPU:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_cpu_pourcent() & " %" & _
+											" GPU: na%"
+
+								ACU = 0
+								temps_precedent = timer
+							else
+								ACU = ACU + 1
+							End if
+							
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_PictureBox(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID))
+							
+							' CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE(ID), _
+																		' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(ID), _
+																		' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(ID))
+						End if
+					End if
+				Else
+
+					if Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.PICTUREBOX.MULTITHREAD.NOFOCUS", 3, CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAIN_CLE)) = 1 Then
+						CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = true
+					Else
+						CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false
+					End if
+					
+				End if ' En deplacement
+			End if ' Can ?
 		End if ' Reduit ?
 	End if ' GUI_Mode
 	SORTIR_SectionCritique()
