@@ -33,7 +33,7 @@
 #include <string.h>
 
 /* NE PAS MODIFIER / DON'T MODIFY */
-#include "include/ExeLoader.h"	/* ExeLoader */
+#include "XE-Loader/XE-Loader.h"	/* ExeLoader */
 #include "include/OpenGL.h"	/* OpenGL */
 // #include "include/LLVM.h"		/* LowLevelVirtualMachine */
 
@@ -101,7 +101,7 @@ namespace Wrapper_Cpcdos
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
 				
-				fStartExeLoader((const char*) ARG_1);
+				Xe_Load((const char*) ARG_1);
 				return 1;
 			}
 			
