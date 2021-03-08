@@ -141,6 +141,11 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 ' 	- Rendre dechargeable les icones & background de l'explorateur [OK]
 '	- Explorer : Ajouter event clic (pour mettre a jour un txtbox par exemple) [OK]
 '	- Explorer : Ajouter mouse selection par clavier aussi [OK]
+'   - Corriger commande Actualiser/ [OK]
+'	- Gerer : Content-Type: application/octet-stream  [OK]
+'	- Enlever le texte en trop quand l'update ne marche pas [OK]
+' 	- Explorateur Fichier [OK]
+'	- Integrer toutes les variables STD::STRING --> Directement en argument. Gagne +memoire [OK]
 
 ' =-=-=-=-=-=-= A FAIRE =-=-=-=-=-=
 '	- CRASH telechargement fichier avec un à ou bug avec les % %
@@ -179,32 +184,22 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 ' 	- Finir pré-compilateur CpcdosC+ (Label:OK, Fonction:ATTENTE)
 '	- Ajouter le style de case / switch en cpcdosc+
 '   - corriger PNG bit couleurs
-'   - Textbox - Ameliorer le curseur et son positionnement modifiable et le deplacement du texte hors zone
-'   - SDK + Manuel
 '	- Perfectionner l'activite reseau pour stabiliser le systeme SERVEUR et CLIENT
-'	- Quota meme libre?
 
 ' BETA 1.3
 '	- ECHEC - REPORTE Refonte module memoire 
-
 ' 	- ajouter multidimentions
-'   - Corriger commande Actualiser/
 '	- Ajouter boucle for
 '   - Ajouter Warning goto hors scope
-'	- Integrer toutes les variables STD::STRING --> Directement en argument. Gagne +memoire
-' 	To Test Serveur.cpp lgn 80 - New int correction warning
+' 	- To Test Serveur.cpp lgn 80 - New int correction warning
 '	- Runtime free par page --> Si caractere autre que '0' alors FUITE DE MEMOIRE MOTHER FUCKER
 '	- CHR et CARACTERE marche 1 fois sur 2
-
 '	- Corriger crash if/ "a = b" == "b" then: (Oncle Jojo)
-
 ' 	- Ajouter niveau de la stack pour debuggage
 '	- Ajouter centrage, position defaut, agrandi et plein ecran fenetre
-' 	- Explorateur Fichier
-'	- Gerer : Content-Type: application/octet-stream
-'	- Enlever le texte en trop quand l'update ne marche pas
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
+'	- Problème actualisation horloge (doublure en Y)
 
 
 '
@@ -227,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "07" 
+CONST _VJOUR as string 	= "08" 
 CONST _VMOIS as string 	= "03"
 CONST _VANNEE as string = "2021"
 

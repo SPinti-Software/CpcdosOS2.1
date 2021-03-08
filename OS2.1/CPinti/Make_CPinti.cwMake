@@ -8,7 +8,7 @@
 -I include/
 -I ../../build/djgpp/include/
 -std=c++11 -m32 
--Og -march=i686
+-O0 -march=i486
 -g3
 
 -Wreturn-type -fexceptions -Werror=return-type 
