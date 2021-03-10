@@ -16,6 +16,12 @@ Platform  | Build Status
  --- | --- 
 Windows | [![Build status](https://ci.appveyor.com/api/projects/status/nfkdxmis9s2s4d4s?svg=true)](https://ci.appveyor.com/project/Maeiky/cpcdosos2-1)
 
+## Comment contribuer
+- Créez un fork du dépôt sur votre compte GitHub.
+- Faites votre contribution tout en testant si cela marche (allez voir le paragraphe sur la compilation ci-dessous).
+- Faites un push de vos modifications sur votre fork.
+- Créez une pull-request via votre fork. AppVeyor fera des tests pour voir si tout va bien. Le propriétaire du dépôt se chargera de vérifier et, si tout va bien, de merge votre contribution dès que possible !
+
 ## Comment compiler
  - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
