@@ -56,7 +56,7 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - D3nX
  - 04Kylian - FireFlyOS
  - Léo ENDOR
- - MrJackieLok_YT - NoobOS
+ - NiceY0mi - NoobOS
  - vip181
 
 [Le reste ici](https://cpcdos.net/fr/contributors)
