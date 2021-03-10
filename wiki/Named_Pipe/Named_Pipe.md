@@ -30,9 +30,9 @@
 ![Serial Port img](4.png)
 
 
-6.- Utiliser un "named pipe", la VM comme serveur, avec une application comme client. Le nom doit obligatoiremnet commencer par **//./pipe/**
+6.- Utiliser un "named pipe", la VM comme serveur, avec une application comme client. Le nom doit obligatoirement commencer par **\.\pipe\**
 
-Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **//./pipe/cwc_pipe**
+Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **\.\pipe\cwc_pipe**
 
 ![Serial Port img](5.png)
 
