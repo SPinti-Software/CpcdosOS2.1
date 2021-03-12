@@ -45,5 +45,8 @@ typedef struct XE_Module{
 	XE_Type_ type;
 	XE_Arch_ arch;
 }XE_Module;
-XE_Module* 
+extern "C" XE_Module* 
 	Xe_Load(const char* _sPath);
+	
+	
+	
