@@ -7,9 +7,9 @@ rem path for vs code compatibilities
 @del ..\bin\ldopt.tmp
 
 rem You can modifiy here your path
-xcopy /E /Y "..\bin" "..\..\VM\Cpcdos OSx-disk1_Mount\CPCDOS"
+xcopy /E /Y "..\bin" "..\..\VM\PUBLIC Cpcdos OSx-disk1_Mount\CPCDOS"
 
-@del "..\..\VM\Cpcdos OSx-disk1_Mount\CPCDOS\*.cwClean"
+@del "..\..\VM\PUBLIC Cpcdos OSx-disk1_Mount\CPCDOS\*.cwClean"
 
 
 echo.

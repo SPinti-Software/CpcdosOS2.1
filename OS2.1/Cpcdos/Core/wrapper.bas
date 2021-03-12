@@ -49,7 +49,7 @@ Public Function cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer)
 	
 	dim as integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip
 	
-	dim Presente as integer = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+	dim Presente as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 			
 	if Presente <> 0 Then
 		Dim Message_erreur as string = ERRAVT("ERR_060", 0)

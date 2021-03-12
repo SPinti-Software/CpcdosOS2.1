@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "08" 
+CONST _VJOUR as string 	= "12" 
 CONST _VMOIS as string 	= "03"
 CONST _VANNEE as string = "2021"
 
@@ -435,8 +435,7 @@ Type __Noyau_Cpcdos_OSx__
 		Thread_BootScreen as uinteger
 		
 		' *** Curseur graphique ***
-		CURSEUR_LOAD_ID			as integer
-		CURSEUR_LOAD_AFFICHER 	as integer = 0
+
 		
 		
 		' *** Si ISR doit etre execute ou non ***

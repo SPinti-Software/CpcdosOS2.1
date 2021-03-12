@@ -404,8 +404,12 @@ Function _SYSTEME_Cpcdos_OSx__.set_Resolution(ModeSCR as integer) as boolean
 			DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution)
 		End if
 		
-		' Masquer le curseur
+		' Masquer le curseur FB
 		Setmouse(0, 0, 0)
+
+		' Et le curseur Custom
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_AFFICHER = false
+		
 		
 		this.ModeResolution = ModeSCR
 		
@@ -494,7 +498,12 @@ Function _SYSTEME_Cpcdos_OSx__.set_Resolution(Res_X as integer, Res_Y as integer
 			End if
 			
 			' Afficher le curseur au centre de l'ecran
-			Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 1)
+			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = true Then
+				Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 1)
+			Else
+				Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 0)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_AFFICHER = true
+			End if
 			
 		else
 			' La resolution ne s'est pas bien appliquee
@@ -672,6 +681,92 @@ Function _SYSTEME_Cpcdos_OSx__.get_FPS(temps_precedent as double, ACU as integer
 		Function = -1 ' Attendre 1 seconde
 	end if
 End function
+
+#print * Gestion souris
+Function _SYSTEME_Cpcdos_OSx__.cpc_GetMouse(byref Pos_X as integer, byref Pos_Y as integer) as integer
+	return cpc_GetMouse(Pos_X, Pos_Y, 0, 0, 0)
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.cpc_GetMouse(byref Pos_X as integer, byref Pos_Y as integer, byref Scroll_Weel as integer, byref TypeClic as integer, byref clip as integer) as integer
+	' Cette fonction permet d'obtenir les informations sur la souris
+
+	If CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = false Then
+		' Custom FB mouse function   -  by Maeiky 10-MAR-2021
+		Dim tmp_Pos_X as integer
+		Dim tmp_Pos_Y as integer
+
+		if GetMouse(tmp_Pos_X, tmp_Pos_Y, Scroll_Weel, TypeClic, clip) = 0 Then
+			' Getting X, Y screen resolution
+			Dim scr_res_X as integer = get_Resolution_X()
+			Dim scr_res_Y as integer = get_Resolution_Y()
+			
+			' Initial mouse position
+			static last_X As double = 400
+			static last_Y As double = 400
+
+			' static speed As double = 10.0
+
+			static diffX As double = 0
+			static diffY As double = 0
+
+			' Speed mouse calc
+			static speed_calcX As double = 0
+			static speed_calcY As double = 0
+			
+			diffX = (tmp_Pos_X - last_X)
+			diffY = (tmp_Pos_Y - last_Y)
+			
+			speed_calcX = Abs(diffX)
+			speed_calcY = Abs(diffY)
+			
+			' Calc X speed
+			speed_calcX = Mouse_inertia_Speed/speed_calcX
+			if speed_calcX < Mouse_max_Speed Then speed_calcX = Mouse_max_Speed
+			if speed_calcX > Mouse_min_Speed Then speed_calcX = Mouse_min_Speed
+			
+			' Calc Y speed
+			speed_calcY = Mouse_inertia_Speed/speed_calcY
+			if speed_calcY < Mouse_max_Speed Then speed_calcY = Mouse_max_Speed
+			if speed_calcY > Mouse_min_Speed Then speed_calcY = Mouse_min_Speed
+			
+			' Calc X position
+			Static pos_mouseX As double = 400
+			pos_mouseX += diffX/(speed_calcX + Mouse_constant_Speed)
+
+			' Calc Y position
+			Static pos_mouseY As double = 400
+			pos_mouseY += diffY/(speed_calcY + Mouse_constant_Speed)
+
+			' Some corrections
+			if pos_mouseX < 0 Then pos_mouseX = 0
+			if pos_mouseY < 0 Then pos_mouseY = 0
+			if pos_mouseX > scr_res_X Then pos_mouseX = scr_res_X
+			if pos_mouseY > scr_res_Y Then pos_mouseY = scr_res_Y
+
+			' Send this!
+			Pos_X = pos_mouseX
+			Pos_Y = pos_mouseY
+
+			' Update mouse position
+			Setmouse(last_X, last_Y, 0)
+
+			return 0 ' ok
+		else
+			return 1 ' nok
+		End if
+
+	Else
+		' Full Freebasic mouse function
+		if GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, clip) = 0 Then
+			return 0 ' ok
+		Else
+			return 1 ' nok
+		End if
+	End if
+End function
+
+	
+
 
 
 #print * Gestion repertoires et fichiers
@@ -1538,6 +1633,4 @@ Function _SYSTEME_Cpcdos_OSx__.getHandleType(Numero_Handle as integer) as String
 	Function = "null"
 End Function
 
-	
-	
 

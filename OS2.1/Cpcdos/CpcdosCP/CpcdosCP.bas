@@ -8860,7 +8860,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			if Param = "" Then
 				IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-					GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 					
 					DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				else
@@ -8894,7 +8894,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				if PosDEFINIR_X > 0 Then
 					
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_X), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8903,7 +8903,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				end if
 				if PosDEFINIR_Y > 0 Then
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_Y), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8937,7 +8937,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				else
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else

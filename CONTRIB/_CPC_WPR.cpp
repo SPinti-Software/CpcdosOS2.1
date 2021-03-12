@@ -100,7 +100,7 @@ namespace Wrapper_Cpcdos
 			case EXE_LOADER:{
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
-				
+
 				fStartExeLoader((const char*) ARG_1);
 				return 1;
 			}
