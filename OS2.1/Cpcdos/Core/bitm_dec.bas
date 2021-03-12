@@ -301,6 +301,22 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
 						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						'  s'occupe d'enlever le rose pour remplacer le role du png
+
+						If dst[0] = 0 THEN
+							If dst[1] = 0 THEN
+								If dst[2] = 0 THEN
+									If dst[3] = 0 THEN
+										dst[0] = 255	' Rouge
+										dst[1] = 0		' Vert
+										dst[2] = 255	' Bleu
+										dst[3] = 0		' Alpha
+										CanalAlphaPresent = 1
+									END IF
+								END IF
+							END IF
+						END IF
+
+
 						If dst[0] = 255 THEN
 							If dst[1] = 255 THEN
 								If dst[2] = 255 THEN
@@ -366,6 +382,20 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
 						' 	R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						' 	s'occupe d'enlever le rose pour remplacer le role du png
+						
+						If TestR = 0 THEN
+							If TestV = 0 THEN
+								If TestB = 0 THEN
+									If TestA = 0 THEN
+										src[i+2] = 255 	' Rouge
+										src[i+1] = 0	' Vert
+										src[i+0] = 255	' Bleu
+										src[i+3] = 255	' Alpha
+									END IF
+								END IF
+							END IF
+						END IF
+
 						If TestR = 255 THEN
 							If TestV = 255 THEN
 								If TestB = 255 THEN
