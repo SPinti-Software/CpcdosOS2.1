@@ -19172,6 +19172,13 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Creer un nouveau processus"
 					Mess_Aide = Mess_Aide & CRLF & "   Ceci va vous permettre d'executer vos threads et votre code"
 					Mess_Aide = Mess_Aide & CRLF & "   dans un autre processus que vous venez de creer."
@@ -19348,6 +19355,13 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Create a new process"
 					Mess_Aide = Mess_Aide & CRLF & "   This will able to host your threads, code in another"
 					Mess_Aide = Mess_Aide & CRLF & "   process that you have created"
@@ -19483,9 +19497,18 @@ _FIN_EXE_CCP_EXE:
 					Next b
 					DEBUG("[KERNEL SHELL] End" , Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
-				
-				
-			
+			End if
+
+			' Charger les proprietes du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-PROPERTIES") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs_properties()
+				exit _scope_CMD, _scope
+			END IF
+
+			' Charger les icones du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-GUI") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs(Auth_OS+1024)
+				exit _scope_CMD, _scope
 			End if
 			
 			IF Instr(UCASE(Param), "/DEBUG") > 0 Then			

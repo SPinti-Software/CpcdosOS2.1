@@ -1,4 +1,121 @@
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.4         *** 
+	***         7 Mars 2021 For public        ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+	
+	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
+		Anciens fichiers prototypes non utilisés (GDT, boot, multicore, network experimentations...) 
 
+	#################
+	#### En bref ####
+	#################
+
+		--> 1	Ajouts de divers fonctionnalités.
+		--> 1	corrections importantes.
+		--> 0	optimisations.
+		--> 1	corrections et modifications mineures.
+
+		--> Gain de stabilité : +0%
+		--> Note de stabilité : 14/20
+
+		--> Gain de performances : +0%
+		--> Note de performances : 13/20
+
+		--> Probabilités de crash
+				Réseau	: 10%
+				SHELL	: 15%
+				GUI		: 20%
+				3D		: 1%
+				I/O		: 10%
+				Win32	: 20%
+				GENERAL	: 30%
+			
+			
+	#############################
+	##### Cpcdos OSx kernel #####
+	#############################
+	
+		[AJOUTS]
+		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
+		
+
+		[CORRECTIONS]
+		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
+		
+		
+		[MODIFICATIONS]
+		- [SCI] Amélioration de la précision du curseur.
+
+
+	#######################
+	##### CPinti Core #####
+	#######################
+	
+			
+		[CORRECTIONS]
+		
+		[AJOUT]
+		
+		
+		[MODIFICATIONS]
+
+
+		
+		
+
+	#######################
+	##### Bugs connus #####
+	#######################
+	
+		0) SOURIS QUI S'AFFOLE : C'est un bug du driver dos qui partage le même buffer. La solution :
+			Re-provoquer l'erreur : En remplissant du buffer en faisant la même chose... mais plus exagéré.
+			--> Sur la GUI de Cpcdos, il faut rester appuyer sur une touche du clavier tel que "S" par exemple, et tenter de caller le mieux possible 
+				la souris en bas a gauche pendant 1 à 3 secondes (ça dépend de la vitesse des timers de machines) , insistez 3, 4 fois et vous retrouvez la souris!
+			
+		1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+		  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+			Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+			!!! Cette limitation pour le développement est temporaire!!!
+			
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant est de libérer manuellement 
+		  	les ressources utilisées via la commande FIX/ ou SET/. Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" 
+			  à la fin de votre programme pour supprimer manuellement la variable et ses données en memoire.
+			
+		2) Entracelage PNG non supporté.
+			
+		3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+			v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+			fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+			
+			Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+			votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+			jamais en veille/Mode economie.
+			
+			La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+		
+			
+		4) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+			utilisés en haut de la console.
+		
+		5) Plantage du systeme au changement de bit de couleurs en console avec un OS ayant 1 fenêtre ou plus.
+		
+		6) Plantage du système si l'utilisateur exécute une instance d'OpenGL / GZE en 16 ou 24 bits.
+			TEMPORAIREMENT, il faut impérativement utiliser le 32 bits de couleurs en cas de rendu 3D.
+			Ceci est causé par le blittage RGBA du buffer provenant du moteur qu'il faut convertir a chaud
+			si ce dernier ne crée par de buffer 16 ou 24 bits.
+
+		7) Freeze avec une image rectangulaire au niveau du curseur lors du retour sur la GUI.
+		
+		8) Satistiques du trafic réseau non actualisées
+		
+		9) Quelques bugs d'exécution des commandes copier/, supprimer/, renommer/, dossier/
+		
+		10) L'ecriture d'une machine a Cpcdos en debug RS232 (Port com) ne fonctionne qu'en lecture
+			SYS/ /DEBUG /COM1 = 2
+
+
+-----------------------------------------------------------------------------------------------------------	
 
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.4         *** 

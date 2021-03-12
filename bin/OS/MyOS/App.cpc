@@ -205,19 +205,38 @@ Fin/ checkBox
 
 
 Textbox/ MonTexteBox
-	.handle			= "%handle_fenetre%"
-	.parametres             = "EDIT:1 MULTILINE:1 COL:1"
-	.PX                     = "150"
-	.PY                     = "150"
-	.TX                     = "200"
-	.TY                     = "60"
-	.CouleurFond            = "255,255,255"
-	.CouleurTexte           = "050,100,250"
-	.texte                  = "Multiligne TEST"
+	.handle				= "%handle_fenetre%"
+	.parametres			= "EDIT:1 MULTILINE:1 COL:1"
+	.PX					= "150"
+	.PY					= "150"
+	.TX					= "200"
+	.TY					= "60"
+	.CouleurFond		= "255,255,255"
+	.CouleurTexte		= "050,100,250"
+	.texte				= "Multiligne TEST"
 	Creer/
 Fin/ Textebox
 
+button/ btn_cursor_config
+	.Handle		= "%Handle_Fenetre%"
+	.parameters	= "IMGAUTO:2"
+	.PX		    = "200"
+	.PY		    = "10"
+	.sx		    = "110"
+	.sy		    = "24"
+	.opacity	= "255"
+    .text		= "Cursor config"
+	.Image		= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.event		= "%_EXE_PATH_%"
+	create/
+end/ button
 
+
+function/ btn_cursor_config.MouseClick()
+
+	exe/ & tests/cursor.cpc
+
+end/ function
 
 
 
