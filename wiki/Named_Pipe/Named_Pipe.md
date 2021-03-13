@@ -66,6 +66,6 @@ Ceci active et redirige le debug vers le COM1
 
 * S'il y a cette erreur, c'est probablement que vous devez executer la VM en admin:
 
-
+![Error Admin](err_admin.png)
 
 3. Le message suivant devrait s'afficher lors de la connection
