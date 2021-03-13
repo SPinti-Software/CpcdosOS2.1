@@ -55,7 +55,9 @@ Ceci active et redirige le debug vers le **COM1**
 > À noter que cette ligne 'SYS/ /DEBUG /COM1 = 2' peut ralentir l'OS, car les trames ont un délai d'envoie 
 > 
 > (Solution possible: filtrer vos messages)
-
+ 
+ ***
+ 
 ### Activer le pipe sous CWC
 
 1. Lancer CWC
