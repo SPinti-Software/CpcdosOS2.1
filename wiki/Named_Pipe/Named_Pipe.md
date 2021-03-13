@@ -85,4 +85,9 @@ Ceci active et redirige le debug vers le **COM1**
 call gdb -ex run --args cpcldr "%1" "%2" "%3" "%4" "%5" 2> COM1 > COM1
 ```
 
+3. Ce qui donne ceci:
 
+![Output](8.png)
+
+
+##### Have fun!
