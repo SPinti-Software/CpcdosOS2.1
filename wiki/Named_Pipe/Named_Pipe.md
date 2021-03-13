@@ -37,3 +37,15 @@ Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **\\\\.\pipe\cwc_pipe**
 ![Serial Port img](5.png)
 
 7. Voilà, valider les changement et le port de communication est prêt!
+
+
+### Rediriger le output de CpcDos
+
+1. Executé les commande suivante
+
+```
+SYS/ /DEBUG /COM /INIT
+SYS/ /DEBUG = 1
+SYS/ /DEBUG /CPINTICORE = 1
+SYS/ /DEBUG /COM1 = 2
+```
