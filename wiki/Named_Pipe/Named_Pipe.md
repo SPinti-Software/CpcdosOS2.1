@@ -70,6 +70,10 @@ Ceci active et redirige le debug vers le **COM1**
 
 3. Maintenant tout les information debug devrait s'afficher:
 
-![Output](6.png)
+![Output](7.png)
 
+
+### Rediriger le **stdout** du **SDK**
+
+1. Le **stdout** est gérer directement via le DOS. Il faut l'activé avec une redirection "**> COM1**"
 
