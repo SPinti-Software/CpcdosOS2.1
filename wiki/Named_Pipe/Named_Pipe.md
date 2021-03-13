@@ -82,7 +82,7 @@ Ceci active et redirige le debug vers le **COM1**
 * Dans "CPCDOS/DRIVERS/DOS/EXEC.BAT" il est possible d'ajouté ceci, à la fin du fichier pour charger automatiquemnt gdb vers le COM1:
 
 ```
-call gdb -ex run --args cpcldr "%1" "%2" "%3" "%4" "%5" 2> COM1 > COM1
+call gdb -ex run --args cpcldr "%1" "%2" "%3" "%4" "%5" > COM1
 ```
 
 3. Ce qui donne ceci:
