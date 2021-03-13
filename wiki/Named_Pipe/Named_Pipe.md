@@ -72,7 +72,7 @@ Ceci active et redirige le debug vers le **COM1**
 
 ![Serial Port img](6.png)
 
-3.Vérifier que le message "_Pipe cwc_pipe connected_" apparaît
+3. Vérifier que le message "_Pipe cwc_pipe connected_" apparaît
 
 * S'il ne s'affiche pas et qu'il n'y a pas d'erreur c'est probablement que le port est déjà utilisé, ou bien mal configuré
 
@@ -80,7 +80,7 @@ Ceci active et redirige le debug vers le **COM1**
 
 ![Error Admin](err_admin.png)
 
-3. Maintenant tout les information debug devrait s'afficher:
+4. Maintenant tout les information debug devrait s'afficher:
 
 ![Output](7.png)
 
