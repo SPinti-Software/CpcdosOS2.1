@@ -76,6 +76,7 @@ Ceci active et redirige le debug vers le **COM1**
 
 ![Output](7.png)
 
+***
 
 ### Rediriger le **stdout** du **SDK**
 
