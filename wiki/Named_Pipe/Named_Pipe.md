@@ -95,6 +95,6 @@ call gdb -ex run --args cpcldr "%1" "%2" "%3" "%4" "%5" > COM1
 
 ***
 
-#### Have fun!
+### Have fun!
 
 ***
