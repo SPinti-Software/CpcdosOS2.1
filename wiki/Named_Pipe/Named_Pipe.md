@@ -81,7 +81,7 @@ Ceci active et redirige le debug vers le **COM1**
 
 1. Le **stdout** est gérer directement via **DOS**. Il faut l'activé avec une redirection "**> COM1**"
 
-2. Avec le **SDK** il est fortement conseiller de le charger avec GDB pour un meilleurs contrôle et débogueur:
+2. Pour le **SDK**, il est fortement conseillé de le charger avec GDB pour un meilleurs contrôle et débogueur:
 
 * Dans "CPCDOS/DRIVERS/DOS/EXEC.BAT" il est possible d'ajouter ceci, à la fin du fichier pour charger automatiquement gdb vers le COM1:
 
