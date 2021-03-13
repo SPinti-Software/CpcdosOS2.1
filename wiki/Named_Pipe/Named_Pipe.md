@@ -50,7 +50,7 @@ SYS/ /DEBUG = 1
 SYS/ /DEBUG /CPINTICORE = 1
 SYS/ /DEBUG /COM1 = 2
 ```
-Ceci active et redirige le debug vers le COM1
+Ceci active et redirige le debug vers le **COM1**
 
 ### Activer le pipe sous CWC
 
@@ -68,4 +68,8 @@ Ceci active et redirige le debug vers le COM1
 
 ![Error Admin](err_admin.png)
 
-3. Le message suivant devrait s'afficher lors de la connection
+3. Maintenant tout les information debug devrait s'afficher:
+
+![Output](6.png)
+
+
