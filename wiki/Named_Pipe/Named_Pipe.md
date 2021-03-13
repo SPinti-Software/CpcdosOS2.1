@@ -79,7 +79,7 @@ Ceci active et redirige le debug vers le **COM1**
 
 ### Rediriger le **stdout** du **SDK**
 
-1. Le **stdout** est gérer directement via le DOS. Il faut l'activé avec une redirection "**> COM1**"
+1. Le **stdout** est gérer directement via le **DOS**. Il faut l'activé avec une redirection "**> COM1**"
 
 2. Avec le **SDK** il est fortement conseiller de le charger avec GDB pour un meilleurs contrôle et débogueur:
 
