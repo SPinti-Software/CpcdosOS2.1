@@ -41,7 +41,8 @@ Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **\\\\.\pipe\cwc_pipe**
 
 ### Rediriger le output de CpcDos
 
-1. Lancer la VM et dans la console CpcDos, executer les commandes suivantes:
+1. Lancer la VM 
+2. Dans la console CpcDos, executer les commandes suivantes:
 
 ```
 SYS/ /DEBUG /COM /INIT
@@ -50,3 +51,11 @@ SYS/ /DEBUG /CPINTICORE = 1
 SYS/ /DEBUG /COM1 = 2
 ```
 Ceci active et redirige le debug vers le COM1
+
+### Activer le pipe sous CWC
+
+1. Lancer CWC
+
+2. Executer la commande "-p" (le 'Named pipe' par défaut est **cwc_pipe**)
+
+3. Le message suivant devrait s'afficher lors de la connection
