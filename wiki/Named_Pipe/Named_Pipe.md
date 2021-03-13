@@ -41,7 +41,7 @@ Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **\\\\.\pipe\cwc_pipe**
 
 ### Rediriger le output de CpcDos
 
-1. Executer les commandes suivantes:
+1. Lancer la VM et dans la console CpcDos, executer les commandes suivantes:
 
 ```
 SYS/ /DEBUG /COM /INIT
