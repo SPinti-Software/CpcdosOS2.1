@@ -58,4 +58,14 @@ Ceci active et redirige le debug vers le COM1
 
 2. Executer la commande "-p" (le 'Named pipe' par défaut est **cwc_pipe**)
 
+![Serial Port img](6.png)
+
+3.Vérifier que le message "_Pipe cwc_pipe connected_" apparait
+
+* S'il ne s'affiche pas et qu'il n'y a pas d'erreur c'est probablement que le port est déjà utilisé, ou bien mal configuré
+
+* S'il y a cette erreur, c'est probablement que vous devez executer la VM en admin:
+
+
+
 3. Le message suivant devrait s'afficher lors de la connection
