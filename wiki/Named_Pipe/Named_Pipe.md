@@ -60,7 +60,7 @@ Ceci active et redirige le debug vers le **COM1**
  
 ### Activer le pipe sous CWC
 
-1. Lancer CWC
+1. Lancer [CWC](https://github.com/VLiance/Cwc)
 
 2. Executer la commande "-p" (le 'Named pipe' par défaut est **cwc_pipe**)
 
