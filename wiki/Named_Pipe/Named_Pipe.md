@@ -8,7 +8,7 @@
 
 ***
 
-1.-Lancer le .ova avec [VM-Viewer](https://github.com/VLiance/VW_Viewer)
+1.-Lancer le [.ova](https://cpcdos.net/fr/download) avec [VM-Viewer](https://github.com/VLiance/VW_Viewer)
 
 2.-Ouvrir la librairie
 
