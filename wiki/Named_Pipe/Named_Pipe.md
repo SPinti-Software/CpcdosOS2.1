@@ -10,7 +10,7 @@
 
 1.-Lancer le .ova avec VM-Viewer
 
-2.-Ouvrir la librarie
+2.-Ouvrir la librairie
 
 ![Library img](1.png)
 
@@ -36,13 +36,13 @@ Ici, on va utiliser le nom "cwc_pipe", ce qui donne: **\\\\.\pipe\cwc_pipe**
 
 ![Serial Port img](5.png)
 
-7. Voilà, valider les changement et le port de communication est prêt!
+7. Voilà, valider les changements et le port de communication est prêt!
 
 
 ### Rediriger le output de CpcDos
 
 1. Lancer la VM 
-2. Dans la console CpcDos, executer les commandes suivantes:
+2. Dans la console CpcDos, exécuter les commandes suivantes:
 
 ```
 SYS/ /DEBUG /COM /INIT
@@ -52,7 +52,7 @@ SYS/ /DEBUG /COM1 = 2
 ```
 Ceci active et redirige le debug vers le **COM1**
 
-> À note que cette ligne 'SYS/ /DEBUG /COM1 = 2' peux ralentir l'OS car les trames on un délai d'envoie 
+> À noter que cette ligne 'SYS/ /DEBUG /COM1 = 2' peut ralentir l'OS, car les trames ont un délai d'envoie 
 > 
 > (Solution possible: filtrer vos messages)
 
@@ -64,11 +64,11 @@ Ceci active et redirige le debug vers le **COM1**
 
 ![Serial Port img](6.png)
 
-3.Vérifier que le message "_Pipe cwc_pipe connected_" apparait
+3.Vérifier que le message "_Pipe cwc_pipe connected_" apparaît
 
 * S'il ne s'affiche pas et qu'il n'y a pas d'erreur c'est probablement que le port est déjà utilisé, ou bien mal configuré
 
-* S'il y a cette erreur, c'est probablement que vous devez executer la VM en admin:
+* S'il y a cette erreur, c'est probablement que vous devez exécuter la VM en admin:
 
 ![Error Admin](err_admin.png)
 
@@ -81,15 +81,15 @@ Ceci active et redirige le debug vers le **COM1**
 
 1. Le **stdout** est gérer directement via le DOS. Il faut l'activé avec une redirection "**> COM1**"
 
-2. Avec le **SDK** il est fortement conseiller de le charger avec GDB pour un meilleurs controle et deboggeur:
+2. Avec le **SDK** il est fortement conseiller de le charger avec GDB pour un meilleurs contrôle et débogueur:
 
-* Dans "CPCDOS/DRIVERS/DOS/EXEC.BAT" il est possible d'ajouté ceci, à la fin du fichier pour charger automatiquemnt gdb vers le COM1:
+* Dans "CPCDOS/DRIVERS/DOS/EXEC.BAT" il est possible d'ajouter ceci, à la fin du fichier pour charger automatiquement gdb vers le COM1:
 
 ```
 call gdb -ex run --args cpcldr "%1" "%2" "%3" "%4" "%5" > COM1
 ```
 
-3. Ce qui donne ceci:
+3. Ce qui donne:
 
 ![Output](8.png)
 
