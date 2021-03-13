@@ -52,7 +52,9 @@ SYS/ /DEBUG /COM1 = 2
 ```
 Ceci active et redirige le debug vers le **COM1**
 
-> À note que cette ligne 'SYS/ /DEBUG /COM1 = 2' peux ralentir l'OS car les trames on un délai d'envoie (Solution possible: filtrer vos messages)
+> À note que cette ligne 'SYS/ /DEBUG /COM1 = 2' peux ralentir l'OS car les trames on un délai d'envoie 
+> 
+> (Solution possible: filtrer vos messages)
 
 ### Activer le pipe sous CWC
 
