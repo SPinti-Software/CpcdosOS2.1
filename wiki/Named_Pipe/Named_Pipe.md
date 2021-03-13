@@ -49,3 +49,4 @@ SYS/ /DEBUG = 1
 SYS/ /DEBUG /CPINTICORE = 1
 SYS/ /DEBUG /COM1 = 2
 ```
+Ceci active et redirige le debug vers le COM1
