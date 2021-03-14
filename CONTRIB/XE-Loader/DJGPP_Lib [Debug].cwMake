@@ -8,7 +8,7 @@
 >
 -c {pXE}/src/ -o obj/DJ_{_sOpt}/
 
-	-DImWin -DUseWinFunc -DWinLastError -I ./ -I {pXE}/src/ 
+	-DImWin -DUseWinFunc -DWinLastError -I XE_override/ -I {pXE}/src/
 	-DD_MemoryCheck
 	-DD_REDIRECT_STDERR
 	-Werror=implicit-function-declaration
