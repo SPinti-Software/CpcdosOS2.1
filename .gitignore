@@ -3,7 +3,7 @@ CPCLDR.EXE
 
 # Object file 
 *.o 
-*.a 
+
 *.obj 
 
 # Transpilled files
