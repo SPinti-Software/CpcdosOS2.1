@@ -1,0 +1,227 @@
+window/ Ma_Fenetre
+	.title 		    = "Cursor configuration"
+	.px		        = "80"
+	.py		        = "100"
+	.sx		        = "300"
+	.sy		        = "200"
+	.opacity 	    = "255"
+	.parameters	    = "RESIZE:0"
+	.Windowcolor	= "050,050,250"
+	.Titlecolor	    = "255,255,255"
+	.backcolor	    = "230,230,255"
+	.event		    = ""
+	@#window_handle create/
+end/ window
+
+// -------------- PATH --------------
+
+textblock/ txt_path
+    .handle         = "%window_handle%"
+    .parameters     = "COL:0"
+    .px             = "10"
+    .py             = "10"
+    .tx             = "80"
+    .ty             = "12"
+    .text           = "Icon path"
+    .backcolor      = "230,230,255"
+    .TextColor      = "000,000,000"
+    create/
+end/ textblock
+
+textbox/ txtb_img
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "20"
+    .py             = "26"
+    .tx             = "250"
+    .ty             = "16"
+    .text           = "%CPC_GUI.CURSOR_IMG%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+// -------------- LOAD PATH --------------
+
+textblock/ txt_load_path
+    .handle         = "%window_handle%"
+    .parameters     = "COL:0"
+    .px             = "10"
+    .py             = "40"
+    .tx             = "80"
+    .ty             = "12"
+    .text           = "Icon load path"
+    .backcolor      = "230,230,255"
+    .TextColor      = "000,000,000"
+    create/
+end/ textblock
+
+textbox/ txtb_load_img
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "20"
+    .py             = "56"
+    .tx             = "250"
+    .ty             = "16"
+    .text           = "%CPC_GUI.LOAD_IMG%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+// -------------- SPEED --------------
+
+textblock/ txt_speed
+    .handle         = "%window_handle%"
+    .parameters     = "COL:0"
+    .px             = "10"
+    .py             = "70"
+    .tx             = "150"
+    .ty             = "12"
+    .text           = "Speed MAX       MIN"
+    .backcolor      = "230,230,255"
+    .TextColor      = "000,000,000"
+    create/
+end/ textblock
+
+textbox/ txtb_speed_min
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "20"
+    .py             = "86"
+    .tx             = "45"
+    .ty             = "16"
+    .text           = "%CPC_GUI.CURSOR_MAX_SPEED%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+textbox/ txtb_speed_max
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "116"
+    .py             = "86"
+    .tx             = "45"
+    .ty             = "16"
+    .text           = "%CPC_GUI.CURSOR_MIN_SPEED%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+// -------------- INCERTIAL --------------
+
+textblock/ txt_inertial
+    .handle         = "%window_handle%"
+    .parameters     = "COL:0"
+    .px             = "10"
+    .py             = "100"
+    .tx             = "230"
+    .ty             = "12"
+    .text           = "Inertial SPEED  CONSTANT"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+end/ textblock
+
+textbox/ txtb_inertial_speed
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "20"
+    .py             = "116"
+    .tx             = "45"
+    .ty             = "16"
+    .text           = "%CPC_GUI.CURSOR_INERTIA_SPEED%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+textbox/ txtb_intertial_const
+    .handle         = "%window_handle%"
+    .parameters     = "EDIT:1 MULTILINES:0 COL:1"
+    .px             = "150"
+    .py             = "116"
+    .tx             = "45"
+    .ty             = "16"
+    .text           = "%CPC_GUI.CURSOR_CONSTANT_SPEED%"
+    .backcolor      = "255,255,255"
+    .TextColor      = "000,000,000"
+    create/
+textbox/
+
+
+
+bouton/ btn_apply
+	.Handle		= "%window_handle%"
+	.Parametres	= "IMGAUTO:2"
+	.PX		    = "10"
+	.PY		    = "170"
+	.tx		    = "100"
+	.ty		    = "24"
+	.opacite	= "255"
+    .texte		= "Apply"
+	.Image		= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.evenement	= "%_EXE_PATH_%"
+	creer/
+Fin/ Bouton
+
+Fonction/ btn_apply.MouseClick()
+
+
+    sys/ /debug = 2
+
+    // Icon path
+    textbox/ /modif:txtb_img
+        @#CURSOR_IMG  .text
+    end/ textbox
+    set/ CPC_GUI.CURSOR_IMG = %CURSOR_IMG%
+
+    textbox/ /modif:txtb_load_img
+        @#LOAD_IMG  .text
+    end/ textbox
+    set/ CPC_GUI.LOAD_IMG = %LOAD_IMG%
+
+    // MIN speed
+    textbox/ /modif:txtb_speed_min
+        @#CURSOR_MIN_SPEED  .text
+    end/ textbox
+    set/ CPC_GUI.CURSOR_MIN_SPEED = %CURSOR_MIN_SPEED%
+
+    // MAX speed
+    textbox/ /modif:txtb_speed_max
+        @#CURSOR_MAX_SPEED  .text
+    end/ textbox
+    set/ CPC_GUI.CURSOR_MAX_SPEED = %CURSOR_MAX_SPEED%
+
+    textbox/ /modif:txtb_inertial_speed
+        @#CURSOR_INERTIA_SPEED  .text
+    end/ textbox
+    set/ CPC_GUI.CURSOR_INERTIA_SPEED = %CURSOR_INERTIA_SPEED%
+
+    textbox/ /modif:txtb_intertial_const
+        @#CURSOR_CONSTANT_SPEED  .text
+    end/ textbox
+    set/ CPC_GUI.CURSOR_CONSTANT_SPEED = %CURSOR_CONSTANT_SPEED%
+
+    // Load values properties
+    sys/ /load-cursor-properties
+
+    // Load graphics
+    sys/ /load-cursor-gui
+
+    sys/ /debug = 0
+
+Fin/ Fonction
+
+
+
+
+
+
+
+
+
+
+

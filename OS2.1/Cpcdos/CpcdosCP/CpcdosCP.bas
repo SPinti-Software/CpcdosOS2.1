@@ -8860,7 +8860,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			if Param = "" Then
 				IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-					GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 					
 					DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				else
@@ -8894,7 +8894,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				if PosDEFINIR_X > 0 Then
 					
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_X), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8903,7 +8903,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				end if
 				if PosDEFINIR_Y > 0 Then
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_Y), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8937,7 +8937,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				else
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -19172,6 +19172,13 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Creer un nouveau processus"
 					Mess_Aide = Mess_Aide & CRLF & "   Ceci va vous permettre d'executer vos threads et votre code"
 					Mess_Aide = Mess_Aide & CRLF & "   dans un autre processus que vous venez de creer."
@@ -19348,6 +19355,13 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Create a new process"
 					Mess_Aide = Mess_Aide & CRLF & "   This will able to host your threads, code in another"
 					Mess_Aide = Mess_Aide & CRLF & "   process that you have created"
@@ -19483,9 +19497,18 @@ _FIN_EXE_CCP_EXE:
 					Next b
 					DEBUG("[KERNEL SHELL] End" , Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
-				
-				
-			
+			End if
+
+			' Charger les proprietes du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-PROPERTIES") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs_properties()
+				exit _scope_CMD, _scope
+			END IF
+
+			' Charger les icones du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-GUI") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs(Auth_OS+1024)
+				exit _scope_CMD, _scope
 			End if
 			
 			IF Instr(UCASE(Param), "/DEBUG") > 0 Then			

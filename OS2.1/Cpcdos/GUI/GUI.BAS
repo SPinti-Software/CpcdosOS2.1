@@ -77,6 +77,8 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String
 		charger_Fond(var_SCR_IMG, tmpTID+1024)
 		
 		
+		charger_Curseurs_properties()
+		
 		charger_Curseurs(tmpTID+1024)
 
 		' L'afficher sur l'ecran
@@ -1812,7 +1814,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						' doevents(0)
 
 						' Si l'utilisateur a encore le bouton presse = deplacement
-						Presente = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						IF TypeClic = 1 Then ' Clic gauche
 							this.INST_INIT_GUI.DEPLACEMENT = _INDEX_FENETRE_

@@ -12,12 +12,12 @@
 	  http://cpcdos.fr.nf/
 	  
  Condition :
-	Ce fichier réservé uniquement aux adhérants du developpement C/C++ 
+	Ce fichier rÃ©servÃ© uniquement aux adhÃ©rants du developpement C/C++ 
 	du noyau. Pour toutes questions : sebastien.ordinateur@hotmail.fr
 
  Description :
 	Wrapper du noyau Cpcdos & CPinti Core pour la programmation 
-	C/C++ de modules externe. Ceci va permettre aux adhérants de créer 
+	C/C++ de modules externe. Ceci va permettre aux adhÃ©rants de crÃ©er 
 	des fonctions native pour cpcdos. Il s'agit du wrapper qui permet
 	l'execution de vos fonction C/C++ externe.
 	

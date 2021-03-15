@@ -66,7 +66,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Support deboggage COM  [OK]
 '	- GUI : Ajouter .icone, .imgtitre et .image dans les commandes CCP [OK]
 '	- Ajouter modification des proprietes graphiques  [OK]
-'	- CORRIGER: quand la GUI est chargé avec 16 bits et qu'on refait IUG/ mais 
+'	- CORRIGER: quand la GUI est chargï¿½ avec 16 bits et qu'on refait IUG/ mais 
 '		avec 32 bits, le rechargement n'est pas pris en compte. (ou 24 et vis versa) [OK]
 '	- #Recherche en mode standard un peut encombrant avec le debug [OK]
 '	- exec_wrp.cpp lgn 580 ajouter USERid et OSid pour l'ajouter dans le thread
@@ -109,7 +109,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Serveur TCP par defaut est echo, il doit etre en passif [OK]
 '	- Corriger le client TCP (non HTTP) [OK]
 '	- Corriger crash si Open/ file sans nom de fichier [OK]
-'	- Corriger Dernier caractere liste OS OS.LST mange (Bug trouvé par Caillou15) [Pas trouve de bug..]
+'	- Corriger Dernier caractere liste OS OS.LST mange (Bug trouvï¿½ par Caillou15) [Pas trouve de bug..]
 '	- Actualisation Date, CPU etc... [OK] --> UPD:1 et ${}
 '	- Lecture Ligne par Ligne [OK] -> Demande par Meaxy
 '	- Corrgier bugs UPD:1 et GUI refresh (Chrapati + Meaxy) [OK]
@@ -121,7 +121,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '   - Pression touches F1, F2, F3... [OK]
 '   - Ajouter le set/ variable++ [OK]
 ' 	- Bouton flat style [OK]
-'	- Bootscreen ajouter parametre degradé [OK]
+'	- Bootscreen ajouter parametre degradï¿½ [OK]
 ' 	- Corriger ccp/ /optimisation = 1 [OK]
 '	- Ajouter positionnement + get curseur GUI [OK]
 '	- Ajouter SIZ:0 SIZBTN:0 REDUC:0 [OK]
@@ -130,7 +130,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Corriger -1 textbox [OK]
 ' 	- Download progress (comme copy/) [OK]
 ' 	- Crash cpcdosCP.bas:17510 lors de l'arret sur ElieOS (boucle fenetre) [OK]
-' 	- Voir capture et debug Meaxy plantage ligne 660 memoire source = 0 PNG non chargé mais continue [OK]
+' 	- Voir capture et debug Meaxy plantage ligne 660 memoire source = 0 PNG non chargï¿½ mais continue [OK]
 '	- Plantage system.bas:729 Creer repertoire() [OK]
 '	- Lenteur + retard de l'input au clavier textbox [OK]
 '	- Ajouter objet CONSOLE	 [OK]
@@ -148,7 +148,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Integrer toutes les variables STD::STRING --> Directement en argument. Gagne +memoire [OK]
 
 ' =-=-=-=-=-=-= A FAIRE =-=-=-=-=-=
-'	- CRASH telechargement fichier avec un à ou bug avec les % %
+'	- CRASH telechargement fichier avec un ï¿½ ou bug avec les % %
 '	- OPTIMISATION : Re-indexer le nombre maximum des variables 1, 2, 3, 4 et 5 (INDEX_Max[])
 '	- 				Suppression tableaux
 '	- Supprimer variable correspondant au thread ferme
@@ -160,7 +160,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Evenement a la volee
 '	- Rendre possible la copie de dossiers
 '	- Modifier le timing de la barre clignotante du textebox
-' 	- Ajouter le systeme du On ERROR sur les handelers qui ferme le thread qui a planté au lieu de planter le noyau completement.
+' 	- Ajouter le systeme du On ERROR sur les handelers qui ferme le thread qui a plantï¿½ au lieu de planter le noyau completement.
 '	- Commande suppression en securite fichier
 '		+ IDEM mais pour DOSSIERS
 '	- Bouton Agrandissement, et reduction des fenetres
@@ -181,7 +181,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 
 '	- Optimiser 'CCP_Function' en cherchant les CPC.xxx en avance pour la prochaine Update.
 '	- Faire sorte a ce que les fonctions ont chacun un pointeur memoire
-' 	- Finir pré-compilateur CpcdosC+ (Label:OK, Fonction:ATTENTE)
+' 	- Finir prï¿½-compilateur CpcdosC+ (Label:OK, Fonction:ATTENTE)
 '	- Ajouter le style de case / switch en cpcdosc+
 '   - corriger PNG bit couleurs
 '	- Perfectionner l'activite reseau pour stabiliser le systeme SERVEUR et CLIENT
@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "08" 
+CONST _VJOUR as string 	= "12" 
 CONST _VMOIS as string 	= "03"
 CONST _VANNEE as string = "2021"
 
@@ -231,8 +231,8 @@ CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/E
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
-CONST _VERSION_MINEUR 	as string = "beta 1.4"
-CONST _VER_NET_MINEUR 	as string = "BETA1.4"
+CONST _VERSION_MINEUR 	as string = "beta 1.5"
+CONST _VER_NET_MINEUR 	as string = "BETA1.5"
 CONST _VERSION_CCP 		as string = "3.0"
 CONST _VERSION_SCI 		as string = "3.0"
 CONST _VERSION_CONSOLE	as string = "3.0"
@@ -435,8 +435,7 @@ Type __Noyau_Cpcdos_OSx__
 		Thread_BootScreen as uinteger
 		
 		' *** Curseur graphique ***
-		CURSEUR_LOAD_ID			as integer
-		CURSEUR_LOAD_AFFICHER 	as integer = 0
+
 		
 		
 		' *** Si ISR doit etre execute ou non ***
@@ -628,7 +627,7 @@ CONST _ABOUT as String = "co-kernel " & (CHR(65+var_) & CHR(110+var_) & CHR(97+v
 							" et ses contributeurs d'Ultima Test." & CHR(13) & _
 							"Un grand remerciement a Mickael BANVILLE pour sa contribution SDK des modules WIN32, 3D OpenGL/GZE Engine, LLVM." & CHR(13) & _
 							"Ainsi qu'a Timothee LUSSIAUD, Esteban CADIC, Leo ENDOR, Leo VACHET et Johann GRAF. Et a la communaute" & CHR(13) & _
-							"  Copyright©" & CHR(65+var_) & CHR(78+var_) & "inti Software"
+							"  Copyrightï¿½" & CHR(65+var_) & CHR(78+var_) & "inti Software"
 Declare Sub intro()
 Declare function	__CPCDOS_INIT_2 cdecl 	Alias "__CPCDOS_INIT_2"		(a as integer) as integer
 Declare Function 	THREAD__GetTouche 		Alias "THREAD__GetTouche"	(ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer

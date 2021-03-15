@@ -591,6 +591,25 @@ Type _SYSTEME_Cpcdos_OSx__
 		' Ignorer les lecteurs de disquettes trop lente
 		Ignore_FLOPPY_A				as boolean = true
 		Ignore_FLOPPY_B				as boolean = true
+
+		' Curseur graphique
+
+		CURSEUR_ID					as integer
+		CURSEUR_AFFICHER			as boolean = false ' Afficher le curseur ou non
+		
+		CURSEUR_LOAD_ID				as integer
+		CURSEUR_LOAD_AFFICHER_STACK as integer = 0 		' Nombre de stack operant un temps de chargement long
+		CURSEUR_LOAD_POS_X			as integer = 14 	' Espacement X par rapport au curseur
+		CURSEUR_LOAD_POS_Y			as integer = 0 		' Espacement Y
+
+		Mouse_Pos_X					as integer 	= 0
+		Mouse_Pos_Y					as integer 	= 0
+		Mouse_max_Speed				as double 	= 0.02
+		Mouse_min_Speed 			As double 	= 10.0
+		Mouse_inertia_Speed 		As double 	= 300.0
+		Mouse_constant_Speed 		As double 	= 8.0
+
+		UseFB_Mouse					as boolean = false
 		
 		Declare Function get_cpu_pourcent() as uinteger
 		
@@ -656,8 +675,11 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function get_Resolution_X		()														as Integer
 		Declare Function get_Resolution_Y		()														as Integer
 		Declare Function get_BitsparPixels		() 														as Integer
-		Declare Function get_BitsparPixels		(compatibilite_24to32_ as boolean)							as Integer
+		Declare Function get_BitsparPixels		(compatibilite_24to32_ as boolean)						as Integer
 		Declare Function get_OctetsParPixels	() 														as Integer
+
+		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer) 		as integer
+		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer, byref Scroll_Weel as integer, byref TypeClic as integer, byref clip as integer) as integer
 		
 		' **** Fichiers images ****
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
@@ -698,6 +720,8 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean) 																	as boolean
 
 		Declare Function getHandleType			(byval NumeroHandle as integer) 																						as String
+		
+		
 
 		Declare Constructor()
 		Declare Destructor()

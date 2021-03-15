@@ -824,8 +824,9 @@ Type _SCI_Cpcdos_OSx__
 		' *** SCI ***
 		Declare Function Initialiser_ECRAN			(Resolution as String, Bits as integer) 					as integer
 		Declare Function Initialiser_ECRAN			(Res_X as integer, Res_Y as integer, Bits as integer) 		as integer
-		Declare Function charger_Curseurs			(Handle as integer) as integer
-		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 											as integer
+		Declare Function charger_Curseurs_properties() 															as boolean
+		Declare Function charger_Curseurs			(Handle as integer) 										as integer
+		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 						as integer
 		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer) 						as boolean
 		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string
