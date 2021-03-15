@@ -88,5 +88,12 @@ typedef struct XE_Module{
 	XE_Type_ type;
 	XE_Arch_ arch;
 }XE_Module;
+
+//////////////
+//////////////
 export XE_Module* 
 	Xe_Load(const char* _sPath);
+export int 
+	Xe_ExecuteMain(XE_Module* _module);
+//////////////
+//////////////
