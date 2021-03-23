@@ -34,6 +34,7 @@
 
 #define VirtualLoadPE
 
+#define USE_Direct_Mapping
 
 //Use the Windows Standard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
 //#define USE_Windows_LoadLibrary
