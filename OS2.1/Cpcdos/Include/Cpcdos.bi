@@ -199,7 +199,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Ajouter centrage, position defaut, agrandi et plein ecran fenetre
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
-'	- Problème actualisation horloge (doublure en Y)
+'	- Problï¿½me actualisation horloge (doublure en Y)
 
 
 '
@@ -231,6 +231,7 @@ CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/E
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
+CONST _VERSION_ETAT		as string = "HotRelease"
 CONST _VERSION_MINEUR 	as string = "beta 1.5"
 CONST _VER_NET_MINEUR 	as string = "BETA1.5"
 CONST _VERSION_CCP 		as string = "3.0"

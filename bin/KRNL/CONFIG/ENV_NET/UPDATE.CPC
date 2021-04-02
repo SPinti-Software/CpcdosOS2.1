@@ -1,7 +1,0 @@
-// USER
-CCP/ /SET.LEVEL = 4
-
-// [FR] Serveur de depot officiel
-// [EN] Official deposit server
-set/ CPC_SYS.NET.UPDATE.SERVER = deposit.cpcdos.net
-

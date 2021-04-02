@@ -1,8 +1,0 @@
-// [FR] Cette fonction va permettre de declarer les variables d'environnement 
-// [EN] This function allow to declare !!! DEFAULT !!! variable environnement with level 5 (Kernel)
-
-
-
-EXE/ & %CPC.REP.KRNL%/NET/HTTP_GET.CPC
-
-// EXE/ & %CPC.REP.KRNL%/NET/UPDATE.CPC
