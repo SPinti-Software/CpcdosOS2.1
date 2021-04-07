@@ -1,0 +1,7 @@
+// This file allow to execute CPC format file
+
+msgbox/ Fichier Batch a executer : '%_ARG_1%'
+
+
+
+

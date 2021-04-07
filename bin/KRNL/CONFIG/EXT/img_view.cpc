@@ -1,0 +1,42 @@
+// Img viewer test
+
+set/ source = %_ARG_1%
+
+set/ window_x = 620
+set/ window_y = 480
+
+window/ Img_Viewer
+	.title				= "Img Viewer - %source%"
+	.px					= "50"
+	.py					= "60"
+	.sx					= "%window_x%"
+	.sy					= "%window_y%"
+	.opacity			= "255"
+	.parameters			= "TYPE:0 ALPHAMODE:0"
+	.windowcolor		= "255,255,255"
+	.titlecolor		    = "255,255,255"
+	.backcolor		    = "255,255,255"
+	.icon				= "%OS_GUI%/FORMATS/MPNG.png"
+	.event				= ""
+	@#window_handle create/
+end/ window
+ 
+picturebox/ viewer
+	.handle			= "%window_handle%"
+	.parameters		= "IMGAUTO:2"
+	.PX				= "0"
+	.PY				= "0"
+	.sx				= "%window_x%"
+	.sy				= "%window_y%"
+	.Image			= "%source%"
+	.opacity		= "255"
+	.event			= ""
+	create/
+end/ Picturebox
+
+// Force to display img_viewer in front
+refresh/ /window /focus
+
+
+
+

@@ -1,0 +1,19 @@
+////////////////////////////////////////////////
+// R E S E A U          /       N E T W O R K //
+////////////////////////////////////////////////
+
+
+// ICMP ping
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_NET/icmp.cpc
+
+// Http protocol
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_NET/http.cpc
+
+
+
+// Update server
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_NET/update.cpc
+
+
+
+

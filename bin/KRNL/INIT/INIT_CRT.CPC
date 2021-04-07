@@ -1,0 +1,132 @@
+// [FR] Ce fichier permet de declarer les fonction CpcdosC+ publique interne a Cpcdos!
+//  ces fonctions sont liees au CRT du noyau.
+// [EN] This file allow to declare internale public CpcdosC+ functions.
+//  This functions are in kernel CRT
+
+Declare/ INIT_CRT() : LEVEL(5)
+
+Function/ INIT_CRT()
+
+	
+	// [FR] Declaration au niveau KERNEL
+	// [EN] Declaration to KERNEL level
+	ccp/ /fix.level = 5
+
+
+	// [FR] ----- MANIPULATION DE CHAINES DE ascii_charS -------
+	// [EN] ----- STRING MANIPULATIONS -----
+
+	// [FR] Permet de chercher la position d'un ou plusieurs ascii_chars
+	// [EN] Allow to endd string position
+	declare/ CPC.INSTR(Source, Compare)			: level(5)
+	declare/ CPC.INSTR(Begin, Source, Compare)	: level(5)
+	
+	// [FR] IDEM, mais a partir de la end. (REVerse)
+	// [EN] IDEM, but from end of file
+	declare/ CPC.INSTRREV(Source, Compare)		: level(5)
+	declare/ CPC.INSTRREV(Source, Compare, Begin)	: level(5)
+
+	// Permet de renvoier un nombre specifie de ascii_chars (RELATIF = Depuis "Position_Depart")
+	declare/ CPC.MID(Source, Begin)				: level(5)
+	declare/ CPC.MID(Source, Begin, end)			: level(5)
+
+
+	// Permet de renvoyer un nombre specifie de ascii_chars (ABSOLU = Depuis le 1er ascii_char de "Source")
+	declare/ CPC.MIDA(Source, Begin)				: level(5)
+    declare/ CPC.MIDA(Source, Begin, end)			: level(5)
+
+        // Permet de repeter un ascii_char un nombre de fois
+    declare/ CPC.STR(ascii_char, nombre)			: level(5)
+
+	// Permet d'obtenir la taille d'une chaine de ascii_chars
+	declare/ CPC.LEN(text)							: level(5)
+	declare/ CPC.TAILLE(text)						: level(5)
+
+	// Permet de convertir les ascii_chars en MAJuscules
+	declare/ CPC.MAJ(text)							: level(5)
+	// et eb MINuscules
+	declare/ CPC.MIN(text)							: level(5)
+
+	// Permet de renvoyer le signe d'un nombre (0:negatif 1:positif)
+	declare/ CPC.SIGNE(value)						: level(5)
+	declare/ CPC.SIGN(value)						: level(5)
+
+	// ----- CONVERSIONS NUMERIQUES -------
+
+	// Permet de convertir en entier (Supprime la virgule)
+	declare/ CPC.ENTIER(value)						: level(5)
+	declare/ CPC.INT(value)						: level(5)
+	declare/ CPC.INTEGER(value)					: level(5)
+
+	// Permet de FRACtionner la value pour recuperer les chiffres APRES la virgule
+	declare/ CPC.FRAC(value)						: level(5)
+
+	// Permet de convertir une value (&B) Binaire ou (&O) Octale ou (&H) Hexa --> en decimale
+	declare/ CPC.VAL(text)							: level(5)
+
+	// Permet de convertir une value ASCII en ascii_char ASCII
+	declare/ CPC.CHR(value)						: level(5)
+	declare/ CPC.CAR(value)						: level(5)
+	declare/ CPC.ascii_char(value)					: level(5)
+
+	// Permet de convertir un ascii_char ASCII en value ASCII
+	declare/ CPC.ASC(value)						: level(5)
+	declare/ CPC.ASCII(value)						: level(5)
+
+	// Permet de convertir une value en value HEXADECIMALE
+	declare/ CPC.HEX(value)						: level(5)
+
+	declare/ CPC.HEXA(value)						: level(5)
+	declare/ CPC.HEXADECIMAL(value)				: level(5)
+	declare/ CPC.HEXADECIMALE(value)				: level(5)
+
+	// Permet de convertir en value absolue
+	declare/ CPC.ABS(value)						: level(5)
+
+	// ----- FONCTIONS MATHEMATIQUES -------
+
+	declare/ CPC.LOG(value)						: level(5)
+	declare/ CPC.EXP(value)						: level(5)
+	declare/ CPC.SQR(value)						: level(5)
+	declare/ CPC.RAC(value)						: level(5)
+	declare/ CPC.COS(value)						: level(5)
+	declare/ CPC.SIN(value)						: level(5)
+	declare/ CPC.TAN(value)						: level(5)
+	declare/ CPC.ACOS(value)						: level(5)
+	declare/ CPC.ASIN(value)						: level(5)
+	declare/ CPC.ATAN(value)						: level(5)
+	declare/ CPC.ATANR(valueY, valueX)			: level(5)
+
+	// ----- AUTRES FONCTIONS INTERNE -------
+
+	// Tester l'existence d'un fichier
+	declare/ CPC.FICHIER_EXISTE(path)				: level(5)
+	declare/ CPC.FILE_EXIST(path)					: level(5)
+
+	// Obtenir la taille d'un fichier
+	declare/ CPC.TAILLE_FICHIER(path)				: level(5)
+	declare/ CPC.FILE_SIZE(path)					: level(5)
+
+	// Lire TOUT le contenu d'un fichier
+	declare/ CPC.LIRE_FICHIER(path)					: level(5)
+	declare/ CPC.READ_FILE(path)					: level(5)
+	
+	// Executer un fichier .CPC avec des arguments
+	rem/ declare/ CPC.EXECUTION(path)												: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1)										: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1, arg_2)								: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1, arg_2, arg_3)						: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1, arg_2, arg_3, arg_4)					: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1, arg_2, arg_3, arg_4, arg_5)			: level(5)
+	rem/ declare/ CPC.EXECUTION(path, arg_1, arg_2, arg_3, arg_4, arg_5, arg_6)	: level(5)
+	
+	
+	// ----- NETWORK -----
+	declare/ CPC.NET.PING(path)						: level(5)
+
+	
+
+	// Execution des programmes DOS avec "DOS/"
+	EXE/ & %CPC.REP.KRNL.INIT%\DOS.CPC
+
+end/ Fonction

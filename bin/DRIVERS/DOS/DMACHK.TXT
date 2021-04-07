@@ -1,0 +1,81 @@
+
+DMACHK
+------
+
+
+DMACHK checks each 16KB block beween C000 and EFFF
+if it's writable and if it is, if ISA DMA transfers
+work.
+
+
+DMACHK is made to check the capability of ISA DMA transfers
+within UMBs created by UMBPCI. Because UMBPCI creates UMBs
+from RAM that is intended as shadow RAM, ISA DMA doesn't
+work on some chipsets. 
+
+If ISA DMA doesn't work, especially floppy accesses will
+not work. So, you should not load high SMARTDRV.
+And you should not use UMBPCI on a bootdisk!
+
+
+
+Start it in pure DOS. UMBPCI should be loaded either from
+CONFIG.SYS or from commandline using CTLOAD.EXE.
+
+
+
+Example:
+
+On a Intel 440BX chipset without any extra BIOS blocks (USB, SCSI or whatever)
+and with VGA card using a 32KB VGA-BIOS it looks so:
+
+ISA-DMA-Checker for UMBPCI V1.12, (c)1999-2000 by Heiko Nocon, Uwe Sieber 
+http://www.uwe-sieber.de
+
+ North-Bridge:  Vendor: 8086  Device: 7190
+ South-Bridge:  Vendor: 8086  Device: 7110
+
+C000-C3FF : write protected
+C400-C7FF : write protected
+C800-CBFF : read/write ok, ISA-DMA failed
+CC00-CFFF : read/write ok, ISA-DMA failed
+D000-D3FF : read/write ok, ISA-DMA failed
+D400-D7FF : read/write ok, ISA-DMA failed
+D800-DBFF : read/write ok, ISA-DMA failed
+DC00-DFFF : read/write ok, ISA-DMA failed
+E000-E3FF : read/write ok, ISA-DMA ok
+E400-E7FF : read/write ok, ISA-DMA ok
+E800-EBFF : read/write ok, ISA-DMA ok
+EC00-EFFF : read/write ok, ISA-DMA ok
+
+
+This means that on the i440BX ISA DMA works at E000-EFFF only.
+
+Conclusion: 
+
+On a bootdisk use the /I parameter to make UMBPCI uses 
+E000-EFFF only:
+
+device=c:\umbpci\umbpci.sys /i=e000-efff
+
+
+
+
+
+
+
+--------------------------------- end ---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+

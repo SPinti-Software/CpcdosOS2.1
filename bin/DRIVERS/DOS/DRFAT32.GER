@@ -1,0 +1,26 @@
+şşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşş
+DRFAT32, deutsche Beschreibung
+şşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşşş
+
+Im vorliegenden Archiv befinden sich Lineo's FAT32 Treiber fr DR DOS 7.0x.
+
+Benutzungshinweise:
+
+In die CONFIG.SYS oder DCONFIG.SYS muss folgende Zeile eingefgt werden:
+
+DEVICE=C:\DRDOS\DRFAT32.SYS
+
+Falls Sie die Treiber nach C:\DRDOS entpackt haben, andernfalls muss der
+Pfad angepasst werden.
+
+In der AUTOEXEC.BAT oder AUTODOS7.BAT muss noch DRFAT32.EXE aufgerufen werden.
+
+C:\DRDOS\DRFAT32.EXE
+
+Nun ist das erste FAT32 Laufwerk fr DR DOS sichtbar und benutzbar. Am besten,
+Sie laden auch den LFN (Long File Name = Lange Dateinamen) Treiber.
+
+Weiteren Support zu diesem Treiber k”nnen wir nicht anbieten, bei fragen
+wenden Sie sich bitte an www.lineo.com
+
+Ihr Elksoft-Team

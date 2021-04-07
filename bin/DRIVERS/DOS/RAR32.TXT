@@ -1,0 +1,108 @@
+
+RAR 3.93   Copyright (c) 1993-2010 Alexander Roshal   15 Mar 2010
+Shareware version         Type RAR -? for help
+
+Usage:     rar <command> -<switch 1> -<switch N> <archive> <files...>
+               <@listfiles...> <path_to_extract\>
+
+<Commands>
+  a             Add files to archive
+  c             Add archive comment
+  cf            Add files comment
+  ch            Change archive parameters
+  cw            Write archive comment to file
+  d             Delete files from archive
+  e             Extract files to current directory
+  f             Freshen files in archive
+  i[par]=<str>  Find string in archives
+  k             Lock archive
+  l[t,b]        List archive [technical, bare]
+  m[f]          Move to archive [files only]
+  p             Print file to stdout
+  r             Repair archive
+  rc            Reconstruct missing volumes
+  rn            Rename archived files
+  rr[N]         Add data recovery record
+  rv[N]         Create recovery volumes
+  s[name|-]     Convert archive to or from SFX
+  t             Test archive files
+  u             Update files in archive
+  v[t,b]        Verbosely list archive [technical,bare]
+  x             Extract files with full path
+
+<Switches>
+  -             Stop switches scanning
+  ac            Clear Archive attribute after compression or extraction
+  ad            Append archive name to destination path
+  ag[format]    Generate archive name using the current date
+  ai            Ignore file attributes
+  ap<path>      Set path inside archive
+  as            Synchronize archive contents
+  av            Put authenticity verification (registered versions only)
+  av-           Disable authenticity verification check
+  c-            Disable comments show
+  cfg-          Disable read configuration
+  cl            Convert names to lower case
+  cu            Convert names to upper case
+  df            Delete files after archiving
+  dh            Open shared files
+  ds            Disable name sort for solid archive
+  dw            Wipe files after archiving
+  e[+]<attr>    Set file exclude and include attributes
+  ed            Do not add empty directories
+  en            Do not put 'end of archive' block
+  ep            Exclude paths from names
+  ep1           Exclude base directory from names
+  ep3           Expand paths to full including the drive letter
+  f             Freshen files
+  hp[password]  Encrypt both file data and headers
+  id[c,d,p,q]   Disable messages
+  ierr          Send all messages to stderr
+  ilog[name]    Log errors to file (registered versions only)
+  inul          Disable all messages
+  isnd          Enable sound
+  k             Lock archive
+  kb            Keep broken extracted files
+  m<0..5>       Set compression level (0-store...3-default...5-maximal)
+  mc<par>       Set advanced compression parameters
+  md<size>      Dictionary size in KB (64,128,256,512,1024,2048,4096 or A-G)
+  ms[ext;ext]   Specify file types to store
+  n<file>       Include only specified file
+  n@            Read file names to include from stdin
+  n@<list>      Include files listed in specified list file
+  o[+|-]        Set the overwrite mode
+  or            Rename files automatically
+  p[password]   Set password
+  p-            Do not query password
+  r             Recurse subdirectories
+  r-            Disable recursion
+  r0            Recurse subdirectories for wildcard names only
+  rr[N]         Add data recovery record
+  rv[N]         Create recovery volumes
+  s[<N>,v[-],e] Create solid archive
+  s-            Disable solid archiving
+  sc<chr>[obj]  Specify the character set
+  sfx[name]     Create SFX archive
+  si[name]      Read data from standard input (stdin)
+  sl<size>      Process files with size less than specified
+  sm<size>      Process files with size more than specified
+  t             Test files after archiving
+  ta<date>      Process files modified after <date> in YYYYMMDDHHMMSS format
+  tb<date>      Process files modified before <date> in YYYYMMDDHHMMSS format
+  tk            Keep original archive time
+  tl            Set archive time to latest file
+  tn<time>      Process files newer than <time>
+  to<time>      Process files older than <time>
+  ts<m,c,a>[N]  Save or restore file time (modification, creation, access)
+  u             Update files
+  v             Create volumes with size autodetection or list all volumes
+  v<size>[k,b]  Create volumes with size=<size>*1000 [*1024, *1]
+  ver[n]        File version control
+  vn            Use the old style volume naming scheme
+  vp            Pause before each volume
+  w<path>       Assign work directory
+  x<file>       Exclude specified file
+  x@            Read file names to exclude from stdin
+  x@<list>      Exclude files listed in specified list file
+  y             Assume Yes on all queries
+  z[file]       Read archive comment from file

@@ -1,0 +1,123 @@
+http://rayer.ic.cz/programm/programe.htm#MTRRLFBE
+
+MTRRLFBE.EXE ver. 1.3 [55 kB]
+
+MTRR-WC enabler for VESA LFB. On a query I wrote this small program which allows you to set
+MTRR mode independently for VGA (A0000h) area and LFB area (address of LFB is autodetected).
+If you will set WC mode, you may gain performance of your existing programs which displays
+graphics through VESA VBE. On my machine Celeron Tualatin 1466, intel BX chipset,
+SVGA GeForce MX440 I have got transfer rate (RAM-VRAM) gain eg. in 800 x 600  32 LFB mode 
+from 62 MBs to 315 MBs.
+
+BTW the whole thing about MTRRLFBE had started this way I was programming some graphics 
+routines for my DOS program and I did some benchmarks to find the fastest algorithm. 
+But sometimes happened that program had been executed e.g. 5-times faster than usually. 
+But it had nothing to do with my code. Everything was faster. Then I tracked that this 
+effect happen when I reboot to DOS from Win98 without performing full restart. This led 
+me to idea that nVidia drivers or Windows setup something that makes copying of framebuffer
+much faster. Then I googled a lot and discovered some intel document describing setting of 
+MTRRs and its impact to graphics performance. Then it would be quite easy to implement it 
+to my mtgfx library and as a stand alone utility...
+
+8.1.2007 
+since version 1.1 allows you to set user address range for specified mode via 
+following command line parameter USERbase_addresssize_kB.
+
+10.3.2011
+In version 1.3 I completely rewrote MSR setting routines so now it can run under
+old memory manager emm386.exe and Windows 9x. 
+
+----------------------------------------------------------------------------------
+
+MTRR-WC enabler for VESA LFB 1.3 (C) 2005-2011 by Martin Rehak; rayer@seznam.cz
+Compiled by GCC 4.5.2 at 23:25:26, Mar 10 2011
+Host machine CPU vendor: GenuineIntel, ID: F29h
+
+SYNTAX:
+MTRRLFBE area mode
+
+example: MTRRLFBE LFB WC
+
+area, is the address range to apply mode change: 
+"VGA" - VGA range.
+"LFB" - Linear Frame Buffer range.
+"USER:base_address:size" - base_address is a hexa-number, size is in kB.
+
+mode choices: 
+"UC" - UnCached.
+"WP" - Write-Protected.
+"WT" - Write-Through.
+"WB" - Write-Back.
+"WC" - Write-Combining.
+
+---------------------------------------
+OLD README
+
+MTRRLFBE.EXE v1.1 (freeware)
+RayeR's Homepage/Programming
+http://rayer.ic.cz/programm/programe.htm
+
+
+
+INTRO
+=====
+
+MTRR-WC enabler for VESA LFB.
+I wrote this small program which allows you to set MTRR mode independently for
+VGA (A0000h) area and LFB area (address of LFB is autodetected).
+If you will set W-C mode, you may gain performance of your existing programs
+which displays through VESA VBE.
+On my machine: Celeron Tualatin 1466, Intel BX chipset, SVGA GeForce MX440 I
+have got transfer rate (RAM -> VRAM) gain eg. in 800x600/32 LFB mode from 62
+MB/s to 315 MB/s.
+
+Intel document [PDF]:
+http://download.intel.com/design/PentiumII/applnots/24442201.pdf
+
+
+
+COMMAND LINE SWITCHES
+=====================
+
+Run MTRRLFBE by itself from any DOS prompt to view its command line switches:
+
+MTRRLFBE
+
+MTRR-WC enabler for VESA LFB 1.1 (C) 2005-2007 by Martin Rehak; rayer@seznam.cz
+Compiled by GCC 4.1.0 at 23:43:06, Jan  8 2007
+
+SYNTAX: MTRRLFBE area mode
+area: "VGA" or "LFB" (address range to apply mode change) or
+      "USER:base_address:size" (base_address is a hexa-number, size is in kB)
+mode: "UC" - UnCached, "WP" - Write-Protected, "WT" - Write-Through,
+mode: "WB" - Write-Back, "WC" - Write-Combining
+
+Then run desired command(s) only from native/real/true/pure DOS/MS-DOS to
+enable individual features.
+
+How to enable LFB WC (Linear Frame Buffer Write Combining):
+
+MTRRLFBE LFB WC
+
+How to enable VGA WC (Banked VGA Write Combining):
+
+MTRRLFBE VGA WC
+
+You can add line(s) above to your AUTOEXEC.BAT file (found in C:\ root).
+Edit your AUTOEXEC.BAT using EDIT in DOS or Notepad in Windows.
+Backup original file first.
+
+MTRRLFBE does not occupy any memory.
+
+
+
+IMPORTANT
+=========
+
+MTRRLFBE is NOT COMPATIBLE with Microsoft EMM386.EXE or ANY other 3rd party
+upper/expanded/extended memory managers: Quarterdeck QEMM386.SYS, Helix
+NetRoom RM386.EXE, Lineo (Caldera) DR-DOS EMM386.EXE, Qualitas 386MAX.SYS etc.
+Therefore you MUST use HIMEM.SYS by itself in your CONFIG.SYS [without upper
+memory support :(], or BETTER, install UMBPCI.SYS, to provide access to the
+Upper Memory Area (UMA) and load ALL your devices/drivers/TSRs "high":
+http://www.mdgx.com/umb.htm

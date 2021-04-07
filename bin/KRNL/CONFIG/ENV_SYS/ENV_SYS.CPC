@@ -1,0 +1,18 @@
+////////////////////////////////////////////////
+// S Y S T E M E         /        S Y S T E M //
+////////////////////////////////////////////////
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_SYS/io.cpc
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_SYS/time.cpc
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_SYS/serial.cpc
+
+exe/ & %CPC.REP.KRNL%/CONFIG/ENV_SYS/keymap.cpc
+
+
+
+
+
+
+

@@ -1,0 +1,992 @@
+
+                   UMBPCI.SYS v3.x - English Release
+	=========================================================
+
+
+
+Most of this doc has been written in 1998. Many part a no more updated since
+many years.
+
+
+
+OVERVIEW
+========
+
+UMBPCI.SYS is a FREEware MS-DOS 5.00 and higher Upper Memory Area (UMA) access
+driver (MS HIMEM.SYS extender) for Intel, FIC VIA (Apollo), ALi (Aladdin) and
+SiS PCI/AGP chipsets, supporting Pentium, Pentium Pro, Pentium II/III, AMD and
+Cyrix CPUs. It may work with DR-DOS, Novell DOS, Caldera Open DOS but this is
+untested.
+
+It is based on the German c't Magazine's free source code:
+http://www.heise.de/ct/
+The original UMBPCI (German version):
+ftp://ftp.heise.de/pub/ct/ctsi/umbpci.zip
+was written by c't Magazine's editor Andreas Stiller in 1995, based on UMBADD
+developed by Peter Siering (c't Magazine) in 1991.
+UMBPCI had several problems, supported only Intel chipsets up to the 430FX,
+and there were no free updates. Andreas further developed CTUMB, which is
+only available to c't subscribers, on c't Magazine's Utilities CD-ROM.
+
+NOTE: UMBPCI.SYS is an unofficial release, unsupported by c't Magazine!
+If you have problems read this manual FIRST. If that doesn't help you can
+e-mail me:
+mail@uwe-sieber.de
+
+UMBPCI.SYS guidelines + info web pages:
+* Uwe Sieber's UMBPCI German page:
+http://www.uwe-sieber.de/umbpci.html
+* Uwe Sieber's UMBPCI English page:
+http://www.uwe-sieber.de/umbpci_e.html
+* George Gombos' UMBPCI page [English]:
+http://members.aol.com/axcel216/umb.htm
+
+Download UMBPCI.SYS directly from Uwe Sieber's web site:
+* UMBPCI German release [20 KB, freeware]:
+http://www.uwe-sieber.de/files/umbpci.zip
+* UMBPCI English release [20 KB, freeware]:
+http://www.uwe-sieber.de/files/umbpci_e.zip
+
+To make UMBPCI available for download on your homepage, please use the links
+above, due to frequent updates.
+
+
+DISCLAIMER
+==========
+
+This program and the accompanying documentation are offered "as is".
+The user bears the entire risk of this software not performing as expected.
+
+
+UPDATES
+=======
+
+New supported chipsets:
+
+* UMBPCI v2.18: SiS 530 (not tested)
+
+* UMBPCI v2.19: FIC VIA 691 "Apollo Pro" and 693 "Pro Plus" (not tested)
+
+* UMBPCI v2.20: ALi Aladdin III, IV, V and Pro 2 (not tested)
+
+* UMBPCI v2.21: Intel 810. UMBs no longer cacheable on SiS 59x
+
+* UMBPCI v2.22: VIA MVP3 596 with southbridge (was buggy)
+
+* UMBPCI v2.24: VIA MVP3 596 with southbridge (works now)
+
+* UMBPCI v3.00:
+	- Autoscans for free upper memory ranges
+	- /I=xxxx-yyyy parameter no longer needed
+	- Upper memory enabled even if HIMEM.SYS not found (useful for DR-DOS,
+	  Open DOS, Novell DOS and HIRAM.SYS only)
+
+* UMBPCI v3.01: Break pause with invitation for feedback on untested chipsets
+
+* UMBPCI v3.02: SiS 600 and 620 (not tested)
+
+* UMBPCI v3.03: UMBs no longer cacheable on ALi III and IV
+
+* UMBPCI v3.04: i440BX/ZX no longer marked as "untested" (was by mistake in
+		v3.03)
+
+* UMBPCI v3.05: ALi III and IV tested (thanks to Robert Riebisch)
+
+* UMBPCI v3.06: When loaded before HIMEM it removes now really from memory
+
+* UMBPCI v3.07: ALi Pro2 not longer marked as untested
+
+* UMBPCI v3.08: SiS-600 not longer marked as untested
+
+* UMBPCI v3.09: SiS-620 tested, no ISA-DMA at E000-EFFF
+
+* UMBPCI v3.10: SiS-530 not longer marked as untested
+
+* UMBPCI v3.11: Intel 820, 840, 440MX (all untested, no ISA-DMA)
+
+* UMBPCI v3.12: VIA MVP4, VIA KX133 (all untested)
+
+* UMBPCI v3.13: VIA KX133 removed - didn't work
+
+* UMBPCI v3.14: VIA MVP4 tested
+
+* UMBPCI v3.15: Intel 810 DC-100 tested
+
+* UMBPCI v3.16: Shows vendor and device ID if chipset is unknown
+
+* UMBPCI v3.17: SiS-540 (untested)
+
+* UMBPCI v3.18: Intel Neptune with EISA-Bridge (no ISA-DMA)
+                Intel 815 (untested)
+                better feedback on unsupported chipsets
+
+* UMBPCI v3.19: VIA Apollo PM601 and PM133 (untested)
+                unknown VIA chipsets not longer found as 'MVP3+'
+                better feedback on non PCI chipsets
+
+* UMBPCI v3.20: VIA Apollo PM601 and PM133 tested
+
+* UMBPCI v3.21: Intel 815 tested, ISA-DMA works
+
+* UMBPCI v3.22: Intel 810E (tested)
+
+* UMBPCI v3.23: Intel 820 with differnet device ID (untested)
+
+* UMBPCI v3.24: SiS-630 tested
+
+* UMBPCI v3.25: exdended list of unsupported chisets
+
+* UMBPCI v3.26: Intel 820 tested, ISA-DMA works (thanks to Marco Terno)
+
+* UMBPCI v3.27: Intel 440BX tested
+
+* UMBPCI v3.28: Intel 810 and 815 with differnet device IDs (untested partwise)
+
+* UMBPCI v3.29: Intel 850 (untested)
+
+* UMBPCI v3.30: VIA MVP3 with device ID 597h and south bridge 686
+
+* UMBPCI v3.31: Extended list of unsupported chipsets
+
+* UMBPCI v3.32: Intel 845 (untested)
+
+* UMBPCI v3.33: Intel 850 tested (thanks to Dirk Reetz)
+
+* UMBPCI v3.34: Intel 845 tested (was wrong, i845 didn't work)
+
+* UMBPCI v3.35: Intel 845 works and tested (thanks to Michael A. Shiels)
+                Intel 830MP (untested but should work)
+
+* UMBPCI v3.36: Intel 830MP tested, ISA-DMA untested (thanks to Niklas Andersson)
+
+* UMBPCI v3.37: VIA Apollo Pro with Southbridge 586A tested (thanks to D. Mehic)
+                extended list of unsupported chipsets
+
+* UMBPCI v3.38: Intel 860 tested (thanks to Gary Zinn)
+                extended list of unsupported chipsets
+
+* UMBPCI v3.39: VIA P4X266 and P4M266 (untested)
+
+* UMBPCI v3.40: SiS 645 tested (thanks to John Richardson)
+
+* UMBPCI v3.41: Intel 845G tested (thanks to Roland Zauner)
+
+* UMBPCI v3.42: not released
+
+* UMBPCI v3.43: ALi Aladdin II, tested (thanks to Robert Riebisch)
+                ALi Aladdin Pro V (untested)
+                SiS 645DX
+
+* UMBPCI v3.44: extended list of unsupported chipsets
+
+* UMBPCI v3.45: VIA MVP3 with device ID 597h and south bridge 686 (now really...)
+
+* UMBPCI v3.47: Intel E7201, E7205
+                Intel 852GM, 855GM, 855PM, 875P (all untested)
+                extended list of unsupported chipsets
+
+* UMBPCI v3.48: Intel 865G/865P
+                VIA P4X266 tested
+
+* UMBPCI v3.49: VIA P4N266, P4X333, P4N333, P4X600
+                SiS 651
+
+* UMBPCI v3.50: AMD K7 CPU (works chipset independend)
+
+* UMBPCI v3.51: Intel 855xx tested
+
+* UMBPCI v3.52: not released
+
+* UMBPCI v3.53: Intel E7500 (tested)
+                VIA Apollo PLE133 (tested)
+                SiS660,661,662,663 (untested, strange reports)
+                extended list of unsupported chipsets
+                new version of DMACHK (doesn't freeze anymore)
+
+* UMBPCI v3.54: works with VMware on AMD K7/K8
+
+* UMBPCI v3.55: Intel 848P
+
+* UMBPCI v3.56: resident part reduced to 208 Bytes - thanks to 
+                Nagatoshi Uehara
+
+* UMBPCI v3.60: resident part reduced to 160 Bytes - thanks to 
+                Nagatoshi Uehara
+                4K blocks on AMD K7/K8 instead of 16K blocks
+                Intel 915, 925
+
+* UMBPCI v3.61: internal bug (RAM initialisation) fixed
+
+* UMBPCI v3.62: Bugfix: did't work without HIMEM since V3.57
+                VIA EPIA-M tested
+
+* UMBPCI v3.63: Bugfix: i430FX works again
+
+* UMBPCI v3.64: Bugfix: scan for free areas accepts only ranges that contain only FFh
+                Intel 915GM, 7520, 7350
+                VIA PT880, PM880
+                SIS 655
+                extended list of unsupported chipsets
+
+* UMBPCI v3.65: Intel 945
+                extended list of unsupported chipsets
+
+* UMBPCI v3.66: Paramter /S to skip the 'unknown chipset' break
+                Intel 945GM, 955
+                Intel 7210, 7221, 7230, 7525
+                some VIA P4 chipsets (untested)
+                SiS 656
+                ALi i1 CyberBlade (untested)
+                ALi M1644 (untested)
+
+* UMBPCI v3.67: Intel 975 
+                extended list of unsupported chipsets
+
+
+* UMBPCI v3.70: puts an UMB table into the upper memory for QXHIMEM when no HIMEM found
+                chipset detection routine changed
+                Intel 965
+
+* UMBPCI v3.71: I'm tired to keep this list up to date
+
+
+See http://www.uwe-sieber.de/umbpci_e.html for the latest updates.
+
+
+
+REQUIREMENTS
+============
+
+(no more updates to this docs)
+
+* Supported CPUs:
+- Intel PPro, P2, P3, P4, Celeron, Xeon and VIA C3 are programmed for L2 cacheability
+- AMD K7, K8 support shadow RAM chipset independent :-)
+- all other CPUs remain untouched and should work as they are
+
+* Unsupported CPUs:
+- 80486/SX/DX/DX2/DX4/SLC
+- 80386/SX/DX
+- 80286/SX
+- 8086
+NOTE: If you own a 286, 386 or 486 class CPU, you can try the older HIRAM.EXE
+[74 KB, German freeware], similar to UMBPCI:
+http://www.uwe-sieber.de/files/hiram.zip
+HIRAM works also with Intel 430xX and 440xX chipsets, allowing HIMEM.SYS to
+load in the UMA, if used in combination with UMBPCI.SYS!
+Read HIRAM.TXT included with UMBPCI for usage guidelines!
+
+* Supported Operating Systems + Environments:
+- MS-DOS 5.00 - 6.22
+- MS Windows/WfWG 3.xx
+- MS Windows 95/OSR1/OSR2.x/98 (a.k.a. MS-DOS 7.xx)
+
+* Additional Supported OSes by UMBPCI v3.00 and newer ONLY:
+- DR-DOS
+- Novell DOS
+- Caldera Open DOS (renamed DR-DOS)
+
+* Untested OSes (feedback or hints please):
+- PC-DOS
+- IBM DOS
+- FreeDOS
+
+* Unsupported OSes:
+- MS Windows NT
+- MS Windows 2000 (a.k.a. NT5)
+
+* Supported Intel chipsets:
+- 420EX (Aries) => doesn't work (datasheet needed)
+- 420TX/420ZX (Saturn)
+- 430LX (Mercury)
+- 430NX (Neptune)
+- 430FX (Triton)
+- 430MX (Triton Mobile)
+- 430HX (Triton II)
+- 430VX (Triton III)
+- 430TX (Triton IIb)
+- 440FX (Natoma)
+- 440LX (Natoma)
+- 440EX (AGPset)
+- 440BX (AGPset)
+- 440NX (PCIset)
+- 440GX (AGPset)
+- 440ZX (AGPset)
+- 450KX (Mars) => maybe?
+- 450GX (Orion) => maybe?
+- 810 (Whitney - low cost AGPset)
+- 815
+- 820
+- 830MP
+- 840
+- 845
+- 848
+- 850
+- 855
+- 860
+- 865
+- 875
+- 7xxx
+- 915
+- 925
+- and many others...
+
+* Supported FIC VIA (Apollo) chipsets:
+- VP
+- VPX
+- VP2
+- VP2-97 (AMD-640)
+- VP3
+- MVP3
+- MVP4
+- 691 Pro => completely untested
+- 693 Pro Plus => completely untested
+- P4X266
+- and many others...
+
+* Supported SiS chipsets:
+- 5511
+- 5120
+- 5571
+- 5581/5582
+- 5591/5592
+- 530
+- 540
+- 59x
+- 600
+- 620
+- 630
+- 645
+- 645DX
+- 65x
+- 66x
+
+* Supported ALi (Aladdin) chipsets:
+- Aladdin III
+- Aladdin IV
+- Aladdin V
+- Aladdin Pro 2
+
+* Unsupported:
+
+- non PCI chipsets
+- the very first PCI chipsets have no complete PCI BIOS which UMBPCI needs
+
+
+
+FEATURES + ADVANTAGES
+=====================
+
+UMBPCI.SYS extends Microsoft's HIMEM.SYS by enabling the "Request XMS-UMB"
+function. Microsoft's EMM386.EXE does the same, when loaded with the "NOEMS",
+"HIGHSCAN" or "RAM" parameters in CONFIG.SYS.
+
+UMBPCI.SYS creates UMBs (Upper Memory Blocks) using the existing system memory
+intended to be used as Shadow RAM, but disabled by default, ONLY in the
+C800-EFFF range, NOT at B000-B7FF. The B000-B7FF area is normally used for
+monochrome video (used by older graphics adapters), NOT for BIOS (ROM)
+extensions, therefore X86 chipsets cannot enable shadow RAM within this
+region. UMBPCI.SYS enables this memory and disables its write protection.
+
+UMBPCI.SYS takes ONLY 160 Bytes of conventional RAM (144 Bytes code + 16 Bytes
+environment), while providing up to 629 KiloBytes (KB) of FREE conventional
+(low) memory (RAM), IF loading ALL devices/drivers/TSRs "high"!
+
+Microsoft EMM386.EXE creates UMBs from the computer's physical XMS
+(eXtended Memory Specifications) by virtually remapping XMS to the upper
+memory area using the Memory Management Unit (MMU) of 386 and higher CPUs.
+It needs additional 150 KB of XMS, 4 KB of low memory and 7 KB of UMA
+(Upper Memory Area) when loaded, and it also switches the CPU into "protected
+mode" (slower) because it's necessary to use the MMU. DOS runs in virtual 8086
+maschine then (V86 mode).
+UMBPCI.SYS leaves the CPU in "real mode", for better compatibility and faster
+performance.
+
+Begining with v3.00 you can simply try loading UMBPCI without any checking.
+Because UMBPCI.SYS is an extension to HIMEM.SYS under MS-DOS/MS Windows, it
+MUST be loaded after HIMEM.SYS. CONFIG.SYS example assuming Win9x is in
+C:\WINDOWS and UMBPCI.SYS in C:\UMBPCI:
+
+DOS=HIGH,UMB
+DEVICE=C:\WINDOWS\HIMEM.SYS
+DEVICE=C:\UMBPCI\UMBPCI.SYS
+DEVICEHIGH=...
+INSTALLHIGH=...
+SET=...
+etc...
+
+If properly loaded, you'll see a message like this:
+
+"UMBPCI c't 11/95 - Siering/Schaepers/Stiller
+V3.05 - support for new Intel/VIA/ALi/SIS chipsets + P2 - Uwe Sieber 08/99
+Using C800-EFFF
+Intel 440BX/ZX found
+Programm installed"
+
+If your chipset is NOT supported, you'll get this message:
+
+"No supported chipset found.
+Problem programming the chipset."
+
+And if your chipset is supported but UNTESTED, you'll get this message:
+
+"This chipset is untested! Mail me the name of the chipset and if it works
+so I can remove this break: uwe.sieber@gmx.de
+press any key..."
+
+I'll remove this pause screen as soon as I know if your (untested) chipset
+works.
+
+If you get other messages please e-mail me.
+You can determine your chipset's brand/type by using this program:
+http://members.hyperlink.net.au/~chart/download/pci.zip
+
+
+
+TOOLS
+=====
+
+Freeware tools included with UMBPCI.SYS:
+
+1. UMBCHK.EXE
+
+UMBCHK is needed ONLY if you want to use UMBPCI's /I=xxxx-yyyy parameter.
+
+Reboot your computer WITHOUT processing the startup files (AUTOEXEC.BAT and
+CONFIG.SYS): press F8 during the bootup routine (MS-DOS 6.xx or Windows 9x).
+This is similar with the "Command prompt only" option from the Windows 9x
+Startup Menu. Go to this page for more details:
+http://members.aol.com/axcel216/msdos.htm#MEN
+Then run UMBCHK to view all upper memory ranges available to UMBPCI, and to
+display the suggested command line for use with UMBPCI. UMBCHK recommends the
+same ranges UMBPCI uses when loaded without parameter.
+If UMBCHK suggests /I=C800-EFFF, add this line to your CONFIG.SYS file, AFTER
+the HIMEM.SYS line (example):
+
+DEVICE=C:\WINDOWS\HIMEM.SYS
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=C800-EFFF
+
+If you take a quick look at UMBPCI's message, you won't need UMBCHK.
+
+UMBCHK and UMBPCI's /I=xxxx-yyyy parameter are NOT needed by UMBPCI v3.00 and
+newer, which autodetect and map the available UMBs.
+
+
+2. DMACHK.COM
+
+I added DMACHK thanks to Heiko Nocon who made it possible.
+
+Use DMACHK to check and display the UMB ranges in which ISA DMA works,
+eventually redirecting its output to a text file. Example:
+
+drive:\path\DMACHK > drive:\path\UMBRANGE.TXT
+
+To use it UMBPCI MUST be loaded.
+DMACHK may crash some maschines - no idea why.
+
+
+3. UMBFILL.COM
+
+Windows 9x takes over all remaining UMBs (not used by drivers or TSRs) and
+uses them as normal memory. But the memory created by UMBPCI is sometimes not
+seen as "normal" by MS-DOS/MS Windows. It may not be cacheable and/or ISA DMA
+may not work. With the exception of the very first Intel PCI chipsets, the
+only really normal UMBs UMBPCI creates, are at E000-EFFF on Intel chipsets up
+to the 440xX and the UMBs of the VIA Apollo P2 chipsets.
+To prevent Windows 9x from using this remaining critical memory in such cases,
+use UMBFILL to allocate ALL remaining UMBs before Windows 9x GUI loads.
+Add a UMBFILL line, AFTER ALL your devices/drivers/TSRs lines, and BEFORE the
+line that starts Windows in your AUTOEXEC.BAT, If you load Windows from
+AUTOEXEC.BAT.
+
+Another way to prevent Win9x from taking over all remaining UMBs is to add the
+LocalLoadHigh=0 line under your SYSTEM.INI's [386enh] section.
+Then Win9x occupies only a small part of the UMBs which seem to be uncritical.
+
+Thanks Christian Masloch for the new UMBFILL.
+
+
+
+4. LOWDMA
+
+LOWDMA is a driver for handling floppy disk sectors in non-DMA UMB. See 
+LOWDMA.TXT for more information. It seems to have problems with complex
+directory structures (usually not found on boot disks...).
+
+
+
+
+RESTRICTIONS
+============
+
+
+Power Management
+----------------
+
+Suspend to RAM or Disk doesn't work with UMBPCI. I think the UMBs created by UMBPCI
+aren't saved and restored by the power management because it doesn't know
+UMBPCI.
+
+
+PCI busmastering
+-------------------
+
+PCI busmastering doesn't work on AMD K7 CPUs (Athlon, Duron).
+
+This technique is used by PCI IDE controller with their one BIOS, known from
+Promise, Highpoint, Silicon Image and others, some AMI BIOSses and XDMA/QDMA drivers
+from http://johnson.tmfc.net/freedos/qdma.html
+
+
+Sometimes it helps to set DoubleBuffer=1 in the MSDOS.SYS of Windows 95 or
+higher (= MS-DOS 7.x).
+
+On elder DOS versions you cannot load high drivers and programs from a Harddisk
+that is plugged on a contoller that uses PCI busmastering in pure DOS. That is
+similar to the problem with ISA DMA.
+
+
+
+ISA DMA
+----------------
+
+
+ISA (Industry Standard Architecture) DMA (Direct Memory Access) is critical in
+the created UMBs. ISA involves ANY 8-bit ISA expansion cards you might have on
+your computer (modem, sound card, network card etc), and the Floppy Drive
+Controller (FDC). A typical PC/AT IBM compatible clone has one (primary, 3.5",
+1.44 MB, drive letter A, default bootable drive), or two (secondary, 5.25",
+1.2 MB, drive letter B, optional) floppy drives.
+Such devices MUST use the DMA controller (built into the motherboard chipset),
+thus relieving the CPU of time consuming routine tasks (requiring extra CPU
+cycles), so your processor can proceed with other operations at the same time
+(multitasking).
+
+* KNOWN PROBLEMS + SOLUTIONS [depending on your motherboard chipset type]:
+
+1. The ISA DMA function might NOT be possible in certain UMA regions, because
+the memory UMBPCI uses is intended as shadow RAM, NOT as normal RAM. This has
+nothing to do with PCI Bus Mastering.
+
+2. Level 2 (L2) CPU cache may be write-protected so UMBPCI cannot make the
+UMBs cacheable (non Intel Socket-7 chipsets)
+
+Win9x loads high memory blocks depending to the CONFIG.SYS switches buffers,
+files, lastdrive, stacks ...
+
+To force Win9x to load them into low memory, you can use the DOS=NOAUTO switch.
+But then Win9x doesn't load the IFSHLP.SYS driver that is needed for Win9x.
+
+Try this:
+
+files=50
+buffers=20
+stacks=9,256
+dos=high, umb, noauto
+device=c:\windows\ifshlp.sys
+device=c:\windows\himem.sys
+device=umbpci.sys
+devicehigh=...
+installhigh=...
+
+
+3. There are reports about crashes involving CMOS/BIOS corruption on some
+Compaq Presarios. Maybe the reason was simply a wrong parameter, but I have no
+further information.
+
+4. Some USB (Universal Serial Bus) keyboards use the C800-CBFF area, therefore
+you need to restrict UMBPCI.SYS to the CC00-EFFF region in CONFIG.SYS, when
+using the /I=xxxx-yyyy parameter (example):
+
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=CC00-EFFF
+
+5. No program that needs ISA DMA should be loaded high, especially disk
+(floppy) cache TSRs (Terminate and Stay Resident programs) like Microsoft
+SMARTDRV.EXE. But you can use the /L parameter with SMARTDRV to force it to
+load partially into conventional memory, with LOADHIGH in AUTOEXEC.BAT, or
+INSTALLHIGH in CONFIG.SYS. The result will be a "splitted load", exactly
+what UMBPCI.SYS needs. In this case SMARTDRV takes 16384 Bytes of low memory:
+
+LOADHIGH=C:\WINDOWS\SMARTDRV 2048 16 /L
+
+which can be reduced by using the /B:xxxx and /E:xxxx parameter. The default
+values are /B:16384 /E:8192 which causes SMARTDRV takes 16384 Bytes of low
+memory in the example above.
+
+For absolute minimum memory usage but a little disk performance loss in real
+DOS mode, you can combine the /B and /E parameter:
+
+LOADHIGH=C:\WINDOWS\SMARTDRV 2048 16 /B:2048 /E:1024 /L
+
+This takes only 2 KB of low and about 16 KB of upper memory.
+
+The B(uffer) value must be a multiple of the E(lement) value. Do NOT use
+the same value for /E: and /B: ! This can cause sporadic data errors!
+
+
+1024 is a bit extreme and prevents SMARTDRV caches CDROMs because
+a sector on a CDROM has 2048 Bytes. /B:4096 /E:2048 should be a
+good compromise.
+
+Using these parameters can cause data errors on large FAT32 drives.
+Make a
+dir xxxx.* /s 
+from the root directory. If there is a problem you will get an error 
+message like 'Error in the directory structure'.
+
+
+You can also disable the SMARTDRV floppy cache by adding the A- and B-
+parameters (depending on how many floppy drives you have), or by loading
+SMARTDRV into the upper memory E segment [E000-EFFF], if you have an Intel
+430xX or 440xX chipset (tricky). Example of SMARTDRV line in AUTOEXEC.BAT:
+
+LOADHIGH=C:\WINDOWS\SMARTDRV 2048 16 A- B- C+ D /N
+
+to disable read and write caching on both floppy drives (A and B), enable
+read and write caching on the hard drive (C), and enable read-only caching on
+the CD-ROM/DVD drive (D).
+
+Another way to force SMARTDRV to load into the E segment (ONLY IF you have an
+Intel 430xx or 440xx chipset), at least at E000-E3FF, is to load MSCDEX
+(MicroSoft Compact Disk EXtensions) with LOADHIGH, BEFORE the SMARTDRV
+line in AUTOEXEC.BAT.
+
+NOTE: You also need to load your DOS mode cd-rom/dvd (supplied) driver in
+CONFIG.SYS, if you want to have your cd-rom/dvd available in native MS-DOS,
+AND to have it cached by SMARTDRV the same time. Example:
+
+DEVICEHIGH=C:\CDROM\CDROM.SYS /D:MYCDROM
+
+In case SMARTDRV loads partially at E000 or below E000, the floppy disk
+becomes UNREADABLE, IF the read/write floppy cache is enabled by SMARTDRV's
+A+ and/or B+ switches!
+
+NOTE: QCDROM is an "universal" CD-ROM/DVD DOS driver, free from
+http://johnson.tmfc.net/freedos/
+and works with most popular IDE/ATAPI internal cd-rom/dvd drives.
+
+There is a replacement for MSCDEX too: SHSUCDX
+http://johnson.tmfc.net/freedos/
+
+
+Example of MSCDEX v2.25 and SMARTDRV v5.02 "combo" in AUTOEXEC.BAT, using MS
+Windows 9x:
+
+LOADHIGH=C:\WINDOWS\COMMAND\MSCDEX.EXE /D:MYCDROM /M:16
+LOADHIGH=C:\WINDOWS\SMARTDRV.EXE 2048 16 A+ B+ C+ D /N
+
+to force SMARTDRV to load at E000, and occupy the UMA at and above E3FF.
+
+Another method is to create two UMB regions, by adding this line in CONFIG.SYS:
+
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=C800-DFFF /I=E000-EFFF
+
+Then you can choose to load a program in one of the 2 created regions: #1
+(C800-DFFF) or #2 (E000-EFFF), by using the /L:x parameter (example):
+
+LOADHIGH /L:2 C:\WINDOWS\SMARTDRV 2048 16 A+ B+ C+ D /N
+
+This places SMARTDRV into the second region which starts at E000.
+
+BTW: INSTALLHIGH doesn't support the /L:x parameter. Ask Microsoft why...
+
+These are the ONLY ways I found to make floppy cache possible, other than
+restricting UMBPCI's available UMA to E000-EFFF (example):
+
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=E000-EFFF
+
+which defeats the purpose of using UMBPCI.SYS for providing as much UMA as
+possible.
+
+TIP: MSCDEX provides support for accessing CD-ROM/DVD drives in native DOS
+mode. Run MSCDEX /? from the true MS-DOS prompt to display its command line
+switches.
+
+Observe also the different DOS (2048) and Windows (16) SMARTDRV cache sizes
+(in KiloBytes). You want to allocate a large SMARTDRV cache in native/true
+MS-DOS mode (but not more than 1/6 of your installed memory, especially if you
+only have 16 MB or less), and the smallest SMARTDRV cache size in Windows,
+because Windows 9x and WfWG 3.1x provide their own 32-bit protected mode
+virtual cache algorhythms, and do NOT need SMARTDRV to cache ANY drives.
+
+Observe also the /N switch, which allows the return to the DOS prompt BEFORE
+SMARTDRV's temporary memory cache buffer is flushed and data permanently
+written to disk. Use /N with CAUTION, because you may experience DATA LOSS in
+case of a sudden power outage!
+SMARTDRV's buffer loads into the UMA in the example above, using the MS-DOS
+built-in LOADHIGH command.
+But if an upper memory manager (like EMM386, QEMM, NetRoom, 386MAX etc)
+enables access to the UMA, SMARTDRV doesn't need LOADHIGH (or a similar 3rd
+party "loader"), being capable of placing itself in the upper memory if it
+can fit into a free contiguous UMB.
+
+TIPS:
+- Run:
+SMARTDRV /?
+from any DOS prompt to display all available command line parameters.
+- Go to this page for more SMARTDRV info and usage details:
+http://members.aol.com/axcel216/newtip2.htm#OUTSMART
+
+7. If loading UMBPCI from a bootable floppy disk, you should ONLY use UMA
+ranges that can handle ISA-DMA. E.g. on newer Intel chipsets (430xX, 440xX)
+load it with /I=E000-EFFF.
+Do NOT load UMBPCI from boot disks on chipsets that cannot handle ISA-DMA
+in the UMBs!
+
+8. To fix all the problems with ISA DMA you can try the LOWDMA driver. See
+LOWDMA.TXT for more information.
+
+
+
+
+KNOWN CHIPSET PROBLEMS
+======================
+
+* AMD
+K7 CPU (Athlon, Duron)   => no ISA-DMA, no PCI busmastering
+
+* Intel:
+Saturn, Mercury, Neptune => no problem
+430xX, 440xX, 450xX	 => ISA-DMA only within the E segment [E000-EFFF]
+430MX			 => no ISA-DMA
+810			 => no ISA-DMA
+815, 820, 845, 850, 855  => no problem
+915, 925                 => no problem
+830MP, 840, 860          => untested
+
+* FIC VIA (Apollo):
+VIA up to VP2/97	 => not cacheable, no ISA-DMA
+VIA VP3, MVP3, MVP4	 => not cacheable
+VIA Pro			 => should work
+VIA P4			 => should work
+VIA Athlon chipsets      => see AMD K7 CPU
+
+* ALi (Aladdin):
+ALi III, IV, V		 => not cacheable
+ALi Pro			 => no feedback yet
+ALi MagiK                => see AMD K7 CPU
+
+* SiS:
+SiS			 => not cacheable, no ISA-DMA
+SiS P2 chipsets		 => no ISA-DMA at E000-EFFF
+SiS Athlon chipsets      => see AMD K7 CPU
+
+* AMD:
+AMD Athlon chipsets      => see AMD K7 CPU
+
+
+USAGE GUIDELINES
+================
+
+If you want to use UMBPCI's /I=xxxx-yyyy parameter, make sure to check the free
+UMA before loading UMBPCI.SYS, by running UMBCHK (see the "TOOLS" section
+above).
+
+To visualize the DOS memory allocation the MEM command is certainly not of
+prime quality. :( I suggest using MI.COM [9 KB, freeware]:
+http://www.uwe-sieber.de/files/mi_e.zip
+MI stands probably for Memory Information.
+
+If you use EMM386.EXE, you can "borrow" its /I=xxxx-yyyy parameter(s) for use
+with UMBPCI.SYS v2.24 and older ONLY (UMBPCI v3.00 and newer do NOT need the
+/I=xxxx-yyyy parameter), but this MUST be limited to the range C800-EFFF, which
+is valid for ALL UMBPCI releases.
+After adding a line for UMBPCI.SYS to your CONFIG.SYS, disable the EMM386.EXE
+line by placing REM or a semicolon (;) in front of it. Examples:
+
+; DEVICE=C:\WINDOWS\EMM386.EXE I=B000-B7FF RAM D=256 AUTO
+
+or:
+
+REM DEVICE=C:\DOS\EMM386.EXE I=B000-B7FF RAM D=256 AUTO
+
+If you don't want to use UMBPCI's /I=xxxx-yyyy parameter (needed ONLY if you
+want to enable EMS) you can skip to the following section: "ADDITIONAL OS
+COMPATIBILITY".
+
+UMBPCI.SYS accepts and recognizes only the I=xxxx-yyyy command line switch
+preceeded by a forward slash (/), which MUST be used with UMBPCI v2.24 and
+older. UMBPCI supports multiple /I=xxxx-yyyy parameters.
+UMBPCI uses ONLY contiguous 16 KB Upper Memory Blocks. You may have to
+increase the start address or decrease the end address to the nearest 16 KB
+border for UMBPCI.SYS to operate properly!
+
+In MSD's Memory chart (displayed by pressing M at the MSD main screen), look
+at your upper memory range. Every caret (square) stands for 1 KB of memory,
+therefore each entire line stands for 16 KB. Because UMBPCI.SYS can use ONLY
+whole (contiguous) free 16 KB blocks, you have to look for lines that are
+COMPLETELY available (unused).
+
+MSD.EXE is the MS-DOS based MicroSoft Diagnostics utility (included with
+MS-DOS 6.xx and Windows 3.1x/9x), that you might need one day (hope not...) to
+see how your System, Memory, Devices, TSRs, Video, Mouse, Disks, Ports etc...
+are configured, and to detect eventual hardware conflicts: IRQ (Interrupt
+ReQuest line), BA (hex Base Address), I/O (Input/Output) Port, COMx Port etc.
+
+* MSD.EXE v2.14 is located on the Win98 Setup CD-ROM, in the \TOOLS\OLDMSDOS
+folder.
+* MSD.EXE v2.13 is located on the Win95 Setup CD-ROM, in the \OTHER\MSD
+folder.
+* MSD.EXE v3.0 (MS-DOS 6.00 - 6.22 users) is located in your \DOS directory
+(default is C:\DOS). If you can't find it, extract it (using EXPAND.EXE) from
+your MS-DOS 6.xx Install floppies, and place it into your DOS directory.
+
+Users of MS-DOS 5.00 - 6.21 can download the updated MSD.EXE v2.11 [180 KB,
+free], also included with MS-DOS 6.22:
+ftp://ftp.microsoft.com/softlib/mslfiles/GA0363.EXE
+
+MSD.EXE is NOT installed by Windows 9x Setup by default! Copy MSD.EXE manually
+from your Win9x Setup CD-ROM to a folder in your path (I recommend
+\WINDOWS\COMMAND), or run it directly from your Win9x CD-ROM:
+
+MSD
+
+at any DOS prompt.
+
+HINT: Try first to run MSD from outside the Windows GUI, in native MS-DOS
+mode, by choosing to boot with the "Command prompt only" option from the
+Windows 9x Startup Menu:
+- Option 5 on Win9x maschines without a Network and/or TCP/IP protocol
+installed, or:
+- Option 6 on Win9x Networked systems and/or TCP/IP enabled,
+to see what lies under your PC's "hood".
+
+When deciding which lines to use with the UMBPCI.SYS /I=xxxx-yyyy parameter,
+take the starting upper memory address from the left side of the lowest line
+and the end address from the right side of the highest line, as shown on your
+MSD's memory screen.
+
+Your Windows 9x (typically installed in C:\WINDOWS) CONFIG.SYS file should
+look something like this, assuming the entire UMB area is contiguous and free:
+
+DOS=HIGH,UMB
+DEVICE=C:\WINDOWS\HIMEM.SYS /TESTMEM:OFF /Q
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=C800-EFFF
+DEVICEHIGH=...
+INSTALLHIGH=...
+SET=...
+etc...
+
+You MUST place HIMEM.SYS in CONFIG.SYS (using the DEVICE command), because
+UMBPCI.SYS is an extension to HIMEM.SYS. Windows 9x loads HIMEM.SYS
+automatically, but later in the sequence. Therefore the HIMEM.SYS command MUST
+be loaded BEFORE UMBPCI.SYS!
+
+EMM386.EXE is no longer needed, unless you need Expanded Memory (EMS) for
+running DOS applications/games.
+If you DO need EMS, you MUST reserve 64 KB of contiguous upper memory for the
+EMS Page Frame, and place the EMM386.EXE DEVICE line AFTER UMBPCI.SYS in your
+CONFIG.SYS.
+Also, you MUST exclude the contiguous Upper Memory Region (UMR) used by
+EMM386.EXE's Page Frame from UMBPCI's /I=xxxx-yyyy range. This 64 KB area is
+located by default between addresses C800-D7FF. EMM386.EXE tries to place its
+Page Frame in this region upon loading. You can also force EMM386.EXE to "fit"
+its Page Frame into the C800-D7FF region by adding the Mx switch on the
+EMM386.EXE line (M3 in this case), ONLY IF this area is NOT used by ROM/BIOS.
+Example of such CONFIG.SYS lines, combining UMBPCI.SYS and EMM386.EXE to
+provide EMS, and to load all devices/TSRs "high" the same time:
+
+DOS=HIGH,UMB
+DEVICE=C:\WINDOWS\HIMEM.SYS /TESTMEM:OFF /Q
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=D800-EFFF
+DEVICE=C:\WINDOWS\EMM386.EXE X=D800-EFFF X=B800-C7FF I=C800-D7FF I=B000-B7FF RAM M3 D=256 AUTO
+DEVICEHIGH=...
+INSTALLHIGH=...
+SET=...
+etc...
+
+
+If you VGA card has a 48K BIOS (e.g. NVidea GeForce) you cannot use C800-CBFF.
+Try this then:
+
+DEVICE=C:\WINDOWS\HIMEM.SYS /TESTMEM:OFF /Q
+DEVICE=C:\UMBPCI\UMBPCI.SYS /I=DC00-EFFF
+DEVICE=C:\WINDOWS\EMM386.EXE X=DC00-EFFF X=B800-C7FF I=CC00-DBFF I=B000-B7FF RAM M3 D=256 AUTO
+
+
+
+IMPORTANT: To become familiar with HIMEM.SYS and EMM386.EXE command line
+parameters:
+- MS Windows 9x users: use Notepad to read the "HIMEM.SYS" and "EMM386.EXE"
+topics in MSDOSDRV.TXT, a text file located in your Windows folder.
+- MS-DOS 6.xx users: run these commands from any DOS prompt:
+HELP HIMEM.SYS
+and then:
+HELP EMM386.EXE
+and read the related topics.
+
+Alternatively you can load EMM386.EXE without a Page Frame by adding the
+"FRAME=NONE" parameter to your EMM386.EXE CONFIG.SYS line, while still
+providing EMS. Example:
+
+DEVICE=C:\WINDOWS\EMM386.EXE FRAME=NONE X=D800-EFFF X=B800-C7FF I=C800-D7FF I=B000-B7FF RAM D=256 AUTO
+
+But BEWARE of program errors, because older EMS DOS programs were not designed
+to work properly WITHOUT a Page Frame.
+
+Another method is to reserve the 64 KB Page Frame area and let Windows 9x GUI
+provide EMS in its DOS boxes/sessions. This SYSTEM.INI [386enh] section line:
+
+[386enh]
+EMMPageFrame=C800
+
+does the trick, provided that the 64 KB upper memory region at C800-D7FF is
+CONTIGUOUS and FREE (unused) when Windows 9x starts, and that EMM386.EXE does
+NOT load from CONFIG.SYS.
+Note that EMM386.EXE settings in CONFIG.SYS take precedence over the
+SYSTEM.INI lines. If EMM386.EXE is set to provide expanded memory (EMS) with
+the "RAM" or "HIGHSCAN" switch in CONFIG.SYS, the SYSTEM.INI line above has
+NO effect.
+Use this workaround ONLY IF you have ANY DOS based programs/games that need
+EMS to run in a DOS box/session.
+
+Alternatively you can disable the Windows 9x search for free (unused) RAM in
+the UMA, by adding/changing this line under the [386enh] section of your
+SYSTEM.INI, to avoid incompatibilities with DOS mode drivers/TSRs or/and 3rd
+party upper/extended/expanded memory managers loaded from your startup files
+(CONFIG.SYS and AUTOEXEC.BAT):
+
+[386enh]
+EMMExclude=A000-FFFF
+
+For more useful SYSTEM.INI settings go to this page:
+http://members.aol.com/axcel216/lastweek.htm#SYSINI
+
+
+ADDITIONAL OS COMPATIBILITY
+===========================
+
+Begining with v3.00 UMBPCI is compatible with DR-DOS, Novell DOS and Caldera
+Open DOS.
+
+When UMBPCI doesn't find an XMS driver (i.e. HIMEM.SYS), it only enables
+(maps) the upper memory and ends. HIDOS.SYS can then create UMBs from this
+memory.
+
+Use is like this:
+
+device=c:\umbpci\umbpci.sys
+device=himem.sys /chipset=ram /use=c800-efff
+
+The /use parameter of himem should set the same areas that UMBPCI
+reports when it loads. Best you test it before with UMBCHK.
+
+
+
+
+Uwe Sieber
+
+
+English docs revised by George Gombos [axcel216@aol.com]:
+http://members.aol.com/axcel216/
+
+E-mail:
+mail@uwe-sieber.de
+uwe.sieber@gmx.de
+
+Homepage URL:
+http://www.uwe-sieber.de
+
+Or go to:
+http://www.google.com
+and search for "Uwe Sieber's Homepage" or for "UMBPCI".

@@ -1,0 +1,3 @@
+; This file gets inserted in to the driver's protocol.ini file.
+; You can set hardcode lines for setting duplex/speed here.
+

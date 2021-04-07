@@ -1,0 +1,43 @@
+VSpeed v1.10 - Freeware - VSPEED.TXT
+
+
+
+VSPEED.EXE reports the video throughput for bit blit operations from DRAM to
+VRAM for both the banked VGA and Linear Frame Buffer (LFB) mechanisms.
+To test the LFB you should have a VESA 2.0 conforming driver. If your VESA
+driver is not 2.0 compliant VSPEED will attept to determine the LFB address by
+querying the PCI configuration registers. If neither method of determining the
+LFB address succeeds, you can supply an LFB address (in hex) on the command
+line. Otherwise the LFB will not be tested.
+
+For your information (and to aid in debugging if there is a problem) VSPEED
+will display information about the LFB address once it has started.
+Press RETURN to continue on with the program.
+
+Some VESA drivers appear to return an incorrect LFB address. If you experience
+difficulties with VSPEED try using -L on the command line to eliminate the
+linear frame buffer test. For example:
+
+VSPEED -L
+
+will test only the banked VGA mechanism.
+
+VSPEED
+
+will test both the banked VGA and the linear frame buffer determined from the
+VESA driver of the PCI config registers.
+
+VSPEED FF000000
+
+will test both the banked VGA and the linear frame buffer using the user
+supplied address.
+
+VSPEED tests each of the two mechanisms for 5 seconds regardless of the bus
+speed. This should increase the accuracy of the results on faster busses and
+decrease the waiting time on slower busses.
+
+Sample VSPEED results from a 200 MHz Pentium Pro motherboard with the B0
+stepping of the 82450, a 4 MB Matrox MGA Millennium and FASTVID patches:
+
+Copy DRAM to banked VGA:                87.72 million bytes per second
+Copy DRAM to linear framebuffer:        93.46 million bytes per second

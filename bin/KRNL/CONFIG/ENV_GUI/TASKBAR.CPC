@@ -1,0 +1,64 @@
+// USER
+CCP/ /SET.LEVEL = 3
+
+// --------- T A S K B A R   P R O P E R T Y ---------
+
+// [FR] Image item non-focus
+// [EN] No-focus item image
+SET/ CPC_GUI.TASKBAR.NORMAL = %OS_GUI%\TaskB.png
+
+// [FR] Image item focus
+// [EN] Focus item image
+SET/ CPC_GUI.TASKBAR.FOCUS = %OS_GUI%\TaskB_F.png
+
+// [FR] Position de depart des items
+// [EN] Starting position items
+SET/ CPC_GUI.TASKBAR.POS_X = 10
+SET/ CPC_GUI.TASKBAR.POS_Y = 1
+
+// [FR] Taille de la taskbar
+// [EN] Taskbar size
+SET/ CPC_GUI.TASKBAR.SIZ_X = 500
+SET/ CPC_GUI.TASKBAR.SIZ_Y = 2
+
+// [FR] Espacement entre les items
+// [EN] Spacing between items
+SET/ CPC_GUI.TASKBAR.SPACING_X = 20
+SET/ CPC_GUI.TASKBAR.SPACING_Y = 0
+
+
+
+// --------- B Y   I T E M S ----------
+
+// [FR] Nombre de caractere max
+// [EN] Max char numbers
+SET/ CPC_GUI.TASKBAR.SIZ_TEXT = 12
+
+// [FR] Taille de chaque items
+// [EN] Size for each items
+SET/ CPC_GUI.TASKBAR.SIZ_ITEM_X = 150
+SET/ CPC_GUI.TASKBAR.SIZ_ITEM_Y = 24
+
+// [FR] Positionnement du texte dans l'item
+// [EN] Text position on item
+SET/ CPC_GUI.TASKBAR.POS_TEXT_X = 32
+SET/ CPC_GUI.TASKBAR.POS_TEXT_Y = 4
+
+// [FR] Positionnement du texte dans l'item
+// [EN] Text position on item
+SET/ CPC_GUI.TASKBAR.POS_ICON_X = 4
+SET/ CPC_GUI.TASKBAR.POS_ICON_Y = 0
+
+// [FR] Positionnement du texte dans l'item
+// [EN] Text position on item
+SET/ CPC_GUI.TASKBAR.SIZ_ICON_X = 16
+SET/ CPC_GUI.TASKBAR.SIZ_ICON_Y = 16
+
+// [FR] Couleur du titre
+// [EN] Title color
+SET/ CPC_GUI.TASKBAR.TEXT_R = 240
+SET/ CPC_GUI.TASKBAR.TEXT_G = 240
+SET/ CPC_GUI.TASKBAR.TEXT_B = 250
+
+
+

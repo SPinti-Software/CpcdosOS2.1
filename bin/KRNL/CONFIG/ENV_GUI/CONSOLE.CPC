@@ -1,0 +1,66 @@
+// GUI Console test
+// SPinti Software 
+// 13-OCT-2020
+// Free code!
+
+window/ Console_text
+        .title          = "CpcdosC+ Shell"
+        .px             = "200"
+        .py             = "130"
+        .sx             = "600"
+        .sy             = "400"
+        .Opacity        = "255"
+        .Parameters     = "TYPE:0 ALPHAMODE:0"
+	.WindowColor	= "050,050,100"
+        .TitleColor     = "255,255,255"
+        .BackColor      = "150,200,255"
+        .Icon           = "%OS_GUI%/ICO_DEF.png"
+        .events         = "%_EXE_PATH_%"
+	@#Handle_Fenetre creer/
+end/ window
+
+Textbox/ txt_console
+        .handle         = "%handle_fenetre%"
+        .parameters     = "EDIT:1 MULTILINE:1 COL:1 CONSOLE:1"
+        .px             = "1"
+        .py             = "1"
+        .tx             = "595"
+        .ty             = "395"
+        .BackColor      = "150,200,250"
+        .TextColor      = "255,255,255"
+        .text           = ""
+	Creer/
+end/ Textbox
+
+Function/ Console_text.Resize(up)
+
+        sys/ /debug = 2
+        // [FR] Recuperer la taile X et Y de la fenetre
+        // [EN] Getting X, Y window size
+        window/ /modif:console_text
+                @#Size_X .sx
+                @#Size_Y .sy
+        end/ window
+
+        // [FR] Ajuster la taille de l'objet au pixel pres!
+        // [EN] Ajust size in pixels
+        set/ Size_X = /C(%Size_X% - 2)
+        set/ Size_Y = /C(%size_Y% - %CPC_GUI.WINDOW.TITLE_SY% - 2)
+
+        // [FR] Et y modifier dans le textbox
+        // [EN] And modify on textbox
+        textbox/ /modif:txt_console
+                .sx = "%Size_X%"
+                .sy = "%Size_Y%"
+                create/
+        end/ textbox
+        
+        
+
+End/ function
+
+
+
+
+
+

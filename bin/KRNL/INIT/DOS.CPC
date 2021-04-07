@@ -1,0 +1,41 @@
+// Ce fichier permet de declarer les fonctions AVANT et APRES execution des fichiers DOS
+// [EN] This file allow to declare function for BEFORE & AFTER dos file execution
+
+Declare/ BEFORE_DOS() : NIVEAU(5)
+Declare/ AFTER_DOS() : NIVEAU(5)
+
+// Declare OS variable
+CCP/ /SET.LEVEL = 4
+set/ Resolution_BEFORE = 0
+
+
+Function/ Before_DOS()
+
+	// Get actual screen resolution
+	@#Resolution_BEFORE SYS/ /SCREEN
+
+	// Return to console mode (Close GUI)
+	GUI/ /CONSOLE
+
+	// Use console screen mode
+        sys/ screen/ 0
+	
+End/ Function
+
+
+Function/ After_DOS()
+
+        ccp/ /fix.level = 2
+
+	// Getting size string variable
+	Set/ GUI_Res = /F:CPC.LEN(Resolution_BEFORE)
+
+	// If This string is more biggest than 2, so it's GUI resolution (XXXX x YYYY)
+	if/ "%GUI_Res%" > "2" Then:
+		// Re-launch GUI (Be sure that SYS/ /OS: is defined!)
+		GUI/
+	Else:
+		SYS/ /SCREEN %Resolution_BEFORE%
+	End/ if
+
+End/ Function

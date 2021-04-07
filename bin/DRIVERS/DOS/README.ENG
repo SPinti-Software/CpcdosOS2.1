@@ -1,0 +1,102 @@
+----------
+"motto hairu" DOS Driver
+----------
+
+This driver enables "motto hairu" USB interface on DOS.
+IEEE1394 interface can not be used on DOS.
+
+There are three drivers as DOS Driver.
+
+USBASPI.SYS : USB1.1 mode ASPI Manager
+RAMFD.SYS : RAM DISK driver for USB floppy, if you have only single USB port and access both.
+Di1000dd.SYS : ASPI HDD driver
+
+1. If you does not have USB floppy
+
+Copy USBASPI.SYS and Di1000dd.SYS files and 
+add following 2 lines to config.sys on the boot disk.
+
+device=USBASPI.SYS
+device=Di1000dd.SYS
+
+After that, connect "motto hairu" to USB port, then set this disk to FDD, and 
+power-on PC.
+
+2. If you use USB floppy
+
+Copy USBASPI.SYS, Di1000dd.SYS and RAMFD.SYS files and 
+add following 3 lines to config.sys on the boot disk.
+
+device=RAMFD.SYS
+device=USBASPI.SYS /W --- Use /R option, if you have multiple USB ports
+device=Di1000dd.SYS
+
+And confirm 
+device=himem.sys
+is exist in config.sys.
+If you don't have, add following 4 lines.
+
+device=himem.sys
+device=RAMFD.SYS
+device=USBASPI.SYS /W
+device=Di1000dd.SYS
+
+When power-on, during booting, contents of FD is copied to RAM disk, then, 
+when the copy is completed, following message will appear.
+
+===============================================
+=== Connect the target device to USB port. ===
+=== Press [ENTER} to continue. ===
+===============================================
+
+Then, disconnect USB floppy from USB port and connect "motto hairu" to USB port and 
+press [ENTER] key.
+Boot will continue from RAM disk.
+
+NOTE:
+1) After changing DOS mode with rebooting Windows, it can not work.
+You must power off once.
+
+2) Option settings
+
+USBASPI.SYS has following options.
+
+/R : Access also USB FDD.
+: RAMFD.SYS may be needed in some cases.
+
+/W : Prompt following message for swapping floppy and device, if you need to boot from USB floppy and have only one USB port.
+
+===============================================
+=== Connect the target device to USB port. ===
+=== Press [ENTER} to continue. ===
+===============================================
+
+/M=xx : OHCI memory map address
+As default, it will use unused address between D0000h and DFFFFFh.
+Ex) /M=D4 : Use D4000h
+
+/P=xxx0 : UHCI I/O address
+Specify if BIOS does not assign I/O Port Address of the controller.
+/V : Shows various information.
+
+3) In case of OHCI, EMM386.EXE is not recommended.
+If you use it, don't use UMB or specify X=D000-DFFF to keep extended ROM space.
+4) In some PC, UHCI's I/O port is not assigned by BIOS. 
+In this case, specify I/O port by /P option.
+
+Appendix - About OHCI and UHCI
+There are two kind of USB host controller chip spec.
+Universal Host Controller Interface = UHCI
+Open Host Controller Interface = OHCI
+
+We can check which is used by following procedure.
+1. Click [Start] -> [Setting(S)] -> [Control Panel(C)].
+2. Double click [System] icon.
+3. Click [Device Manager] tab.
+4. Double click [Universal Serial Bus Controller].
+
+************* Universal Host Controller 
+means UHCI is used.
+
+************* Open Host Controller 
+means OHCI is used.

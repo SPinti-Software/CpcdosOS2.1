@@ -1,0 +1,53 @@
+
+RAR 2.00     Copyright (c) 1993-96 Eugene Roshal     2 September 1996
+Shareware version         Type RAR -? for help
+
+Usage:     RAR <command> -<switch 1> -<switch N> <archive> <files...>
+               <@listfiles...> <path_to_extract\>
+           Specify empty listfile name to read names from stdin
+
+<Commands>
+  a     Add files to archive          u     Update files in archive
+  f     Freshen files in archive      m[f]  Move to archive [files only]
+  x     Extract files with full path  e     Extract files to current directory
+  d     Delete files from archive     cw    Write archive comment to file
+  t     Test archive files            p     Print file to stdout
+  c     Add archive comment           cf    Add files comment
+  k     Lock archive                  s     Convert archive to SFX
+  r     Repair archive                rr[N] Add data recovery record
+  l[t]  List archive [technical]      v[t]  Verbosely list archive [technical]
+
+<Switches>
+  rr[N] Add data recovery record      mm[f] Multimedia compression [force]
+  o+    Overwrite existing files      o-    Do not overwrite existing files
+  s     Create solid archive          sfx   Create SFX archives
+  cl    Convert names to lower case   cu    Convert names to upper case
+  f     Freshen files                 u     Update files
+  c-    Disable comments show         ed    Do not add empty directories
+  ep    Exclude paths from names      ep1   Exclude base dir from names
+  tk    Keep original archive time    tl    Set archive time to latest file
+  y             Assume Yes on all queries
+  r             Recurse subdirectories
+  r0            Recurse subdirectories for wildcard names only
+  cfg-          Disable read configuration
+  md<size>      Set dictionary size in Kb (64,128,256,512,1024 or A,B,C,D,E)
+  z<file>       Read archive comment from file
+  x<file>       Exclude specified file
+  x@<list>      Exclude files in specified list file
+  x@            Read file names to exclude from stdin
+  v             Create volumes with size autodetection
+  v<size>[k,b]  Create volumes with size=<size>*1000 [*1024, *1]
+  p<password>   Set password
+  p-            Do not query password
+  kb            Keep broken extracted files
+  w<path>       Assign work directory
+  m<0..5>       Set compression level (0-store...3-default...5-maximal)
+  e<attr>       Set file exclude attributes
+  av            Put authenticity verification (registered versions only)
+  av-           Disable AV check
+  ds            Disable name sort for solid archive
+  ilog          Log errors to file (registered versions only)
+  isnd          Enable sound
+  ierr          Send all messages to stderr
+  inul          Disable all messages
+  ri<P>[:<S>]   Set priority (0-default,1-min..15-max) and sleep time in ms
