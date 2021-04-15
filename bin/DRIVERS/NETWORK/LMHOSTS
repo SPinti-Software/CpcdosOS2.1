@@ -1,0 +1,21 @@
+# LMHOSTS File   -   UNIVERSAL TCP/IP NETWORK BOOTDISK for M$ Networks
+#
+#
+# *** INSTRUCTIONS ***
+#
+# Add your host information to the end of this text file. This file is saved
+# back to the floppy disk under A:\FILECOPY\LMHOSTS, should you wish to modify
+# this file externally.
+#
+# Use the cursor keys to navigate this file. To SAVE CHANGES made press ALT+X, 
+# otherwise press ALT+Q to discard changes and return to the menu. For futher
+# inforamtion about this editor, press F1.
+#
+#
+# LMHOSTS Example:
+#
+#      149.124.10.4     server1			# main office server
+#      182.102.93.122	joe3			# joe's database server
+
+
+127.0.0.1	localhost

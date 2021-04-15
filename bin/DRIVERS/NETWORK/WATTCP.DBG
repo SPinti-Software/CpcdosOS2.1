@@ -1,0 +1,86 @@
+Watt-32 (2.2.10), GNU-C 4.3.2 (Pent), djgpp 2.03, Apr 10 2009
+PKTDRVR: "MAC/DIS converter", ver 0.19, API ver 1.09, mode 3
+
+Gateway list:
+  #000: 172.22.10.11    (network: 0.0.0.0         mask: 255.255.0.0)
+
+Routing cache:
+------- top of cache -----------------------------------------------
+  (032) top of pending slots ---------------------------------------
+        --none--
+- (032) top of free slots ------------------------------------------
+  #031: (free)
+   ...  (free)
+  #000: (free)
+- (000) top of dynamic slots ---------------------------------------
+        --none--
+------- bottom of cache --------------------------------------------
+
+ARP cache:
+------- top of cache -----------------------------------------------
+  (064) top of pending slots ---------------------------------------
+  #063: IP: 172.22.10.11    -> ??:??:??:??:??:??  expires in 2.000s
+- (063) top of free slots ------------------------------------------
+  #062: (free)
+   ...  (free)
+  #000: (free)
+- (000) top of dynamic slots ---------------------------------------
+        --none--
+- (000) top of fixed slots -----------------------------------------
+        --none--
+------- bottom of cache --------------------------------------------
+
+Transmitted: pcarp.c (410), time 00:00:00.069
+ARP:   Request (1), hw 0100, type 0800
+       78:84:3C:FE:7B:4C (172.22.15.24) -> 00:00:00:00:00:00 (172.22.10.11)
+
+Transmitted: pcarp.c (410), time 00:00:00.578
+ARP:   Request (1), hw 0100, type 0800
+       78:84:3C:FE:7B:4C (172.22.15.24) -> 00:00:00:00:00:00 (172.22.10.11)
+
+Transmitted: pcarp.c (410), time 00:00:01.078
+ARP:   Request (1), hw 0100, type 0800
+       78:84:3C:FE:7B:4C (172.22.15.24) -> 00:00:00:00:00:00 (172.22.10.11)
+
+Transmitted: pcarp.c (410), time 00:00:01.578
+ARP:   Request (1), hw 0100, type 0800
+       78:84:3C:FE:7B:4C (172.22.15.24) -> 00:00:00:00:00:00 (172.22.10.11)
+_tcp_abort(0012F970) called from pctcp.c (1260). State RESOLVE
+  
+ARP-cache:
+      IP: 172.22.10.11    -> 00:00:00:00:00:00, Pending, timedout
+ 
+Driver statistics:
+      Rx:         0 pkt,          0 bytes,      0 errors,      0 lost  (this session)
+      Tx:         4 pkt,          0 bytes,      0 errors
+      Rx:        77 pkt,         77 bytes,      0 errors,      0 lost  (since boot)
+      Tx:        37 pkt,          0 bytes,      0 errors
+MAC   input stats:
+      dropped 0, waiting 0, looped 0, non-IP recv 0 sent 4
+      unknown types, 0, LLC frames 0, IP-recursions 0 
+      wrong handle 0, bad-sync 0, too large 0, too small 0 
+MAC   output stats:
+      Tx errors              0 
+      Tx retries             0
+      Tx timeout             0
+ARP   Requests:              0 recv
+      Requests:              4 sent
+      Replies:               0 recv
+      Replies:               0 sent
+PPPoE stats:
+IP4   input stats:
+IP4   output stats:
+      noroute:               1
+IP6   input stats:
+IP6   output stats:
+ICMP  input stats:
+ICMP  output stats:
+ICMP6 input stats:
+ICMP6 output stats:
+IGMP  input stats:
+IGMP  output stats:
+UDP   input stats:
+UDP   output stats:
+TCP   input stats:
+TCP   output stats:
+      conn-attempt:          1

@@ -1,0 +1,179 @@
+FastVid v1.10 - Freeware - FAQ.TXT
+
+
+
+See FASTVID.TXT for more info!
+
+This FAQ was compiled by Eric van Ballegoie.
+THX to John Hinkley for providing most of this info.
+
+NOTES:
+- References to Pentium Pro CPUs include also all Pentium II, III + IV CPUs.
+- References to Windows 95 include also all Windows 98 + ME editions.
+- References to Windows NT4 include also all Windows 2000, XP + 2003 editions.
+
+
+Q: How can I find out which LFB address my video card uses?
+A: A: When you run VSPEED (USE THE ONE HERE, NOT AN OLDER VERSION !!!) it will
+   report some possible LFB addresses.
+   If FASTVID can't automatically detect the LFB address, you can determine
+   its location from Windows 95/98/ME Device Manager. Select Start, Settings,
+   Control Panel, System, Device Manager, Display Adaptors, your graphics
+   card, Resources. Scroll to the bottom of the Resource Settings box and you
+   will see a line (or a few lines) that read(s): "Memory Range
+   XXXXXXXX - YYYYYYYY". The first value should be the location of the linear
+   frame buffer. Take note of the address and input it into FASTVID when
+   asked. If there are several address try each of them. Ignore the following
+   memory regions: A0000-AFFFF, B0000-BFFFF, C0000-CFFFF.
+   If all of this doesn't work out, try UNIVBE 5.2/5.3 When you run UNIVBE it
+   will report "ENABLING LINEAR FRAME BUFFER AT XXXXX Mb" where XXXXX is a
+   decimal value. Now, search the HEX equivalent for this number. This can be
+   done with LFB_CONV.EXE (also on my site). Enter the decimal LFB address
+   when prompted, and it will calculate the HEX equivalent. If none if these
+   methods work your card might not support LFB modes.
+
+Q: In VSPEED my screen turns black on the second 5 second test, how come?
+A: Make sure you have the right LFB address (see above). If you're sure you
+   have the right address, it might be that your video card requires VESA
+   extentions to be loaded (S3 868/969 for example). You can simply do this by
+   loading UNIVBE 5.2/5.3 before running FastVid.
+
+Q: Eventhough all FastVid's settings are enabled, I still get bad VSPEED
+   Results, how come?
+A: Your video card might need VESA extiontion to be loaded first, see above.
+
+Q: I have an ASUS P/I P6NP5 Mainboard, and I've heard that you wouldn't need
+   FastVid at all on this mainboard, is that true?
+A: For as far as I know, it depends on the video card you use with the P6NP5.
+   With the Matrox Millennium you might not need FastVid, just check it by
+   typing "fastvid xxx". If all settings are enabled already, you don't need
+   FastVid. With most cards however, you'll still need FastVid.
+
+Q: When I set the bios option for "Video Mem Cache Mode" to "USWC", the screen
+   screen of Windows' safe mode (or any other 640x480x8 mode) is corrupted.
+   Is there a workaround for this?
+A: You might want to put the bios setting to "UC" and let FastVid enable this
+   setting (It's FastVid's "VGA Write Combining" function). If you start
+   Windows in safe mode, your autoexec.bat will not be executed and FastVid
+   will not load so you can work in safe mode without the problem.
+
+Q: I have a 82450 (ORION) mainboard. How can it be that my system hangs from
+   time to time after running FastVid?
+A: Enabeling FastVid's "Write Posting" function causes this problem, simply
+   disable it. See FASTVID.TXT for more info.
+
+Q: Evenyhough I have enabeled FastVid's LFB setting, I can't get any
+   improvement on the LINEAR mode, how come?
+A: Make sure that you are not running any many memory managers like EMM386,
+   QEMM or 386MAX . They interfere with FastVid's LFB function. Remove these
+   memory managers from your startup files and run your programs from within
+   Windows 95 whenever possible.
+
+Q: When I run FastVid from Windows 95 I get a DOS4GW error and a register
+   dump. How can I avoid this problem?
+A: You should always run FastVid from real mode DOS, not from the Windows 95
+   DOS prompt. You you can do so by pressing "F8" when the message "Starting
+   Windows 95" appears on your sceen. From the menu, choose "Command prompt
+   only".
+
+Q: On my Number Nine Imagine 128 II I get real bad performance with VSPEED.
+   Is this a hardware problem?
+A: Partly, the Imagine 128 II VESA mode performance varies greatly with the
+   BIOS version. On older Imagine 2 boards with a 3.01.0x BIOS, VGA (& VBE)
+   support is provided by a separate (very slow), dos processor (Cirrus Logic
+   CL5424). On boards with a 3.02.0x BIOS, the Imagine 2 engine always handles
+   VBE applications. VBE 2.0 and linear frame buffer support are available as
+   of the 3.02.03 BIOS version. If you have an older BIOS version, you should
+   get a newer bios which lets the Imagine 2 engine handle VBE modes.
+
+Q: With FastVid enabled on my 4Mb ET6000 video card, the Windows 95 fonts get
+   messed up, What can I do about it?
+A: There is a work around for this problem: Specify FastVid to use 2MB for the
+   LFB instead of the default 4.
+
+Q: On my S3 based video card. I get real bad results on the BANKED mode of
+   VSPEED, what can I do about it?
+A: Load UNIVBE 5.3 before running FastVid. If that doesn't help, use the
+   S3SPDUP package and see the text files.
+
+Q: I get real bad results with one, or both of the tests from VSPEED, is it a
+   bug?
+A: I'm not sure. Try SciTech's profile instead. It comes with UNIVBE. You can
+   also load it from my site. "Profile 101" will test the banked mode,
+   "Profile 4101" will test the LFB.
+
+Q: In the VSPEED benchmark table I see another system with the same
+   configuration I have, but giving higher results, how come?
+A: Your system is not optimally configured, try altering the performance
+   related settings in your bios such as the DRAM timings, or the PCI
+   settings. Also be sure that you use the latest bios and drivers for your
+   mainboard and you video card.
+
+Q: I have a Voodoo graphics based add-on 3D card. Can I run fastVid on that
+   card instead on on my normal 2D card?
+A: It might be possible, but it's useless. 3DFX has already enabled write
+   combining in the VXD so fastVid has no use. 3DFX recomends not to enable
+   FastVid.
+
+Q: I have a Pentium II system, will I need FastVid?
+A: With the Mainboards avialable right now (05/26/97) the Pentium II needs
+   FastVid just as much as the PPro needs it. In other words:
+   YES YOU NEED IT.
+
+Q: How do I install FastVid on my Hercules Stingray 128 3D card ?
+A: This solution came from a Stingray user, an official Hercules statement
+   will come later:
+1) Load new S128/3D-drivers (v. 1.01) from Hercules. Old drivers do not work
+   with FastVid in WinGlide-games.
+2) Check your LFB-address, mine is e6000000. You can check your addresses in
+   Windows 95 from Control Panel => System. Check FastVid install guide.
+3) Fastvid works OK in my machine with settings: FASTVID 111 2 e6000000.
+   My S128/3D does NOT work with FASTVID 111 4 e6000000.
+4) Before you try VSPEED you must disable EMM386 to get good results. Allways
+   use NEWEST VSPEED version, old one does not work correctly. With new VSPEED
+   you must use command "VSPEED ADDRESS", for example "VSPEED e6000000".
+
+Q: On my #9 Imagine 128 Series 2 (4 Mb) I get good VSPEED scores with the
+   latest BIOS, but DirectX programs don't run better, what can I do?
+A: This is a specific case, it might differ from machine to machine, solution
+   from John Hinkley: It turns out that the Imagine 128 was using different
+   LFB addresses for the two modes: FF000000 for DOS, FF400000 for Windows 95.
+   FASTVID would work for either region but he had to choose between DOS and
+   Windows 95 performance. Since these two 4MB regions were right next to each
+   other, I suggested he try using the lower address and tell FASTVID that he
+   had 8MB -- enough to cover both regions. This solution worked and he was
+   able to have fast graphics under both DOS and Windows 95!
+
+Q: What can I do about the runtime errors I get from S3VBE20 and S3SPDUP on my
+   PII 266 or faster?
+A: The runtime errors are due to a bug in older versions. This only happens on
+   very fast machines. Make sur you have:
+   - S3VBE20 version 3.17 or newer.
+   - S3SPDUP version 3.11 or newer.
+
+Q: When I run DXSpeed I get results which are way worse than my VSPEED
+   results!
+A: To get the best out of DXSpeed you should have drivers installed which are
+   100% DirectDraw compatible. Some drivers made by your board manufacturer
+   will cause drasticly lower performance.
+
+Q: I have a Pentium II machine with the 440LX chipset and an AGP videocard.
+   Do I still need FastVid?
+A: The answer is simple: Yes, you still need FastVid.
+
+Q: I have an Intel P5 (Pentium or Pentium MMX) and I wonder why there are
+   utilities for almost all leading CPUs except for the Pentium, why is this?
+A: At this moment there are no Pentium performance enhancing utilities, and I
+   don't know whether there are possibilities to make them.
+
+Q: On my 400FX (or later) boards FastVid says "Write Posting Unknown" what's
+   it mean?
+A: On board with 440FX or higher chipsets FastVid cannot determine the status
+   of this function. You can either find an option for it in your BIOS, or it
+   will be enabled by it.
+
+Q: I've installed FastVid, but Quake II doesn't seem to run any faster. What
+   do I need to do?
+A: Quake II is a game which runs under Windows 95 with either software
+   rendering or OpenGL. In both cases you will NOT get any performance
+   increase.

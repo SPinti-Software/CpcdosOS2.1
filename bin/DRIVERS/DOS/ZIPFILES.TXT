@@ -1,0 +1,25 @@
+List of similar Tools
+=====================
+
+
+
+FASTV110.ZIP also contains (MUST READ respective text documents included with
+each program!):
+http://www.mdgx.com/umb.htm#FAS
+- 6X86OPT.ZIP = 6x86opt for DOS (nag shareware).
+- BOOTHD.ZIP = BootHD for Windows NT4/2000/XP/2003 (freeware).
+- CTPPRO.ZIP = ctppro for DOS (freeware).
+- CTU.ZIP = CTU for AMD K6 series CPUs for Windows 95/98/ME + DOS (freeware).
+- DIRECTNT.ZIP = DirectNT for Windows NT4/2000/XP/2003 (free).
+- K6DOSSYS.ZIP = K6DOS.SYS for AMD K6 series CPUs for DOS (freeware).
+- K6SPDLUX.ZIP = K6SPEED for AMD K6 series CPUs for Linux (freeware):
+http://www.k6plus.com/downloads/k6speedlinux.htm
+- K6SPEED.ZIP = K6SPEED for AMD K6 series CPUs for Windows 95/98/ME +
+NT4/2000/XP/2003 (freeware).
+- MTRRLFBE.ZIP = MTRRLFBE.EXE for DOS (freeware):
+http://rayer.ic.cz/programm/programe.htm
+- OS2.ZIP = fstorion for OS/2 (freeware).
+- S3SPDUP.ZIP = S3 Speed Up for DOS (freeware).
+- WAMO2057.ZIP = Write Allocate Monitor II for AMD K5 + AMD K6 series CPUs for
+Windows 95/98/ME + NT4/2000/XP/2003 (Japanese, freeware):
+http://member.nifty.ne.jp/Horiguchi/tools/toolsmain.htm

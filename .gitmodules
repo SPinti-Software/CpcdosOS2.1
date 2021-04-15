@@ -1,0 +1,3 @@
+[submodule "CONTRIB/XE-Loader/_XE_submodule"]
+	path = CONTRIB/XE-Loader/_XE_submodule
+	url = https://github.com/VLiance/XE-Loader

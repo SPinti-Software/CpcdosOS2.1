@@ -1,0 +1,111 @@
+@ Copyright (C) 1990-1999 Microsoft Corp.  All rights reserved.
+@ This is the MS-DOS general help file.  It contains a brief 
+@ description of each command supported by the MS-DOS FASTHELP command.  
+@ Type FASTHELP with no arguments to display the text in this file.
+@ Lines beginning with @ are comments, and are ignored by FASTHELP.  This
+@ file may be modified to add new commands.  If the FASTHELP command-name
+@ form is to be used, any new commands should support the /? parameter.
+@ New commands should start in the first column.  Any extra lines needed
+@ for a command description should be preceded by white space.  Commands
+@ must be added in alphabetical order.
+ADOS     Starts AccessDOS, a package of DOS extensions for keyboard, mouse
+         and sound access.
+APPEND   Allows programs to open data files in specified directories as if
+	 they were in the current directory.
+ATTRIB   Displays or changes file attributes.
+BREAK    Sets or clears extended CTRL+C checking.
+CD       Displays the name of or changes the current directory.
+CHCP     Displays or sets the active code page number.
+CHDIR    Displays the name of or changes the current directory.
+CHKDSK   Checks a disk and displays a status report.
+CHOICE   Prompts the user to make a choice in a batch program.
+CLS      Clears the screen.
+COMMAND  Starts a new instance of the MS-DOS command interpreter.
+COPY     Copies one or more files to another location.
+CTTY     Changes the terminal device used to control your system.
+CVT      Converts 16-bit FAT file system to 32-bit FAT file system.
+DATE     Displays or sets the date.
+DEBUG    Starts Debug, a program testing and editing tool.
+DEFRAG   Reorganizes the files on a disk to optimize the disk.
+DEL      Deletes one or more files.
+DELTREE  Deletes a directory and all the files and subdirectories in it.
+DIR      Displays a list of files and subdirectories in a directory.
+DISKCOMP Compares the contents of two floppy disks.
+DISKCOPY Copies the contents of one floppy disk to another.
+DOSHELP  Starts full-screen MS-DOS help system.
+DOSKEY   Edits command lines, recalls MS-DOS commands, and creates macros.
+DOSLFN   Enables or disables long file names (LFN) support.
+DOSSHELL Starts MS-DOS Shell.
+DRVSPACE Creates and manages drives compressed by using DriveSpace.
+ECHO     Displays messages, or turns command echoing on or off.
+EDIT     Starts MS-DOS Editor, which creates and changes files.
+EDLIN    Starts Edlin, a line-oriented text editor.
+EMM386   Enables or disables EMM386 expanded memory support.
+ERASE    Deletes one or more files.
+EXE2BIN  Converts .EXE (executable) files to binary format.
+EXIT     Quits the COMMAND.COM program (command interpreter).
+EXPAND   Decompresses one or more compressed files.
+EXTRACT  Extracts one or more files from specified cabinet(s).
+FASTHELP Provides summary Help information for MS-DOS commands.
+FASTOPEN Decreases the amount of time needed to open frequently used files 
+	 and directories.
+FC       Compares two files or sets of files, and displays the differences 
+	 between them.
+FDISK    Configures a hard disk for use with MS-DOS.
+FIND     Searches for a text string in a file or files.
+FOR      Runs a specified command for each file in a set of files.
+FORMAT   Formats a disk for use with MS-DOS.
+GRAPHICS Loads a program that can print graphics.
+HELP     Provides complete, interactive Help information for MS-DOS commands.
+KEYB     Configures a keyboard for a specific language.
+LABEL    Creates, changes, or deletes the volume label of a disk.
+LFNFOR   Enables or disables long file name when processing FOR command.
+LH       Loads a program into the upper memory area.
+LOADFIX  Loads a program above the first 64K of memory, and runs the program.
+LOADHIGH Loads a program into the upper memory area.
+LOCK     Locks a drive, enabling direct disk access for an application.
+MD       Creates a directory.
+MEM      Displays the amount of used and free memory in your system.
+MEMMAKER Runs the MemMaker memory-optimization program.
+MKDIR    Creates a directory.
+MODE     Configures a system device.
+MORE     Displays output one screen at a time.
+MOVE     Moves one or more files. Also renames files and directories.
+MSCDEX   Provides access to CD-ROM drives.
+MSD      Provides detailed technical information about your computer.
+NLSFUNC  Loads country-specific information.
+PATH     Displays or sets a search path for executable files.
+PAUSE    Suspends processing of a batch file and displays a message.
+POWER    Turns power management on and off.
+PRINT    Prints a text file while you are using other MS-DOS commands.
+PROMPT   Changes the MS-DOS command prompt.
+QBASIC   Starts the MS-DOS QBasic programming environment.
+RD       Removes a directory.
+RECOVER  Recovers readable information from a bad or defective disk.
+REN      Renames files or directories.
+RENAME   Renames files or directories.
+REPLACE  Replaces files.
+RMDIR    Removes a directory.
+SCANDISK Checks a drive for errors and repairs any problems it finds.
+SET      Displays, sets, or removes MS-DOS environment variables.
+SETVER   Sets the version number that MS-DOS reports to a program.
+SHARE    Installs file-sharing and locking capabilities on your drives.
+SHUTDOWN Shutdowns (requires an ATX power) or restarts your system.
+SORT     Sorts input.
+SUBST    Associates a path with a drive letter.
+SYS      Copies MS-DOS system files and command interpreter to a disk you 
+	 specify.
+TIME     Displays or sets the system time.
+TREE     Graphically displays the directory structure of a drive or path.
+TRUENAME Displays the true name of current directory.
+TYPE     Displays the contents of a text file.
+UNLOCK   Unlock a drive, disabling direct disk access for an application.
+VER      Displays the MS-DOS version.
+VERIFY   Directs MS-DOS to verify that your files are written correctly 
+	 to a disk.
+VOL      Displays a disk volume label and serial number.
+VSAFE    Monitors your computer for viruses and displays a warning when it
+         finds one.
+XCOPY    Copies files (except hidden and system files) and directory trees.
+
+* Note: some commands are only available in MS-DOS 7.10 full installation.

@@ -1,0 +1,139 @@
+FastVid v1.10 - Freeware - INSTALL.TXT
+
+
+
+See FASTVID.TXT for more info!
+
+NOTES:
+- References to Pentium Pro CPUs include also all Pentium II, III + IV CPUs.
+- References to Windows 95 include also all Windows 98 + ME editions.
+- References to Windows NT4 include also all Windows 2000, XP + 2003 editions.
+
+
+If your system doesn't react the way it is described below, read FAQ.TXT
+carefully !
+
+To get the most out of FastVid and your Pentium Pro/II/III/IV system I
+strongly advise you to follow the steps below.
+
+First of all, download all files from this site. If you already have
+Dos4GW.exe you won't need to download it. Now read FASTVID.TXT carefully!
+Copy all the files to a directory on your hard drive.
+Restart your computer and go to the BIOS Setup.
+In the advanced BIOS settings page you should enable / put to USWC the
+following settings:
+
+CPU to PCI Write post *
+PCI Burst Write Combining
+Video Mem Cache Mode USWC **
+VGA Frame Buffer USWC **
+PCI Frame Buffer USWC ***
+
+*   = FastVid's "Write Posting" feature.
+**  = FastVid's "Banked VGA Write Combining" Feature.
+*** = FastVid's "Linear Frame Buffer Write Combining" feature.
+
+NOTE: You will not find all of the above settings in your BIOS.
+Settings depend on BIOS and motherboard brand/version.
+
+OS/2:
+
+Unzip OS2.ZIP and follow the steps in README.TXT.
+
+WIN NT4/2000/XP/2003
+
+Unzip BOOTHD.ZIP and follow the steps in BOOTHD.TXT to make a boot disk.
+NOTE: The way to install FastVid described below will most probably not work:
+you'll always have to start from the boot disk.
+
+WIN 95/98/ME + DOS:
+
+Reboot your computer. Make a new boot disk. You can do so by putting an empty
+disk in you A drive, then type "format a: /s".
+Do NOT copy the CONFIG.SYS and AUTOEXEC.BAT files to the disk.
+You now have a "clean" boot disk. Now copy DOS4GW.EXE, FASTVID.EXE and
+VSPEED.EXE to the boot disk.
+Restart your computer and boot from the boot disk.
+
+When your system has restarted type VSPEED at the DOS prompt. Vspeed will run
+two 5 second tests. During these tests you will see "video noise" on the
+sceen. When the first 5-seconds are finished you'll see a resolution change,
+then the video noise will continue for another 5 seconds (If you can't see
+video noise on one or both of the tests, see FAQ.TXT). After that VSPEED
+reports the CPU-TO-PCI performance for BANKED and LINEAR modes. If your BIOS
+supports all of FastVid's settings both of the modes will report 65 ~ 95 Mb/s
+throughput. If not, you'll be sure you need FastVid:
+Run FastVid by typing "fastvid xxx". At this point FastVid will do nothing, it
+will just report which of its 3 functions are enabled already by your BIOS.
+NOTE: On newer mainboards 82440 (NATOMA) Fastvid 1.10 will indicate the "Write
+Posting" function "UNKNOWN". This is not a problem ever since it is already
+enabled or can be enabled in the BIOS. On older 82450 (ORION) motherboards you
+should be careful with this function (see FASTVID.TXT).
+
+If FastVid indicates all 3 functions to be enabled already, you won't need
+FastVid. If not, you can enable the functions which aren't already.
+For example: If FastVid's first 2 settings are already enabled by your BIOS,
+but the third one isn't, type "fastvid xx1" The two "x"'s mean that FastVid
+should not alter the first 2 of its options. The "1" means that the third
+function should be enabled. Possible settings are:
+x = FastVid will not alter this setting.
+1 = FastVid will enable this setting.
+0 = FastVid will disable this setting.
+For more information on the command line parameters see FASTVID.TXT.
+
+If you have enabled the settings you wanted to, check it one more time typing
+"fastvid xxx". All settings should be enabled now. Now run VSPEED again. The
+results should be variing for 65 to 90 Mb/s on both the BANKED and the LINEAR
+mode. The exact rate depends on the PCI bus speed and the video card.
+
+You might be able to improve your performance another little bit by DISABLING
+the "VGA Frame Buffer USWC" mode (or set "Video Mem Cache Mode" to "UC") in
+your BIOS and let FastVid enable this setting (FastVid's second setting).
+Fastvid might be able to do this a little more agressive than the BIOS
+function. Check the difference with VSPEED.
+
+To get the most out of your system try different combinations of FastVid and
+BIOS settings. When you've optimised the settings for your system, you can put
+FastVid in your AUTOEXEC.BAT. Put it in as the first line. If you need UNIVBE
+(see FAQ.TXT), then put UNIVBE in as the first line and FastVid in as the
+second.
+
+UNIVBE:
+* SciTech Display Doctor (SDD) 32-bit protected mode DOS TSR Universal VESA
+BIOS Extensions (VBE) 2.0/3.0 video accelerated driver (UNIVBE.EXE) +
+calibration tools for MS-DOS 5/6/7/8 + Windows 9x/NT4/2000/ME/XP add linear
+frame buffer (LFB), high speed bank switching, page flipping, hardware
+scrolling and 2D hardware acceleration support for most video cards without
+VESA hardware standard built-in, in ANY text and graphics (S)VGA/XVGA modes +
+ANY number of colors, to accelerate ALL DOS/Windows graphics intensive
+apps/games noticeably (unsupported freeware):
+http://www.scitechsoft.com/products/ent/free_titles.html
+- SDD v6.53 for Windows 9x/NT4/2000/ME/XP + MS-DOS 5/6/7/8 [2.76 MB]:
+http://www.scitechsoft.com/ftp/sdd/sdd653-w.exe
+- SDD v6.7 for MS-DOS 5/6/7/8 [696 KB]:
+http://www.scitechsoft.com/ftp/sdd/univbe67.exe
+UNIVBE.EXE takes 23 KB of DOS RAM, but does NOT fit in upper memory if
+EMM386.EXE loads with expanded memory enabled (RAM switch). Add the NOEMS
+switch to the EMM386.EXE line in CONFIG.SYS, or use UMBPCI.SYS:
+http://www.mdgx.com/umb.htm
+to load UNIVBE in UMA.
+DOS accelerated games + applications using VESA 2.0 standard:
+- 3D Realms Duke Nukem 3D
+- Access Under a Killing Moon
+- Acclaim Constructor
+- AutoDesk Animator
+- Blizzard WarCraft II
+- Bullfrog Magic Carpet 2
+- Cryo: Dreams to Reality + Megarace II
+- Hercules Total Mayhem
+- id Quake
+- Legend Mission Critical
+- Lucas Arts: Rebel Assault II The Hidden Empire + TIE Fighter
+- Midway Mortal Kombat Trilogy
+- Metropolis Katharsis
+- Perfect Discworld II
+- Sierra Phantasmagoria
+- Spectrum HoloByte: Star Trek Next Generation A Final Unity + Falcon 3
+- Trilobyte The 11th Hour
+- Virgin Hyper 3D Pinball Tilt!
+NOT needed by newer video adapters WITH built-in VESA 2.0/3.0 support!

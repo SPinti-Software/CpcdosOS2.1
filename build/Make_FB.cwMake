@@ -2,5 +2,9 @@
 >
 -{_wToolchain}=VLianceTool/DJGPP_RT
 >
+<<<<<<< HEAD
 fbc_dos -v -p FB/lib/dos/ -l stdc++ -l cpnti -l xe -l pthread -l zip -l fbgfx -l png  -l z -l watt @FB/ARGS.CFG 
+=======
+fbc_dos -v -p FB/lib/dos/ -l stdc++ -l cpnti -l XE -l pthread -l zip -l fbgfx -l png  -l z -l watt @FB/ARGS.CFG 
+>>>>>>> f8f0cbfff76738fea1384c530c0457f433ff1d04
 >

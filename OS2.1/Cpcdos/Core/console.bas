@@ -693,7 +693,7 @@ Sub _CONSOLE_Cpcdos_OSx__.Haut_Console()
 	ENTRER_SectionCritique()
 	
 	ScreenLock
-	Dim Titre 				as String = "** Cpcdos OS" & _VERSION_MAJEUR & " " & _VERSION_MINEUR & " **"
+	Dim Titre 				as String = "** Cpcdos OS" & _VERSION_MAJEUR & " " & _VERSION_MINEUR & " " & _VERSION_ETAT & "**"
 	' Dim BUILD_				as String = "(BUILD:" & _VERSION_BUILD & ")"
 	Dim HeureDate			as String = CPCDOS_INSTANCE.get_Heure(CPCDOS_INSTANCE.get_Time_format()) & " " & CPCDOS_INSTANCE.get_Date(CPCDOS_INSTANCE.get_Date_format())
 	

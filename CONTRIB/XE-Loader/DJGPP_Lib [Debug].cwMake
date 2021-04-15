@@ -1,0 +1,25 @@
+;Register Cwc before using a .cwmake
+>
+-{_sOpt}="Debug"
+>
+-{_wToolchain}= VLianceTool/DJGPP_RT
+>
+-{pXE}=_XE_submodule/
+>
+-c {pXE}/src/ -o obj/DJ_{_sOpt}/
+
+	-DImWin -DUseWinFunc -DWinLastError -I _XE_override/ -I {pXE}/include/ -I {pXE}/src/
+	-DD_MemoryCheck
+	-DD_REDIRECT_STDERR
+	-Werror=implicit-function-declaration
+	-Werror=int-conversion
+	-Werror=incompatible-pointer-types
+>
+;Generate Lib .a
+-o obj/DJ_{_sOpt}/XE/ -#To Lib/DJ_{_sOpt}/libXE.a
+>
+;---- Uncomment for direct update to VM ----
+;-#Copy Lib/DJ_{_sOpt}/libXE.a ../../build/FB/lib/DOS/libXE.a >
+;-#Run ../../build/Make_FB.cwMake >
+;-#Copy "../../bin/CPCLDR.EXE" "C:/VM/PUBLIC Cpcdos OSx-disk1_Mount/CPCDOS/CPCLDR.EXE"
+>

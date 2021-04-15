@@ -1,0 +1,2911 @@
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Autodetection de la carte reseau
+Execution du menu
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau
+Execution du menu
+Configuration des variables d'environements
+Sauvegarde des parametres
+Sauvegarde de lmhosts
+Installation du partage de fichier
+Chargement de ifshlp.sys
+Creation de protocol.ini
+Mise a jour de system.ini
+Application des parametres tcp/ip
+Installation de la carte reseau & demarrage du reseau...
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac
+Generation d'un ip config summary...
+Demarrage du serveur smb
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
+Autodetection de la carte reseau  -  card autodetecting
+Execution du menu  -  menu execution
+Configuration des variables d'environements  -  env variables configuration
+Sauvegarde des parametres  -  saving parameters
+Sauvegarde de lmhosts  -  saving lmhosts
+Installation du partage de fichier  -  file sharing installation
+Chargement de ifshlp.sys  -  loading ifshlp 
+Creation de protocol.ini  -  protocol.ini creation
+Mise a jour de system.ini  -  updating system.ini
+Application des parametres tcp/ip  -  saving tcp/ip parameters
+Installation de la carte reseau & demarrage du reseau - network card installation & starting
+Initialisation du reseau client
+Demarrage netbind
+Demarrage umb
+Demarrage tcp/ip
+Demarrage tinyrfc
+Demarrage ping support
+Demarrage emsbfr
+Demarrage dns
+Connexion au reseau
+Recherche de l'adresse mac  -  research mac address
+Generation d'un ip config summary  -  ip summary generating (ipconfig)
+Generation du wattcp.cfg
+Demarrage du serveur smb  -  smb server starting
