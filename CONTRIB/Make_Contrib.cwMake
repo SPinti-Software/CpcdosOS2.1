@@ -22,12 +22,7 @@
 ;Build Lib
 -o  obj/{_sOpt}/ -#To LIBwrp.a
 >
-<<<<<<< HEAD
--#Copy XE-Loader/libxe.a ../build/FB/lib/DOS/libxe.a
--#Copy XE-Loader/libxe.a ../build/djgpp/lib/libxe.a
-=======
 -#Copy XE-Loader/Lib/DJ_Debug/libXE.a ../build/FB/lib/DOS/libXE.a
->>>>>>> f8f0cbfff76738fea1384c530c0457f433ff1d04
 -#Copy LIBwrp.a ../build/FB/lib/DOS/LIBwrp.a
 -#Copy LIBwrp.a ../build/djgpp/lib/LIBwrp.a
 >

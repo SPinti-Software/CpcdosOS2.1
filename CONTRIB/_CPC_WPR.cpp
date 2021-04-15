@@ -33,12 +33,7 @@
 #include <string.h>
 
 /* NE PAS MODIFIER / DON'T MODIFY */
-<<<<<<< HEAD
-#include "include/ExeLoader.h"	/* ExeLoader */
-#include "XE-Loader/XE-Loader.h"	/* XE-Loader */
-=======
 #include "XE-Loader/XE-Loader.h"	/* ExeLoader */
->>>>>>> f8f0cbfff76738fea1384c530c0457f433ff1d04
 #include "include/OpenGL.h"	/* OpenGL */
 // #include "include/LLVM.h"		/* LowLevelVirtualMachine */
 
@@ -106,17 +101,7 @@ namespace Wrapper_Cpcdos
 			case EXE_LOADER:{
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
-<<<<<<< HEAD
-
-				fprintf(stdout, "cpc wrapper Ex_Loader!!!!\n");
-				
-				cpc_main((const char*) ARG_1);
-				// fStartExeLoader((const char*) ARG_1);
-=======
-				XE_Module*  m = 
-				Xe_Load((const char*) ARG_1);
-				Xe_ExecuteMain(m);
->>>>>>> f8f0cbfff76738fea1384c530c0457f433ff1d04
+				XE_Module*  m = Xe_Load((const char*) ARG_1);
 				return 1;
 			}
 			

@@ -1,6 +1,6 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
-	***         Cpcdos OS2.1 BETA 1.4         *** 
-	***         7 Mars 2021 For public        ***
+	***         Cpcdos OS2.1 BETA 1.5         *** 
+	***        Juillet 2021 For public        ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 	
 	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
