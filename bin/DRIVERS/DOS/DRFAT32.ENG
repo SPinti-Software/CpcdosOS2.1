@@ -1,0 +1,26 @@
+þþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþ
+DRFAT32, english description
+þþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþþ
+
+This archive contains Lineo's FAT32 drivers for DR DOS 7.0x.
+
+Usage instrunctions:
+
+Insert the following line in either CONFIG.SYS or DCONFIG.SYS:
+
+DEVICE=C:\DRDOS\DRFAT32.SYS
+
+if you extracted the driver to C:\DRDOS, otherwise you must give the other
+path.
+
+In AUTOEXEC.BAT or AUTODOS7.BAT you must call DRFAT32.EXE.
+
+C:\DRDOS\DRFAT32.EXE
+
+Now you have full access to the first FAT32 drive within DR DOS. You should
+load the LFN (long file name) driver additionally.
+
+Further support can't be granted by us but you may ask at www.lineo.com
+for further support or assistance.
+
+Your Elksoft-Team

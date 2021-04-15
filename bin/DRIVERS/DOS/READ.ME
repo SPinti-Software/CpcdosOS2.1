@@ -1,0 +1,130 @@
+
+UMBPCI.SYS - a very short manual
+
+
+UMBPCI.SYS is a FREEware MS-DOS/MS Windows 9x/3.xx UMB (Upper Memory Block)
+driver (MS HIMEM.SYS extender) for Intel, ALI, VIA and SiS PCI/AGP chipsets
+using the German c't magazine's free source code:
+http://www.heise.de/ct/
+
+It is a replacement for EMM386.
+
+
+EMM386 is compatible with all computers with 386 cpu and higher, creates more
+UMBs than UMBPCI and it's easy to use. But switches the cpu into the protected
+mode which is incompatible with some games. And EMM386 is fat: It takes all
+the created UMBs from your XMS, needs an additional 150 KB of XMS, 4 KB
+of low memory and 7 KB of UMA (Upper Memory Area) when loaded.
+
+UMBPCI creates the UMBs from RAM that is intended as Shadow RAM by programming
+the chipset. It uses only 240 Bytes of low memory and lets the CPU operate
+faster in real mode. But it's chipset dependent and the UMBs may have some
+problems: It may not be cacheable (slow...) or/and ISA-DMA may not work
+(normal floppies use ISA-DMA).
+On AMD K7 CPU PCI busmastering doesn't work. Set DoubleBuffer=1 in the 
+MSDOS.SYS of MS-DOS 7.x. On other DOS versions you cannot load high drivers
+and programs directely from a harddisk that uses PCI busmastering.
+
+
+----------------------------------------------------------------------------- 
+
+
+Begining with v3.00 you can simply try loading UMBPCI without any checking.
+Because UMBPCI.SYS is an extension to HIMEM.SYS under MS-DOS/MS Windows, it
+must be loaded after HIMEM.SYS. CONFIG.SYS example assuming Win9x is in
+C:\WINDOWS and UMBPCI.SYS in C:\UMBPCI:
+
+dos=high,umb
+device=c:\windows\himem.sys
+device=c:\umbpci\umbpci.sys
+devicehigh=...
+installhigh=...
+
+If properly loaded, you'll see a message like this:
+
+UMBPCI c't 11/95 - Siering/Sch„pers/Stiller
+V3.00 - support for new Intel/VIA/ALI/SIS chipsets + P2 - Uwe Sieber 06/99
+Using C800-EFFF
+Intel 440BX/ZX found
+Programm installed
+
+If your chipset is not supported by UMBPCI, you'll get a message like this:
+
+No supported chipset found.
+Problem programming the chipset.
+
+
+And if your chipset is supported but untested, you'll get this message:
+
+This chipset is untested! Mail me the name of the chipset and if it works
+so I can remove this break: uwe.sieber@gmx.de
+press any key...
+
+I'll remove this break as soon as I know than it works with this chipset.
+
+
+You can determine your chipset's brand/type by using a nice DOS program:
+http://members.hyperlink.net.au/~chart/
+
+
+
+Begining with v3.00 UMBPCI detects free ranges automatically. If you want to
+use the /I=xxxx-yyyy parameter, you should check beforehand for free ranges.
+To find free UMA ranges I made UMBCHK. Boot to pure MS-DOS (press F8 while
+booting and choose "Command prompt only") or ensure that EMM386 isn't loaded.
+UMBCHK will show the free UMA ranges and suggest a command line for UMBPCI.
+
+
+
+
+See UMBPCI.TXT for a list of chipsets and their known problems in the UMBs.
+
+
+
+
+To check if ISA-DMA works there is DMACHK.COM (thanks to Heiko Nocon). To
+use it UMBPCI must be loaded. It shows in which ranges ISA-DMA works.
+
+When ISA-DMA doesn't work, the SMARTDRV floppy cache in UMB will cause garbage
+reading and writing the floppy. Load it with the /L parameter to fix this.
+
+When you use UMBPCI on a bootdisk you should use only ranges that
+can handle ISA-DMA. E.g. on newer intel chipsets (430xX, 440xX)
+you should load it with /I=E000-EFFF, on chipsets that cannot
+handle ISA-DMA in the UMBs you should not use UMBPCI on bootdisks.
+
+
+Win9x takes all remaining UMBs and uses them as normal memory. But as stated
+above, the memory created by UMBPCI is often not "normal".
+It may not be cacheable or ISA-DMA may not work. To prevent Win9x from using
+this critical memory I made the new program UMBFILL, which allocates all
+remaining UMBs. Place it in your AUTOEXEC.BAT, but don't use LOADHIGH (LH)
+with UMBFILL, because it won't work.
+
+Another way to prevent Win95 takes all remaining UMBs is to add the line
+LocalLoadHigh=0 to your SYSTEM.INI section [386enh].
+Then Win95 takes only a small part of the UMBs which seems to be uncritial.
+
+
+
+
+Additional OS compatibility
+
+Begining with v3.00 UMBPCI is compatible with DR-DOS, Novell DOS and Caldera
+Open DOS.
+
+When UMBPCI finds no XMS driver it only enables the upper memory and ends.
+HIDOS.SYS can then create UMBs from this memory.
+
+
+
+Suspend to Disk doesn't work with UMBPCI.
+
+
+
+Read UMBPCI.TXT for detailed information!
+
+
+mail@uwe-sieber.de
+uwe.sieber@gmx.de
+

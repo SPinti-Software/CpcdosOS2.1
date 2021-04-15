@@ -1033,7 +1033,7 @@ Sub intro()
 	Print "                            Created to develop OS "
 	Print " Version :                                        "
 	Print "  - Date        : " 		&   _VERSION_DATEV                  
-	Print "  - Kernel base : OS" 	& 	_VERSION_MAJEUR & " " & _VERSION_MINEUR
+	Print "  - Kernel base : OS" 	& 	_VERSION_MAJEUR & " " & _VERSION_MINEUR & " " & _VERSION_ETAT
 	print "  - CPinti core : " 		& 	_VERSION_CPINTI
 	Print "  - CpcdosC+    : " 		&   _VERSION_CCP                    
 	Print "  - Console     : " 		&   _VERSION_CONSOLE                

@@ -1,0 +1,10 @@
+The NICSCAN.EXE program is a utility which scans the PCI bus for a network card, 
+reads its vendor and device ID and then looks up in the pci.dbn file the name
+of the vendor and the device, if present in this file.
+
+The interupt used by NICSCAN is not available in a Windows DOS box, so it cannot
+be used then. Also it will not work with the new NVIDIA netbus.
+
+NICSCAN shall help you to determine which packet driver you need for your PC.
+
+30.1.2007 Georg Potthast

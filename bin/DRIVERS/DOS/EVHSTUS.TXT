@@ -1,0 +1,171 @@
+EDITV: DOS Text file Editor using Borland Turbo Vision
+
+History:
+
+v4.1 Apr 03,1999
+- Multi-language support; Dutch version
+- Built-in clock
+- Optional input/output directories
+- Extent mask field in file dialogs
+- New command: Edit|Change Case
+- New option: Initial Text Window
+- New option: Swap Word Move commands
+- New option: Save Extent Mask
+- New option: Copy current word for Find
+- Changed menu check symbol
+- Fix: Error during 'Save as' now leaves filename unchanged
+- Fix: leading zeroes in Insert Character dialog
+
+v4.0 Oct 26,1998
+- Read Only support:
+  * New commands
+      File|View
+      Options|Read Only
+      Options|Read Only All
+  * New options:
+      Allow Read Only if modified
+      Gray Read Only window
+  * Command line switch /R : Start in Read Only All mode
+  * Read checkbox in File Open dialog
+- Print dialog, allowing for:
+    Print all text, selected text or specified pages
+    Specify number of copies
+    Specify print device (LPT1, LPT2, LPT3)
+    Print to file
+- Print page format dialog, allowing for:
+    Margins, header, footer
+    Line numbers
+- Substitution of filename, date, time, etc. in header, footer and in
+  Execute command lines.
+- Enter and display control characters.
+- Match Brackets now also finds:
+   matching arrows (characters 174 and 175)
+   matching slashes : \../ or /..\
+   matching slanted quotes : `..ï (ASCII 239) or vice versa
+   matching unnested single/double quotes : '..' and ".."
+- New edit commands or shortcuts:
+    Ctrl+K,A: Move Line Up              (new)
+    Ctrl+K,Z: Move Line Down            (new)
+    Ctrl+K,\: Repeat Current Line       (new)
+    Ctrl+Q,E: Top of Page               (new)
+    Ctrl+Q,X: End Of Page               (new)
+    Ctrl+Q,G: Goto Line                 (also: F4)
+    Ctrl+Q,I: Auto Indent               (was : Ctrl+O)
+    Ctrl+Q,[: Match Bracket Left        (also: Ctrl+[)
+    Ctrl+Q,]: Match Bracket Right       (also: Ctrl+])
+    Ctrl+K,M: Select current line       (new)
+    Ctrl+K,T: Select current word       (new)
+    Ctrl+K,P: <File|Print>
+    Ctrl+K,S: <File|Save>               (also: F2)
+    Ctrl+K,W: <Edit|Copy To>            (was : Ctrl+K,S)
+    Ctrl+O,A: <Options|Ruler>           (new)
+    Ctrl+O,B: <Options|Line Numbers>    (new)
+    Ctrl+O,D: <Options|Control Display> (new)
+    Ctrl+W  : Scroll Line Up            (new)
+    Ctrl+Z  : Scroll Line Down          (new)
+- Active menu entries are now visually checked.
+- Input lines now support next/previous word and delete word commands
+- Improved help text
+- Online help viewer now supports up and down keys.
+- Ctrl+Q,B (To Sel Start) and Ctrl+Q,K (To Sel End) now leave selection
+  active.
+- Goto Line now sets the cursor at the start of the indicated line.
+- Window|Close All can now properly be cancelled.
+
+v3.3 Aug 25,1998
+- New commands: <Edit|Cut To>, <Edit|Copy To> and <Edit|Paste From>.
+- New option: Confirm Save As if file exists.
+- New option: Double click selects word.
+- Right mouseclick in edit window invokes popup menu.
+- Mouse options: Double click delay, Reverse buttons.
+- New edit commands:
+    Ctrl+K,n: Set  text marker (n=0..9)
+    Ctrl+Q,n: Goto text marker (n=0..9)
+    Ctrl+Q,B: To start of selection
+    Ctrl+Q,K: To end of selection
+    Ctrl+Q,P: To previous position
+- 'Search string not found' message now displays the search string.
+- Find empty search string is now ignored without an error message.
+- Directories shown in alphabetical order.
+- Fix: Better return after Replace All with selected text.
+
+v3.2 Aug 04,1998 
+- Fix: string overflow caused error in color save/restore.
+- Some small help text improvements.
+
+v3.1 Aug 04,1998 
+- Display mode option and Color dialog.
+- Execute dialog no longer enables Up button at first Add.
+
+v3.0 Jul 04,1998 
+- On-line help system, using an external help-file.
+- Window list (selectable textwindow list in Window menu).
+- Find/Replace 'Backward' and 'Entire text' options.
+- <Edit|Insert character> menu command.
+- Cut&Paste support for all input lines.
+- Alt-0 shortcut to display the clipboard.
+- Match Bracket commands with shift key selects the block.
+- Replace button in File Open dialog.
+- Ctrl+Right and Ctrl+Left now skip to next word boundary,
+- Ctrl+F and Ctrl+A skip to the next word.
+
+v2.7 Jun 03,1998 
+- Configurable word skip commands.
+- Edit command summary in textfile and online help.
+- File statistics command (character, word & line count).
+
+v2.6 May 27,1998 
+- Support for Unix file format (using LF line-ends).
+
+v2.5 Apr 16,1998
+- Fix: File|New no longer adds entry to recent file list.
+
+v2.4 Apr 12,1998 
+- Print no longer sends extra character at cursorposition.
+- Improved handling of recent file list in File menu.
+
+v2.3 Mar 31,1998 
+- Fix: recompiled for DOS real mode, otherwise unchanged.
+  The v2.2 EXE file assumed a runtime environment not available on all DOS
+  platforms.
+
+v2.2 Mar 25,1998 
+- Improved activation/deactivation of menu commands
+- Clipboard is shown in distict colors, and now accepts all commands except
+  Undo, Cut, Copy and Paste.
+- File History support (recent file list in File menu)
+- Command <Search|Match Brackets>
+- Shortcuts Alt+F1, Alt+F2, etc. for external commands
+- Option 'Save before Shell/Exec'
+
+v2.1 Mar 08,1998 
+- Command <Edit|Select All>
+- Command <Search|Goto Line>
+- Command <Window|Tile Across>
+- Command <Help|Memory>
+- Option 'Abort on System Error'
+- Option 'Show Path in Caption'
+
+v2.0 Mar 07,1998 
+- Execute Command feature
+
+v1.8 Jan 01,1998
+- Fixed bug in Print routine
+
+v1.7 Sep 14,1997 
+- Program no longer aborts when printer is not available
+
+v1.6 Dec 16,1996 
+- Improved 'file exist' test
+
+v1.5 Sep 27,1996 
+- Added description and author's Internet addresses
+
+v1.4 Jan 02,1996 
+- Auto-backup option
+
+v1.3 Nov 12,1995 
+- Print function
+
+v1.2 Mar 20,1994
+- First public release
