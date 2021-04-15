@@ -34,6 +34,7 @@
 
 /* NE PAS MODIFIER / DON'T MODIFY */
 #include "include/ExeLoader.h"	/* ExeLoader */
+#include "XE-Loader/XE-Loader.h"	/* XE-Loader */
 #include "include/OpenGL.h"	/* OpenGL */
 // #include "include/LLVM.h"		/* LowLevelVirtualMachine */
 
@@ -64,6 +65,7 @@ namespace Wrapper_Cpcdos
 	#define LLVM				11 	/* NE PAS MODIFIER / DON'T MODIFY */
 	#define GZE_GRAPHIC_ENGINE 	12 	/* NE PAS MODIFIER / DON'T MODIFY */
 	#define OPENGL_MESA_ENGINE 	13 	/* NE PAS MODIFIER / DON'T MODIFY */
+
 	///////////////////////////////////
 	
 	
@@ -101,7 +103,10 @@ namespace Wrapper_Cpcdos
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
 
-				fStartExeLoader((const char*) ARG_1);
+				fprintf(stdout, "cpc wrapper Ex_Loader!!!!\n");
+				
+				cpc_main((const char*) ARG_1);
+				// fStartExeLoader((const char*) ARG_1);
 				return 1;
 			}
 			
