@@ -41,6 +41,7 @@ extern "C" int 			cpc_Creer_Contexte				(int TAILLEX, int TAILLEYn);
 extern "C" void* 		cpc_Obtenir_Zone_Contexte		(int ID);
 extern "C" int 			cpc_Blitter						(int ID);
 extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, int ID);
+extern "C" char* 		cpc_CCP_Exec_Commande_ret		(const char* COMMANDE, int ID);
 extern "C" char*		cpc_CCP_Lire_Variable			(const char* NomVariable, int Niveau);
 extern "C" int 			cpc_CCP_Exec_Thread_cpc			(const char* chemin, int Thread_Priorite);
 

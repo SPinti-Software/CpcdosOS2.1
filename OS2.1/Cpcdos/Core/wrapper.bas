@@ -17,6 +17,7 @@ Declare Function 	cpc_Creer_Contexte 				cdecl Alias "cpc_Creer_Contexte" 				(T
 Declare Function 	cpc_Obtenir_Zone_Contexte 		cdecl Alias "cpc_Obtenir_Zone_Contexte" 		(ID as integer) as any ptr
 
 Declare Sub 		cpc_CCP_Exec_Commande 			cdecl alias "cpc_CCP_Exec_Commande"  			(Commande as CONST ZString PTR, niveau as integer)
+declare Function	cpc_CCP_Exec_Commande_ret		cdecl alias "cpc_CCP_Exec_Commande_ret"			(Commande as CONST ZString PTR, niveau as integer) as ZString PTR
 Declare Function	cpc_CCP_Lire_Variable 			cdecl alias "cpc_CCP_Lire_Variable"  			(NomVariable as CONST ZString PTR, niveau as integer) as ZString ptr
 Declare function 	cpc_CCP_Exec_Thread_cpc 		cdecl Alias "cpc_CCP_Exec_Thread_cpc" 			(Chemin as CONST ZString PTR, Priorite as integer) as integer
 
@@ -268,6 +269,31 @@ Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte
 	End if
 
 	SORTIR_SectionCritique()
+End function
+
+public Function cpc_CCP_Exec_Commande_ret cdecl Alias "cpc_CCP_Exec_Commande_ret" (Commande as CONST ZString PTR, niveau as integer) as ZString ptr
+	print "Exec_RET !"
+	Dim CMD_shell as String = *Commande
+
+	Dim Auth_Kernel				as uinteger = CPCDOS_INSTANCE.get_id_kernel		()
+	Dim Auth_OS					as uinteger = CPCDOS_INSTANCE.get_id_OS			()
+	Dim Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur()
+	Dim _CLE_	 				as double 	= CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, 0, 0)
+
+	' Generer une variable redirigee vide
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ exec_ret = \#NULL", _CLE_, 4, 330, _CLE_ & "N4->exec_ret")
+
+	' Executer la commande cpcdosC+ en stockant le resultat dans "exec_ret"
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(CMD_shell, _CLE_, niveau, 330, _CLE_ & "N4->exec_ret")
+
+	' Recuperer le resultat de la commande
+	Dim Resultat as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("exec_ret", 4, _CLE_)
+
+	print "****** RETOUUR : " & Resultat
+	Dim Variable as ZString ptr = malloc(Len(Resultat))
+	*Variable = Resultat
+	return Variable
+
 End function
 
 Public sub cpc_CCP_Exec_Commande cdecl Alias "cpc_CCP_Exec_Commande" (Commande as CONST ZString PTR, niveau as integer)

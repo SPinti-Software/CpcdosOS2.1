@@ -32,6 +32,7 @@
 #include <stdio.h>
 #include <string.h>
 
+
 /* NE PAS MODIFIER / DON'T MODIFY */
 #include "XE-Loader/XE-Loader.h"	/* ExeLoader */
 #include "include/OpenGL.h"	/* OpenGL */
@@ -50,7 +51,11 @@
 #include "include/example4.h" 		/* simple test for you */
 
 #include "..\OS2.1\CPinti\include\leakchk.h"
- 
+
+#ifndef cpc_CCP_Exec_Commande_ret
+	extern "C" char* 		cpc_CCP_Exec_Commande_ret		(const char* COMMANDE, int ID);
+#endif
+
 namespace Wrapper_Cpcdos
 {
 	
@@ -101,6 +106,7 @@ namespace Wrapper_Cpcdos
 			case EXE_LOADER:{
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
+
 				XE_Module*  m = Xe_Load((const char*) ARG_1);
 				return 1;
 			}

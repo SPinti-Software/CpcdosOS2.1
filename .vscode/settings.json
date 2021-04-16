@@ -63,6 +63,10 @@
         "cinttypes": "cpp",
         "*.ipp": "cpp",
         "rope": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "complex": "cpp",
+        "csignal": "cpp",
+        "set": "cpp",
+        "xtree": "cpp"
     }
 }
