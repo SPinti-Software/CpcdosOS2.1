@@ -45,9 +45,13 @@ rem option gosub
 ' 21-06-2017	: Ajustage des modification des proprietes pour la fenetre
 '					+ Ajout des informations de debogage pour la fenetre
 ' 30-05-2017	: Ajout des ombres, Transparences, proprietes graphiques des fenetres et pictures box
+' 16-AVL-2021   : Debut de refonte de la window
 
 
+' Decommenter pour restaurer l'ancienne fenetre
 #include once "OBJ_Fenetre.BAS"
+'#include once "OBJ_Window.BAS"
+
 #include once "OBJ_Bouton.BAS"
 #include once "OBJ_PictureBox.BAS"
 #include once "OBJ_TexteBloc.BAS"
