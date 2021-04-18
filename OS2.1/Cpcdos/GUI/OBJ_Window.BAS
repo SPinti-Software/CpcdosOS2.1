@@ -203,14 +203,31 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				' Type 4 : Fenetre sans barre de titre
 				' Type 5 : Fenetre sans barre de titre , sans conteneur visible (Objets flottants)
 
-				' Code de la nouvelle fenetre here :)
-				dim design_Image(0 to 16) as string
+				' Path image
+				dim design_Image		(0 to 16) as string
 
-				dim design_Image_pos_relatif(0 to 16) as integer ' Position relative
+				' BitmapID
+				dim design_Image_ID_org	(0 to 16) as integer
+				dim design_Image_ID		(0 to 16) as integer
+
+				' Exemples : 
+				' "SX:WIN" : Size X relatif a la Size X de la fenetre
+				' "SY:WIN" : Size Y relatif a la Size Y de la fenetre
+				' "SXCALC:-14" : Size X Calculation de -14 pixels
+				' "SYCALC:14" : Size Y Calculation de +14 pixels
+				dim design_Image_param(0 to 16) as string
+				
 				' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
-
+				dim design_Image_pos_relatif(0 to 16) as integer ' Position relative
+				
+				' Positionnement relative
 				dim design_Image_px(0 to 16) as integer
 				dim design_Image_py(0 to 16) as integer
+				dim design_Image_sx(0 to 16) as integer
+				dim design_Image_sy(0 to 16) as integer
+				
+				' Colorisation
+				dim design_Image_alpha(0 to 16) as integer
 
 				' Charger le de reduction si non charge
 				if CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID < 1 Then 
@@ -236,31 +253,128 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(ICONE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
 				End if
 
-				DEBUG(" ****** Chargement Image", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-				Dim Win_TL as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TL.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-				Dim Win_TR as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TR.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				design_Image(0) = "OS/MEDIA/GUI/WINDOW/WIN_TL.PNG"
+				design_Image_pos_relatif(0) = 0
+				design_Image_px(0) = 0
+				design_Image_py(0) = 0
+				design_Image_sx(0) = 7
+				design_Image_sy(0) = 7
+				design_Image_param(0) = ""
+				design_Image_alpha(0) = 255
+
+				design_Image(1) = "OS/MEDIA/GUI/WINDOW/WIN_TR.PNG"
+				design_Image_pos_relatif(1) = 1
+				design_Image_px(1) = 0
+				design_Image_py(1) = 0
+				design_Image_sx(1) = 7
+				design_Image_sy(1) = 7
+				design_Image_param(1) = ""
+				design_Image_alpha(1) = 255
+
+				design_Image(2) = "OS/MEDIA/GUI/WINDOW/WIN_TM.PNG"
+				design_Image_pos_relatif(2) = 0
+				design_Image_px(2) = 7
+				design_Image_py(2) = 0
+				design_Image_sx(2) = 0
+				design_Image_sy(2) = 7
+				design_Image_param(2) = "resize(true), sx(win), sxcalc(-14)"
+				design_Image_alpha(2) = 255
+
+				design_Image(3) = "OS/MEDIA/GUI/WINDOW/WIN_TITL.PNG"
+				design_Image_pos_relatif(3) = 0
+				design_Image_px(3) = 0
+				design_Image_py(3) = 7
+				design_Image_sx(3) = 0
+				design_Image_sy(3) = 0
+				design_Image_param(3) = "resize(true) sx(win)"
+				design_Image_alpha(3) = 255
+
+				' Initialiser la structure graphique de la fenetre
+				for index as integer = 0 to 16
+					Dim Must_resized as boolean = false
+
+					if len(design_Image(index)) > 3 then
+						design_Image_ID_org(index) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(design_Image(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						design_Image_ID(index) = design_Image_ID_org(index)
+
+						if len(design_Image_param(index)) > 0 then
+							design_Image_param(index) = ucase(design_Image_param(index))
+
+							if instr(design_Image_param(index), "RESIZE(TRUE)") > 1 then
+								' S'il doit etre resized
+								Must_resized = true
+							End if
+
+							if instr(design_Image_param(index), "SX(WIN)") > 1 then
+								' Recupere SX de la fenetre
+								design_Image_sx(index) = Siz_X
+							End if
+
+							if instr(design_Image_param(index), "SY(WIN)") > 1 then
+								' Recupere SY de la fenetre
+								design_Image_sy(index) = Siz_Y
+							End if
+
+							
+							if instr(design_Image_param(index), "SXCALC(") > 1 then
+								' Recupere SX de la fenetre
+								dim org_design_Image_param as string
+								org_design_Image_param = Mid(design_Image_param(index), instr(design_Image_param(index), "SXCALC(") + 7)
+								org_design_Image_param = Mid(org_design_Image_param, 1, instr(org_design_Image_param, ")") - 1)
+
+								
+								dim chiffre as integer = val(org_design_Image_param)
+
+								' Faire le calcul
+								design_Image_sx(index) = design_Image_sx(index) + chiffre
+							End if
+
+							if instr(design_Image_param(index), "SYCALC(") > 1 then
+								' Recupere SY de la fenetre
+								dim org_design_Image_param as string
+								org_design_Image_param = Mid(design_Image_param(index), instr(design_Image_param(index), "SYCALC(") + 7)
+								org_design_Image_param = Mid(org_design_Image_param, 1, instr(org_design_Image_param, ")") - 1)
+
+								
+								dim chiffre as integer = val(org_design_Image_param)
+
+								' Faire le calcul
+								design_Image_sy(index) = design_Image_sy(index) + chiffre
+							End if
+						End if
+
+						if design_Image_pos_relatif(index) = 1 then
+							design_Image_px(index) = Siz_X - design_Image_sx(index)
+						End if
+
+						if design_Image_pos_relatif(index) = 2 then
+							design_Image_py(index) = Siz_Y - design_Image_sy(index)
+						End if
+
+						if design_Image_pos_relatif(index) = 3 then
+							design_Image_px(index) = Siz_X - design_Image_sx(index)
+							design_Image_py(index) = Siz_Y - design_Image_sy(index)
+						End if
+
+						' Une fois les proprietes configures 
+						
+						if Must_resized = true Then
+							' On modifie la taille
+							design_Image_ID(index) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(design_Image_ID(index), design_Image_sx(index), design_Image_sy(index))
+						end if
+
+						' Dessiner sur l'ecran
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(design_Image_ID(index), Pos_X + design_Image_px(index), Pos_Y + design_Image_py(index), 0, 0, design_Image_sx(index), design_Image_sy(index), true, design_Image_alpha(index))
+					End if
+
+				Next index
 				
-				Dim Win_TM as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TM.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-				Win_TM = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Win_TM, Siz_X - 7*2, 7)
-
-				Dim Win_TITL as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TITL.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-				Win_TITL = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Win_TITL, Siz_X, Siz_Titre - 7)
-
-				DEBUG(" ****** Dessin !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-				' Rebords arrondi
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TL, Pos_x, Pos_Y, 0, 0, 7, 7, true, 255)
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TR, Pos_x + Siz_x - 7, Pos_Y, 0, 0, 7, 7, true, 255)
-
-				' Centre haut
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TM, Pos_x + 7, Pos_Y, 0, 0, Siz_X - 7, 7, true, 255)
-				' centre titre
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TITL, Pos_x, Pos_Y + 7, 0, 0, Siz_X, Siz_Titre - 7, true, 255)
-
-				DEBUG(" ****** Couleur fond !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+	
+				' Dessiner la couleur de fond de base
 				Line (Pos_x, Pos_Y + Siz_Titre)- step (Siz_X - 1, Siz_Y - Siz_Titre - 7), RGB(Couleur_FOND_R, Couleur_FOND_V, Couleur_FOND_B), BF
 
 
-
+				' ===== Icones =====
 				IF POS_ICONE_POS = 0 OR POS_ICONE_POS = 1 Then
 					' Gauche (Aucune modification)
 				ElseIF POS_ICONE_POS = 2 Then

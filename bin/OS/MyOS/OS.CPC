@@ -4,7 +4,7 @@ sys/ /os:myos
 exe/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/env_gui.cpc
 
 // Background image
-fix/ SCR_IMG = OS/MEDIA/impressu.png
+fix/ SCR_IMG = OS/MEDIA/tioub.png
 
 // Et APRES vous pouvez charger le votre
 
