@@ -49,8 +49,8 @@ rem option gosub
 
 
 ' Decommenter pour restaurer l'ancienne fenetre
-#include once "OBJ_Fenetre.BAS"
-'#include once "OBJ_Window.BAS"
+'#include once "OBJ_Fenetre.BAS"
+#include once "OBJ_Window.BAS"
 
 #include once "OBJ_Bouton.BAS"
 #include once "OBJ_PictureBox.BAS"

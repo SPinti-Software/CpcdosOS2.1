@@ -204,6 +204,157 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				' Type 5 : Fenetre sans barre de titre , sans conteneur visible (Objets flottants)
 
 				' Code de la nouvelle fenetre here :)
+				dim design_Image(0 to 16) as string
+
+				dim design_Image_pos_relatif(0 to 16) as integer ' Position relative
+				' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
+
+				dim design_Image_px(0 to 16) as integer
+				dim design_Image_py(0 to 16) as integer
+
+				' Charger le de reduction si non charge
+				if CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID < 1 Then 
+					CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_REDUCT_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
+
+				' Charger le de retrecissement si non charge
+				if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID < 1 Then 
+					CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEDOWN_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
+
+				' Charger le d'agrandissement si non charge
+				if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID < 1 Then 
+					CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEUP_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
+
+				' Charger le de fermeture si non charge
+				if CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID < 1 Then 
+					CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_CLOSE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
+
+				if this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID < 1 Then 
+					this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(ICONE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
+
+				DEBUG(" ****** Chargement Image", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				Dim Win_TL as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TL.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				Dim Win_TR as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TR.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				
+				Dim Win_TM as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TM.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				Win_TM = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Win_TM, Siz_X - 7*2, 7)
+
+				Dim Win_TITL as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE("OS/MEDIA/GUI/WINDOW/WIN_TITL.PNG", this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				Win_TITL = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Win_TITL, Siz_X, Siz_Titre - 7)
+
+				DEBUG(" ****** Dessin !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				' Rebords arrondi
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TL, Pos_x, Pos_Y, 0, 0, 7, 7, true, 255)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TR, Pos_x + Siz_x - 7, Pos_Y, 0, 0, 7, 7, true, 255)
+
+				' Centre haut
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TM, Pos_x + 7, Pos_Y, 0, 0, Siz_X - 7, 7, true, 255)
+				' centre titre
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Win_TITL, Pos_x, Pos_Y + 7, 0, 0, Siz_X, Siz_Titre - 7, true, 255)
+
+				DEBUG(" ****** Couleur fond !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				Line (Pos_x, Pos_Y + Siz_Titre)- step (Siz_X - 1, Siz_Y - Siz_Titre - 7), RGB(Couleur_FOND_R, Couleur_FOND_V, Couleur_FOND_B), BF
+
+
+
+				IF POS_ICONE_POS = 0 OR POS_ICONE_POS = 1 Then
+					' Gauche (Aucune modification)
+				ElseIF POS_ICONE_POS = 2 Then
+					' Centre
+					POS_ICONE_X = (Siz_X/2) - (SIZ_ICONE_X)
+					
+				ElseIF POS_ICONE_POS = 3 Then
+					' Droite
+					POS_ICONE_X = Siz_X + POS_ICONE_X - SIZ_ICONE_X
+				End if
+				
+
+				' Placer l'icone de l'application
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID, Pos_x + POS_ICONE_X, Pos_Y + POS_ICONE_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+				
+				if Fermable = true Then ' Affiche le bouton de fermeture
+					' ====== BOUTON CLOSE ======
+					IF POS_BT_CLOSE_POS = 0 OR POS_BT_CLOSE_POS = 1 Then
+						' Gauche (Aucune modification)
+						
+					ElseIF POS_BT_CLOSE_POS = 2 Then
+						' Centre
+						POS_BT_CLOSE_X = ((Siz_X/2) - (SIZ_BT_CLOSE_X / 2)) + POS_BT_CLOSE_X
+						
+					ElseIF POS_BT_CLOSE_POS = 3 Then
+						' Droite
+						POS_BT_CLOSE_X = Siz_X - POS_BT_CLOSE_X - SIZ_BT_CLOSE_X
+					End if
+					
+					
+					' Placer l'icone de fermeture dans le buffer de la barre de titre
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID, Pos_x + POS_BT_CLOSE_X, Pos_Y + POS_BT_CLOSE_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+				End if
+				
+				
+				if SizeUP = FALSE OR Sizeable = true Then ' Fenetre retrecie, on affiche l'idone d'agrandissement
+					' ====== BOUTON RESIZE UP ======
+					IF POS_BT_SIZEUP_POS = 0 OR POS_BT_SIZEUP_POS = 1 Then
+						' Gauche (Aucune modification)
+						
+					ElseIF POS_BT_SIZEUP_POS = 2 Then
+						' Centre
+						POS_BT_SIZEUP_X = ((Siz_X/2) - (SIZ_BT_REDUCT_X / 2)) + POS_BT_SIZEUP_X
+						
+					ElseIF POS_BT_SIZEUP_POS = 3 Then
+						' Droite
+						POS_BT_SIZEUP_X = Siz_X - POS_BT_SIZEUP_X - SIZ_BT_REDUCT_X
+					End if
+
+					
+					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID, Pos_X + POS_BT_SIZEUP_X, Pos_Y + POS_BT_SIZEUP_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+
+					
+				Else ' Fenetre Deja AGRANDIE, donc on affiche l'icone de retrecissement
+				
+					
+					' ====== BOUTON RESIZE DOWN ======
+					IF POS_BT_SIZEDOWN_POS = 0 OR POS_BT_SIZEDOWN_POS = 1 Then
+						' Gauche (Aucune modification)
+						
+					ElseIF POS_BT_SIZEDOWN_POS = 2 Then
+						' Centre
+						POS_BT_SIZEDOWN_X = ((Siz_X/2) - (SIZ_BT_REDUCT_X / 2)) + POS_BT_SIZEDOWN_X
+						
+					ElseIF POS_BT_SIZEDOWN_POS = 3 Then
+						' Droite
+						POS_BT_SIZEDOWN_X = Siz_X - POS_BT_SIZEDOWN_X - SIZ_BT_REDUCT_X
+					End if
+
+					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID, Pos_x + POS_BT_SIZEDOWN_X, Pos_Y + POS_BT_SIZEDOWN_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+				End If
+				
+				if Reductable = true Then ' Afficher le bouton de reduction
+					' ====== BOUTON REDUCTION DOWN ======
+					IF POS_BT_REDUCT_POS = 0 OR POS_BT_REDUCT_POS = 1 Then
+						' Gauche (Aucune modification)
+						
+					ElseIF POS_BT_REDUCT_POS = 2 Then
+						' Centre
+						POS_BT_REDUCT_X = ((Siz_X/2) - (SIZ_BT_REDUCT_X / 2)) + POS_BT_REDUCT_X ' a revoir les positions comme ya plus de relatif
+						
+					ElseIF POS_BT_REDUCT_POS = 3 Then
+						' Droite
+						POS_BT_REDUCT_X = Siz_X - POS_BT_REDUCT_X - SIZ_BT_REDUCT_X ' A revoir les positions
+					End if
+					
+					
+					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID, Pos_x + POS_BT_REDUCT_X, Pos_Y + POS_BT_REDUCT_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+				End if
+
+				Draw string (Pos_X + POS_TITRE_X, Pos_Y + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
 
 			End scope
 		
