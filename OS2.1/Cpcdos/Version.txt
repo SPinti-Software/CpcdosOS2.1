@@ -2,29 +2,26 @@
 	***         Cpcdos OS2.1 BETA 1.5         *** 
 	***        Juillet 2021 For public        ***
 	= = = = = = = = = = = = = = = = = = = = = = =
-	
-	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
-		Anciens fichiers prototypes non utilisés (GDT, boot, multicore, network experimentations...) 
 
 	#################
 	#### En bref ####
 	#################
 
-		--> 1	Ajouts de divers fonctionnalités.
-		--> 1	corrections importantes.
+		--> 2	Ajouts de divers fonctionnalités.
+		--> 2	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
 
-		--> Gain de stabilité : +0%
+		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
 
-		--> Gain de performances : +0%
-		--> Note de performances : 13/20
+		--> Gain de performances : +10%
+		--> Note de performances : 14/20
 
 		--> Probabilités de crash
 				Réseau	: 10%
 				SHELL	: 15%
-				GUI		: 20%
+				GUI		: 15% (updated!)
 				3D		: 1%
 				I/O		: 10%
 				Win32	: 20%
@@ -41,10 +38,12 @@
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
+		- [SCI] Refonte totale de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		
 		
 		[MODIFICATIONS]
 		- [SCI] Amélioration de la précision du curseur.
+
 
 
 	#######################
@@ -55,7 +54,7 @@
 		[CORRECTIONS]
 		
 		[AJOUT]
-		
+		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
 		
 		[MODIFICATIONS]
 
