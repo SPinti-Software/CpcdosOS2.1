@@ -231,6 +231,34 @@ Type Cpcdos_GUI__FENETRE
 	CONTENEUR_COMPLET			as boolean	' Afficher le conteneur au complet (SANS la barre de titre))
 	
 	IMG_TITRE					AS String	' Image de la barre de titre
+
+	const array_design_MAX 							as integer = 24
+
+	design_Image_LOADED								as boolean = false
+	' Path image
+	design_Image		(0 to array_design_MAX) 	as string
+
+	' BitmapID
+	design_Image_ID		(0 to array_design_MAX) 	as integer
+
+	' Exemples : 
+	' "SX:WIN" : Size X relatif a la Size X de la fenetre
+	' "SY:WIN" : Size Y relatif a la Size Y de la fenetre
+	' "SXCALC:-14" : Size X Calculation de -14 pixels
+	' "SYCALC:14" : Size Y Calculation de +14 pixels
+	design_Image_param(0 to array_design_MAX)	as string
+	
+	' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
+	design_Image_pos_relative(0 to array_design_MAX) as integer ' Position relative
+	
+	' Positionnement relative
+	design_Image_px(0 to array_design_MAX) 		as integer
+	design_Image_py(0 to array_design_MAX) 		as integer
+	design_Image_sx(0 to array_design_MAX)		as integer
+	design_Image_sy(0 to array_design_MAX) 		as integer
+	
+	' Colorisation
+	design_Image_alpha(0 to array_design_MAX) 	as integer
 	
 	
 	TITRE_IMG_ID				as Integer
@@ -753,6 +781,36 @@ Type _SCI_Cpcdos_OSx__
 
 
 		' ------------ WINDOWS ---------------
+
+		const array_design_MAX 							as integer = 24
+
+		design_Image_LOADED								as boolean = false
+		' Path image
+		design_Image		(0 to array_design_MAX) 	as string
+
+		' BitmapID
+		design_Image_ID_org	(0 to array_design_MAX) 	as integer
+		design_Image_ID		(0 to array_design_MAX) 	as integer
+
+		' Exemples : 
+		' "SX:WIN" : Size X relatif a la Size X de la fenetre
+		' "SY:WIN" : Size Y relatif a la Size Y de la fenetre
+		' "SXCALC:-14" : Size X Calculation de -14 pixels
+		' "SYCALC:14" : Size Y Calculation de +14 pixels
+		design_Image_param(0 to array_design_MAX)	as string
+		
+		' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
+		design_Image_pos_relative(0 to array_design_MAX) as integer ' Position relative
+		
+		' Positionnement relative
+		design_Image_px(0 to array_design_MAX) 		as integer
+		design_Image_py(0 to array_design_MAX) 		as integer
+		design_Image_sx(0 to array_design_MAX)		as integer
+		design_Image_sy(0 to array_design_MAX) 		as integer
+		
+		' Colorisation
+		design_Image_alpha(0 to array_design_MAX) 	as integer
+
 		
 		BT_CLOSE_IMG_ID						as integer
 		BT_CLOSE_ORG_IMG_ID					as integer
