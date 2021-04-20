@@ -26,6 +26,7 @@ Windows | [![Build status](https://ci.appveyor.com/api/projects/status/nfkdxmis9
  - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
  - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
  - Assurez-vous d'avoir une machine virtuelle [éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
+ Il est recommandé d'utiliser [VMware workstation player 16](https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&productId=1039&rPId=55794) et ne pas avoir installé la version pro sur votre machine, au risque d'avoir moins d'options de configuration de votre carte réseau.
    N'hésitez pas à utiliser une ancienne VM cpcdos déjà configurée pour la mettre à jour.
  - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
  - Executez-le avec votre OS !
