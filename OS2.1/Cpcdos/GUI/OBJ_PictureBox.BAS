@@ -192,6 +192,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.Handle)
 						
 						
+						
 						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).DejaSize = false 
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

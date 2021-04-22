@@ -52,9 +52,142 @@ function _SYSTEME_Cpcdos_OSx__.bit_converter(byref source as any ptr) as any ptr
 	
 End function
 
+#print Blurry effect
+
+public function _SYSTEME_Cpcdos_OSx__.buffer_to_blurry(byref image_src as any ptr) as Any Ptr
+	' Appliquer du flou dans le meme buffer, et retourne le temps en ms
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Application de l'effet de flou (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		Else
+			DEBUG("[SYSTEM] Applying blurry (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		End If
+	End if
+
+	Dim img_info As tImage
+	Imageinfo(image_src, img_info.Width, img_info.height, , img_info.pitch, img_info.pixels)
+
+	Dim As Double fEnd, fStart = Timer
+	Dim Imgfloute As Any Ptr = FastBlur(img_info, 10)
+	fEnd = Timer - fStart
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		DEBUG("[OK] " & fEnd & " ms (New source 0x" & hex(Imgfloute) & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+	End if
+
+	return Imgfloute
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.FastBlur(img As tImage, iRadius As Ubyte) As Any Ptr
+	' Cette fonction permet d'appliquer une passe de flou horizontaux et verticaux
+
+   iRadius = Iif(iRadius < 1, 1, iRadius)
+
+   Dim Horizontale As Any Ptr = BlurPass(img, iRadius, img.width, img.height)
+   
+   Dim As tImage img2
+   Imageinfo(Horizontale, img2.Width, img2.height, , img2.pitch, img2.pixels)
+     
+   Dim Verticale As Any Ptr = BlurPass(img2, iRadius, img.height, img.Width)
+   ImageDestroy(Horizontale)
+   
+   Return Verticale
+End Function
+
+' Thank to Romain Guy
+Function _SYSTEME_Cpcdos_OSx__.BlurPass(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) As Any Ptr
+
+   dIM AS UShort iW1 = iW - 1, iH1 = iH - 1
+   
+   Dim As Ulong Ptr srcPixels = img.pixels
+   
+   Dim pImage_blurred As Any Ptr = Imagecreate(img.height, img.width, 0, 32)
+   
+   Dim As tImage img_b
+   Imageinfo(pImage_blurred, img_b.Width, img_b.height, , img_b.pitch, img_b.pixels)
+   Dim As Ulong Ptr dstPixels = img_b.pixels
+
+   Dim As Long previousPixelIndex, sumAlpha, sumRed, sumGreen, sumBlue, i
+   Dim As Ulong pixel, windowSize = iRadius * 2 + 1, radiusPlusOne = iRadius + 1, _
+                srcIndex = 0, sumLookupTable(256 * windowSize), indexLookupTable(radiusPlusOne), _
+                dstIndex, x, y, nextPixelIndex, nextPixel, previousPixel
+               
+   Dim as Integer pitch_img = img.pitch Shr 2, pitch_b = img_b.pitch Shr 2
+
+   For i = 0 To Ubound(sumLookupTable) - 1
+      sumLookupTable(i) = i \ windowSize
+   Next
+   
+   If iRadius < iW Then
+      For i = 0 To Ubound(indexLookupTable) - 1
+         indexLookupTable(i) = i
+      Next
+   Else
+      For i = 0 To iW - 1
+         indexLookupTable(i) = i
+      Next
+      For i = iW To Ubound(indexLookupTable) - 1
+         indexLookupTable(i) = iW1
+      Next
+   Endif
+   
+   For y = 0 To iH1
+      sumAlpha = 0: sumRed = 0: sumGreen = 0: sumBlue = 0
+      dstIndex = y
+      
+      pixel = srcPixels[srcIndex]
+      sumAlpha += radiusPlusOne * ((pixel Shr 24) And &hFF)
+      sumRed   += radiusPlusOne * ((pixel Shr 16) And &hFF)
+      sumGreen += radiusPlusOne * ((pixel Shr  8) And &hFF)
+      sumBlue  += radiusPlusOne * ( pixel         And &hFF)
+      
+      For i = 1 To iRadius
+         pixel = srcPixels[srcIndex + indexLookupTable(i)]
+         sumAlpha += ((pixel Shr 24) And &hFF)         
+         sumRed   += ((pixel Shr 16) And &hFF)         
+         sumGreen += ((pixel Shr  8) And &hFF)         
+         sumBlue  += ( pixel         And &hFF)            
+      Next
+      
+      For x = 0 To iW1
+         dstPixels[dstIndex] = sumLookupTable(sumAlpha) Shl 24 Or _
+                               sumLookupTable(sumRed)   Shl 16 Or _
+                               sumLookupTable(sumGreen) Shl  8 Or _
+                               sumLookupTable(sumBlue)
+         
+         dstIndex += pitch_b
+         
+         nextPixelIndex = x + radiusPlusOne
+         If nextPixelIndex >= iW Then nextPixelIndex = iW1
+         
+         previousPixelIndex = x - iRadius
+         If previousPixelIndex < 0 Then previousPixelIndex = 0
+         
+         nextPixel =    srcPixels[srcIndex + nextPixelIndex]
+         previousPixel = srcPixels[srcIndex + previousPixelIndex]
+         
+         sumAlpha += (nextPixel      Shr 24) And &hFF
+         sumAlpha -= (previousPixel   Shr 24) And &hFF
+         
+         sumRed += (nextPixel         Shr 16) And &hFF
+         sumRed -= (previousPixel   Shr 16) And &hFF
+         
+         sumGreen += (nextPixel      Shr  8) And &hFF
+         sumGreen -= (previousPixel   Shr  8) And &hFF
+         
+         sumBlue += (nextPixel            ) And &hFF
+         sumBlue -= (previousPixel         ) And &hFF
+      Next
+   
+      srcIndex += pitch_img
+   Next
+   
+   Return pImage_Blurred
+End Function
+
+
 #print * Lecteur PNG
-
-
 ' Fonction statique n'ayant pas de retour sur le reseau ou fichier DEBUG
 Sub libpng_error_callback cdecl( byval png as png_structp,  byval  p as png_const_charp)
 	Dim Message_erreur as string = ERRAVT("ERR_046", 0)

@@ -1003,6 +1003,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 						' Copier le fond d'ecran
 						' Flip 3, 4
 
+						' appliquer du flou
+						' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(IMG_BUFFER_ID)
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(IMG_BUFFER_ID, Pos_X, Pos_Y, 0, 0, Siz_X , Siz_Y, true, Couleur_ALPHA)
 
 						SORTIR_SectionCritique()

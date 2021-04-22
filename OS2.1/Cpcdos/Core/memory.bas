@@ -288,6 +288,52 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_FILE(byval ImageSource as String, b
 	End if	
 End Function
 
+#print Blurry
+function _memoire_bitmap.apply_blurry(byval NumeroID as integer) as boolean
+	' Permet d'appliquer du flou sur une image
+
+	DEBUG("apply_blurry() NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+
+	If NumeroID > 0 Then
+		if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
+			DEBUG("apply_blurry() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			return -1
+		End if
+
+		if this.utilise(NumeroID) = TRUE Then
+		
+			' Supprimer_BITMAP(NumeroID) 
+			
+			IF this.EstFILE(NumeroID) = TRUE Then
+				Dim Bits_ as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels()
+				Dim as integer Hauteur, Largeur
+				' Detruire l'ancien pointeur !!!
+				Dim ImageSource as String = this.Nom(NumeroID)
+				
+				if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID))) = true Then
+					Function = true
+				Else
+					Function = false
+				End if
+			Else
+				Function = false
+			End if
+		Else
+			Function = false
+		End if
+
+	Else
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[_memoire_bitmap] apply_blurry() [ERREUR] NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		Else
+			DEBUG("[_memoire_bitmap] apply_blurry() [ERROR] NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+		return false
+	End if
+
+	
+end function
+
 #print * Smart reload
 Function _memoire_bitmap.Reload_FILE(byval NumeroID as integer) as boolean
 	' Permet de recharger un fichier PNG via son ID

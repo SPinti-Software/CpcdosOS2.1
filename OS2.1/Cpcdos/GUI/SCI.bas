@@ -1869,6 +1869,7 @@ Function _SCI_Cpcdos_OSx__.FILE_FORMAT_load_icons() as boolean ' ID : 11111
 			' Charger les grosses icones
 			if NOT CPCDOS_INSTANCE.FORMAT_Icones_max(boucle) = "NULL" Then
 				CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(boucle) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.FORMAT_Icones_max(boucle), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+				
 			End if
 			
 			' Charger les petites icones

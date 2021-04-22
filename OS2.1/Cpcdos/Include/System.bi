@@ -176,6 +176,10 @@ Type _interface_APM_
 		
 End Type
 
+Type tImage
+	As Integer width, height, pitch
+	As Long Ptr pixels
+End Type
 
 ' ===== Cette structure permet de gerer les fichiers JPG =====
 enum
@@ -281,6 +285,7 @@ Type _memoire_bitmap
 		Declare Function Creer_BITMAP				(byval NumeroID as integer, Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP_depuis_FILE	(byval ImageSource as String, byval handle_parent as integer) 													as integer
 		
+		Declare Function apply_blurry				(byval NumeroID as integer) as boolean
 		Declare Function Reload_FILE				(byval NumeroID as integer) as boolean
 		Declare Function Auto_Reload_FILE			() 							as boolean
 		Declare Function Supprimer_ID_Objets		() 							as boolean
@@ -683,6 +688,12 @@ Type _SYSTEME_Cpcdos_OSx__
 		
 		' **** Fichiers images ****
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
+		' Effet flou
+		
+		Declare function buffer_to_blurry		(byref image_src as any ptr) 									as Any Ptr
+		Declare Function FastBlur				(img As tImage, iRadius As Ubyte)								As Any Ptr
+		Declare Function BlurPass				(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) 	As Any Ptr
+		
 		Declare function bit_converter			(byref source as any ptr) 																		as any ptr
 		Declare function trans32 				(ByVal Source As UInteger, ByVal Destination As UInteger, ByVal Parametres As Any Ptr ) 								As UInteger
 		Declare Function charger_PNG			(byval Fichier as String,  byval Bits as integer, prio as integer) 														as any ptr
