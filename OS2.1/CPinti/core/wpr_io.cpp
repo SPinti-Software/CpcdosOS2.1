@@ -34,50 +34,6 @@ namespace cpinti
 {
 	namespace gestionnaire_fichier
 	{
-		
-		long cpinti_decompress_file(const char* Source, const char* Destination)
-		{
-			// Cette fonction va permettre de decompresser un fichier ZIP
-			// Retourne 
-			//			-2 : Erreur dans la lib (voir debug)
-			//			-1 : Destination impossible
-			// 			 0 : Source fichier non present
-			//			 1 : OK
-			
-			cpinti_dbg::CPINTI_DEBUG("Decompression du fichier '" + std::string(Source) + "' vers  '" = std::string(Destination) + "' ... ", 
-						 "Uncompress file '" + std::string(Source) + "' to '" = std::string(Destination) + "'  ... ",
-							"cpinti::gestionnaire_fichier", "cpinti_decompress_file()",
-							Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
-							
-			long Resultats = Fichier_decompress(Source, Destination);
-			
-			if(Resultats > 0)
-				cpinti_dbg::CPINTI_DEBUG("Decompresse!", 
-					 "Uncompressed!", "", "",
-						Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
-			else
-				cpinti_dbg::CPINTI_DEBUG("ERREUR", 
-					 "ERROR", "", "",
-						Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
-							
-			return Resultats;
-			
-		}
-		
-		
-		long cpinti_compress_file(const char* source, const char* destination)
-		{
-			// Cette fonction va permettre de compression un fichier source en ZIP
-			//			-2 : Erreur dans la lib (voir debug)
-			//			-1 : Destination impossible
-			// 			 0 : Source fichier non present
-			//			 1 : OK
-			
-			return 0;
-			
-		}
-		
-		
 		bool cpinti_Fichier_Existe(const char* Source)
 		{
 			// Cette fonction va permettre de savoir si un fichier existeS
