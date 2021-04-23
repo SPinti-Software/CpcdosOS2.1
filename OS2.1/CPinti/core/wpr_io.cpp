@@ -26,6 +26,7 @@
 #include "debug.h"
 #include "func_cpi.h"
 #include "io.h"
+#include <cpinti/fs.hpp>
  
  // #include "leakchk.h"
 
@@ -95,7 +96,7 @@ namespace cpinti
 							"cpinti::gestionnaire_fichier", "cpinti_Fichier_Existe()",
 							Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
 							
-			Resultats = cpinti::file_manager::file_exist(Source);
+			Resultats = cpinti::fs::file_exist(Source);
 			
 			if(Resultats == true)
 				cpinti_dbg::CPINTI_DEBUG("Fichier disponible.", 
