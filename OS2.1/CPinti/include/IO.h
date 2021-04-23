@@ -39,13 +39,30 @@ namespace cpinti
 		long 					Fichier_compress		(const char* Source, const char* Destination);
 		long inf					(FILE *source, FILE *dest);
 		
-		bool 					Fichier_Existe			(const char* Source);
-		bool					Repertoire_Existe		(const char *Source) ;
 		unsigned long 			Taille_Fichier			(const char* Source);
 		bool 					Lire_Fichier_complet	(const char* Source, const char* MODE, char *_DONNEES, unsigned long Taille_Fichier);
 		bool					Ecrire_fichier			(const char* Source, const char* Donnees, long FLAG);
 		bool					Supprimer_Ficher		(const char* Source, bool securise, long NombrePasses);
 		bool 					Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec);
+	}
+	
+	namespace file_manager
+	{
+		/**
+		 * \brief check if path exist and if it's a file
+		 * 
+		 * \param path file location
+		 * \return true if file exist otherwithe false
+		 */
+		bool					file_exist(const char *path);
+
+		/**
+		 * \brief check if path exist and if it's a directory
+		 * 
+		 * \param path dir location
+		 * \return true if directory exist otherwithe false
+		 */
+		bool					dir_exist(const char *path);
 	}
 }
 

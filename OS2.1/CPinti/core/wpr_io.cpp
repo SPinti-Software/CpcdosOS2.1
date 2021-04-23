@@ -95,7 +95,7 @@ namespace cpinti
 							"cpinti::gestionnaire_fichier", "cpinti_Fichier_Existe()",
 							Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
 							
-			Resultats = Fichier_Existe(Source);
+			Resultats = cpinti::file_manager::file_exist(Source);
 			
 			if(Resultats == true)
 				cpinti_dbg::CPINTI_DEBUG("Fichier disponible.", 
