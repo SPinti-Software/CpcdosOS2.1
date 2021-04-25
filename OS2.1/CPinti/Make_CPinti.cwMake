@@ -23,6 +23,10 @@
 -c debug/ -o obj/{_sOpt}/debug/ 
 -{vIncl}
 >
+;Build fs
+-c &fs/ -o obj/{_sOpt}/fs/
+-{vIncl}
+>
 ;Build IO
 -c &io/ -o obj/{_sOpt}/io/ 
 -{vIncl}
