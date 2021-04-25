@@ -25,8 +25,6 @@ namespace cpinti
 	{
 
 		// EXTERNE
-		long 					cpinti_decompress_file			(const char* Source, const char* Destination);
-		long 					cpinti_compress_file			(const char* Source, const char* Destination);
 		bool 					cpinti_Fichier_Existe			(const char* Source);
 		unsigned long			cpinti_Taille_Fichier			(const char* Source);
 		bool 					cpinti_Lire_Fichier_complet		(const char* Source, const char* Mode, char* _DONNEES, unsigned long TailleFichier);
@@ -35,18 +33,15 @@ namespace cpinti
 		bool 					cpinti_Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec);
 	
 		// INTERNE
-		long 					Fichier_decompress		(const char* Source, const char* Destination);
-		long 					Fichier_compress		(const char* Source, const char* Destination);
 		long inf					(FILE *source, FILE *dest);
 		
-		bool 					Fichier_Existe			(const char* Source);
-		bool					Repertoire_Existe		(const char *Source) ;
 		unsigned long 			Taille_Fichier			(const char* Source);
 		bool 					Lire_Fichier_complet	(const char* Source, const char* MODE, char *_DONNEES, unsigned long Taille_Fichier);
 		bool					Ecrire_fichier			(const char* Source, const char* Donnees, long FLAG);
 		bool					Supprimer_Ficher		(const char* Source, bool securise, long NombrePasses);
 		bool 					Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec);
 	}
+
 }
 
 

@@ -494,9 +494,6 @@ Function __Noyau_Cpcdos_OSx__.Fichier_decompress(ByVal Source as String, ByVal D
 	' Fermer l'instance de l'archive
 	zip_close(zip_instance)
 
-	' Dim Resultats as integer = cpinti.gestionnaire_fichier.cpinti_decompress_file(strptr(Source), strptr(Destination))
-	
-	
 	return 1
 End Function
 
@@ -657,7 +654,7 @@ Function __Noyau_Cpcdos_OSx__.Fichier_compress(ByVal Source as String, ByVal Des
 	Destination = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(Destination, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE)
 
 	
-	Dim Resultats as integer = cpinti.gestionnaire_fichier.cpinti_compress_file(strptr(Source), strptr(Destination))
+	Dim Resultats as integer = -1
 	
 	return resultats
 End Function
