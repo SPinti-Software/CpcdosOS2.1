@@ -289,7 +289,7 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_FILE(byval ImageSource as String, b
 End Function
 
 #print Blurry
-function _memoire_bitmap.apply_blurry(byval NumeroID as integer) as boolean
+function _memoire_bitmap.apply_blurry(byval NumeroID as integer, intensite as integer) as boolean
 	' Permet d'appliquer du flou sur une image
 
 	DEBUG("apply_blurry() NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
@@ -310,7 +310,7 @@ function _memoire_bitmap.apply_blurry(byval NumeroID as integer) as boolean
 				' Detruire l'ancien pointeur !!!
 				Dim ImageSource as String = this.Nom(NumeroID)
 				
-				if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID))) = true Then
+				if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID), intensite)) = true Then
 					Function = true
 				Else
 					Function = false

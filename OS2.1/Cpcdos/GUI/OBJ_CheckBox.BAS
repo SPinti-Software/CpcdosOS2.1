@@ -354,7 +354,12 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_index_ as integer, _INDEX_PID_ as int
 			
 			
 			' Le pointeur final !! :)
-
+			' appliquer du flou
+			if this.INST_INIT_GUI.GUI__CHECKBOX(_index_).PROP_TYPE.Blurry_Mode > 0 Then
+				
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__CHECKBOX(_index_).PROP_TYPE.Blurry_Mode * 2)
+			End if
+			
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID, 0, 0, 0, 0, IMG_Taille_X, IMG_Taille_Y, this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID, true, false)
 			' put CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID), (0, 0), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID), (0, 0)- step(IMG_Taille_X, IMG_Taille_Y), alpha, 255
 	

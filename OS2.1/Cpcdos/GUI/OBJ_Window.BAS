@@ -357,8 +357,6 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						if len(this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image(index)) > 3 then
 
 							design_Image_ID_org(index) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(design_Image(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-							
-				
 
 							this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) = design_Image_ID_org(index)
 

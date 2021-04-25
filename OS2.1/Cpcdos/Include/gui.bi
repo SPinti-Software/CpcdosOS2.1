@@ -110,6 +110,9 @@ Type Proprietes_Objet
 	Couleur_R		as integer
 	Couleur_V		as integer
 	Couleur_B		as integer
+
+	' Floutage
+	Blurry_Mode		as integer
 	
 	' Bordure
 	Bordure			as integer

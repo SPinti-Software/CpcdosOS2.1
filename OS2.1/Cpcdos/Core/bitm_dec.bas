@@ -54,14 +54,14 @@ End function
 
 #print Blurry effect
 
-public function _SYSTEME_Cpcdos_OSx__.buffer_to_blurry(byref image_src as any ptr) as Any Ptr
+public function _SYSTEME_Cpcdos_OSx__.buffer_to_blurry(byref image_src as any ptr, intensite as integer) as Any Ptr
 	' Appliquer du flou dans le meme buffer, et retourne le temps en ms
 
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[SYSTEME] Application de l'effet de flou (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+			DEBUG("[SYSTEME] Application de l'effet de flou x" & intensite & "% (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 		Else
-			DEBUG("[SYSTEM] Applying blurry (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+			DEBUG("[SYSTEM] Applying blurry  x" & intensite & "% (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 		End If
 	End if
 
@@ -69,7 +69,7 @@ public function _SYSTEME_Cpcdos_OSx__.buffer_to_blurry(byref image_src as any pt
 	Imageinfo(image_src, img_info.Width, img_info.height, , img_info.pitch, img_info.pixels)
 
 	Dim As Double fEnd, fStart = Timer
-	Dim Imgfloute As Any Ptr = FastBlur(img_info, 10)
+	Dim Imgfloute As Any Ptr = FastBlur(img_info, intensite)
 	fEnd = Timer - fStart
 
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

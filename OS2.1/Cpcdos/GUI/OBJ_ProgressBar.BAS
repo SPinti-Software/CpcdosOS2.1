@@ -230,7 +230,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 				End if
 			End if
 					
-			if Siz_X_progress > 0 Then
+			if Siz_X_progress >= 0 Then
 			
 				IF this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ORG_ID < 1 Then 
 				
@@ -295,7 +295,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 		
 			
 			
-			if Siz_X_progress > 0 Then 
+			if Siz_X_progress >= 0 Then 
 				' Nous avons l'image chargee!
 		
 			
@@ -358,6 +358,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 						this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("ProgressBar(" & _index_ & ")", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, 255, this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).Identification_Objet.Handle)
 						
 						' Redimentionner l'image aux dimensions du Progressbar
+						if Siz_X_progress < 1 then Siz_X_progress = 1
 						this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_prog_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ORG_ID, Siz_X_progress, Siz_Y)
 
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_prog_ID, this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, 1, 1)
@@ -467,6 +468,12 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 				end if
 				
 				' Et... Hop! on dessine dans le buffer video
+				' appliquer du flou
+				if this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).PROP_TYPE.Blurry_Mode > 0 Then
+					
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).PROP_TYPE.Blurry_Mode * 2)
+				End if
+				
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
 				' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
 				

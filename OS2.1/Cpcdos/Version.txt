@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 2	Ajouts de divers fonctionnalités.
+		--> 3	Ajouts de divers fonctionnalités.
 		--> 2	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
@@ -34,11 +34,13 @@
 	
 		[AJOUTS]
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
+		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
 		
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
 		- [SCI] Refonte totale de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
+		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		
 		
 		[MODIFICATIONS]

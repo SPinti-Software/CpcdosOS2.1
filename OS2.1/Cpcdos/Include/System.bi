@@ -285,7 +285,7 @@ Type _memoire_bitmap
 		Declare Function Creer_BITMAP				(byval NumeroID as integer, Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP_depuis_FILE	(byval ImageSource as String, byval handle_parent as integer) 													as integer
 		
-		Declare Function apply_blurry				(byval NumeroID as integer) as boolean
+		Declare Function apply_blurry				(byval NumeroID as integer, intensite as integer) as boolean
 		Declare Function Reload_FILE				(byval NumeroID as integer) as boolean
 		Declare Function Auto_Reload_FILE			() 							as boolean
 		Declare Function Supprimer_ID_Objets		() 							as boolean
@@ -690,7 +690,7 @@ Type _SYSTEME_Cpcdos_OSx__
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
 		' Effet flou
 		
-		Declare function buffer_to_blurry		(byref image_src as any ptr) 									as Any Ptr
+		Declare function buffer_to_blurry		(byref image_src as any ptr, intensite as integer)				as Any Ptr
 		Declare Function FastBlur				(img As tImage, iRadius As Ubyte)								As Any Ptr
 		Declare Function BlurPass				(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) 	As Any Ptr
 		

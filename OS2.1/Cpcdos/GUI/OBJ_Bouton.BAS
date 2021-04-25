@@ -458,12 +458,22 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 			
 			'''' GUILLAUME : Crash trouve 21-05-2019 22:40
 			
+			' appliquer du flou
+			if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode = 1 Then
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode * 2)
+			End if
+
 			' Hop on dessine dans le buffer video
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
 			' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
 			
 			IF this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Survole = True Then
 				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID) <> 0 Then
+
+					if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode = 1 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID, this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode * 2)
+					End if
+
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, this.INST_INIT_GUI.GUI__BOUTON(_index_).IMAGE_SURVOLE_OPACITE)
 					' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, this.INST_INIT_GUI.GUI__BOUTON(_index_).IMAGE_SURVOLE_OPACITE
 				Else

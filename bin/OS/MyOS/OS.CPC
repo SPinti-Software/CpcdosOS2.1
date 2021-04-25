@@ -71,7 +71,7 @@ CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
 exe/ & test.cpc
 exe/ & tests/tchat.cpc
-exe/ & tests/explorer.cpc
+// exe/ & tests/explorer.cpc
 
 refresh/ /all
 
