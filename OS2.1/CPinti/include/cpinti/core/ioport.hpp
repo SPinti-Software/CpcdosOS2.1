@@ -1,3 +1,6 @@
+#ifndef CPINTI_CORE_IOPORT_HPP
+#define CPINTI_CORE_IOPORT_HPP
+
 #include <cstdint>
 
 namespace cpinti::core
@@ -18,4 +21,7 @@ namespace cpinti::core
 
         return (ret);
     }
-}
+
+} // namespace cpinti::core
+
+#endif
