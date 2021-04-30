@@ -1,6 +1,6 @@
 # Cpcdos OS2.1 co-kernel source code.
 
-![](https://cpcdos.net/user/themes/cpcdos/images/logo.png)
+![](.github/logo.png)
 
 Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx.
 Cette version sera maintenue à jour jusqu'à ce que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête. (Without FreeDos)
