@@ -29,3 +29,7 @@ djgpp/
 *.d
 /OS2.1/Copy to VM.bat
 /bin/ldopt.tmp
+
+# docs
+
+docs/
