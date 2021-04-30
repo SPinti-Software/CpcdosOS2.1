@@ -1,5 +1,6 @@
 var namespacecpinti =
 [
+    [ "Informations", "index.html#autotoc_md1", null ],
     [ "chrono", "namespacecpinti_1_1chrono.html", "namespacecpinti_1_1chrono" ],
     [ "core", "namespacecpinti_1_1core.html", [
       [ "get_rtc", "namespacecpinti_1_1core.html#aa50e6af00f7942735dfe91fed85c55a6", null ]
