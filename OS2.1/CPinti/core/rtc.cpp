@@ -1,5 +1,5 @@
 #include <cpinti/core/ioport.hpp>
-#include <cpinti/datetime.hpp>
+#include <cpinti/chrono/datetime.hpp>
 
 namespace cpinti::core
 {
@@ -36,7 +36,7 @@ namespace cpinti::core
         return (val & 0x0F) + ((val / 16) * 10);
     }
 
-    cpinti::Datetime get_rtc()
+    cpinti::chrono::DateTime get_rtc()
     {
         while (cmos_wait())
             /* do nothing */;
@@ -69,6 +69,6 @@ namespace cpinti::core
             hours = ((hours & 0x7F) + 12) % 24;
         }
 
-        return cpinti::Datetime(seconds, minutes, hours, day, month, year);
+        return cpinti::chrono::DateTime(seconds, minutes, hours, day, month, year);
     }
 } // namespace cpinti::core
