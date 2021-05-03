@@ -174,6 +174,13 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				Dim Bordure 			as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Bordure
 				Dim Ombre 				as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre
 
+				Dim Couleur_OMBRE_R as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_R
+				Dim Couleur_OMBRE_V as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_V
+				Dim Couleur_OMBRE_B as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_B
+				
+				Dim Ombre_PX as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PX
+				Dim Ombre_PY as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PY
+
 				Dim Couleur_ALPHA 		as integer
 
 				' Si la fenetre est en cours de deplacement alors on la rend transparente
@@ -201,17 +208,14 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				Dim Couleur_TITRE_V as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_TITRE_B
 				Dim Couleur_TITRE_B as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_TITRE_B
 				
-				Dim Couleur_OMBRE_R as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_R
-				Dim Couleur_OMBRE_V as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_V
-				Dim Couleur_OMBRE_B as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_OMBRE_B
-				
-				Dim Ombre_PX as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PX
-				Dim Ombre_PY as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PY
-				
 				Dim TYPE_OBJ as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.TYPE_OBJ
 
 				Dim BUFFER_WINDOW_IMG_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_buffer(" & _index_ & ")", Siz_X, Siz_Y, 255, 0, 255, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
 				
+				' Creer le buffer OMBRE de la fenetre
+				if NOT this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 1 Then
+					this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_shadow_buffer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_OMBRE_R, Couleur_OMBRE_R, Couleur_OMBRE_R, 255, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+				End if
 
 				' Type 0 : Fenetre normale + Titre
 				' Type 1 : Fenetre + Titre , sans conteneur visible
@@ -576,8 +580,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				' Ecrire titre dans le buffer
 				Draw string CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(BUFFER_WINDOW_IMG_ID), (0 + POS_TITRE_X, 0 + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
 
+				if Couleur_ALPHA < 255 Then
+					' Dessiner l'ombre
+					Ombre = Ombre - (255-Couleur_ALPHA)
+					if Ombre < 0 then Ombre = 0
+				End if
+
+				if Ombre > 0 AND this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, true, Ombre)
+				end if
+
+
 				' Ecrire le buffer sur le buffer video
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, Pos_x, Pos_Y, 0, 0, Pos_x+Siz_X, Pos_y+Siz_Y, true, Couleur_ALPHA)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, Pos_x, Pos_Y, 0, 0, Siz_X, Siz_Y, true, Couleur_ALPHA)
 
 				' Detruire le buffer
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(BUFFER_WINDOW_IMG_ID)
