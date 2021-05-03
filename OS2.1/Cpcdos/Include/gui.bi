@@ -264,9 +264,12 @@ Type Cpcdos_GUI__FENETRE
 	design_Image_alpha(0 to array_design_MAX) 	as integer
 	
 	
+	
 	TITRE_IMG_ID				as Integer
 	BUFFER_TITRE_IMG_ID			as Integer
 	BUFFER_TITRE_2_IMG_ID		as Integer
+
+	BUFFER_WINDOW_IMG_ID		as Integer
 	
 	BUFFER_WIN_IMG_ID			as Integer
 	BUFFER_OMBRE_WIN_IMG_ID		as Integer

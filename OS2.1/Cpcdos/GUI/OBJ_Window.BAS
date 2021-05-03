@@ -97,6 +97,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 
 
+
 				
 				' Icone application
 				Dim ICONE_CHEMIN as String 			= this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE
@@ -172,6 +173,20 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 				Dim Bordure 			as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Bordure
 				Dim Ombre 				as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre
+
+				Dim Couleur_ALPHA 		as integer
+
+				' Si la fenetre est en cours de deplacement alors on la rend transparente
+				IF this.INST_INIT_GUI.DEPLACEMENT > 0 Then
+					' Si la fenetre est deja bien transparente
+						if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Alpha < 150 Then
+							Couleur_ALPHA = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Alpha
+						else
+							Couleur_ALPHA = 150
+						end if
+				else
+					Couleur_ALPHA = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Alpha
+				End if
 				
 				
 				Dim Couleur_R as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_R
@@ -194,6 +209,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				Dim Ombre_PY as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PY
 				
 				Dim TYPE_OBJ as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.TYPE_OBJ
+
+				Dim BUFFER_WINDOW_IMG_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_buffer(" & _index_ & ")", Siz_X, Siz_Y, 255, 0, 255, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
 				
 
 				' Type 0 : Fenetre normale + Titre
@@ -444,18 +461,18 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				for index as integer = 0 to array_design_MAX
 					if this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) > 0 Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-							DEBUG("[SCI] Creer_Fenetre() Writting design. Source ID:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) & " PosX:" & Pos_X + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index) & " PosY:" & Pos_y + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index) & " SizX:" & Siz_X + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index) & " SizY:" & Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index) & " Opacity:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							DEBUG("[SCI] Creer_Fenetre() Writting design. Source ID:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) & " PosX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index) & " PosY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index) & " SizX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index) & " SizY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index) & " Opacity:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						end if
 						' Dessiner sur l'ecran
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index), Pos_X + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index), Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index), 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index), true, this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index))
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index), 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index), BUFFER_WINDOW_IMG_ID, true, false) 'Bthis.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index))
 					End if
 				Next index
 				
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					DEBUG("[SCI] Creer_Fenetre() Writting rectangle. PosX:" & Pos_x & " PosY:" & Pos_Y + Siz_Titre & " SizX:" & Siz_X -1 & " SizY:" & Siz_Y - Siz_Titre - 7 & " RGB:" & Couleur_FOND_R & "," & Couleur_FOND_V & "," & Couleur_FOND_B, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					DEBUG("[SCI] Creer_Fenetre() Writting rectangle. PosX:" & 0 & " PosY:" & Pos_Y + Siz_Titre & " SizX:" & Siz_X -1 & " SizY:" & Siz_Y - Siz_Titre - 7 & " RGB:" & Couleur_FOND_R & "," & Couleur_FOND_V & "," & Couleur_FOND_B, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 				end if
 				' Dessiner la couleur de fond de base
-				Line (Pos_x, Pos_Y + Siz_Titre)- step (Siz_X - 1, Siz_Y - Siz_Titre - 7), RGB(Couleur_FOND_R, Couleur_FOND_V, Couleur_FOND_B), BF
+				Line CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(BUFFER_WINDOW_IMG_ID), (0, 0 + Siz_Titre)- step (Siz_X - 1, Siz_Y - Siz_Titre - 7), RGB(Couleur_FOND_R, Couleur_FOND_V, Couleur_FOND_B), BF
 
 
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -475,7 +492,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 
 				' Placer l'icone de l'application
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID, Pos_x + POS_ICONE_X, Pos_Y + POS_ICONE_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID, 0 + POS_ICONE_X, 0 + POS_ICONE_Y, 0, 0, Siz_X, Siz_Titre, BUFFER_WINDOW_IMG_ID, true, false) '255)
+				
 				
 				if Fermable = true Then ' Affiche le bouton de fermeture
 					' ====== BOUTON CLOSE ======
@@ -493,7 +511,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					
 					
 					' Placer l'icone de fermeture dans le buffer de la barre de titre
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID, Pos_x + POS_BT_CLOSE_X, Pos_Y + POS_BT_CLOSE_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID, 0 + POS_BT_CLOSE_X, 0 + POS_BT_CLOSE_Y, 0, 0, Siz_X, Siz_Titre, BUFFER_WINDOW_IMG_ID, true, false) ' 255)
 				End if
 				
 				
@@ -513,7 +531,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 
 					
 					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID, Pos_X + POS_BT_SIZEUP_X, Pos_Y + POS_BT_SIZEUP_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID, 0 + POS_BT_SIZEUP_X, 0 + POS_BT_SIZEUP_Y, 0, 0, Siz_X, Siz_Titre, BUFFER_WINDOW_IMG_ID, true, false) '255)
 
 					
 				Else ' Fenetre Deja AGRANDIE, donc on affiche l'icone de retrecissement
@@ -533,7 +551,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					End if
 
 					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID, Pos_x + POS_BT_SIZEDOWN_X, Pos_Y + POS_BT_SIZEDOWN_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID, 0 + POS_BT_SIZEDOWN_X, 0 + POS_BT_SIZEDOWN_Y, 0, 0, Siz_X, Siz_Titre, BUFFER_WINDOW_IMG_ID, true, false) '255)
 				End If
 				
 				if Reductable = true Then ' Afficher le bouton de reduction
@@ -552,14 +570,27 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					
 					
 					' Placer l'icone de agrandissement de la fenetre dans le buffer de la barre de titre
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID, Pos_x + POS_BT_REDUCT_X, Pos_Y + POS_BT_REDUCT_Y, 0, 0, Siz_X, Siz_Titre, true, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID, 0 + POS_BT_REDUCT_X, 0 + POS_BT_REDUCT_Y, 0, 0, Siz_X, Siz_Titre, BUFFER_WINDOW_IMG_ID, true, false) '255)
 				End if
 
-				Draw string (Pos_X + POS_TITRE_X, Pos_Y + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
+				' Ecrire titre dans le buffer
+				Draw string CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(BUFFER_WINDOW_IMG_ID), (0 + POS_TITRE_X, 0 + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
+
+				' Ecrire le buffer sur le buffer video
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, Pos_x, Pos_Y, 0, 0, Pos_x+Siz_X, Pos_y+Siz_Y, true, Couleur_ALPHA)
+
+				' Detruire le buffer
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(BUFFER_WINDOW_IMG_ID)
+				BUFFER_WINDOW_IMG_ID = 0
 
 			End scope
-		
+
+			
+			
 		End if ' No desktop mode
+
+		
+		
 	
 	End if ' GUI Mode
 
