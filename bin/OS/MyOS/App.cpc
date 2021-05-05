@@ -88,7 +88,7 @@ Fin/ Picturebox
 
 fenetre/ APP2
 	.titre 			= "Application test 2"
-	.px				= "'00"
+	.px				= "400"
 	.py				= "100"
 	.tx				= "400"
 	.ty				= "226"
