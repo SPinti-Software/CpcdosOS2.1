@@ -66,8 +66,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 			Scope
 
 
-				Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_X - 1
-				Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_Y - 2
+				Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_X 
+				Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_Y 
 				
 				Dim POS_Titre_X as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_TITRE_X
 				Dim POS_Titre_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).POS_TITRE_Y
@@ -598,6 +598,26 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, effet_img._alpha_value, Ombre, false)
 					End if
 				end if
+
+				if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode > 0 Then
+					if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode > 5 then
+						this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("apply_blurry(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y)
+
+						' Flou avec le background flou aussi
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, BUFFER_WINDOW_IMG_ID, 4)' this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode \2)
+
+						' Placer le fond flou en premier
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
+
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID)
+					Else
+
+						' Juste flouter
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(BUFFER_WINDOW_IMG_ID, this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode)
+					End if
+				End if
 
 
 				' Ecrire le buffer sur le buffer video

@@ -269,6 +269,8 @@ Type Cpcdos_GUI__FENETRE
 	BUFFER_TITRE_IMG_ID			as Integer
 	BUFFER_TITRE_2_IMG_ID		as Integer
 
+	IMG_BackGround_ID			as integer
+
 	BUFFER_WINDOW_IMG_ID		as Integer
 	
 	BUFFER_WIN_IMG_ID			as Integer

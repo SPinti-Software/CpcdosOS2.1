@@ -1776,6 +1776,19 @@ Function  _memoire_bitmap.Capture_ecran(byval NumeroID as integer, PX as integer
 
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 Then
+				if PX < 0 then PX = 0
+				if PY < 0 then PY = 0
+
+				if SX < 1 then SX = 1
+				if SY < 1 then SY = 1
+
+				if (PX + SX-1) >= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X() Then
+					SX = SX - ((PX+SX)-CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X())
+				End if
+				if (PY + SY-1) >= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y() Then
+					SY = SY - ((PY+SY)-CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y())
+				End if
+
 				Get (PX, PY)- STEP (SX-1, SY-1),  CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID)
 				Function = true
 			Else
