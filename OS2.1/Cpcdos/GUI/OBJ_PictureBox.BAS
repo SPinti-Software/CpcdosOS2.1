@@ -394,18 +394,30 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 
 				' appliquer du flou
 				if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode > 0 Then
-					
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode * 2)
+					if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode > 5 then
+						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("PictureBox_BACKGROUND(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.Handle)
+
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y)
+
+						' Flou avec le background flou aussi
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode \2)
+
+						' Placer le fond flou en premier
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
+					Else
+
+						' Juste flouter
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode)
+					End if
 				End if
 				
 				' Et... Hop! on dessine dans le buffer video
-				if Couleur_ALPHA = 255
+				if Couleur_ALPHA = 255 Then
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true)', Couleur_ALPHA)
 				Else
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
 				End if
-				' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
-				
+
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 						DEBUG("[SCI] Creer_PictureBox() Operations terminees. Retourne handle:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.handle, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)

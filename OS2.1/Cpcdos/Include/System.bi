@@ -305,6 +305,7 @@ Type _memoire_bitmap
 		Declare Function Creer_BITMAP_depuis_FILE	(byval ImageSource as String, byval handle_parent as integer) 													as integer
 		
 		Declare Function apply_blurry				(byval NumeroID as integer, intensite as integer) as boolean
+		Declare Function apply_blurry				(byval NumeroID_Background as integer, byval NumeroID as integer, intensite as integer) as boolean
 		Declare Function Reload_FILE				(byval NumeroID as integer) as boolean
 		Declare Function Auto_Reload_FILE			() 							as boolean
 		Declare Function Supprimer_ID_Objets		() 							as boolean
@@ -350,6 +351,8 @@ Type _memoire_bitmap
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		
+		Declare Function Capture_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX as integer, SY as integer) as boolean
+
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer)																																		as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer)																											as boolean
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer)																		as boolean

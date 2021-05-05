@@ -441,6 +441,7 @@ Type Cpcdos_GUI__PICTUREBOX
 	AdresseMemoire			as boolean 	' si c'est une adresse memoire, eviter sa suppression
 	
 	IMG_ID					as integer 	' ID de la ressource BITMAP
+	IMG_BackGround_ID		as integer 	' ID de la ressource arriere plan
 	IMG_ORG_ID				as integer 	' ID de la ressource origine BITMAP
 	
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)

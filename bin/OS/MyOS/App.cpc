@@ -75,7 +75,7 @@ Fin/ Bouton
 
 picturebox/ Image2
 	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "IMGAUTO:0 BLURRY:0"
+	.Parametres		= "IMGAUTO:0 BLURRY:6"
 	.PX				= "10"
 	.PY				= "10"
 	.tx				= "200"

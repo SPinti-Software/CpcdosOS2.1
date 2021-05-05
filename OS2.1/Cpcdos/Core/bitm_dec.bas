@@ -102,7 +102,7 @@ Function _SYSTEME_Cpcdos_OSx__.BlurPass(img As tImage, iRadius As Ubyte, iW as U
    
    Dim As Ulong Ptr srcPixels = img.pixels
    
-   Dim pImage_blurred As Any Ptr = Imagecreate(img.height, img.width, 0, 32)
+   Dim pImage_blurred As Any Ptr = Imagecreate(img.height, img.width, RGBA(0, 0, 0, 0), 32)
    
    Dim As tImage img_b
    Imageinfo(pImage_blurred, img_b.Width, img_b.height, , img_b.pitch, img_b.pixels)
