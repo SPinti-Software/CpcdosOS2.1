@@ -2164,27 +2164,28 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID_Source as integer, PX as 
 				
 				select case effet
 					case _pset
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), pset
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), pset
 					case _preset
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), preset
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), preset
 					case _and
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), and
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), and
 					case _or
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), or
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), or
 					case _xor
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), xor
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), xor
 					case _trans
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), trans
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), trans
 					case _alpha
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), alpha
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), alpha
 					case _alpha_value
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), alpha, valeur
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), alpha, valeur
 					case _add
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), add
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), add
 					case _add_value
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), add, valeur
-					case _custom_1
-						' put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), Custom, 
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), add, valeur
+					case _shadow_effect
+						' Effet d'ombre fenetre ()
+						put Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), and
 					case _custom_2
 					case _custom_3
 					case _custom_4

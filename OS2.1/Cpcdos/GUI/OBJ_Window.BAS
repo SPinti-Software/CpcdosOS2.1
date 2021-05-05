@@ -588,10 +588,16 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				End if
 
 				' Dessiner l'ombre
-				if Ombre > 0 Then ' AND this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, 0, 0, 0, 0, Siz_X, Siz_Y, this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, effet_img._and, 0, false)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, effet_img._alpha_value, 100, false)
-					' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, true, Ombre)
+				if Ombre > 0 Then
+					' si le buffer n'existe pas
+					if NOT this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, 0, 0, 0, 0, Siz_X, Siz_Y, this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, effet_img._shadow_effect, 0, false)
+					End if
+				
+					' Dessiner dans la video
+					if this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, effet_img._alpha_value, Ombre, false)
+					End if
 				end if
 
 

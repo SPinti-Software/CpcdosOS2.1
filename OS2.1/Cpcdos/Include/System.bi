@@ -192,6 +192,7 @@ enum effet_img
 	_alpha_value
 	_add
 	_add_value
+	_shadow_effect
 	_custom_1
 	_custom_2
 	_custom_3
