@@ -214,7 +214,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 				' Creer le buffer OMBRE de la fenetre
 				if NOT this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 1 Then
-					this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_shadow_buffer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_OMBRE_R, Couleur_OMBRE_R, Couleur_OMBRE_R, 255, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+					' this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_shadow_buffer(" & _index_ & ")", Siz_X, Siz_Y, Couleur_OMBRE_R, Couleur_OMBRE_R, Couleur_OMBRE_R, 255, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+					this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("Window_shadow_buffer(" & _index_ & ")", Siz_X, Siz_Y, 255, 0, 255, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
 				End if
 
 				' Type 0 : Fenetre normale + Titre
@@ -586,8 +587,11 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					if Ombre < 0 then Ombre = 0
 				End if
 
-				if Ombre > 0 AND this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, true, Ombre)
+				' Dessiner l'ombre
+				if Ombre > 0 Then ' AND this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(BUFFER_WINDOW_IMG_ID, 0, 0, 0, 0, Siz_X, Siz_Y, this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, effet_img._and, 0, false)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, effet_img._alpha_value, 100, false)
+					' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_OMBRE_WIN_IMG_ID, Pos_x + Ombre_PX, Pos_Y + Ombre_PY, 0, 0, Siz_X, Siz_Y, true, Ombre)
 				end if
 
 
