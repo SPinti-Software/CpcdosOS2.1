@@ -350,7 +350,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 
 	SCOPE
 
-		imgPNG = imagecreate( largeur, hauteur, RGBA(255, 0, 255, 255))
+		imgPNG = imagecreate( largeur, hauteur, RGBA(0, 0, 0, 0))
 
 		dim as ubyte ptr dst = cptr( ubyte ptr, imgPNG + 1 )
 
@@ -396,22 +396,41 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						dst[3] = src[i+3]
 
 						
+						'If dst[3] < 255 THEN
+							CanalAlphaPresent = 1
+						'END IF
+
+						
 						''' Si le canal alpha et le rvb indique que c'est un fond purement transparent
 						''' R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						''' s'occupe d'enlever le rose pour remplacer le role du png
-						If dst[0] = 255 THEN
-							If dst[1] = 255 THEN
-								If dst[2] = 255 THEN
-									If dst[3] = 0 THEN
-										dst[0] = 255	' Rouge
-										dst[1] = 0		' Vert
-										dst[2] = 255	' Bleu
-										dst[3] = 0		' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
+						'If dst[0] = 255 THEN
+						'	If dst[1] = 255 THEN
+						'		If dst[2] = 255 THEN
+						'			If dst[3] = 0 THEN
+						'				dst[0] = 255	' Rouge
+						'				dst[1] = 0		' Vert
+						'				dst[2] = 255	' Bleu
+						'				dst[3] = 0		' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
+
+						'If dst[0] = 0 THEN
+						'	If dst[1] = 0 THEN
+						'		If dst[2] = 0 THEN
+						'			If dst[3] = 0 THEN
+						'				dst[0] = 255	' Rouge
+						'				dst[1] = 0		' Vert
+						'				dst[2] = 255	' Bleu
+						'				dst[3] = 0		' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 						
 						dst += 4
 					next
@@ -435,34 +454,34 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						'  s'occupe d'enlever le rose pour remplacer le role du png
 
-						If dst[0] = 0 THEN
-							If dst[1] = 0 THEN
-								If dst[2] = 0 THEN
-									If dst[3] = 0 THEN
-										dst[0] = 255	' Rouge
-										dst[1] = 0		' Vert
-										dst[2] = 255	' Bleu
-										dst[3] = 0		' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
+						'If dst[0] = 0 THEN
+						'	If dst[1] = 0 THEN
+						'		If dst[2] = 0 THEN
+						'			If dst[3] = 0 THEN
+						'				dst[0] = 255	' Rouge
+						'				dst[1] = 0		' Vert
+						'				dst[2] = 255	' Bleu
+						'				dst[3] = 0		' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 
 
-						If dst[0] = 255 THEN
-							If dst[1] = 255 THEN
-								If dst[2] = 255 THEN
-									If dst[3] = 0 THEN
-										dst[0] = 255	' Rouge
-										dst[1] = 0		' Vert
-										dst[2] = 255	' Bleu
-										dst[3] = 0		' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
+						'If dst[0] = 255 THEN
+						'	If dst[1] = 255 THEN
+						'		If dst[2] = 255 THEN
+						'			If dst[3] = 0 THEN
+						'				dst[0] = 255	' Rouge
+						'				dst[1] = 0		' Vert
+						'				dst[2] = 255	' Bleu
+						'				dst[3] = 0		' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 						
 						dst += 4
 					next
@@ -474,26 +493,46 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 					dst += imgPNG->pitch
 				case 15, 16
 					For i as integer = 0 to rowbytes-1 step 4
-						TestR = src[i+2]
-						TestV = src[i+1]
-						TestB = src[i+0]
-						TestA = src[i+3]
+
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+
+						'TestR = src[i+2]
+						'TestV = src[i+1]
+						'TestB = src[i+0]
+						'TestA = src[i+3]
 						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
 						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						'  s'occupe d'enlever le rose pour remplacer le role du png
-						If TestR = 255 THEN
-							If TestV = 255 THEN
-								If TestB = 255 THEN
-									If TestA = 0 THEN
-										src[i+2] = 255 	' Rouge
-										src[i+1] = 0	' Vert
-										src[i+0] = 255	' Bleu
-										src[i+3] = 255	' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
+						'If TestR = 255 THEN
+						'	If TestV = 255 THEN
+						'		If TestB = 255 THEN
+						'			If TestA = 0 THEN
+						'				src[i+2] = 255 	' Rouge
+						'				src[i+1] = 0	' Vert
+						'				src[i+0] = 255	' Bleu
+						'				src[i+3] = 255	' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
+
+						'If TestR = 0 THEN
+						'	If TestV = 0 THEN
+						'		If TestB = 0 THEN
+						'			If TestA = 0 THEN
+						'				src[i+2] = 255 	' Rouge
+						'				src[i+1] = 0	' Vert
+						'				src[i+0] = 255	' Bleu
+						'				src[i+3] = 255	' Alpha
+						'				CanalAlphaPresent = 1
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 					next
 					imageconvertrow( src, 32, dst, Bits, largeur )
 					dst += imgPNG->pitch
@@ -508,39 +547,44 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 					next
 				case 15, 16
 					For i as integer = 0 to rowbytes-1 step 4
-						TestR = src[i+2]
-						TestV = src[i+1]
-						TestB = src[i+0]
-						TestA = src[i+3]
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+
+						'TestR = src[i+2]
+						'TestV = src[i+1]
+						'TestB = src[i+0]
+						'TestA = src[i+3]
 						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
 						' 	R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
 						' 	s'occupe d'enlever le rose pour remplacer le role du png
 						
-						If TestR = 0 THEN
-							If TestV = 0 THEN
-								If TestB = 0 THEN
-									If TestA = 0 THEN
-										src[i+2] = 255 	' Rouge
-										src[i+1] = 0	' Vert
-										src[i+0] = 255	' Bleu
-										src[i+3] = 255	' Alpha
-									END IF
-								END IF
-							END IF
-						END IF
+						'If TestR = 0 THEN
+						'	If TestV = 0 THEN
+						'		If TestB = 0 THEN
+						'			If TestA = 0 THEN
+						'				src[i+2] = 255 	' Rouge
+						'				src[i+1] = 0	' Vert
+						'				src[i+0] = 255	' Bleu
+						'				src[i+3] = 255	' Alpha
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 
-						If TestR = 255 THEN
-							If TestV = 255 THEN
-								If TestB = 255 THEN
-									If TestA = 0 THEN
-										src[i+2] = 255 	' Rouge
-										src[i+1] = 0	' Vert
-										src[i+0] = 255	' Bleu
-										src[i+3] = 255	' Alpha
-									END IF
-								END IF
-							END IF
-						END IF
+						'If TestR = 255 THEN
+						'	If TestV = 255 THEN
+						'		If TestB = 255 THEN
+						'			If TestA = 0 THEN
+						'				src[i+2] = 255 	' Rouge
+						'				src[i+1] = 0	' Vert
+						'				src[i+0] = 255	' Bleu
+						'				src[i+3] = 255	' Alpha
+						'			END IF
+						'		END IF
+						'	END IF
+						'END IF
 						dst += 4
 					next
 					for i as integer = 0 to rowbytes-1

@@ -1781,7 +1781,7 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 Then
-				put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), pset
+				put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), ALPHA
 				Function = true
 			Else
 				Function = false
@@ -1832,7 +1832,7 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 Then
-				put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), pset
+				put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 				Function = true
 			Else
 				Function = false
@@ -1887,12 +1887,13 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 Then
 				if CanalAlpha = true Then
 					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels() = 32 Then
-						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), Alpha, 255
+						'put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), Alpha, 255
+						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), ALPHA
 					Else
-						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), TRANS
+						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), ALPHA
 					End if
 				Else
-					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), pset
+					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), ALPHA
 				End if
 				
 				Function = true
@@ -1966,12 +1967,13 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 AND NumeroID > 0 Then
 				if CanalAlpha = true Then
 					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels() = 32 Then
-						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), Alpha, 255
+						' put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), Alpha, 255
+						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 					Else
-						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), TRANS
+						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 					End if
 				Else
-					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), pset
+					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 				End if
 				
 				Function = true
@@ -2030,7 +2032,7 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 				if CanalAlpha = true Then
 					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), Alpha, valeur
 				Else
-					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), pset
+					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), ALPHA
 				End if
 				
 				Function = true
@@ -2087,7 +2089,7 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 				if CanalAlpha = true Then
 					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), Alpha, valeur
 				Else
-					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), pset
+					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 				End if
 				Function = true
 			Else
@@ -2123,12 +2125,13 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID_Source as integer, PX as 
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source) > 0 AND CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination) > 0 AND NumeroID_Destination > 0 AND NumeroID_Source > 0 Then
 				if CanalAlpha = true Then
 					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels() = 32 Then
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), Alpha, 255
+						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), ALPHA
+						'put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), Alpha, 255
 					Else
-						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), TRANS
+						put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), ALPHA
 					End if
 				Else
-					put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), pset
+					put CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Destination), (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID_Source), (SX1, SY1)-(SX2, SY2), ALPHA
 				End if
 				
 				Function = true

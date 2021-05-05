@@ -399,8 +399,11 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 				End if
 				
 				' Et... Hop! on dessine dans le buffer video
-
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
+				if Couleur_ALPHA = 255
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true)', Couleur_ALPHA)
+				Else
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
+				End if
 				' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
 				
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
