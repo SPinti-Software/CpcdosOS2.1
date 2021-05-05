@@ -1,8 +1,8 @@
 
 fenetre/ APP1
 	.titre				= "My first window !"
-	.px					= "150"
-	.py					= "150"
+	.px					= "80"
+	.py					= "180"
 	.tx					= "420"
 	.ty					= "263"
 	.Opacite			= "100"
@@ -88,8 +88,8 @@ Fin/ Picturebox
 
 fenetre/ APP2
 	.titre 			= "Application test 2"
-	.px				= "300"
-	.py				= "150"
+	.px				= "'00"
+	.py				= "100"
 	.tx				= "400"
 	.ty				= "226"
 	.Opacite        = "190"
