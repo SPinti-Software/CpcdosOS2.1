@@ -308,37 +308,33 @@ function _memoire_bitmap.apply_blurry(byval NumeroID_background as integer, byva
 		
 			' Supprimer_BITMAP(NumeroID) 
 			
-			IF this.EstFILE(NumeroID) = TRUE Then
-				Dim Bits_ as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels()
-				Dim as integer Hauteur, Largeur
-				' Detruire l'ancien pointeur !!!
-				Dim ImageSource as String = this.Nom(NumeroID)
-				
-				
-				if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID), intensite)) = true Then
+			Dim Bits_ as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels()
+			Dim as integer Hauteur, Largeur
+			' Detruire l'ancien pointeur !!!
+			Dim ImageSource as String = this.Nom(NumeroID)
+			
+			
+			if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID), intensite)) = true Then
+				Function = true
+			Else
+				Function = false
+			End if
+
+			if NumeroID_background > 0 Then
+				DEBUG("apply_blurry() Background NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
+					DEBUG("apply_blurry() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+					return -1
+				End if
+
+				if Modifier_BITMAP_depuis_PTR(NumeroID_background, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID_background), intensite)) = true Then
 					Function = true
 				Else
 					Function = false
 				End if
 
-				if NumeroID_background > 0 Then
-					DEBUG("apply_blurry() Background NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-					if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
-						DEBUG("apply_blurry() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-						return -1
-					End if
-
-					if Modifier_BITMAP_depuis_PTR(NumeroID_background, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID_background), intensite)) = true Then
-						Function = true
-					Else
-						Function = false
-					End if
-
-				End if
-
-			Else
-				Function = false
 			End if
+
 		Else
 			Function = false
 		End if

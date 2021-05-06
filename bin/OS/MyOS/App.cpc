@@ -5,7 +5,7 @@ fenetre/ APP1
 	.py					= "180"
 	.tx					= "420"
 	.ty					= "263"
-	.Opacite			= "100"
+	.Opacite			= "150"
 	.Parametres			= "TYPE:0 ALPHAMODE:0 MENUCONTEXT:1 BLURRY:6"
 	.CouleurFenetre		= "050,050,100"
 	.CouleurTitre		= "255,255,255"
@@ -75,13 +75,13 @@ Fin/ Bouton
 
 picturebox/ Image2
 	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "IMGAUTO:0 BLURRY:6"
+	.Parametres		= "IMGAUTO:0"
 	.PX				= "10"
 	.PY				= "10"
 	.tx				= "200"
 	.ty				= "200"
 	.Image			= "%OS_GUI%/Ultima.png"
-	.opacite		= "100"
+	.opacite		= "255"
 	.event			= "OS/TEST.CPC"
 	creer/
 Fin/ Picturebox
@@ -103,26 +103,6 @@ fenetre/ APP2
 	@#Handle_Fenetre creer/
 Fin/ fenetre
 
-
-
-rem/ sys/ /debug = 2
-
-picturebox/ Image3
-	.Handle			= "%Handle_Fenetre%"
-
-	.Parametres		= "IMGAUTO:2"
-	.PX				= "0"
-	.PY				= "0"
-	.tx				= "300"
-	.ty				= "126"
-	.opacite		= "200"
-	.CouleurFond	= "255,010,010"
-	.CouleurTexte	= "000,255,000"
-	.Texte 			= "Blabla - handle parent %Handle_Fenetre%"
-	.Image			= ""
-	.event			= ""
-	creer/
-Fin/ Picturebox
 
 Imagebox/ Image4
 	.Handle			= "%Handle_Fenetre%"
