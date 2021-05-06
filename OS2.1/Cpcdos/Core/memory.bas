@@ -1254,6 +1254,26 @@ Function _memoire_bitmap.Recuperer_BITMAP_bits(byval NumeroID as integer) as int
 	
 End Function
 
+Function _memoire_bitmap.Recuperer_BITMAP_xybit(byval NumeroID as integer) as string
+	' Recuperer x, y, bits
+
+	if NumeroID > 0 Then
+		if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
+			DEBUG("Recuperer_BITMAP_xybit() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			return ""
+		End if
+
+		return this.TX(NumeroID) & "x" & this.TY(NumeroID) & "x" & this.bits(NumeroID)
+	else
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[_memoire_bitmap] Recuperer_BITMAP_xybit() [ERREUR] NumeroID " & NumeroID & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		Else
+			DEBUG("[_memoire_bitmap] Recuperer_BITMAP_xybit() [ERROR] NumeroID " & NumeroID & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+		return ""
+	End if
+end function
+
 Function _memoire_bitmap.Recuperer_BITMAP_taille(byval NumeroID as integer) as integer
 	' Permet de recuperer la taille en octets
 	

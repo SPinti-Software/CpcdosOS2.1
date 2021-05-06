@@ -327,6 +327,8 @@ Type _memoire_bitmap
 		Declare Function Recuperer_BITMAP_x			(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_y			(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_bits		(byval NumeroID as integer)														as integer
+		Declare Function Recuperer_BITMAP_xybit		(byval NumeroID as integer)	 													as string
+		
 		Declare Function Recuperer_BITMAP_taille	(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_Nombre	()																				as Integer
 		Declare Function Recuperer_BITMAP_Liste		()																				as String
