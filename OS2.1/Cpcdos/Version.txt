@@ -7,21 +7,21 @@
 	#### En bref ####
 	#################
 
-		--> 3	Ajouts de divers fonctionnalités.
-		--> 2	corrections importantes.
+		--> 4	Ajouts de divers fonctionnalités.
+		--> 4	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
 
 		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
 
-		--> Gain de performances : +10%
+		--> Gain de performances : +15%
 		--> Note de performances : 14/20
 
 		--> Probabilités de crash
 				Réseau	: 10%
 				SHELL	: 15%
-				GUI		: 15% (updated!)
+				GUI		: 15%
 				3D		: 1%
 				I/O		: 10%
 				Win32	: 20%
@@ -35,12 +35,14 @@
 		[AJOUTS]
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
 		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
+		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
 		
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
 		- [SCI] Refonte totale de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
+		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		
 		
 		[MODIFICATIONS]
