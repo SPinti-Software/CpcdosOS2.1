@@ -150,6 +150,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 				Dim Size_ICON_Text_MAX as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_MODE.NAME_SIZE_MAX", 3, _CLE_))
 				Dim Espacement_POS_X_icon as integer  = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.ICON_MODE.SPACING", 3, _CLE_))
 				Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
+
+				Dim Path_explorer_program as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.PROGRAM", 3, _CLE_))
 				
 				
 				IF this.INST_INIT_GUI.DEPLACEMENT > 0 Then
@@ -819,12 +821,18 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 									' Chercher le dernier \
 									CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
 
+									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+
 									if DESKTOPMODE = false Then
-										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
+										
 									else
+										
 										' Ouvrir un explorer
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ tests/explorer.cpc", This._CLE_, 3, 0, "")
+										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.EXPLORER(.\)", This._CLE_, 3, 0, "")
+
 									End if
+
+									
 
 								else
 									Dim txt_avant as String = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte
@@ -839,8 +847,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 										End if
 									End if
 									if DESKTOPMODE = true Then
+										
+										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.EXPLORER(" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & ")", This._CLE_, 3, 0, "")
+
 										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = txt_avant ' ne rien modifier ;)
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ tests/explorer.cpc", This._CLE_, 3, 0, "")
 									End if
 								End if
 

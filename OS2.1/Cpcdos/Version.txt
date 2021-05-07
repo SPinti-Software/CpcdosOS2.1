@@ -8,7 +8,7 @@
 	#################
 
 		--> 4	Ajouts de divers fonctionnalités.
-		--> 4	corrections importantes.
+		--> 5	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
 
@@ -43,6 +43,7 @@
 		- [SCI] Refonte totale de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
+		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
 		
 		
 		[MODIFICATIONS]
