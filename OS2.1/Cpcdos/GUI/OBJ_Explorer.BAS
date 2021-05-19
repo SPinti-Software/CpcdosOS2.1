@@ -814,6 +814,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 								if element = ".." OR element = "..\" Then
 									' Recuperer le dernier \
+									
+									Dim txt_avant as String = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte
+
+									
 									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
 										CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
 									End if
@@ -823,12 +827,11 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 									this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source
 
-									if DESKTOPMODE = false Then
-										
-									else
-										
+									if DESKTOPMODE = true Then
 										' Ouvrir un explorer
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.EXPLORER(.\)", This._CLE_, 3, 0, "")
+										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.EXPLORER(" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & ")", This._CLE_, 3, 0, "")
+
+										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = txt_avant ' ne rien modifier ;)
 
 									End if
 
@@ -836,7 +839,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 
 								else
 									Dim txt_avant as String = this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte
-									
+
 									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
 										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element & "\"
 									Else
@@ -846,11 +849,13 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 											this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = CPY_Source & element
 										End if
 									End if
+
 									if DESKTOPMODE = true Then
-										
+										' Ouvrir un explorer
 										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.EXPLORER(" & this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte & ")", This._CLE_, 3, 0, "")
 
 										this.INST_INIT_GUI.GUI__EXPLORER(_index_).Texte = txt_avant ' ne rien modifier ;)
+
 									End if
 								End if
 
