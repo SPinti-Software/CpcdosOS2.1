@@ -313,8 +313,9 @@ function _memoire_bitmap.apply_blurry(byval NumeroID_background as integer, byva
 			' Detruire l'ancien pointeur !!!
 			Dim ImageSource as String = this.Nom(NumeroID)
 			
-			
-			if Modifier_BITMAP_depuis_PTR(NumeroID, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID), intensite)) = true Then
+			dim bitmap_blurred as any ptr = CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID), intensite)
+			if Modifier_BITMAP_depuis_PTR_CP(NumeroID, bitmap_blurred) = true Then
+				if bitmap_blurred <> 0 Then ImageDestroy(bitmap_blurred)
 				Function = true
 			Else
 				Function = false
@@ -327,7 +328,7 @@ function _memoire_bitmap.apply_blurry(byval NumeroID_background as integer, byva
 					return -1
 				End if
 
-				if Modifier_BITMAP_depuis_PTR(NumeroID_background, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID_background), intensite)) = true Then
+				if Modifier_BITMAP_depuis_PTR_CP(NumeroID_background, CPCDOS_INSTANCE.SYSTEME_INSTANCE.buffer_to_blurry(Recuperer_BITMAP_PTR(NumeroID_background), intensite)) = true Then
 					Function = true
 				Else
 					Function = false
