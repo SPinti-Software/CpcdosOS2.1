@@ -656,8 +656,9 @@ End Type
 Type CPCDOS_GUI_INIT__
 	public:
 	' *** Graphique ***
-	CONST _MAX_GUI___OBJS		as integer = 128 ' TEMPORAIRE
-	CONST _MAX_GUI_FENETRE	 	as integer = 64 ' TEMPORAIRE
+	CONST _MAX_GUI___OBJS			as integer = 128 ' TEMPORAIRE
+	CONST _MAX_GUI_FENETRE	 		as integer = 64 ' TEMPORAIRE
+	
 	
 	CONST _MAX_GUI_BOUTON	 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_PICTUREBOX 	as integer = _MAX_GUI___OBJS
@@ -703,6 +704,25 @@ Type CPCDOS_GUI_INIT__
 	
 End Type
 
+type _Context_menu_properties
+	public:
+	name 		as string
+	enabled 	as boolean = true
+
+	action 		as string = "NULL"
+End type
+
+type _Context_menu_
+	public:
+	CONST _MAX_context_menu_items as integer = 16 ' TEMPORAIRE
+	_Space_items as integer = 4
+
+
+	item_number as integer
+
+	item_list (0 to _MAX_context_menu_items) as _Context_menu_properties
+
+End type
 
 Type _SCI_Cpcdos_OSx__
 	private:
@@ -901,7 +921,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function charger_Curseurs			(Handle as integer) 										as integer
 		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 						as integer
 		Declare Function fermer_ContextMenu			() 															as boolean
-		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer) 						as boolean
+		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
 		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string
 		Declare Function IMG_Recuperer_Taille_X		(byref Source as any ptr) 									as integer

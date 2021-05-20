@@ -473,18 +473,15 @@ Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
 	return false
 End function
 
-Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer) as boolean
+Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
 	' Cette fonction permet d'afficher un menu contextuel a un emplacement
 	
 	' Temporaire
+
 	Dim Size_X as integer = 200
 	Dim Size_Y as integer = 200
 
-	Dim texte_array(0 to 24) as string
-
-	texte_array(0) = "Element 1"
-	texte_array(1) = "Element 2"
-	texte_array(2) = "Element 3"
+	Size_Y = (items.item_number * (8 + items._Space_items)) + 10
 
 	dim Couleur_FNT_R as integer = 0
 	dim Couleur_FNT_V as integer = 0
@@ -581,9 +578,9 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer)
 	' return true
 
 	' Ajouter du texte
-	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, texte_array(0), 24 , 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, texte_array(1), 24 , 30, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, texte_array(2), 24 , 50, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+	for boucle as integer = 0 to items.item_number
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, items.item_list(boucle).name, 24 , 10 + boucle*(8 + items._Space_items), Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+	next boucle
 
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -1282,8 +1279,18 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						
 						 If(TypeClic = 2) Then ' DESACTIVATED
 
+							' Creer les elements du clic droit (Sans action)
+						 	dim prop as _Context_menu_
+							 prop.item_list(0).name = "Item 0"
+							 prop.item_list(1).name = "Item 1"
+							 prop.item_list(2).name = "Item 2"
+							 prop.item_list(3).name = "Item 3"
+
+							' Preciser le nombre d'elements
+							 prop.item_number = 4
+
 							' Creer menu contextuel
-							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1)
+							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, prop)
 						else
 
 							if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
