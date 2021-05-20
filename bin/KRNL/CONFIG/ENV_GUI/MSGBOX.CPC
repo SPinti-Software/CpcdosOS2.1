@@ -455,10 +455,7 @@ Function/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message, exe_event, window
 			// [FR] IMGAUTO:2 pour etirer l'image
 			.Parameters			= "IMGAUTO:2"
 			
-			
 			.PX					= "%POS_BTN_TXTB_X%"
-			
-			
 			.PY					= "%POS_BTN_TXTB_Y%"
 			
 			.SX					= "%SIZ_BTN_TXTB_X%"
@@ -576,6 +573,25 @@ End/ Function
 Function/ CANCEL_Button_MSGBOX.Click()
 	CLOSE/ MSGBOX
 End/ Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
