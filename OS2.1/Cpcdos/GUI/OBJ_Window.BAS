@@ -731,9 +731,6 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				' Placer le fond flou en premier
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
 
-
-
-
 				' Ecrire le buffer sur le buffer video
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, Pos_x, Pos_Y, 0, 0, Siz_X, Siz_Y, true, Couleur_ALPHA)
 

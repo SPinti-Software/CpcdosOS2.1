@@ -842,10 +842,16 @@ Type _SCI_Cpcdos_OSx__
 		
 
 		' ID de l'mage de fond du menu contextuel
-		ContextMenu_Background_ID			as integer
+		ContextMenu_Img_ID					as integer
 
 		' Si le menu contextuel est ouvert ou non
 		ContextMenu_IsOpen					as boolean
+		ContextMenu_Background_ID			as integer
+		ContextMenu_Ancien_PX				as integer
+		ContextMenu_Ancien_PY				as integer
+		ContextMenu_Ancien_SX				as integer
+		ContextMenu_Ancien_SY				as integer
+		ContextMenu_Background_blur_ID		as integer
 
 		
 		BACKGROUND_IMAGE					as integer
@@ -894,6 +900,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function charger_Curseurs_properties() 															as boolean
 		Declare Function charger_Curseurs			(Handle as integer) 										as integer
 		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 						as integer
+		Declare Function fermer_ContextMenu			() 															as boolean
 		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer) 						as boolean
 		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string

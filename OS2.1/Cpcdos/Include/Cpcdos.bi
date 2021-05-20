@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "19" 
+CONST _VJOUR as string 	= "21" 
 CONST _VMOIS as string 	= "05"
 CONST _VANNEE as string = "2021"
 
