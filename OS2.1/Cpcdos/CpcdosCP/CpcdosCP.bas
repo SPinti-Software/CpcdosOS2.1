@@ -520,9 +520,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
 				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
 					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
-					if NOT Instr(tst_Cap, ".") > 0 Then
-						if Arrob = true Then
-							if NOT Instr(tst_Cap, " .") OR NOT Instr(tst_Cap, chr(09) & ".") Then exit for ' C'est pas une commande GUI-properties
+
+					if NOT Instr(cap_tmp, ".") > 0 Then
+						if Arrob = false Then
+							if Instr(cap_tmp, "./") > 0 OR Instr(cap_tmp, ".\") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, "/.") > 0 OR Instr(cap_tmp, "\.") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, " = ") > 0 Then
+								if Instr(cap_tmp, ".") > Instr(cap_tmp, " = ") Then
+									exit for
+								End if
+							End if
 						End if
 					End if
 				End if
@@ -536,11 +543,18 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Chercher la syntaxe Francophone
 			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
 				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
-					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
+					dim cap_tmp as string = Rtrim(Ltrim(tst_Cap, chr(10)), chr(13))
 
-					if Instr(tst_Cap, ".") > 1 Then
-						if Arrob = true Then
-							if NOT Instr(tst_Cap, " .") OR NOT Instr(tst_Cap, chr(09) & ".") Then exit for ' C'est pas une commande GUI-properties
+					if Instr(cap_tmp, ".") > 0 Then
+						Debug(" P2 Arrob:" & Arrob , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						if Arrob = false Then
+							if Instr(cap_tmp, "./") > 0 OR Instr(cap_tmp, ".\") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, "/.") > 0 OR Instr(cap_tmp, "\.") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, " = ") > 0 Then
+								if Instr(cap_tmp, ".") > Instr(cap_tmp, " = ") Then
+									exit for
+								End if
+							End if
 						End if
 					End if
 				End if
