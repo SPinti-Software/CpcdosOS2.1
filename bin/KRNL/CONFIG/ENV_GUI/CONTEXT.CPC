@@ -5,8 +5,48 @@ CCP/ /SET.LEVEL = 3
 
 SET/ CPC_GUI.CONTEXT.BACKGROUND = %OS_GUI%/Context.png
 
+declare/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y) : level(5)
 
+function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
+    // This function allow to create context menu
 
+    // Create level 3 variables
+    CCP/ /set.level = 3
+
+    set/ position_x = 0
+    set/ position_y = 0
+    set/ size_x = 0
+    set/ size_y = 0
+
+    // Copy level 1 variables to level 3 variables
+    CCP/ /SET.LEVEL = 1
+    set/ position_x = %pos_x%
+    set/ position_y = %pos_y%
+
+    set/ size_x = %siz_x%
+    set/ size_y = %siz_y%
+
+    // create window
+    Window/ Win_context_menu
+
+        .title          = "Win_context_menu"
+        .parameters     = ""
+        .px             = "%Pos_X%"
+        .py             = "%Pos_Y%"
+        .sx             = "%Size_X%"
+        .sy             = "%Size_Y%"
+        .opacity        = "160"
+        .WindowColor    = "100,100,100"
+        .TitleColor     = "255,255,255"
+        .backcolor      = "100,100,100"
+        .events         = "%_exe_path_%"
+
+        @#window_handle create/
+    End/ Window
+
+    // Return handle window number
+    return/ %window_handle%
+end/ function
 
 
 

@@ -455,19 +455,25 @@ Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
 
 	' Si le menu contextuel est donc deja ouvert
 	if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
-		
-		' Coller l'ancien buffer dans son ancien emplacement
-		if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID > 0 Then
-			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PX , CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PY, 0, 0, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SX, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SY, true, 255)
 
-			' Et puis le supprimer
-			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID)
-			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID = 0
+		' On le ferme		
+		if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle > 0 Then 
+			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ /handle " & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle, This._CLE_, 3, 0, "")
+			' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ Win_context_menu", This._CLE_, 3, 0, "")
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = 0
 		End if
 
 		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
-
 		return true
+		' Coller l'ancien buffer dans son ancien emplacement
+		'if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID > 0 Then
+		'	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PX , CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PY, 0, 0, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SX, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SY, true, 255)
+
+			' Et puis le supprimer
+		'	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID)
+		'	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID = 0
+		'End if
+
 	End if
 
 	return false
@@ -483,12 +489,28 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 
 	Size_Y = (items.item_number * (8 + items._Space_items)) + 10
 
+	' Fermer le menu contextuel si deja ouvert
+	CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ Context_Menu_Handle = /F:gui.create_context_menu(" & Pos_X & "," & Pos_Y & "," & Size_X & "," & Size_Y & ")", This._CLE_, 3, 0, "")
+	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("Context_Menu_Handle", 3, _CLE_))
+
+	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true
+
+	' Creer les elements TEXTBLOC ici ! 
+	' Creer les elements TEXTBLOC ici ! 
+	' Creer les elements TEXTBLOC ici ! 
+
+
+	return true
+
+	' -----------------------------------------------------------------
+
 	dim Couleur_FNT_R as integer = 0
 	dim Couleur_FNT_V as integer = 0
 	dim Couleur_FNT_B as integer = 0
 
-	' Fermer le menu contextuel si deja ouvert
-	CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+	
 
 	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PX = Pos_X
 	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PY = Pos_Y
@@ -1281,7 +1303,9 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 
 							' Creer les elements du clic droit (Sans action)
 						 	dim prop as _Context_menu_
-							 prop.item_list(0).name = "Item 0"
+							 prop.item_list(0).name = "Clique moi"
+							 prop.item_list(0).action = "msgbox/ Coucou"
+
 							 prop.item_list(1).name = "Item 1"
 							 prop.item_list(2).name = "Item 2"
 							 prop.item_list(3).name = "Item 3"

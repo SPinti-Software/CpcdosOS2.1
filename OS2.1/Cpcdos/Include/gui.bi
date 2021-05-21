@@ -872,6 +872,7 @@ Type _SCI_Cpcdos_OSx__
 		ContextMenu_Ancien_SX				as integer
 		ContextMenu_Ancien_SY				as integer
 		ContextMenu_Background_blur_ID		as integer
+		ContextMenu_handle					as integer
 
 		
 		BACKGROUND_IMAGE					as integer
