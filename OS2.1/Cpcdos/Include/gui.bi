@@ -706,7 +706,7 @@ End Type
 
 type _Context_menu_properties
 	public:
-	name 		as string
+	text 		as string
 	enabled 	as boolean = true
 
 	action 		as string = "NULL"
@@ -714,13 +714,21 @@ End type
 
 type _Context_menu_
 	public:
-	CONST _MAX_context_menu_items as integer = 16 ' TEMPORAIRE
-	_Space_items as integer = 4
 
+	' Values
+	const _MAX_context_menu_items 				as integer = 16 ' TEMPORAIRE
+	_Space_items 								as integer = 12
 
-	item_number as integer
+	' Colors
+	red											as integer
+	green										as integer
+	blue										as integer
 
-	item_list (0 to _MAX_context_menu_items) as _Context_menu_properties
+	' nb items
+	item_number 								as integer
+
+	' Array list struct
+	item_list (0 to _MAX_context_menu_items) 	as _Context_menu_properties
 
 End type
 
@@ -728,7 +736,7 @@ Type _SCI_Cpcdos_OSx__
 	private:
 		
 
-		_CLE_					as double ' Emprunte numerique
+		_CLE_					as double ' Empreinte numerique
 		OS_id					as integer
 		NombreOSEnCours			as integer
 		
@@ -873,6 +881,7 @@ Type _SCI_Cpcdos_OSx__
 		ContextMenu_Ancien_SY				as integer
 		ContextMenu_Background_blur_ID		as integer
 		ContextMenu_handle					as integer
+		ContextMenu_WinIndex				as integer
 
 		
 		BACKGROUND_IMAGE					as integer

@@ -5,36 +5,25 @@ CCP/ /SET.LEVEL = 3
 
 SET/ CPC_GUI.CONTEXT.BACKGROUND = %OS_GUI%/Context.png
 
-declare/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y) : level(5)
+declare/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)    : level(5)
+declare/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, r, g, b) : level(5)
 
 function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
     // This function allow to create context menu
 
-    // Create level 3 variables
-    CCP/ /set.level = 3
+    // Stay in level 1
+    CCP/ /set.level = 1
 
-    set/ position_x = 0
-    set/ position_y = 0
-    set/ size_x = 0
-    set/ size_y = 0
-
-    // Copy level 1 variables to level 3 variables
-    CCP/ /SET.LEVEL = 1
-    set/ position_x = %pos_x%
-    set/ position_y = %pos_y%
-
-    set/ size_x = %siz_x%
-    set/ size_y = %siz_y%
 
     // create window
     Window/ Win_context_menu
 
         .title          = "Win_context_menu"
-        .parameters     = ""
+        .parameters     = "TYPE:4"
         .px             = "%Pos_X%"
         .py             = "%Pos_Y%"
-        .sx             = "%Size_X%"
-        .sy             = "%Size_Y%"
+        .sx             = "%siz_x%"
+        .sy             = "%siz_y%"
         .opacity        = "160"
         .WindowColor    = "100,100,100"
         .TitleColor     = "255,255,255"
@@ -47,6 +36,33 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
     // Return handle window number
     return/ %window_handle%
 end/ function
+
+function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, red, green, blue)
+    // This function allow to create textbloc + events
+    
+    // Stay in level 1
+    ccp/ /set.level = 1
+
+    textblock/ txt_contextmenu_%name%
+        .handle         = "%WindowHandle%"
+        .parameters     = "COL:0"
+        .px             = "%pos_x%"
+        .py             = "%pos_y%"
+        .tx             = "100"
+        .ty             = "14"
+        .text           = "%text%"
+        .backcolor      = "255,255,255"
+        .TextColor      = "%red%,%green%,%blue%"
+        .events         = "%_exe_path_%"
+        create/
+    end/ textblock
+
+end/ function
+
+
+
+
+
 
 
 

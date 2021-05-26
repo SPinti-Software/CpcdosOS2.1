@@ -461,6 +461,7 @@ Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
 			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ /handle " & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle, This._CLE_, 3, 0, "")
 			' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ Win_context_menu", This._CLE_, 3, 0, "")
 			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = 0
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex = 0
 		End if
 
 		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
@@ -482,7 +483,13 @@ End function
 Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
 	' Cette fonction permet d'afficher un menu contextuel a un emplacement
 	
-	' Temporaire
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] creer_ContextMenu() Creation du menu contextuel.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		else
+			DEBUG("[SCI] creer_ContextMenu() Creating context menu.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		End if
+	end if
 
 	Dim Size_X as integer = 200
 	Dim Size_Y as integer = 200
@@ -495,11 +502,48 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ Context_Menu_Handle = /F:gui.create_context_menu(" & Pos_X & "," & Pos_Y & "," & Size_X & "," & Size_Y & ")", This._CLE_, 3, 0, "")
 	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("Context_Menu_Handle", 3, _CLE_))
 
+	For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).Identification_Objet.Handle = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle Then
+		
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex = boucle
+			
+			exit for
+		End if
+	Next boucle
+
 	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true
 
-	' Creer les elements TEXTBLOC ici ! 
-	' Creer les elements TEXTBLOC ici ! 
-	' Creer les elements TEXTBLOC ici ! 
+	scope
+		Dim ctx_red 		as integer
+		Dim ctx_green 		as integer
+		Dim ctx_blue 		as integer
+
+		dim txt_Pos_X 		as integer = 24
+		dim txt_Pos_Y 		as integer = 0
+		dim ctx_name 		as string
+		dim ctx_text		as string
+
+
+		' Display textbloc items with events
+		for index as integer = 0 to items.item_number
+
+			ctx_name	= "ctx_" & index
+
+			ctx_text	= items.item_list(index).text
+
+			ctx_red 	= items.red
+			ctx_green 	= items.green
+			ctx_blue 	= items.blue
+
+
+			' Create textbloc
+			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.textbloc_context_menu(" & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle & "," & ctx_name & "," & ctx_text & "," & txt_Pos_X & "," & txt_Pos_Y & "," & ctx_red & "," & ctx_green & "," & ctx_blue & ")", This._CLE_, 3, 0, "")
+
+			' Space items in pixels
+			txt_Pos_Y 	+= items._Space_items
+
+		Next index
+	End scope
 
 
 	return true
@@ -601,7 +645,7 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 
 	' Ajouter du texte
 	for boucle as integer = 0 to items.item_number
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, items.item_list(boucle).name, 24 , 10 + boucle*(8 + items._Space_items), Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(ContextMenu_Img_ID_TEMP, items.item_list(boucle).text, 24 , 10 + boucle*(8 + items._Space_items), Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 	next boucle
 
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -1303,26 +1347,33 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 
 							' Creer les elements du clic droit (Sans action)
 						 	dim prop as _Context_menu_
-							 prop.item_list(0).name = "Clique moi"
-							 prop.item_list(0).action = "msgbox/ Coucou"
+							prop.item_list(0).text 	= "Clique moi"
+							prop.item_list(0).action = "msgbox/ Coucou"
 
-							 prop.item_list(1).name = "Item 1"
-							 prop.item_list(2).name = "Item 2"
-							 prop.item_list(3).name = "Item 3"
+							prop.item_list(1).text = "Item 1"
+							prop.item_list(2).text = "Item 2"
+							prop.item_list(3).text = "Item 3"
 
 							' Preciser le nombre d'elements
-							 prop.item_number = 4
-
+							prop.item_number = 4
+							
 							' Creer menu contextuel
 							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, prop)
 						else
 
-							if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
-								CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
-							End if
-
-							CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
 							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+
+							' Si la fenetre clic droit n'est pas focus on ferme!
+							if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex > 0 Then
+								If Not CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex Then
+									if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
+										CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+									End if
+
+									CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
+								End if
+							End if
+							
 		
 						End if
 					else

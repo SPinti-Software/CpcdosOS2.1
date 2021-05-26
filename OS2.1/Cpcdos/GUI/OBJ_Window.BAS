@@ -267,12 +267,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					else
 						DEBUG("[SCI] Creer_Window() [" & TYPE_OBJ & "] Window without title bar", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					End if
+
+					' No title bar pagging
+					this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_TITRE = 0
+
 				Elseif TYPE_OBJ = 5 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 						DEBUG("[SCI] Creer_Window() [" & TYPE_OBJ & "] Fenetre sans barre de titre + conteneur transparent", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					else
 						DEBUG("[SCI] Creer_Window() [" & TYPE_OBJ & "] Window without title bar + transparent contener", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					End if
+
+					' No title bar pagging
+					this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_TITRE = 0
 				end if
 
 				
