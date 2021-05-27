@@ -491,10 +491,17 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 		End if
 	end if
 
-	Dim Size_X as integer = 200
-	Dim Size_Y as integer = 200
+	Dim Pagging_top 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.TOP", 3, _CLE_))
+	Dim Pagging_left 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.LEFT", 3, _CLE_))
+	Dim Size_X 			as integer = 0
+	Dim Size_Y 			as integer = (items.item_number * (8 + items._Space_items)) + 10
 
-	Size_Y = (items.item_number * (8 + items._Space_items)) + 10
+	' Chercher l'element le plus gros en taille X
+	For index_siz as integer = 0 to items.item_number
+		if len(items.item_list(index_siz).text) > 0 Then Size_X = len(items.item_list(index_siz).text) * 8
+	Next index_siz
+
+	Size_X += Pagging_left + 2
 
 	' Fermer le menu contextuel si deja ouvert
 	CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
@@ -518,8 +525,10 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 		Dim ctx_green 		as integer
 		Dim ctx_blue 		as integer
 
-		dim txt_Pos_X 		as integer = 24
-		dim txt_Pos_Y 		as integer = 0
+		dim txt_Pos_X 		as integer = Pagging_left
+		dim txt_Pos_Y 		as integer = Pagging_top
+		dim txt_Siz_x		as integer = Size_X - Pagging_left - 2
+		dim txt_Siz_y		as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.Text_Size_Y", 3, _CLE_))
 		dim ctx_name 		as string
 		dim ctx_text		as string
 
@@ -537,7 +546,7 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 
 
 			' Create textbloc
-			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.textbloc_context_menu(" & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle & "," & ctx_name & "," & ctx_text & "," & txt_Pos_X & "," & txt_Pos_Y & "," & ctx_red & "," & ctx_green & "," & ctx_blue & ")", This._CLE_, 3, 0, "")
+			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.textbloc_context_menu(" & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle & "," & ctx_name & "," & ctx_text & "," & txt_Pos_X & "," & txt_Pos_Y & "," & txt_Siz_x & "," & txt_siz_y & "," & ctx_red & "," & ctx_green & "," & ctx_blue & ")", This._CLE_, 3, 0, "")
 
 			' Space items in pixels
 			txt_Pos_Y 	+= items._Space_items

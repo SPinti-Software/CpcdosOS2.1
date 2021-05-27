@@ -3,11 +3,23 @@ CCP/ /SET.LEVEL = 3
 
 // ---- CONTEXT ----
 
-SET/ CPC_GUI.CONTEXT.BACKGROUND = %OS_GUI%/Context.png
+// Background image
+SET/ CPC_GUI.CONTEXT.BACKGROUND     = %OS_GUI%/Context.png
 
-declare/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)    : level(5)
-declare/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, r, g, b) : level(5)
+// Pagging elements
+SET/ CPC_GUI.CONTEXT.PAGGING.TOP    = 5
+SET/ CPC_GUI.CONTEXT.PAGGING.LEFT   = 24
 
+// Vertical size for each elements
+SET/ CPC_GUI.CONTEXT.Text_Size_Y    = 14
+
+
+// Declare functions into memory kernel (level 5)
+declare/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)                                        : level(5)
+declare/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_x, siz_y, r, g, b)   : level(5)
+
+
+// Implementations
 function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
     // This function allow to create context menu
 
@@ -37,27 +49,30 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
     return/ %window_handle%
 end/ function
 
-function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, red, green, blue)
+function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_x, siz_y, red, green, blue)
     // This function allow to create textbloc + events
     
     // Stay in level 1
     ccp/ /set.level = 1
 
-    textblock/ txt_contextmenu_%name%
+    button/ txt_contextmenu_%name%
         .handle         = "%WindowHandle%"
         .parameters     = "COL:0"
         .px             = "%pos_x%"
         .py             = "%pos_y%"
-        .tx             = "100"
-        .ty             = "14"
+        .tx             = "%siz_x%"
+        .ty             = "%siz_y%"
+        .opacity        = "150"
         .text           = "%text%"
         .backcolor      = "255,255,255"
         .TextColor      = "%red%,%green%,%blue%"
         .events         = "%_exe_path_%"
         create/
-    end/ textblock
+    end/ button
 
 end/ function
+
+
 
 
 
