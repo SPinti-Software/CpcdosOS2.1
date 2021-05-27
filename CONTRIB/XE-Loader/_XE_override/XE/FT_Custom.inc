@@ -12,10 +12,8 @@ char* cpc_eval( const char* format, ...)
 
 
 	// Update 16-AVR-2020 - Sebastien
-	char* str_ret =  (char*) cpc_CCP_Exec_Commande_ret("txt/ coucou", 3);
+	char* str_ret;
 
-	// return allcated char results
-	return str_ret;
 
 	// -------------------------------
 	// Todo : With multiples CC+ cmds
@@ -25,10 +23,16 @@ char* cpc_eval( const char* format, ...)
 	va_list arg;
 	va_start (arg, format);
 		int ret = vsprintf (BUFFER, format, arg);
+
+		
 	va_end (arg);
-	printf("CpcDos> %s", BUFFER);
 	
+	printf("CpcDos> %s\r\n", BUFFER);
+	str_ret = (char*) cpc_CCP_Exec_Commande_ret((const char*) BUFFER, 3);		
+	printf("CpcDos-results> %s\r\n", str_ret);
+
 	va_end (_arg_);
 	
-	return "";//TODO
+	// return allcated char results
+	return str_ret;
 }
