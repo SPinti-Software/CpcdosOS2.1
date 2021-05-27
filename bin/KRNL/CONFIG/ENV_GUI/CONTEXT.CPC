@@ -9,6 +9,7 @@ SET/ CPC_GUI.CONTEXT.BACKGROUND     = %OS_GUI%/Context.png
 // Pagging elements
 SET/ CPC_GUI.CONTEXT.PAGGING.TOP    = 5
 SET/ CPC_GUI.CONTEXT.PAGGING.LEFT   = 24
+SET/ CPC_GUI.CONTEXT.PAGGING.RIGHT  = 5
 
 // Vertical size for each elements
 SET/ CPC_GUI.CONTEXT.Text_Size_Y    = 14
@@ -66,7 +67,7 @@ function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_
         .text           = "%text%"
         .backcolor      = "255,255,255"
         .TextColor      = "%red%,%green%,%blue%"
-        .events         = "%_exe_path_%"
+        .events         = "#CTX_ACTION:%name%=MouseClick"
         create/
     end/ button
 

@@ -464,16 +464,13 @@ Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
 			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex = 0
 		End if
 
+		' Vider les proprietes, BOOOMM ! POULOULOUUUUUUUUUUUU
+		dim prop_null as _Context_menu_
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = prop_null
+
 		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
 		return true
-		' Coller l'ancien buffer dans son ancien emplacement
-		'if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID > 0 Then
-		'	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PX , CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_PY, 0, 0, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SX, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Ancien_SY, true, 255)
-
-			' Et puis le supprimer
-		'	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID)
-		'	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_Background_ID = 0
-		'End if
+		
 
 	End if
 
@@ -491,17 +488,22 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 		End if
 	end if
 
+	' Transferer le contenu des proprietes
+	CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = items
+	
+
 	Dim Pagging_top 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.TOP", 3, _CLE_))
 	Dim Pagging_left 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.LEFT", 3, _CLE_))
+	Dim Pagging_right	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.RIGHT", 3, _CLE_))
 	Dim Size_X 			as integer = 0
 	Dim Size_Y 			as integer = (items.item_number * (8 + items._Space_items)) + 10
 
 	' Chercher l'element le plus gros en taille X
 	For index_siz as integer = 0 to items.item_number
-		if len(items.item_list(index_siz).text) > 0 Then Size_X = len(items.item_list(index_siz).text) * 8
+		if len(items.item_list(index_siz).text) > 0 Then Size_X = (1+len(items.item_list(index_siz).text)) * 8
 	Next index_siz
 
-	Size_X += Pagging_left + 2
+	Size_X += Pagging_left*2 + Pagging_right
 
 	' Fermer le menu contextuel si deja ouvert
 	CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
@@ -527,7 +529,7 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 
 		dim txt_Pos_X 		as integer = Pagging_left
 		dim txt_Pos_Y 		as integer = Pagging_top
-		dim txt_Siz_x		as integer = Size_X - Pagging_left - 2
+		dim txt_Siz_x		as integer = (Size_X-Pagging_right) - Pagging_left
 		dim txt_Siz_y		as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.Text_Size_Y", 3, _CLE_))
 		dim ctx_name 		as string
 		dim ctx_text		as string
@@ -536,7 +538,7 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 		' Display textbloc items with events
 		for index as integer = 0 to items.item_number
 
-			ctx_name	= "ctx_" & index
+			ctx_name	= "" & index
 
 			ctx_text	= items.item_list(index).text
 
@@ -1359,9 +1361,12 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 							prop.item_list(0).text 	= "Clique moi"
 							prop.item_list(0).action = "msgbox/ Coucou"
 
-							prop.item_list(1).text = "Item 1"
-							prop.item_list(2).text = "Item 2"
-							prop.item_list(3).text = "Item 3"
+							prop.item_list(1).text = "close"
+							prop.item_list(1).text = "close/ app1"
+
+							prop.item_list(2).text = "cmd"
+							prop.item_list(1).text = "gui/ /lc"
+							prop.item_list(3).text = "prouuut !"
 
 							' Preciser le nombre d'elements
 							prop.item_number = 4

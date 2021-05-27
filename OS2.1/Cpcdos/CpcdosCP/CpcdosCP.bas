@@ -399,6 +399,18 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Dim Position1 as integer = Instr(UCASE(Commande), "##FONCTION=:") + 12
 				Dim Position2 as integer = Instr(UCASE(Commande), ":=##")
 				EXEC_FONCTION_FICHIER = MID(Commande, Position1, (Position2) - Position1)
+
+				' Execution des actions des menu contextuels
+				if instr(ucase(EXEC_FONCTION_FICHIER), "#CTX_ACTION:") > 0 Then
+					Dim commande_action_index as integer = Val(Ltrim(Rtrim(Mid(ucase(EXEC_FONCTION_FICHIER), instr(ucase(EXEC_FONCTION_FICHIER), "#CTX_ACTION:") + 12))))
+
+					Commande = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE.item_list(commande_action_index).action
+					DEBUG("[CpcdosC+] Executing context menu action (" & commande_action_index & ") --> " & Commande, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+					EXEC_FONCTION_FICHIER = ""
+					
+					' Executer cmd du clic droit
+					return CpcdosCP_SHELL(Commande, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+				End if
 				Commande = Ltrim(Ltrim(MID(Commande, Position2 + 4), chr(09)))
 			End if
 		End if

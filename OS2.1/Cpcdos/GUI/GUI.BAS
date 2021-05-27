@@ -1567,247 +1567,249 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 
 
 						
-						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
-							' ==== On ferme la fenetre par le bouton X ====
+						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 Then
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
+								' ==== On ferme la fenetre par le bouton X ====
+								
+								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 3 Then ' Droite
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X)) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
+											
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 2 Then ' Centre
+								
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
+											
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 1 Then ' Gauche
+								
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X) Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
+											
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								End if
+							end if
 							
-							IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 3 Then ' Droite
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X)) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-										return 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 2 Then ' Centre
+							' --------------------------------------------------------------------------------------------------
 							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-										return 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 1 Then ' Gauche
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-										return 1
-									End if
-								End if
-							End if
-						end if
-						
-						' --------------------------------------------------------------------------------------------------
-						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable = true Then
-							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.SizeUP = false then
-								' ==== On agrandit la fenetre par le bouton du milieu ====
-								
-								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 3 Then ' Droite
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X)) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
-											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 2 Then ' Centre
-								
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
-											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 1 Then ' Gauche
-								
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X) Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
-											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								End if
-							Else
-								' --------------------------------------------------------------------------------------------------
-								
-								' ==== On retrecit la fenetre par le bouton du milieu ====
-							
-								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 3 Then ' Droite
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X)) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
-											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 2 Then ' Centre
-								
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
-											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 1 Then ' Gauche
-								
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X) Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
-											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
-											NoDeplacer = 1
-											return 1
-										End if
-									End if
-								End if
-							End if
-						End if 'if sizeable
-						
-						' --------------------------------------------------------------------------------------------------
-						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reductable = true Then
-							' ==== On reduit la fenetre ====
-							IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 3 Then ' Droite
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X)) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-											else
-												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable = true Then
+								if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.SizeUP = false then
+									' ==== On agrandit la fenetre par le bouton du milieu ====
+									
+									IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 3 Then ' Droite
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X)) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
 											End if
 										End if
-										' Si la fenetre est deja FOCUS et pas reduite
-										' Hop on reduit la fenetre dans la barre des taches
-										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
-										ActualiserGUI(0, 0)
-										NoDeplacer = 1
-										return 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 2 Then ' Centre
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-											else
-												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 2 Then ' Centre
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
 											End if
 										End if
-										' Si la fenetre est deja FOCUS et pas reduite
-										' Hop on reduit la fenetre dans la barre des taches
-										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
-										ActualiserGUI(0, 0)
-										NoDeplacer = 1
-										return 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 1 Then ' Gauche
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-												DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-											else
-												DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 1 Then ' Gauche
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X) Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
 											End if
 										End if
-										' Si la fenetre est deja FOCUS et pas reduite
-										' Hop on reduit la fenetre dans la barre des taches
-										this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
-										ActualiserGUI(0, 0)
-										NoDeplacer = 1
-										return 1
+									End if
+								Else
+									' --------------------------------------------------------------------------------------------------
+									
+									' ==== On retrecit la fenetre par le bouton du milieu ====
+								
+									IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 3 Then ' Droite
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X)) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 2 Then ' Centre
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 1 Then ' Gauche
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X) Then
+											' Y
+											IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												return 1
+											End if
+										End if
 									End if
 								End if
-							End if
-						End if ' if reductable
+							End if 'if sizeable
+							
+							' --------------------------------------------------------------------------------------------------
+							
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reductable = true Then
+								' ==== On reduit la fenetre ====
+								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 3 Then ' Droite
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X)) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
+											
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 2 Then ' Centre
+								
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
+											
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 1 Then ' Gauche
+								
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X) Then
+										' Y
+										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
+											
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+											NoDeplacer = 1
+											return 1
+										End if
+									End if
+								End if
+							End if ' if reductable
+						End if ' Si l'objet est de type 0, 1, 2, 3
 					Else
 						CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = false
 					End if
 
+
 					' Clic barre de titre
-					IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND NoDeplacer = 0 AND Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) Then
+					If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 AND this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND NoDeplacer = 0 AND Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) Then
 						Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
 
 						ENTRER_SectionCritique()
@@ -1942,7 +1944,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
 												Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
-												
+
 												IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
 														' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -2004,6 +2006,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 																End if
 															End if
 														End if
+
+														
 														
 														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
 															IF CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
