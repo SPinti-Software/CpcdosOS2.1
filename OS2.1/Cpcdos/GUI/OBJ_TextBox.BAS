@@ -113,6 +113,9 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim UE_PosX				as integer = 0
 				Dim UE_PosY				as integer = 0
 
+				' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+				this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Textbox, _INDEX_PID_)
+
 				' Si la couleur de fond est foncee, alors on utilise le curseur blanc
 				if Couleur_FOND_R < 100 AND Couleur_FOND_V < 100 AND Couleur_FOND_B < 100 Then
 					Image = Image_2

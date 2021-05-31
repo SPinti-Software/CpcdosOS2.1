@@ -449,6 +449,38 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 	Function = 1
 End Function
 
+Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, index as integer) as _Context_menu_
+	' Cette fonction permet de generer un profil de menu contextuel pour chaque objets par defaut
+	
+	dim Proprietes_defaut 	as _Context_menu_
+	Dim obj_name 			as string
+	
+	if TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre Then
+
+		
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).Identification_Objet.nom
+
+		
+		Proprietes_defaut.item_list(0).text = "Agrandir"
+		Proprietes_defaut.item_list(0).action = ""
+
+		Proprietes_defaut.item_list(1).text = "Retrecir"
+		Proprietes_defaut.item_list(1).action = ""
+
+		Proprietes_defaut.item_list(2).text = "Reduire"
+		Proprietes_defaut.item_list(1).action = ""
+
+		Proprietes_defaut.item_list(3).text = "Fermer"
+		Proprietes_defaut.item_list(1).action = "close/ " & obj_name
+		
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton Then
+
+	End if
+
+	return Proprietes_defaut
+	
+End function
+
 Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
 	' Cette fonction permet de fermer un menu contextuel
 
@@ -2067,6 +2099,8 @@ Function _SCI_Cpcdos_OSx__.FILE_FORMAT_load_icons() as boolean ' ID : 11111
 	
 		
 End function
+
+
 
 
 

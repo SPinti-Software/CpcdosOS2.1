@@ -103,6 +103,9 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 			Dim Image_Ancien	as String = this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).Image_Ancien
 			' Dim Pointeur_IMG_FOND 	as any PTR
 			' Dim Pointeur_IMG 		as any PTR
+
+			' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+			this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.ProgressBar, _INDEX_PID_)
 			
 			' Calculer le pourcentage par rapport a la taille X
 			Dim Siz_X_progress as integer = (Valeur / 100) * Siz_X

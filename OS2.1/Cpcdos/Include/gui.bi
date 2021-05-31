@@ -7,6 +7,36 @@
 
 #include once "UTF8.bi"	' Gestion UTF-8
 
+
+type _Context_menu_properties
+	public:
+	text 		as string
+	enabled 	as boolean = true
+
+	action 		as string = "NULL"
+End type
+
+
+type _Context_menu_
+	public:
+
+	' Values
+	const _MAX_context_menu_items 				as integer = 16 ' TEMPORAIRE
+	_Space_items 								as integer = 12
+
+	' Colors
+	red											as integer
+	green										as integer
+	blue										as integer
+
+	' nb items
+	item_number 								as integer
+
+	' Array list struct
+	item_list (0 to _MAX_context_menu_items) 	as _Context_menu_properties
+
+End type
+
 ' ==== Type de GUI a creer ====
 Type Cpcdos_GUI_TYPE
 	private:
@@ -157,7 +187,7 @@ Type Proprietes_Objet
 	' Fichier contenant les fonctions evenementielles.
 	Fichier_evenement as String
 	
-	
+	OBJ_context_menu as _Context_menu_
 	
 End Type
 
@@ -704,33 +734,6 @@ Type CPCDOS_GUI_INIT__
 	
 End Type
 
-type _Context_menu_properties
-	public:
-	text 		as string
-	enabled 	as boolean = true
-
-	action 		as string = "NULL"
-End type
-
-type _Context_menu_
-	public:
-
-	' Values
-	const _MAX_context_menu_items 				as integer = 16 ' TEMPORAIRE
-	_Space_items 								as integer = 12
-
-	' Colors
-	red											as integer
-	green										as integer
-	blue										as integer
-
-	' nb items
-	item_number 								as integer
-
-	' Array list struct
-	item_list (0 to _MAX_context_menu_items) 	as _Context_menu_properties
-
-End type
 
 Type _SCI_Cpcdos_OSx__
 	private:
@@ -930,6 +933,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function charger_Curseurs_properties() 															as boolean
 		Declare Function charger_Curseurs			(Handle as integer) 										as integer
 		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 						as integer
+		declare Function generer_ContextMenu_properties(Type_Objet as integer, index as integer) 				as _Context_menu_
 		Declare Function fermer_ContextMenu			() 															as boolean
 		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
 		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer

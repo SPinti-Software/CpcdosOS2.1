@@ -99,6 +99,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 		
 		Dim Bordure as integer = this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Bordure
 		
+		' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+		this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Bouton, _INDEX_PID_)
+
 		' TYPE_OBJ 
 		' 0 : Bouton normal
 		' 1 : Flat style
