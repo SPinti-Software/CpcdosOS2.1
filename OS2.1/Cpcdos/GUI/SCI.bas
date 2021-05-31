@@ -468,10 +468,13 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 		Proprietes_defaut.item_list(1).action = ""
 
 		Proprietes_defaut.item_list(2).text = "Reduire"
-		Proprietes_defaut.item_list(1).action = ""
+		Proprietes_defaut.item_list(2).action = ""
 
 		Proprietes_defaut.item_list(3).text = "Fermer"
 		Proprietes_defaut.item_list(3).action = "close/ " & obj_name
+
+		Proprietes_defaut.item_number = 3
+
 		
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton Then
 
@@ -1388,9 +1391,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						
 						 If(TypeClic = 2) Then ' DESACTIVATED
 
-							
-							' Creer menu contextuel
-							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE)
+							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+
 						else
 
 							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)

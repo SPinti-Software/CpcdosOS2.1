@@ -1450,8 +1450,8 @@ Sub _SCI_Cpcdos_OSx__.set_OSid(Num_ID as integer)
 End Sub
 
 Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as integer, Type_Clic as integer) as integer
-	REM Cette fonction permet de savoir sur quelle fenetre l'utilisateur a clique
-	REM Renvoie le PID
+	' Cette fonction permet de savoir sur quelle fenetre l'utilisateur a clique
+	' Renvoie le PID
 	
 	
 	' Ce qui permet de savoir si on peut executer un ev si la souris est hors de la fenetre
@@ -1932,7 +1932,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
 
-												' On indique qu'on FOCUS un picturebox
+												' On indique qu'on FOCUS un bouton
 												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton
 												
 												' Avec son index
@@ -1972,9 +1972,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													End if
-												End if				
-																
-																
+												End if	
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if			
+
 												' On quitte cette boucle
 												exit for
 											Else
@@ -2252,6 +2258,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													end if
 												End if
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if
+
 												' On quitte cette boucle
 												exit for
 
@@ -2509,7 +2523,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														end if
 													End if
-												End if			
+												End if	
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if		
 
 												' On quitte cette boucle
 												exit for
@@ -2779,6 +2800,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														End if
 													end if
 												End if			
+											End if
+
+											if Type_Clic AND 2 Then
+												' Creer menu contextuel
+												CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+												
+												return 1
 											End if
 															
 															
@@ -3056,7 +3084,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													end if
-												End if			
+												End if
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if
 
 												' On quitte cette boucle
 												exit for
@@ -3319,7 +3354,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													End if
 												end if
-																
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if	
 																
 												' On quitte cette boucle
 												exit for
@@ -3595,7 +3636,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													End if
-												End if				
+												End if		
+
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if			
 																
 																
 												' On quitte cette boucle
@@ -3881,6 +3930,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											End if
 										end if
 									End if
+
+									if Type_Clic AND 2 Then
+										' Creer menu contextuel
+										CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.OBJ_context_menu)
+										
+										return 1
+									End if
+
+									
 								Else
 								
 								
