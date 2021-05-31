@@ -209,7 +209,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				Dim Couleur_TITRE_B as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Couleur_TITRE_B
 				
 				' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
-				this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Fenetre, _INDEX_PID_)
+				CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Fenetre, _index_)
 
 				Dim TYPE_OBJ as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.TYPE_OBJ
 

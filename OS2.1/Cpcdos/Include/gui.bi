@@ -870,7 +870,7 @@ Type _SCI_Cpcdos_OSx__
 		TITRE_ORG_IMG_ID					as integer
 		
 
-		dim ContextMenu_INSTANCE 			as _Context_menu_
+		ContextMenu_INSTANCE 				as _Context_menu_
 
 		' ID de l'mage de fond du menu contextuel
 		ContextMenu_Img_ID					as integer

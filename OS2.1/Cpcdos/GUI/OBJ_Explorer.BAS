@@ -154,7 +154,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 				Dim Path_explorer_program as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.EXPLORER.PROGRAM", 3, _CLE_))
 				
 				' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
-				this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Explorer, _INDEX_PID_)
+				CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Explorer, _INDEX_PID_)
 				
 				IF this.INST_INIT_GUI.DEPLACEMENT > 0 Then
 					if this.INST_INIT_GUI.GUI__EXPLORER(_index_).PROP_TYPE.Alpha < 150 Then

@@ -95,7 +95,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 			' Dim Pointeur_IMG 	as any PTR
 			
 			' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
-			this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.PictureBox, _INDEX_PID_)
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.PictureBox, _INDEX_PID_)
 			
 			IF Len(Image) > 0 Then
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

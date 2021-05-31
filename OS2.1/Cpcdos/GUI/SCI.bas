@@ -471,7 +471,7 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 		Proprietes_defaut.item_list(1).action = ""
 
 		Proprietes_defaut.item_list(3).text = "Fermer"
-		Proprietes_defaut.item_list(1).action = "close/ " & obj_name
+		Proprietes_defaut.item_list(3).action = "close/ " & obj_name
 		
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton Then
 
@@ -1388,23 +1388,9 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						
 						 If(TypeClic = 2) Then ' DESACTIVATED
 
-							' Creer les elements du clic droit (Sans action)
-						 	dim prop as _Context_menu_
-							prop.item_list(0).text 	= "Clique moi"
-							prop.item_list(0).action = "msgbox/ Coucou"
-
-							prop.item_list(1).text = "close"
-							prop.item_list(1).text = "close/ app1"
-
-							prop.item_list(2).text = "cmd"
-							prop.item_list(1).text = "gui/ /lc"
-							prop.item_list(3).text = "prouuut !"
-
-							' Preciser le nombre d'elements
-							prop.item_number = 4
 							
 							' Creer menu contextuel
-							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, prop)
+							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE)
 						else
 
 							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
