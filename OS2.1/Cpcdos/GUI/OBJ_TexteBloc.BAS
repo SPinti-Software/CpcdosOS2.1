@@ -94,7 +94,7 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_index_ as integer, _INDEX_PID_ as in
 		Dim NombreLF as integer = CPCDOS_INSTANCE.Compter_Caractere(TEXTE, LF)
 
 		' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
-		this.INST_INIT_GUI.GUI__TEXTBLOCK(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Textblock, _INDEX_PID_)
+		this.INST_INIT_GUI.GUI__TEXTBLOCK(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Textblock, _index_)
 	
 		Dim TypeRetour as String
 		Dim TypeRetourOct as integer

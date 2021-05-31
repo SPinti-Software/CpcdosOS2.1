@@ -407,6 +407,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Commande = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE.item_list(commande_action_index).action
 					DEBUG("[CpcdosC+] Executing context menu action (" & commande_action_index & ") --> " & Commande, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 					EXEC_FONCTION_FICHIER = ""
+
+					' Fermer le menu contextuel si deja ouvert
+					CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
 					
 					' Executer cmd du clic droit
 					return CpcdosCP_SHELL(Commande, _CLE_, NIVEAU_CCP, Param_1, Param_2) 

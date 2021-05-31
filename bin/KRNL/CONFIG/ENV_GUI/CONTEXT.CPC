@@ -12,7 +12,7 @@ SET/ CPC_GUI.CONTEXT.PAGGING.LEFT   = 24
 SET/ CPC_GUI.CONTEXT.PAGGING.RIGHT  = 5
 
 // Vertical size for each elements
-SET/ CPC_GUI.CONTEXT.Text_Size_Y    = 14
+SET/ CPC_GUI.CONTEXT.Text_Size_Y    = 16
 
 
 // Declare functions into memory kernel (level 5)
@@ -63,7 +63,7 @@ function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_
         .py             = "%pos_y%"
         .tx             = "%siz_x%"
         .ty             = "%siz_y%"
-        .opacity        = "150"
+        .opacity        = "255"
         .text           = "%text%"
         .backcolor      = "255,255,255"
         .TextColor      = "%red%,%green%,%blue%"

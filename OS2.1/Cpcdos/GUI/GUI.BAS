@@ -1839,7 +1839,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							
 							this.INST_INIT_GUI.RELATIF_X = Pos_X - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X
 							this.INST_INIT_GUI.RELATIF_Y = Pos_Y - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y
-						else
+						elseif TypeClic = 2 Then
+							' Creer menu contextuel
+							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.OBJ_context_menu)
+							
+							return 1
+
+						Else
 
 							' Flip 3, 1
 							' ActualiserGUI(0, 0)
@@ -3644,7 +3650,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.OBJ_context_menu)
 													
 													return 1
-												End if			
+												End if		
 																
 																
 												' On quitte cette boucle
@@ -3931,14 +3937,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										end if
 									End if
 
-									if Type_Clic AND 2 Then
-										' Creer menu contextuel
-										CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.OBJ_context_menu)
-										
-										return 1
-									End if
-
-									
+			
 								Else
 								
 								
