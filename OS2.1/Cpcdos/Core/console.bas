@@ -944,7 +944,7 @@ Function _CONSOLE_Cpcdos_OSx__.GET_Touche Alias "GET_Touche" (ByVal thread_struc
 					IF ValidationEntree = TRUE Then
 						
 						' Fabriquer la commande CpcdosC+
-						Dim Commande_CCP as String = "FIX/ " & this.FIXQuestion & " = " & this.Buffer_commande
+						Dim Commande_CCP as String = "SET/ " & this.FIXQuestion & " = " & this.Buffer_commande
 						
 						ValidationEntree = False
 						

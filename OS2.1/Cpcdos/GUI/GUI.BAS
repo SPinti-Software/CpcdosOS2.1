@@ -1899,7 +1899,10 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								
 								DIM The_Objet 		as String = MID(NomOrdreObjet, 1, Instr(NomOrdreObjet, ":") - 1)
 								DIM The_Objet_index as integer  = VAL(MID(NomOrdreObjet, Instr(NomOrdreObjet, ":") + 1))
-								
+
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									DEBUG("[SCI] Search GUI element " & The_Objet & "(" & The_Objet_index & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+								end if
 								
 						
 								' locate 1, 1
@@ -2463,7 +2466,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								' **  T E X T E B L O C     T E X T E B L O C   ** ----------------------------------------------------
 								' ************************************************	
 								
-								ElseIF The_Objet = "TEXTBLOC" Then 
+								ElseIF The_Objet = "TEXTBLOCK" Then 
 
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Fichier_evenement
 								
