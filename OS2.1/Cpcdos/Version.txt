@@ -10,7 +10,7 @@
 		--> 9	Ajouts de divers fonctionnalités.
 		--> 5	corrections importantes.
 		--> 0	optimisations.
-		--> 1	corrections et modifications mineures.
+		--> 2	corrections et modifications mineures.
 
 		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
@@ -49,6 +49,7 @@
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
+		- [GUI] Correction des problèmes d'evenements du Textblock.
 		
 		
 		[MODIFICATIONS]
