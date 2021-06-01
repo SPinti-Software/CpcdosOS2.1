@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 5	Ajouts de divers fonctionnalités.
+		--> 9	Ajouts de divers fonctionnalités.
 		--> 5	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
@@ -37,7 +37,11 @@
 		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
 		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
 		- [SCI] Ajout du menu contextuel (Menu clic droit personnalisable)
-		
+		- [CPCDOSC+] Ajout des commandes Windows/ 
+			- Windows/ /SizeUp MyWindow 	- Agrandir une fenetre
+			- Windows/ /SizeDown MyWindow	- Reduire une fenetre
+			- Windows/ /Reduct MyWindow		- Reduire une fenetre
+			- Windows/ /Restaure MyWindow	- Restaurer une fenetre
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
