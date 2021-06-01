@@ -460,21 +460,42 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = "Agrandir"
-		Proprietes_defaut.item_list(0).action = "window/ /sizeup " & obj_name
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Window " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		Proprietes_defaut.item_list(1).text = "Retrecir"
-		Proprietes_defaut.item_list(1).action = "window/ /sizedown " & obj_name
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Agrandir"
+			Proprietes_defaut.item_list(0).action = "window/ /sizeup " & obj_name
 
-		Proprietes_defaut.item_list(2).text = "Reduire"
-		Proprietes_defaut.item_list(2).action = "window/ /reduct " & obj_name
+			Proprietes_defaut.item_list(1).text = "Retrecir"
+			Proprietes_defaut.item_list(1).action = "window/ /sizedown " & obj_name
 
-		Proprietes_defaut.item_list(3).text = "Fermer"
-		Proprietes_defaut.item_list(3).action = "close/ " & obj_name
+			Proprietes_defaut.item_list(2).text = "Reduire"
+			Proprietes_defaut.item_list(2).action = "window/ /reduct " & obj_name
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 3
+			Proprietes_defaut.item_list(3).text = "Fermer"
+			Proprietes_defaut.item_list(3).action = "close/ " & obj_name
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 		
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton Then
@@ -482,110 +503,260 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = ""
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Button " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 0
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = ""
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Picturebox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 0
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBlock Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = ""
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Textblock " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 0
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).Identification_Objet.nom
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Textbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = "Selectionner tout"
-		Proprietes_defaut.item_list(0).action = ""
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Selectionner tout"
+			Proprietes_defaut.item_list(0).action = ""
 
-		Proprietes_defaut.item_list(1).text = "Copier"
-		Proprietes_defaut.item_list(1).action = ""
+			Proprietes_defaut.item_list(1).text = "Copier"
+			Proprietes_defaut.item_list(1).action = ""
 
-		Proprietes_defaut.item_list(2).text = "Couper"
-		Proprietes_defaut.item_list(2).action = ""
+			Proprietes_defaut.item_list(2).text = "Couper"
+			Proprietes_defaut.item_list(2).action = ""
 
-		Proprietes_defaut.item_list(3).text = "Coller"
-		Proprietes_defaut.item_list(3).action = ""
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = ""
 
-		Proprietes_defaut.item_list(4).text = "-----"
-		Proprietes_defaut.item_list(4).action = ""
+			Proprietes_defaut.item_list(4).text = "-----"
+			Proprietes_defaut.item_list(4).action = ""
 
-		Proprietes_defaut.item_list(5).text = "Supprimer"
-		Proprietes_defaut.item_list(5).action = ""
+			Proprietes_defaut.item_list(5).text = "Supprimer"
+			Proprietes_defaut.item_list(5).action = ""
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX = 2 Then
 
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 5
+		Proprietes_defaut.item_number = 6
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ProgressBar Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = ""
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Progressbar " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 0
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Checkbox Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = ""
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Checkbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 0
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 
 		' Recuperer le nom de l'objet
 		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).Identification_Objet.nom
 
-		' Remplir les elements du clic droit
-		Proprietes_defaut.item_list(0).text = "Rafraichir"
-		Proprietes_defaut.item_list(0).action = ""
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Explorer " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
 
-		Proprietes_defaut.item_list(1).text = "-----"
-		Proprietes_defaut.item_list(1).action = ""
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Rafraichir"
+			Proprietes_defaut.item_list(0).action = ""
 
-		Proprietes_defaut.item_list(2).text = "Selectionner tout"
-		Proprietes_defaut.item_list(2).action = ""
+			Proprietes_defaut.item_list(1).text = "-----"
+			Proprietes_defaut.item_list(1).action = ""
 
-		Proprietes_defaut.item_list(3).text = "Coller"
-		Proprietes_defaut.item_list(3).action = ""
+			Proprietes_defaut.item_list(2).text = "Selectionner tout"
+			Proprietes_defaut.item_list(2).action = ""
 
-		' IMPORTANT : Indiquer le nombre d'elements
-		Proprietes_defaut.item_number = 3
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = ""
 
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+				Next boucle_item
+			end if
+			
+		End if
 	End if
 
 	return Proprietes_defaut
@@ -680,7 +851,7 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 
 
 			' Display textbloc items with events
-			for index as integer = 0 to items.item_number
+			for index as integer = 0 to items.item_number - 1
 
 				ctx_name	= "" & index
 

@@ -1,31 +1,43 @@
-fenetre/ Ma_Fenetre
+window/ Ma_Fenetre
 	.titre 		= "Ma premiere application"
 	.px		= "100"
 	.py		= "20"
-	.tx		= "250"
-	.ty		= "150"
-	.Opacite 	= "100"
-	.Parametres	= ""
-	.CouleurFenetre	= "050,050,250"
-	.CouleurTitre	= "255,255,255"
-	.CouleurFond	= "255,255,050"
+	.sx		= "250"
+	.sy		= "150"
+	.opacity 	= "100"
+	.parameters	= ""
+	.WindowColor	= "050,050,250"
+	.TitleColor	= "255,255,255"
+	.BackColor	= "255,255,050"
 	.event		= ""
-	@#Handle_Fenetre creer/
-Fin/ fenetre
+	@#Handle_Fenetre create/
+end/ window
 
-bouton/ Mon_Bouton
+button/ Mon_Bouton
 	.Handle		= "%Handle_Fenetre%"
-	.Parametres	= "IMGAUTO:2"
-	.PX		= "20"
-	.PY		= "20"
-	.tx		= "100"
-	.ty		= "30"
-	.opacite	= "255"
-    .texte		= "Clic moi!"
+	.parameters	= "IMGAUTO:2 CTX:2"
+	.PX			= "20"
+	.PY			= "20"
+	.sx			= "100"
+	.sy			= "30"
+	.opacity	= "255"
+    .text		= "Clic moi!"
 	.Image		= "%OS_GUI%/Buttons/BTN_BLUE.png"
-	.evenement	= "%_EXE_PATH_%"
+	.event		= "%_EXE_PATH_%"
 	creer/
-Fin/ Bouton
+end/ button
+
+set/ Mon_Bouton.ctx_text(0) = Item 1
+set/ Mon_Bouton.ctx_action(0) = msgbox/ Clique sur Item 1
+
+set/ Mon_Bouton.ctx_text(1) = Item 2
+set/ Mon_Bouton.ctx_action(1) = msgbox/ Clique sur Item DEUX
+
+set/ Mon_Bouton.ctx_text(2) = Item 3
+set/ Mon_Bouton.ctx_action(2) = msgbox/ Clique sur Item TROIIIIIIIIIS !
+
+set/ Mon_Bouton.ctx_number = 3
+
 
 Fonction/ Mon_Bouton(Click)
 

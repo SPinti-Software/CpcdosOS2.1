@@ -42,6 +42,10 @@
 			- Windows/ /SizeDown MyWindow	- Reduire une fenetre
 			- Windows/ /Reduct MyWindow		- Reduire une fenetre
 			- Windows/ /Restaure MyWindow	- Restaurer une fenetre
+		- [CPCDOSC+] Ajout du parametre du menu contextuel "CTX" pour les objets GUI
+			- CTX:0 --> desactivé (par defaut, sauf textbox)
+			- CTX:1 --> activé (Profile par défaut)
+			- CTX:2 --> activé (Profile personnalisé)
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.

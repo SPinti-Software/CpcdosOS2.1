@@ -188,6 +188,9 @@ Type Proprietes_Objet
 	Fichier_evenement as String
 	
 	OBJ_context_menu as _Context_menu_
+
+	' Mode d'affichage du menu contextuel 0:disable  1:oui  2:oui+perso
+	MENU_CTX		as integer
 	
 End Type
 

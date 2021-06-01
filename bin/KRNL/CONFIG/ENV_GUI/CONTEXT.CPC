@@ -56,6 +56,8 @@ function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_
     // Stay in level 1
     ccp/ /set.level = 1
 
+
+
     textblock/ txt_contextmenu_%name%
         .handle         = "%WindowHandle%"
         .parameters     = "COL:0"
@@ -67,7 +69,7 @@ function/ gui.textbloc_context_menu(WindowHandle, name, text, pos_x, pos_y, siz_
         .text           = "%text%"
         .backcolor      = "255,255,255"
         .TextColor      = "%red%,%green%,%blue%"
-        .events         = "#CTX_ACTION:%name%=MouseClick"
+        .event          = "#CTX_ACTION:%name%=MouseClick"
         create/
     end/ textblock
 

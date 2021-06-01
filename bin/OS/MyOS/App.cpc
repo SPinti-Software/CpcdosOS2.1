@@ -17,9 +17,10 @@ fenetre/ APP1
 Fin/ fenetre
 
 
+
 Textebloc/ Mon_Textebloc
 	.Handle			= "%Handle_Fenetre%"
-	.Parametres		= "BORD:1 IMGAUTO:1 COL:1"
+	.Parametres		= "BORD:1 IMGAUTO:1 COL:1 CTX:2"
 	.Texte 			= "Hello!%CPC.CRLF%I'm textblock!%CPC.CRLF%Handle fenetre:%Handle_Fenetre%"
 	.PX				= "5"
 	.PY				= "5"
@@ -29,6 +30,23 @@ Textebloc/ Mon_Textebloc
 	rem/ .ty				= "20"
 	creer/
 Fin/ Textebloc
+
+
+ccp/ /set.level = 3
+
+set/ Mon_Textebloc.ctx_text(0) = Item 1
+set/ Mon_Textebloc.ctx_action(0) = msgbox/ Clique sur Item 1
+
+set/ Mon_Textebloc.ctx_text(1) = Item 2
+set/ Mon_Textebloc.ctx_action(1) = msgbox/ Clique sur Item DEUX
+
+set/ Mon_Textebloc.ctx_text(2) = Item 3
+set/ Mon_Textebloc.ctx_action(2) = msgbox/ Clique sur Item TROIIIIIIIIIS !
+
+set/ Mon_Textebloc.ctx_number = 3
+
+ccp/ /set.level = 1
+
 
 Bouton/ Bouton_OpenGL1
 	.Handle			= "%Handle_Fenetre%"
@@ -71,6 +89,8 @@ Bouton/ Mon_Bouton3
 	.event			= "%HOST_OS%/TEST.CPC"
 	creer/
 Fin/ Bouton
+
+
 
 
 picturebox/ Image2

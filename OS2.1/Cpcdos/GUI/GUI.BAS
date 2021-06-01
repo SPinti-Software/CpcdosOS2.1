@@ -2725,8 +2725,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										End if
 									End if
 									
-									
-									
+
 									
 								' ********************************************
 								' **  T E X T E B O X     T E X T E B O X   ** ----------------------------------------------------
