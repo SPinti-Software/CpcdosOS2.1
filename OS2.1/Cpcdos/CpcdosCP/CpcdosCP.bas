@@ -3672,9 +3672,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		rem Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " fenetre/                   Cree une nouvelle instance d'une fenetre graphique"
+				CommandesAide = CommandesAide & CRLF & " fenetre/                   Cree ou gere une nouvelle instance d'une fenetre graphique"
 			Else
-				CommandesAide = CommandesAide & CRLF & " window/                    Create new graphic"
+				CommandesAide = CommandesAide & CRLF & " window/                    Create or manage new graphic"
 			END IF
 		END IF
 		IF CommLANG(1) = OnCherche Then CommTrouve = 1
@@ -3687,6 +3687,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit�e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une fenetre graphique sur l'IUG"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Agrandir la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /sizeup Ma_Fenetre"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Retrecir la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /sizedown Ma_Fenetre"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Reduire la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /reduct Ma_Fenetre"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Fenetre/ Ma_Fenetre"
@@ -3712,6 +3721,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
 					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create new window instance"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Size up window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /sizeup My_window"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Sizedown window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /sizedown My_window"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Reduct window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /reduct My_window"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Window/ My_window"
@@ -3761,7 +3779,96 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Enlever les espaces et mettre tout en majuscules
 			Dim NomFenetre as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
-			IF INSTR(UCASE(NomFenetre), "/MODIF") > 0 Then
+			' Agrandir la fenetre
+			IF INSTR(UCASE(NomFenetre), "/SIZEUP") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/SIZEUP") + 8))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_button(true, index_fenetre)	
+
+							exit for
+						end if
+					End if
+				Next INDEX_FENETRE
+
+			ElseIF INSTR(UCASE(NomFenetre), "/SIZEDOWN") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/SIZEDOWN") + 10))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_button(false, index_fenetre)	
+
+							exit for
+						end if
+					End if
+				Next INDEX_FENETRE
+			ElseIF INSTR(UCASE(NomFenetre), "/RESTAURE") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/RESTAURE") + 10))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[SCI] Restauration de la fenetre (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							else
+								DEBUG("[SCI] Window restauration (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							End if
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Reduit = true
+							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
+
+						end if
+					End if
+				next INDEX_FENETRE
+			ElseIF INSTR(UCASE(NomFenetre), "/REDUCT") > 0 Then
+
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/REDUCT") + 8))
+					
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+					
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[SCI] Reduction de la fenetre (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							else
+								DEBUG("[SCI] Window minimization (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							End if
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Reduit = false
+							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
+						End if
+					End if
+				Next INDEX_FENETRE
+			
+			ElseIF INSTR(UCASE(NomFenetre), "/MODIF") > 0 Then
 				NomFenetre = MID(NomFenetre, INSTR(UCASE(NomFenetre), "/MODIF") + 7) & "~MODIF#"
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -3769,15 +3876,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Else
 					DEBUG("[CpcdosC+] Window edition mode '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 					DEBUG("[CpcdosC+] Creation d'une fenetre '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
 					DEBUG("[CpcdosC+] Creating window '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
 			End if
 			
-			CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
+			
 			
 			' ====================================================================
 			END SCOPE
@@ -13226,7 +13335,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										Dim Ancien_OS 		as String = CPCDOS_INSTANCE.get_OSPresent(NumeroOS)
 										
 										if Ancien_OS = "" then Ancien_OS = "<null>"
-								
+
 										IF NumeroOS_tmp > -1 Then
 
 											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -20300,7 +20409,7 @@ _FIN_EXE_CCP_EXE:
 					UtiliseParametre = true
 				End IF
 				
-				' Copter le nombre d'OS presents
+				' Compter le nombre d'OS presents
 				IF Instr(UCASE(Param), "/NB") > 0 Then
 					DEBUG(str(CPCDOS_INSTANCE.get_NombreOSPresent()), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					UtiliseParametre = true

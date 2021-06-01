@@ -462,13 +462,13 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 
 		' Remplir les elements du clic droit
 		Proprietes_defaut.item_list(0).text = "Agrandir"
-		Proprietes_defaut.item_list(0).action = ""
+		Proprietes_defaut.item_list(0).action = "window/ /sizeup " & obj_name
 
 		Proprietes_defaut.item_list(1).text = "Retrecir"
-		Proprietes_defaut.item_list(1).action = ""
+		Proprietes_defaut.item_list(1).action = "window/ /sizedown " & obj_name
 
 		Proprietes_defaut.item_list(2).text = "Reduire"
-		Proprietes_defaut.item_list(2).action = ""
+		Proprietes_defaut.item_list(2).action = "window/ /reduct " & obj_name
 
 		Proprietes_defaut.item_list(3).text = "Fermer"
 		Proprietes_defaut.item_list(3).action = "close/ " & obj_name
