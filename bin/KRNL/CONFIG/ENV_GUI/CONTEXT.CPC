@@ -8,7 +8,7 @@ SET/ CPC_GUI.CONTEXT.BACKGROUND     = %OS_GUI%/Context.png
 
 // Pagging elements
 SET/ CPC_GUI.CONTEXT.PAGGING.TOP    = 5
-SET/ CPC_GUI.CONTEXT.PAGGING.LEFT   = 24
+SET/ CPC_GUI.CONTEXT.PAGGING.LEFT   = 10
 SET/ CPC_GUI.CONTEXT.PAGGING.RIGHT  = 5
 
 // Vertical size for each elements
@@ -32,12 +32,12 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
     Window/ Win_context_menu
 
         .title          = "Win_context_menu"
-        .parameters     = "TYPE:4"
+        .parameters     = "TYPE:5"
         .px             = "%Pos_X%"
         .py             = "%Pos_Y%"
         .sx             = "%siz_x%"
         .sy             = "%siz_y%"
-        .opacity        = "160"
+        .opacity        = "0"
         .WindowColor    = "100,100,100"
         .TitleColor     = "255,255,255"
         .backcolor      = "100,100,100"
@@ -45,6 +45,112 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
 
         @#window_handle create/
     End/ Window
+
+    set/ img_opacity = 255
+
+    // Calculations
+    set/ img_ctx_round_size_x = 7
+    set/ img_ctx_round_size_y = 7
+
+    set/ Pos_Right_Img = /C(%siz_x% - %img_ctx_round_size_x%)
+    set/ Pos_Down_Img = /C(%Siz_y% - %img_ctx_round_size_y%)
+
+    set/ Siz_middle_X_img = /C(%siz_x% - %img_ctx_round_size_x% * 2)
+    set/ Siz_middle_Y_img = /C(%siz_y% - %img_ctx_round_size_y% * 2)
+
+    // TOP LEFT
+    picturebox/ Win_context_menu_img_TL
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:0"
+        .px				= "0"
+        .py				= "0"
+        .sx				= "7"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_TL.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+    // TOP MIDDLE
+    picturebox/ Win_context_menu_img_M
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:2"
+        .px				= "%img_ctx_round_size_x%"
+        .py				= "0"
+        .sx				= "%Siz_middle_x_img%"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+
+    // TOP RIGHT
+    picturebox/ Win_context_menu_img_TR
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:0"
+        .px				= "%Pos_Right_Img%"
+        .py				= "0"
+        .sx				= "7"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_TR.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+    // CENTER - MIDDLE
+    picturebox/ Win_context_menu_img_M
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:2"
+        .px				= ""
+        .py				= "%img_ctx_round_size_y%"
+        .sx				= "%Siz_X%"
+        .sy				= "%Siz_middle_Y_img%"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+    
+     // DOWN LEFT
+    picturebox/ Win_context_menu_img_TL
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:0"
+        .px				= "0"
+        .py				= "%Pos_Down_Img%"
+        .sx				= "7"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_DL.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+    // DOWN MIDDLE
+    picturebox/ Win_context_menu_img_M
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:2"
+        .px				= "%img_ctx_round_size_x%"
+        .py				= "%Pos_Down_Img%"
+        .sx				= "%Siz_middle_X_img%"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
+
+
+    // DOWN RIGHT
+    picturebox/ Win_context_menu_img_TR
+        .Handle			= "%window_handle%"
+        .parameters		= "IMGAUTO:0"
+        .px				= "%Pos_Right_Img%"
+        .py				= "%Pos_Down_Img%"
+        .sx				= "7"
+        .sy				= "7"
+        .Image			= "%OS_GUI%/MENU_CTX/CTX_DR.PNG"
+        .opacity		= "%img_opacity%"
+        creer/
+    Fin/ Picturebox
 
     // Return handle window number
     return/ %window_handle%

@@ -25,9 +25,9 @@ type _Context_menu_
 	_Space_items 								as integer = 12
 
 	' Colors
-	red											as integer
-	green										as integer
-	blue										as integer
+	red											as integer = 210
+	green										as integer = 210
+	blue										as integer = 210
 
 	' nb items
 	item_number 								as integer
