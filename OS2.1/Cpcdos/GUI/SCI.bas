@@ -485,16 +485,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
-			
+			End if
 		End if
 
 		
@@ -520,15 +528,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
+			End if
 			
 		End if
 
@@ -554,16 +571,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
-			
+			End if
 		End if
 
 	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBlock Then
@@ -586,15 +611,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX = 2 Then
 
 			' Personnalises!
-			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
 			end if
 			
@@ -633,15 +667,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
+			End if
 			
 		End if
 
@@ -670,15 +713,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
+			End if
 			
 		End if
 
@@ -704,15 +756,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
+			End if
 			
 		End if
 
@@ -746,15 +807,24 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			' Personnalises!
 			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
 
-			print "Proprietes_defaut.item_number:" & Proprietes_defaut.item_number & "."
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
 
 			if Proprietes_defaut.item_number > 0 Then
 				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
 					' Remplir les elements du clic droit
+					
 					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
 					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
 				Next boucle_item
-			end if
+			End if
 			
 		End if
 	End if

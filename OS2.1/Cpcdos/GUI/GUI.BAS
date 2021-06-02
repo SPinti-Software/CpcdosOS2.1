@@ -2469,13 +2469,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								ElseIF The_Objet = "TEXTBLOCK" Then 
 
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Fichier_evenement
-								
+
 									if NOT Fichier_evenement = "" Then
 									
 										' Infos du picturebox concerne
 										Index_Focus_OBJ 	= The_Objet_index
 										_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).Identification_Objet._CLE_
 										Nom_Objet 		 	= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).Identification_Objet.Nom
+
 
 										IF Interaction_TOUCHE(Pos_X, Pos_Y, _INDEX_FENETRE_, _
 											this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).POS_X, _
