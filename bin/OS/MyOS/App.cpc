@@ -95,16 +95,16 @@ Fin/ Picturebox
 
 ccp/ /set.level = 3
 
-set/ Mon_Textebloc.ctx_text(0) = PHOTO Ultimaaa
-set/ Mon_Textebloc.ctx_action(0) = msgbox/ Clic on first
+set/ Image2.ctx_text(0) = PHOTO Ultimaaa
+set/ Image2.ctx_action(0) = msgbox/ Clic on first
 
-set/ Mon_Textebloc.ctx_text(1) = Item 2
-set/ Mon_Textebloc.ctx_action(1) = msgbox/ Clic on 2nd
+set/ Image2.ctx_text(1) = Item 2
+set/ Image2.ctx_action(1) = msgbox/ Clic on 2nd
 
-set/ Mon_Textebloc.ctx_text(2) = Item 3
-set/ Mon_Textebloc.ctx_action(2) = msgbox/ Clic on 3th
+set/ Image2.ctx_text(2) = Item 3
+set/ Image2.ctx_action(2) = msgbox/ Clic on 3th
 
-set/ Mon_Textebloc.ctx_number = 3
+set/ Image2.ctx_number = 3
 
 ccp/ /set.level = 1
 
