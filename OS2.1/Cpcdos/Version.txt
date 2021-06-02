@@ -7,16 +7,16 @@
 	#### En bref ####
 	#################
 
-		--> 9	Ajouts de divers fonctionnalités.
+		--> 10	Ajouts de divers fonctionnalités.
 		--> 5	corrections importantes.
 		--> 0	optimisations.
 		--> 2	corrections et modifications mineures.
 
-		--> Gain de stabilité : +10%
+		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
 
-		--> Gain de performances : +15%
-		--> Note de performances : 14/20
+		--> Gain de performances : +30% (Fenetres)
+		--> Note de performances : 15/20
 
 		--> Probabilités de crash
 				Réseau	: 10%
@@ -49,7 +49,6 @@
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
-		- [SCI] Refonte totale de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
@@ -57,6 +56,7 @@
 		
 		
 		[MODIFICATIONS]
+		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		- [SCI] Amélioration de la précision du curseur.
 
 
