@@ -84,7 +84,7 @@ picturebox/ Image2
 	.Handle			= "%Handle_Fenetre%"
 	.Parametres		= "IMGAUTO:0 CTX:2"
 	.PX				= "30"
-	.PY				= "100"
+	.PY				= "50"
 	.tx				= "200"
 	.ty				= "200"
 	.Image			= "%OS_GUI%/Ultima.png"
