@@ -12605,7 +12605,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						DIM GUI__PROP_FOND_COULEUR		as boolean = TRUE
 
-						DIM GUI__PROP_CTX				as integer = 0
+						DIM GUI__PROP_CTX				as integer = -1
 						
 						DIM GUI__PROP_AUTOSIZE			as integer	= 0
 						
@@ -13849,6 +13849,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 															
 															' Evenement
@@ -14059,6 +14060,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 															
 															' Evenement
@@ -14274,6 +14276,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 															' Evenement
@@ -14479,6 +14482,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 															' Evenement
@@ -14692,6 +14696,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 															' Evenement
@@ -14925,6 +14930,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 															' Evenement
@@ -15077,6 +15083,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Alpha)
 															
 															' Menu contextuel
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.MENU_CTX
 
 															' Fichier de fonction source pour les evenement des objets
@@ -15145,6 +15152,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 															
 															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 															' Evenement
@@ -15780,6 +15788,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
 
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 												
 												' Fichier de fonction source pour les evenement des objets
@@ -15922,6 +15931,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16056,6 +16066,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16175,6 +16186,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fond_Couleur = GUI__PROP_Fond_Couleur
 												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16308,6 +16320,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_Fond_Couleur
 												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16448,6 +16461,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fond_Couleur 				= GUI__PROP_Fond_Couleur
 												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16594,7 +16608,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Couleur de fond OUI ou NON
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fond_Couleur 				= GUI__PROP_Fond_Couleur
 												
+												
 												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
 												' Evenement
@@ -16740,6 +16756,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Bordure
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
 												' Menu contextuel
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 
@@ -16841,7 +16858,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											GUI__PROP_Mode_Affichage = 0
 											
 											' Menu contextuel
-											GUI__PROP_CTX = 0
+											GUI__PROP_CTX = -1
 											
 											' Pour eviter la redondance.
 											GUI__PROP_EVENEMENT			= "" 
