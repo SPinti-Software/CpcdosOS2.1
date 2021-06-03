@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "02" 
+CONST _VJOUR as string 	= "03" 
 CONST _VMOIS as string 	= "06"
 CONST _VANNEE as string = "2021"
 
@@ -411,6 +411,9 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _MEGA_OCTETS	as double = 1024^2
 		CONST _GIGA_OCTETS	as double = 1024^3
 		CONST _TERA_OCTETS	as double = 1024^4
+
+		' COPIER COLLER COUPER Textuel
+		__PRESSE_PAPIER_TEXTE__ as String
 		
 		' *** Tableau de la liste des OS present et son dossier ***
 		_LISTE__OS_BOOTSCREEN					as String

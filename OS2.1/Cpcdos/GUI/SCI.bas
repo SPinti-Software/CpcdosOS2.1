@@ -649,19 +649,19 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			Proprietes_defaut.item_list(0).action = ""
 
 			Proprietes_defaut.item_list(1).text = "Copier"
-			Proprietes_defaut.item_list(1).action = ""
+			Proprietes_defaut.item_list(1).action = "#CTX_TEXTBOX_COPY " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
 
 			Proprietes_defaut.item_list(2).text = "Couper"
-			Proprietes_defaut.item_list(2).action = ""
+			Proprietes_defaut.item_list(2).action = "#CTX_TEXTBOX_CUT " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
 
 			Proprietes_defaut.item_list(3).text = "Coller"
-			Proprietes_defaut.item_list(3).action = ""
+			Proprietes_defaut.item_list(3).action = "#CTX_TEXTBOX_PAST " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
 
 			Proprietes_defaut.item_list(4).text = "-----"
 			Proprietes_defaut.item_list(4).action = ""
 
 			Proprietes_defaut.item_list(5).text = "Supprimer"
-			Proprietes_defaut.item_list(5).action = ""
+			Proprietes_defaut.item_list(5).action = "#CTX_TEXTBOX_DEL " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
 		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX = 2 Then
 
 			' Personnalises!

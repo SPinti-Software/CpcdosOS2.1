@@ -392,6 +392,124 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			SAME_ID = true
 		End if
 		
+		' Contexte clic droit
+		if Instr(Ucase(Commande), "#CTX_TEXTBOX") > 0 Then
+
+			' Copier le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_COPY ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_COPY ") + Len("#CTX_TEXTBOX_COPY "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							' EFFECTUER UNE COPIE
+							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+
+							DEBUG("[CPCDOS] CTX TEXT COPY : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+				
+			End if
+
+			' Couper le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_CUT ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_CUT ") + Len("#CTX_TEXTBOX_CUT "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							' EFFECTUER UNE COPIE
+							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+
+							' Clean text
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+							DEBUG("[CPCDOS] CTX TEXT CUT : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+			End if
+
+			' Coller le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_PAST ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_PAST ") + Len("#CTX_TEXTBOX_PAST "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							' EFFECTUER UN COLLER
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			End if
+
+			' Supprimer le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_DEL ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_DEL ") + Len("#CTX_TEXTBOX_DEL "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							' EFFACER
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+							DEBUG("[CPCDOS] CTX TEXT DELETED", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			End if
+		End if
 
 		' Executer une fonction d'un fichier (DIRECT)
 		IF Instr(UCASE(Commande), "##FONCTION=:") > 0 Then
@@ -4383,6 +4501,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer graphiquement un bloc de texte pour les applications"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec un handle de 12345"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir le texte du textebox"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   TexteBox/ Mon_TexteBox"
 					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
@@ -4412,6 +4533,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
 					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create new editable text area in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Getting textbox text"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Example :"
 					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ My_Textbox"
@@ -4466,7 +4590,28 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Enlever les espaces et mettre tout en majuscules
 			Dim NomTextebox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
-			IF INSTR(UCASE(NomTextebox), "/MODIF") > 0 Then
+			' Afficher le texte du textbox
+			IF INSTR(UCASE(NomTextebox), "/TEXT") > 0 Then
+				NomTextebox = ucase(MID(NomTextebox, INSTR(UCASE(NomTextebox), "/TEXT") + 6))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							' Display !
+							DEBUG(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+			ElseIF INSTR(UCASE(NomTextebox), "/MODIF") > 0 Then
 				NomTextebox = MID(NomTextebox, INSTR(UCASE(NomTextebox), "/MODIF") + 7) & "~MODIF#"
 
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -4474,14 +4619,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Else
 					DEBUG("[CpcdosC+] TextBox edition mode '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 					DEBUG("[CpcdosC+] Creation d'un TexteBox '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
 					DEBUG("[CpcdosC+] Creating TextBox '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
 			End if
-			CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
+			
 			
 			' ====================================================================
 			END SCOPE

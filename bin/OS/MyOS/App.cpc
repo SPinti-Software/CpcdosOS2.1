@@ -149,8 +149,8 @@ Textbox/ MonTexteBox
 	.TY                     = "15"
 	.CouleurFond            = "255,255,255"
 	.CouleurTexte           = "000,000,000"
-	.texte			= "EDIT me !"
-	// .event                  = "%HOST_OS%/test.cpc"
+	.texte					= "EDIT me !"
+	.event                  = "%HOST_OS%/test.cpc"
 	Creer/
 Fin/ Textebox
 
@@ -205,7 +205,7 @@ Checkbox/ MonCheckbox
 Fin/ checkBox
 
 
-Textbox/ MonTexteBox
+Textbox/ MonTexteBox_2
 	.handle				= "%handle_fenetre%"
 	.parametres			= "EDIT:1 MULTILINE:1 COL:1"
 	.PX					= "150"
@@ -215,6 +215,7 @@ Textbox/ MonTexteBox
 	.CouleurFond		= "255,255,255"
 	.CouleurTexte		= "050,100,250"
 	.texte				= "Multiligne TEST"
+	.event              = "%_exe_path_%"
 	Creer/
 Fin/ Textebox
 
