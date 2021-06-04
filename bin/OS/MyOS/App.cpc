@@ -150,7 +150,7 @@ Textbox/ MonTexteBox
 	.CouleurFond            = "255,255,255"
 	.CouleurTexte           = "000,000,000"
 	.texte					= "EDIT me !"
-	.event                  = "%HOST_OS%/test.cpc"
+	.event                  = ""
 	Creer/
 Fin/ Textebox
 

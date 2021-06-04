@@ -409,10 +409,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 							
+							DEBUG("[CPCDOS] CTX TEXT COPY : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
 							' EFFECTUER UNE COPIE
 							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
 
-							DEBUG("[CPCDOS] CTX TEXT COPY : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+							
 						
 							exit for
 						end if
@@ -436,6 +438,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 							
+							DEBUG("[CPCDOS] CTX TEXT CUT : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
 							' EFFECTUER UNE COPIE
 							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
 
@@ -445,7 +449,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
 
-							DEBUG("[CPCDOS] CTX TEXT CUT : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+							
 						
 							exit for
 						end if
@@ -468,13 +472,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 							
+							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")							
 							' EFFECTUER UN COLLER
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
 
-							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+							
 						
 							exit for
 						end if
@@ -496,19 +501,23 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 							
+							DEBUG("[CPCDOS] CTX TEXT DELETED", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
 							' EFFACER
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
 
-							DEBUG("[CPCDOS] CTX TEXT DELETED", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+							
 						
 							exit for
 						end if
 					End if
 				Next INDEX_Textbox
 			End if
+			
+			Exit function
 		End if
 
 		' Executer une fonction d'un fichier (DIRECT)
@@ -5676,6 +5685,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							End if
 						End if
 						
+						DEBUG(" ****** Creer P1", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
 						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
@@ -15517,6 +15527,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												DEBUG(str(GUI__Handle_PARENT), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__Handle_PARENT = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_HANDLE=") + 13))
+												' Trouver les derniers elements pour optimiser et corriger certain bugs
+												for boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+													if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).identification_objet.handle = GUI__Handle_PARENT Then
+														GUI__Index_FNT_PARENT = boucle
+														GUI__Fenetre_PARENT = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).identification_objet.nom
+														exit for
+													end if
+												next boucle
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TYPE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
