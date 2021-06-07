@@ -25,6 +25,10 @@ CCP/ /SET.LEVEL = 3
 // [EN] Background image (BY DEFAULT)
 SET/ SCR_IMG = OS\MEDIA\abs_blue.PNG
 
+// [FR] Capture d'ecran (PAR DEFAUT)
+// [EN] Screenshot (BY DEFAULT)
+SET/ SCR_SAVE = %CPC_TEMP%\SCR
+
 // [FR] Affichage de l'image (0:Remplir (avec debordage), 1:Ajuste (sans debordage), 2:Adapte (deforme), 3:Vignettes, 4:Brute Centre, 5:Brute)
 // [EN] Image displaying (0:Fill, 1:Ajusted, 2:Adapted, 3:Mozaic, 4:Center raw, 5:Raw)
 SET/ SCR_IMG_MODE = 0

@@ -193,13 +193,19 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 							if TexteBox_Focus = false Then Touche_inkey = Inkey
 						End if
 						
+						' Touche CTRL + PrintScreen - Capture d'ecran
+						if Touche_Inkey = CHR(16) Then
+							CPCDOS_INSTANCE.Screenshot(_CLE_)
+						End if
+
+
 						' F9 (Temporaire !)
 						IF Touche_Inkey = CHR(255) & CHR(67) then	
 							' Si le mode graphique est execute
 							
-							Dim Auth_Kernel				as uinteger = CPCDOS_INSTANCE.get_id_kernel		()
-							Dim Auth_OS					as uinteger = CPCDOS_INSTANCE.get_id_OS			()
-							Dim Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur()
+							Dim Auth_Kernel				as uinteger = CPCDOS_INSTANCE.get_id_kernel		(_CLE_)
+							Dim Auth_OS					as uinteger = CPCDOS_INSTANCE.get_id_OS			(_CLE_)
+							Dim Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_)
 							Dim Auth_PID				as uinteger = CPCDOS_INSTANCE.get_id_PID		(_CLE_)
 							Dim Auth_TID				as uinteger = CPCDOS_INSTANCE.get_id_TID		(_CLE_)
 							

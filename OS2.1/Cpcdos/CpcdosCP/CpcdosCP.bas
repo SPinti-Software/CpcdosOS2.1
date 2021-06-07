@@ -3419,6 +3419,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DEBUG("[CpcdosC+] Starting operating system '" & NomOS & "' [OS:" & NumeroOS & " Parent ID 0x" & HEX(_CLE_, 8) & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					End if
 	
+					CpcdosCP_SHELL = "SWITCH:OS_ID=" & NomOS
 					
 					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ " & PathOS & "\OS.CPC", _CLE_, 5, 330, RetourVAR)
 					

@@ -1710,6 +1710,68 @@ Function __Noyau_Cpcdos_OSx__.Executer_Fichier(source as String, _cle_ as double
 
 End function
 
+public function __Noyau_Cpcdos_OSx__.Screenshot(_cle_ as double) as boolean
+	' Cette fonction permet d'effectuer une capture d'ecran
+
+
+	Dim Size_X as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+	Dim Size_Y as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y()
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[Instagrammeur] Screenshot !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	else
+		DEBUG("[Instagrammer] Screenshot !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	End if
+
+	' Creer un buffer
+	dim screenshot_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("screenshot", Size_X, Size_Y, 0, 0, 0, 0, 123)
+	
+	' Capturer l'ecran
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(screenshot_ID, 1, 1, Size_X, Size_Y)
+
+	' Recuperer le nom de l'OS
+	Dim NomOS as String = CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.get_id_OS(_cle_))
+				
+	' Recuperer le nom de l'OS
+	NomOS = MID(NomOS, 1, instr(NomOS, "PATH:") - 2)
+
+	' Recuperer le path
+	Dim Path_screen as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("SCR_SAVE", 3, _cle_)
+	Dim File_name as string = NomOS & "_" & CPCDOS_INSTANCE.get_Date(CPCDOS_INSTANCE.get_Date_format()) & "_" & CPCDOS_INSTANCE.get_Heure(CPCDOS_INSTANCE.get_Time_format()) & "_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Secondes() & "_" & ".png"
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, "/"		, "-")
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, "\"		, "-")
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, ":"		, "-")
+
+	Dim path_final as String = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Path_screen & "\" & File_name, TRUE, TRUE, FALSE)
+
+	Dim Resultat as boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.creer_Repertoire(Path_screen, "")
+			
+	If Resultat = true Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[Screenshot] Repertoire introuvable, creation ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Action, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+		Else
+			DEBUG("[Screenshot] No exist folder, creating ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Action, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+		End if
+		DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	' Enregistrer la capture
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Save_png(screenshot_ID, path_final)
+
+	' Supprimer le buffer
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(screenshot_ID)
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[Instagrameur] Screenshot enregistre sous '" & path_final & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		else
+			DEBUG("[Instagramer] Saved screenshot under '" & path_final & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+	end if
+
+	return true
+End function
+
 public sub __Noyau_Cpcdos_OSx__.tester_erreur_memoire()
 	SCOPE
 		Dim testerreur as boolean = false

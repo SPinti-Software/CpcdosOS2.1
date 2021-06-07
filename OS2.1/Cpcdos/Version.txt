@@ -8,7 +8,7 @@
 	#################
 
 		--> 10	Ajouts de divers fonctionnalités.
-		--> 5	corrections importantes.
+		--> 6	corrections importantes.
 		--> 0	optimisations.
 		--> 2	corrections et modifications mineures.
 
@@ -46,6 +46,7 @@
 			- CTX:0 --> desactivé (par defaut, sauf fenetre, textbox et explorer)
 			- CTX:1 --> activé (Profile par défaut)
 			- CTX:2 --> activé (Profile personnalisé)
+		[SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
@@ -53,6 +54,7 @@
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
 		- [GUI] Correction des problèmes d'evenements du Textblock.
+		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
 		
 		
 		[MODIFICATIONS]

@@ -609,13 +609,102 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[SYSTEME] Chargement du PNG termine!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+			DEBUG("[SYSTEME] Chargement du PNG termine!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 		Else
-			DEBUG("[SYSTEM] PNG Loaded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+			DEBUG("[SYSTEM] PNG Loaded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 		End If
 	End if
 		
 end function
+
+#print * Save PNG
+function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string) as boolean
+	' Cette fonction permet d'enregistrer une image en PNG
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Enregistrement d'une image PNG(v" & PNG_LIBPNG_VER_STRING & ") '" & Fichier & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Writing PNG(v" & PNG_LIBPNG_VER_STRING & ") image '" & Fichier & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+	End if
+	
+	dim fp as FILE ptr
+	fp = fopen(strptr(Fichier), @"wb")
+
+	if( fp = NULL ) then
+		' Fichier introuvable !	
+		dim Message_erreur as string = ERRAVT("ERR_033", 0)
+		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		return false
+	end if
+
+	dim as png_structp png_ptr 	= png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)
+	dim as png_infop info_ptr 	= png_create_info_struct(png_ptr)
+
+	if (setjmp(png_jmpbuf(png_ptr))) then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Impossible d'ecrire le fichier PNG", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Unable to write PNG file", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Return false
+	End If
+
+	dim source as tImage
+	source.width 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(source_id)
+	source.height 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(source_id)
+	source.bpp 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_bits(source_id)
+	source.pixels 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(source_id)
+
+	png_init_io(png_ptr, fp)
+
+	png_set_IHDR(png_ptr, info_ptr, source.width, source.height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT)
+	png_write_info(png_ptr, info_ptr)
+
+	dim as png_bytep row = Allocate(3 * source.width * sizeof(png_byte))
+	dim as ubyte ptr pp = cptr(ubyte ptr, source.pixels+1)
+	dim as integer bypp = source.bpp
+
+	Dim As Integer Taille_X, Taille_Y, bitPerPixel_SOURCE, bitPerPixel_DESTINATION, pitch_SOURCE, pitch_DESTINATION
+	Dim as byte ptr PointeurDestination
+	
+	ImageInfo( source.pixels,  Taille_X,  Taille_Y, bitPerPixel_SOURCE, pitch_SOURCE,  pp  )
+
+	
+	source.pitch = pitch_SOURCE
+
+	if bitPerPixel_SOURCE <> 4 then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Seulement le format 4bpp est supporte", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error 4bpp is supported", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Return false
+	End If
+	for y as integer = 0 to source.height-1
+		for x as integer = 0 to source.width-1
+			row[x*3  ] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE+2)
+			row[x*3+1] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE+1)
+			row[x*3+2] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE)
+		Next
+		png_write_row(png_ptr, row)
+	Next
+
+	png_write_end(png_ptr, NULL)
+
+	if (fp <> NULL) then fclose(fp)
+	if (info_ptr <> NULL) then png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1)
+	if (png_ptr <> NULL) then png_destroy_write_struct(@png_ptr, NULL)
+	if (row <> NULL) then DeAllocate(row)
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] Fichier PNG enregistre !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEM] PNG file recorded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End If
+
+	return true
+End Function
 
 
 #print * Lecteur JPEG

@@ -605,16 +605,19 @@ Type __Noyau_Cpcdos_OSx__
 		
 		' Charger une image PNG, JPG, JPEG, JTIF et MJPG
 		Declare Function 	Charger_Image		(ByVal ImageSource as String) as Any PTR
-		Declare Function 	Charger_Image		(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) as Any PTR
+		Declare Function 	Charger_Image		(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) 	as Any PTR
 		
 		' Charger un fichier INI
-		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) as string
+		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) 						as string
 
 		' Charger la liste des formats de fichiers
-		Declare Function 	Load_list_format	(source as string) as boolean
+		Declare Function 	Load_list_format	(source as string) 																	as boolean
 		
 		' Executer un fichier (Image, programme etc...)
-		Declare Function 	Executer_Fichier	(source as String, _CLE_ as double) as boolean
+		Declare Function 	Executer_Fichier	(source as String, _CLE_ as double) 												as boolean
+
+		' Capture d'ecran
+		Declare function 	Screenshot(_cle_ as double)																				as boolean
 		
 		
 		Declare sub tester_erreur_memoire()

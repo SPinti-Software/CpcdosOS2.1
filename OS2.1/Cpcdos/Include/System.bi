@@ -178,7 +178,9 @@ End Type
 
 Type tImage
 	As Integer width, height, pitch
+	as integer bpp
 	As Long Ptr pixels
+
 End Type
 
 enum effet_img
@@ -716,14 +718,16 @@ Type _SYSTEME_Cpcdos_OSx__
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
 		' Effet flou
 		
-		Declare function buffer_to_blurry		(byref image_src as any ptr, intensite as integer)				as Any Ptr
-		Declare Function FastBlur				(img As tImage, iRadius As Ubyte)								As Any Ptr
-		Declare Function BlurPass				(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) 	As Any Ptr
+		Declare function buffer_to_blurry		(byref image_src as any ptr, intensite as integer)																		as Any Ptr
+		Declare Function FastBlur				(img As tImage, iRadius As Ubyte)																						As Any Ptr
+		Declare Function BlurPass				(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) 															As Any Ptr
 		
-		Declare function bit_converter			(byref source as any ptr) 																		as any ptr
+		Declare function bit_converter			(byref source as any ptr) 																								as any ptr
 		Declare function trans32 				(ByVal Source As UInteger, ByVal Destination As UInteger, ByVal Parametres As Any Ptr ) 								As UInteger
 		Declare Function charger_PNG			(byval Fichier as String,  byval Bits as integer, prio as integer) 														as any ptr
 		Declare function charger_PNG			(byval Fichier as String,  byval Bits  as integer, prio as integer, byref Hauteur as integer, byref Largeur as integer) as any ptr
+
+		Declare Function Save_png				(source as integer, Fichier as string) 																					as boolean
 		
 		Declare Function charger_JPG			(byval Fichier as String,  Bits as integer, prio as integer) 															as any ptr
 		Declare function charger_JPG			(byval Fichier as String,  Bits  as integer, prio as integer, byref Hauteur as integer, byref Largeur as integer) 		as any ptr
