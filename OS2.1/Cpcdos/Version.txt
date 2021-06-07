@@ -7,10 +7,10 @@
 	#### En bref ####
 	#################
 
-		--> 10	Ajouts de divers fonctionnalités.
+		--> 12	Ajouts de divers fonctionnalités.
 		--> 6	corrections importantes.
 		--> 0	optimisations.
-		--> 2	corrections et modifications mineures.
+		--> 3	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -46,7 +46,10 @@
 			- CTX:0 --> desactivé (par defaut, sauf fenetre, textbox et explorer)
 			- CTX:1 --> activé (Profile par défaut)
 			- CTX:2 --> activé (Profile personnalisé)
-		[SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
+		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
+		- [SCI] Ajout du ALT+F4 pour fermer les fenetres focus ! :-)
+				Fenetre non fermables via le parametre CLOSE:0
+
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
@@ -60,6 +63,8 @@
 		[MODIFICATIONS]
 		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
 		- [SCI] Amélioration de la précision du curseur.
+		- [SHELL] La commande START/ fait désormais un switch automatique sur l'OS en question (SYS/ /OS)
+			Ce qui corrige la console graphique F9 et bien plus !
 
 
 

@@ -195,9 +195,35 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						
 						' Touche CTRL + PrintScreen - Capture d'ecran
 						if Touche_Inkey = CHR(16) Then
-							CPCDOS_INSTANCE.Screenshot(_CLE_)
+							if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
+								CPCDOS_INSTANCE.Screenshot(_CLE_)
+							End if
 						End if
 
+						' ALT + F4 - Fermer une fenetre
+						IF Touche_Inkey = CHR(255) & CHR(107) then
+
+							Dim index_fenetre as integer = CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0)
+							Dim Nom_fenetre as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Identification_Objet.Nom
+							Dim Handle_fenetre as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Identification_Objet.handle
+
+
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.Fermable = true Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SHELL] Fermeture fenetre (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " depuis ALT+F4", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								Else
+									DEBUG("[SHELL] Closing window (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " from ALT+F4 user key", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								End If
+
+								CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ /handle " & Handle_fenetre, _CLE_, 3, 0, "")
+							Else
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SHELL] Fermeture fenetre INTERDITE (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " depuis ALT+F4", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								Else
+									DEBUG("[SHELL] FORBIDDEN closing window (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " from ALT+F4 user key", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								End If
+							End if
+						End if
 
 						' F9 (Temporaire !)
 						IF Touche_Inkey = CHR(255) & CHR(67) then	
