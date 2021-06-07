@@ -1793,8 +1793,8 @@ Function  _memoire_bitmap.Capture_ecran(byval NumeroID as integer, PX as integer
 
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 Then
-				if PX < 0 then PX = 0
-				if PY < 0 then PY = 0
+				if PX <= 0 then PX = 1
+				if PY <= 0 then PY = 1
 
 				if SX < 1 then SX = 1
 				if SY < 1 then SY = 1
