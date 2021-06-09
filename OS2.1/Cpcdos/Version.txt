@@ -8,7 +8,7 @@
 	#################
 
 		--> 12	Ajouts de divers fonctionnalités.
-		--> 6	corrections importantes.
+		--> 7	corrections importantes.
 		--> 0	optimisations.
 		--> 3	corrections et modifications mineures.
 
@@ -53,6 +53,7 @@
 
 		[CORRECTIONS]
 		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
+		- [SCI] Correction du problème d'affichage 32 bits des PNG. (Effet escaliers)
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
