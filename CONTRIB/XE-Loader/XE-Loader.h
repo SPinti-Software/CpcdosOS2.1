@@ -47,7 +47,9 @@ typedef struct XE_Module{
 }XE_Module;
 
 extern "C" XE_Module* Xe_Load(const char* _sPath);
+extern "C" int Xe_ExecuteMain(XE_Module* _module);
+extern "C" int End(XE_Module* _mainModule);
 
-extern "C" int cpc_main(const char* _sPath);
+extern "C" int cpc_xe_loader_main(const char* _sPath);
 	
 	

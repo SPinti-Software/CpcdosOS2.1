@@ -244,7 +244,6 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 			End if
 		ElseIf Type_IUG = GUI_TYPE.TextBox then
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				DEBUG(" ****** Creer P3", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 				Creer_TextBox(index, index_PID) 'Actualiser si focus
 			End if
 		ElseIf Type_IUG = GUI_TYPE.ProgressBar then
@@ -677,7 +676,6 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 
 		End if
 		
-		DEBUG(" ****** Creer P4", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		' Creer l'objet
 		this.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.handle = Creer_TextBox(_INDEX_, _INDEX_Fenetre_)
 	
@@ -2784,7 +2782,6 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_X = Pos_X
 											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_Y = Pos_Y
 											
-											DEBUG(" ****** Creer P5", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 											' Actualiser graphiquement le textebox pour l'effet de ""
 											Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 											
@@ -2841,7 +2838,6 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = False
 												
 												
-												DEBUG(" ****** Creer P6", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
 												Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 												
@@ -2959,7 +2955,6 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 									IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE Then
 										this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = False
 										
-										DEBUG(" ****** Creer P7", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 										' Actualiser graphiquement le bouton pour l'effet de "pression"
 										Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 								
@@ -4644,7 +4639,6 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 							
-							DEBUG(" ****** Creer P2", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 							Creer_TextBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b

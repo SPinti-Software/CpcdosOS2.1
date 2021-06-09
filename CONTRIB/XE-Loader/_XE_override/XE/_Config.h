@@ -72,7 +72,7 @@
 
 //#define No_Main
 
-//#define USE_PRINTF
+// #define USE_PRINTF
 
 #define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
 
@@ -118,6 +118,7 @@
 	#undef USE_Platform_ThreadStorage
 #endif
 
+
 #ifdef __DJGPP__
 	#undef ShowPixView
 	#undef ImWin
@@ -137,7 +138,7 @@
 	#undef HAVE_OPERATOR_NEW_INT
 	#define HAVE_OPERATOR_NEW_LONG
 	#define SIMULATE_MULTI_THREAD_TO_SINGLE_WORKER_TERMINATE_ON_SLEEP
-	//#define No_Main
+	#define No_Main
 #endif
 
 //TEST for dosbox -- Temp
