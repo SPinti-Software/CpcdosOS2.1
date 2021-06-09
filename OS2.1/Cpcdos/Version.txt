@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 12	Ajouts de divers fonctionnalités.
+		--> 13	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 0	optimisations.
 		--> 3	corrections et modifications mineures.
@@ -33,6 +33,7 @@
 	#############################
 	
 		[AJOUTS]
+		- [Win32] Premiere version du support chargeur fichiers .ELF (Prototype ! Pas fiable !)
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
 		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
 		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
@@ -75,6 +76,7 @@
 	
 			
 		[CORRECTIONS]
+		- [Win32] Correction d'un problème execution des fichiers .EXE et .ELF
 		
 		[AJOUT]
 		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
