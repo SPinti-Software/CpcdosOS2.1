@@ -108,20 +108,6 @@ namespace Wrapper_Cpcdos
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
 
-				// Load file
-				
-				//XE_Module*  m = Xe_Load((const char*) ARG_1);
-
-				//if(m != NULL)
-				//{
-
-				//	Xe_ExecuteMain(m);
-
-
-				//	return End(m);
-				//}
-				
-
 				return cpc_xe_loader_main((const char*) ARG_1);
 
 				
