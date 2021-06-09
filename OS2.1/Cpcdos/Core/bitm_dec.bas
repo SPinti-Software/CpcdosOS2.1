@@ -192,7 +192,7 @@ End Function
 Sub libpng_error_callback cdecl( byval png as png_structp,  byval  p as png_const_charp)
 	Dim Message_erreur as string = ERRAVT("ERR_046", 0)
 	DEBUG("[SYSTEME] " & Message_erreur & " (" & *p & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
-	screen 0 : Print "[SYSTEME] " & Message_erreur & " (" & *p & ")"
+	screen 0 : Print "[SYSTEME] " & Message_erreur & " (" & *p & ") check for not use interlaced PNG"
 end sub
 
 function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  as integer, prio as integer) as any ptr
@@ -227,7 +227,6 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	
 	Dim PNG_Largeur as integer
 	Dim PNG_Hauteur as integer
-	Dim CanalAlphaPresent as integer = 0
 	Dim TestR as integer
 	Dim TestV as integer
 	Dim TestB as integer
@@ -300,7 +299,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 
 	png_read_info( png, info )
 
-	
+	Dim debbug as boolean
 	
 	largeur = png_get_image_width( png, info )
 	hauteur = png_get_image_height( png, info )
@@ -315,7 +314,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_RGB
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ RVB r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG charge RVB resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. RGB Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -323,7 +322,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_RGB_ALPHA
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ RVBA r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG charge RVBA resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. RGBA Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -331,7 +330,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_GRAY
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ Nuances de gris r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG chargee Nuances de gris resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. Grade of grey Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -339,7 +338,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case else
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Format de couleurs non support‚s", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Format de couleurs non supportes", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] Color format not supported", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 				End If
@@ -348,25 +347,30 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 			return null
 	end select
 
+	
+
 	SCOPE
+		Dim NombreImpaire as boolean = largeur mod 2
+
+		if debbug = true Then DEBUG(" ****** IMPAIRE :" & NombreImpaire & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 
 		imgPNG = imagecreate( largeur, hauteur, RGBA(0, 0, 0, 0))
 
 		dim as ubyte ptr dst = cptr( ubyte ptr, imgPNG + 1 )
 
-
 		png_read_update_info( png, info )
 
 		rowbytes = png_get_rowbytes( png, info )
+	
+
 		dim as ubyte ptr src = callocate( rowbytes )
 
-		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG(" PTR source 0x" & hex(src, 8) & " " & rowbytes & " rowbytes" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
-		Else
-			DEBUG(" Source PTR 0x" & hex(src, 8) & " " & rowbytes & " rowbytes" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
-		End if
+		DEBUG(" Source PTR 0x" & hex(src, 8) & " " & rowbytes & " rowbytes. Pitch " & imgPNG->pitch , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		
 		
 		SORTIR_SectionCritique()
+
+		'if NombreImpaire = true Then dst += 4
 
 		for y as integer = 0 to hauteur-1
 		
@@ -379,117 +383,50 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		
 			png_read_row( png, src, NULL )
 
-			select case( typecouleur )
+			select case(typecouleur)
+
 			case PNG_COLOR_TYPE_RGB
 				imageconvertrow( src, 24, dst, Bits, largeur )
 				dst += imgPNG->pitch
 				
 			case PNG_COLOR_TYPE_RGB_ALPHA
-				select case( Bits )
+				select case(Bits)
+
 				case 32
 
 					for i as integer = 0 to rowbytes-1 step 4
-
-						dst[0] = src[i+2]
-						dst[1] = src[i+1]
-						dst[2] = src[i+0]
-						dst[3] = src[i+3]
-
-						
-						'If dst[3] < 255 THEN
-							CanalAlphaPresent = 1
-						'END IF
-
-						
-						''' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						''' R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						''' s'occupe d'enlever le rose pour remplacer le role du png
-						'If dst[0] = 255 THEN
-						'	If dst[1] = 255 THEN
-						'		If dst[2] = 255 THEN
-						'			If dst[3] = 0 THEN
-						'				dst[0] = 255	' Rouge
-						'				dst[1] = 0		' Vert
-						'				dst[2] = 255	' Bleu
-						'				dst[3] = 0		' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-
-						'If dst[0] = 0 THEN
-						'	If dst[1] = 0 THEN
-						'		If dst[2] = 0 THEN
-						'			If dst[3] = 0 THEN
-						'				dst[0] = 255	' Rouge
-						'				dst[1] = 0		' Vert
-						'				dst[2] = 255	' Bleu
-						'				dst[3] = 0		' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-						
-						dst += 4
-					next
-					
-					' for i as integer = 0 to rowbytes-1 step 4
-						' dst -= 4
-					' next i
-
-					' dst += imgPNG->pitch
-					
-				case 24
-					for i as integer = 0 to rowbytes-1 step 4
-
 						dst[0] = src[i+2]
 						dst[1] = src[i+1]
 						dst[2] = src[i+0]
 						dst[3] = src[i+3]
 						
-						
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						'  s'occupe d'enlever le rose pour remplacer le role du png
-
-						'If dst[0] = 0 THEN
-						'	If dst[1] = 0 THEN
-						'		If dst[2] = 0 THEN
-						'			If dst[3] = 0 THEN
-						'				dst[0] = 255	' Rouge
-						'				dst[1] = 0		' Vert
-						'				dst[2] = 255	' Bleu
-						'				dst[3] = 0		' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-
-
-						'If dst[0] = 255 THEN
-						'	If dst[1] = 255 THEN
-						'		If dst[2] = 255 THEN
-						'			If dst[3] = 0 THEN
-						'				dst[0] = 255	' Rouge
-						'				dst[1] = 0		' Vert
-						'				dst[2] = 255	' Bleu
-						'				dst[3] = 0		' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-						
 						dst += 4
 					next
-					
+
+					' rewind pointer to begin
 					for i as integer = 0 to rowbytes-1 step 4
 						dst -= 4
 					next i
 
+					' Jump to next pointer line
+					dst += imgPNG->pitch
+
+				case 24
+					for i as integer = 0 to rowbytes-1 step 4
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+	
+						dst += 4
+					next
+					
+					' rewind pointer to begin
+					for i as integer = 0 to rowbytes-1 step 4
+						dst -= 4
+					next i
+
+					' Jump to next pointer line
 					dst += imgPNG->pitch
 				case 15, 16
 					For i as integer = 0 to rowbytes-1 step 4
@@ -499,42 +436,10 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						dst[2] = src[i+0]
 						dst[3] = src[i+3]
 
-						'TestR = src[i+2]
-						'TestV = src[i+1]
-						'TestB = src[i+0]
-						'TestA = src[i+3]
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						'  s'occupe d'enlever le rose pour remplacer le role du png
-						'If TestR = 255 THEN
-						'	If TestV = 255 THEN
-						'		If TestB = 255 THEN
-						'			If TestA = 0 THEN
-						'				src[i+2] = 255 	' Rouge
-						'				src[i+1] = 0	' Vert
-						'				src[i+0] = 255	' Bleu
-						'				src[i+3] = 255	' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-
-						'If TestR = 0 THEN
-						'	If TestV = 0 THEN
-						'		If TestB = 0 THEN
-						'			If TestA = 0 THEN
-						'				src[i+2] = 255 	' Rouge
-						'				src[i+1] = 0	' Vert
-						'				src[i+0] = 255	' Bleu
-						'				src[i+3] = 255	' Alpha
-						'				CanalAlphaPresent = 1
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
 					next
 					imageconvertrow( src, 32, dst, Bits, largeur )
+					
+					' Jump to next pointer line
 					dst += imgPNG->pitch
 				end select
 
@@ -552,39 +457,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						dst[2] = src[i+0]
 						dst[3] = src[i+3]
 
-						'TestR = src[i+2]
-						'TestV = src[i+1]
-						'TestB = src[i+0]
-						'TestA = src[i+3]
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						' 	R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						' 	s'occupe d'enlever le rose pour remplacer le role du png
 						
-						'If TestR = 0 THEN
-						'	If TestV = 0 THEN
-						'		If TestB = 0 THEN
-						'			If TestA = 0 THEN
-						'				src[i+2] = 255 	' Rouge
-						'				src[i+1] = 0	' Vert
-						'				src[i+0] = 255	' Bleu
-						'				src[i+3] = 255	' Alpha
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
-
-						'If TestR = 255 THEN
-						'	If TestV = 255 THEN
-						'		If TestB = 255 THEN
-						'			If TestA = 0 THEN
-						'				src[i+2] = 255 	' Rouge
-						'				src[i+1] = 0	' Vert
-						'				src[i+0] = 255	' Bleu
-						'				src[i+3] = 255	' Alpha
-						'			END IF
-						'		END IF
-						'	END IF
-						'END IF
 						dst += 4
 					next
 					for i as integer = 0 to rowbytes-1
@@ -614,6 +487,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 			DEBUG("[SYSTEM] PNG Loaded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 		End If
 	End if
+
 		
 end function
 

@@ -2,8 +2,6 @@
 	======================================
 	==       CPinti ---> wrapper I/O    ==
 	======================================
-	
-	Developpe entierement par Sebastien FAVIER
 
 	Description
 		Module permettant l'acces aux fonctionnalites 

@@ -247,6 +247,13 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_FILE(byval ImageSource as String, b
 		' Creer le buffer
 		this.donnees_RVBA(Index_Libre) = CPCDOS_INSTANCE.Charger_Image(ImageSource, Hauteur, Largeur)
 		
+		Dim debbug as boolean
+		if instr(ImageSource, "CURSOR.PNG") > 0 OR instr(ImageSource, "LOAD.PNG") > 0 Then
+			debbug = true
+		end if
+
+
+
 		if this.donnees_RVBA(Index_Libre) <= 0 then
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -822,6 +829,9 @@ Function _memoire_bitmap.ReSize_BITMAP(byval NumeroID as integer, TX_ as integer
 		Dim ReSize_TMP as integer = Dupliquer_BITMAP(NumeroID)
 
 		if ReSize_TMP > 0 Then
+
+			
+			
 			Dim Bits_ as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_BitsparPixels()
 
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -832,14 +842,31 @@ Function _memoire_bitmap.ReSize_BITMAP(byval NumeroID as integer, TX_ as integer
 				End if
 			End if
 
-			this.donnees_RVBA(NumeroID) = CPCDOS_INSTANCE.SCI_INSTANCE.IMG_Changer_taille(this.donnees_RVBA(ReSize_TMP), this.donnees_RVBA(NumeroID), TX_, TY_, true)
-			
+			' Si la taille est idem
+			if Recuperer_BITMAP_x(ReSize_TMP) = TX_ AND Recuperer_BITMAP_y(ReSize_TMP) = TY_ Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[_memoire_bitmap] ReSize_BITMAP() [AVERTISSEMENT] La taille souhaitee est identique (" & TX_ & "x" & TY_ & "). Duplication effectuee", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				Else
+					DEBUG("[_memoire_bitmap] ReSize_BITMAP() [WARNING] The desired size is the same (" & TX_ & "x" & TY_ & "). Duplication done.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				End if
+				
+				' Conserver la version duplicated !
+				this.donnees_RVBA(NumeroID) = this.donnees_RVBA(ReSize_TMP)
+			Else
+				' Resizer
+				this.donnees_RVBA(NumeroID) = CPCDOS_INSTANCE.SCI_INSTANCE.IMG_Changer_taille(this.donnees_RVBA(ReSize_TMP), this.donnees_RVBA(NumeroID), TX_, TY_, true)
+
+				' Et supprimer le duplicat
+				Supprimer_BITMAP(ReSize_TMP)
+			End if
+
+			' Transmettre les informations
 			this.Taille			(NumeroID) = TY_ * TX_ * Bits_
 			this.TX				(NumeroID) = TX_
 			this.TY				(NumeroID) = TY_
 			this.Bits			(NumeroID) = Bits_
 			
-			Supprimer_BITMAP(ReSize_TMP)
+			
 			
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
