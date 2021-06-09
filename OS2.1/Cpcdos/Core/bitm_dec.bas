@@ -350,9 +350,6 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	
 
 	SCOPE
-		Dim NombreImpaire as boolean = largeur mod 2
-
-		if debbug = true Then DEBUG(" ****** IMPAIRE :" & NombreImpaire & "." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 
 		imgPNG = imagecreate( largeur, hauteur, RGBA(0, 0, 0, 0))
 
@@ -370,7 +367,6 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		
 		SORTIR_SectionCritique()
 
-		'if NombreImpaire = true Then dst += 4
 
 		for y as integer = 0 to hauteur-1
 		
@@ -403,7 +399,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 						dst += 4
 					next
 
-					' rewind pointer to begin
+					' Rewind pointer to begin
 					for i as integer = 0 to rowbytes-1 step 4
 						dst -= 4
 					next i
@@ -438,7 +434,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 
 					next
 					imageconvertrow( src, 32, dst, Bits, largeur )
-					
+
 					' Jump to next pointer line
 					dst += imgPNG->pitch
 				end select
