@@ -778,6 +778,9 @@ Type _SCI_Cpcdos_OSx__
 		
 		PID_SCI as uinteger
 		TID_SCI as uinteger
+
+		' Relacher clic apres interaction barre de titre
+		CLIC_PRESS_TITLE as boolean = false
 		
 		
 		MULTI_PICTUREBOX					as boolean ' Permet de synchoniser les picturesbox animes n'ayant pas le focus

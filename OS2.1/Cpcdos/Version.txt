@@ -321,7 +321,7 @@
 		--> 21	Ajouts de divers fonctionnalités.
 		--> 15	corrections importantes.
 		--> 4	optimisations.
-		--> 10	corrections et modifications mineures.
+		--> 11	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -432,7 +432,7 @@
 		[MODIFICATIONS]
 		- [NOYAU] Modification du nom de variable CPC_GUI.WINDOW.TITLE_TY par CPC_GUI.WINDOW.TITLE_SY
 				+ Modification du nom de variable dans KRNL/CONFIG/ENV_GUI/WIN_TITL.CPC
-
+		- [GUI] Refonte du MESSAGEBOX.
 		- [GUI] Textebox : Le curseur paraitra blanc quand la couleur du fond sera foncée
 		- [GUI] Optimisation : Desormais, tous les objets graphiques où leur fonctions d'evenements est introuvable, l'appel de fonction sera
 				mise dans une black list. Ce dernier permet d'augmenter la réactivité des interactions graphiques, et évite de chercher et tenter

@@ -735,7 +735,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, 0, 0, 0, 0, Siz_X, Siz_Y, this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, effet_img._shadow_effect, 0, false)
 
 					' Capturer
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y - 5)
 
 					' Flou avec le background flou aussi
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode / 2)

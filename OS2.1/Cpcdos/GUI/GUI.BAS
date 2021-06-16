@@ -1468,6 +1468,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	Dim Fichier_evenement 		as String 	= ""
 
 	
+
 	For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 	
 		 _INDEX_FENETRE_ = this.INST_INIT_GUI.POSITION(_INDEX_)
@@ -1582,6 +1583,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											' On supprime la fenetre
 											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1597,6 +1599,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											' On supprime la fenetre
 											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1612,6 +1615,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											' On supprime la fenetre
 											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1635,6 +1639,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on agrandit la fenetre!
 												Sizing_window_button(true, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1650,6 +1655,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on agrandit la fenetre!
 												Sizing_window_button(true, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1665,6 +1671,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on agrandit la fenetre!
 												Sizing_window_button(true, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1685,6 +1692,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on retrecit la fenetre!
 												Sizing_window_button(false, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1700,6 +1708,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on retrecit la fenetre!
 												Sizing_window_button(false, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1715,6 +1724,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' on retrecit la fenetre!
 												Sizing_window_button(false, _INDEX_FENETRE_)
 												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
 												return 1
 											End if
 										End if
@@ -1747,6 +1757,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
 											ActualiserGUI(0, 0)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1772,6 +1783,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
 											ActualiserGUI(0, 0)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1797,6 +1809,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
 											ActualiserGUI(0, 0)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
 											return 1
 										End if
 									End if
@@ -1850,6 +1863,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							
 							SORTIR_SectionCritique()
 
+							this.CLIC_PRESS_TITLE = true
+
 							return 1
 
 						Else
@@ -1890,6 +1905,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						' ** E V E N E M E N T S  O B J E T   G R A P H I Q U E S **
 						' **********************************************************
 						Dim _INDEX__ORDRE_OBJET as integer
+
+						if this.CLIC_PRESS_TITLE = true Then return 1
 						
 						
 						For _IN_ORDR_OBJ_ as integer = 0 to this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Nombre_OBJETS

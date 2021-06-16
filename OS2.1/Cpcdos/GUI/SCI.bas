@@ -1803,6 +1803,11 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 			End if
 			
 			Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+			' Si le clic est a zero on l'annule
+			if CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = true Then
+				if TypeClic = 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = false
+			End if
 			
 			if Presente <> 0 Then
 				Dim Message_erreur as string = ERRAVT("ERR_060", 0)
