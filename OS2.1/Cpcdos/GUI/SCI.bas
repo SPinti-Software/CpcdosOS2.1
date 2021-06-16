@@ -947,8 +947,84 @@ Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer,
 End Function
 
 
-Function _SCI_Cpcdos_OSx__.creer_Msgbox(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
+Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, ev as String, CleID as Double) as integer
+	' Cette fonction cree un messagebox
+
+	Dim Position_X as integer = 200
+	Dim Position_Y as integer = 200
+
+	Dim Size_X as integer = 400
+	Dim Size_Y as integer = 100
+
+	' Choice language
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		If Texte 			= "" then Texte = ""
+		If Titre 			= "" then Titre = "Message de " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
+		if ev 				= "" Then ev = ""
+		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
+	Else
+		If Texte 			= "" then Texte = ""
+		If Titre 			= "" then Titre = "Message from " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
+		if ev 				= "" Then ev = ""
+		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
+	End if
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+		DEBUG("[SCI] creer_Msgbox() Creation d'un message box " & CRLF _
+				& "Texte  '" & Texte 				& "'" & CRLF _
+				& "Titre  '" & Titre 				& "'" & CRLF _
+				& "Erreur '" & Type_Avertissement 	& "'" & CRLF _
+				& "Type   '" & Type_message 		& "'" & CRLF _
+				& "Ev     '" & ev 					& "'" & CRLF _
+				& "Nom    '" & nom_propriete 		& "'" & CRLF, _
+				CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+	Else
+		DEBUG("[SCI] creer_Msgbox() Creating msgbox " & CRLF _
+				& "Text  '" & Texte 				& "'" & CRLF _
+				& "Title '" & Titre 				& "'" & CRLF _
+				& "Error '" & Type_Avertissement 	& "'" & CRLF _
+				& "Type  '" & Type_message 			& "'" & CRLF _
+				& "Ev    '" & ev					& "'" & CRLF _
+				& "Name  '" & nom_propriete & "'" 	& CRLF, _
+				CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+	End if
+
+	' 0 = (par defaut) Sans icone particulier, simple message
+	' 1 = Information
+	' 2 = Question
+	' 3 = Avertissement
+	' 4 = Erreur
+
+	' Normal
+	Dim msg_back_color 	as string = "200,200,200"
+	Dim msg_win_ico		as string = "ICOM_DEF.PNG"
+
+	if Type_Avertissement = 1 Then ' INFORMATION
+		msg_back_color  = "090,200,200"
+		msg_win_ico		= "ICOM_DEF.PNG"
+
+	Elseif Type_Avertissement = 2 Then ' QUESTION
+		msg_back_color 	= "090,090,200"
+		msg_win_ico		= "ICOM_INF.PNG"
+
+	Elseif Type_Avertissement = 3 Then ' AVERTISSEMENT
+		msg_back_color 	= "200,170,090"
+		msg_win_ico		= "ICOM_AVT.PNG"
+
+	Elseif Type_Avertissement = 4 Then ' ERREUR
+		msg_back_color 	= "200,090,090"
+		msg_win_ico		= "ICOM_ERR.PNG"
+
+	End if
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.window(" & nom_propriete & "," & Titre & "," & Position_X & "," & Position_Y & "," & Size_X & "," & Size_Y & "," & msg_back_color & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+
+	DEBUG(" ****** MSGBOX FINIT !", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 	
+	' Declare/ gui.msgbox.icon(window_handle, pos_x, pos_y, path) : LEVEL(4)
+	' Declare/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y) : LEVEL(4)
+	' Declare/ gui.msgbox.icon(window_name, window_handle, pos_x, pos_y, img_path) : LEVEL(4)
+	' Declare/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y, size_x, size_y, img_path, exe_event) : LEVEL(4)
 
 
 	return 1

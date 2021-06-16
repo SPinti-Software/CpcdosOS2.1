@@ -939,7 +939,7 @@ Type _SCI_Cpcdos_OSx__
 		declare Function generer_ContextMenu_properties(Type_Objet as integer, index as integer) 				as _Context_menu_
 		Declare Function fermer_ContextMenu			() 															as boolean
 		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
-		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
+		Declare Function creer_Msgbox				(nom_propriete as string, Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, ev as String, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string
 		Declare Function IMG_Recuperer_Taille_X		(byref Source as any ptr) 									as integer
 		Declare Function IMG_Recuperer_Taille_Y		(byref Source as any ptr) 									as integer

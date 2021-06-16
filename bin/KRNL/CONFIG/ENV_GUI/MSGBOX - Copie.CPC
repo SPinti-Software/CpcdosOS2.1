@@ -1,0 +1,602 @@
+// [FR] Ce module CpcdosC+ ouvert, vous permet d'afficher un msgbox sur l'interface graphique
+//       il a particularite d'inclure plusieurs types (OK, Oui/Non, Oui/Non/Annuler, ou avec des TexteBox)
+// 
+//  Exemples : 
+//	  Apres avoir charge ce fichier en memoire vous pouver appeler la fonction GUI.MSGBOX() il y a 6 overrides disponibles.
+//   /F:GUI.Msgbox(Mon Message)
+//   /F:GUI.Msgbox(Mon Message,Mon Titre)
+//   /F:GUI.Msgbox(Mon Message,Mon Titre,NumeroTypeErreur)
+//   /F:GUI.Msgbox(Mon Message,Mon Titre,NumeroTypeErreur, TypeMessage)
+//   /F:GUI.Msgbox(Mon Message,Mon Titre,NumeroTypeErreur, TypeMessage,ExecutableEvenement)
+//   /F:GUI.Msgbox(Mon Message,Mon Titre,NumeroTypeErreur, TypeMessage,ExecutableEvenement,NomFenetre)
+// 
+//  NumeroTypeErreur 0 = (par defaut) Sans icone particulier, simple message
+//                   1 = Information
+//                   2 = Question
+//                   3 = Avertissement
+//                   4 = Erreur
+// 
+//  TypeMessage 0 = (Par defaut) Bouton OK
+//              1 = Bouton Oui et Non
+//              2 = Bouton Oui, Non et Annuler
+//              3 = OK + TexteBox (Non termine)
+// 
+// Et il retourne le numero de handle de la fenetre
+
+// [EN] This module wrote in CpcdosC+ is able to display an msgbox in GUI.
+//       It can display more type (OK, Yes/No, Yes/No/Cancel, or with TextBox)
+// 
+//  Examples : 
+//	  After to have loaded this file, vous can call GUI.MSGBOX() function. There are 6 overrides avaiable.
+//   /F:GUI.Msgbox(My Message)
+//   /F:GUI.Msgbox(My Message,My Title)
+//   /F:GUI.Msgbox(My Message,My Title,ErrorTypeNumber)
+//   /F:GUI.Msgbox(My Message,My Title,ErrorTypeNumber, MessageType)
+//   /F:GUI.Msgbox(My Message,My Title,ErrorTypeNumber, MessageType,EventExecutable)
+//   /F:GUI.Msgbox(My Message,My Title,ErrorTypeNumber, MessageType,EventExecutable,WindowName)
+// 
+//  ErrorTypeNumber  0 = (BY default) Without icon, simple message.
+//                   1 = Information
+//                   2 = Question
+//                   3 = Caution
+//                   4 = Error
+// 
+//  MessageType 0 = (By defaut) OK button
+//              1 = Yes and No buttons
+//              2 = Yes, No and Candel button
+//              3 = OK + TextBox (No terminated)
+// 
+// And it return Window Handle number
+
+// Created by SPinti Software
+//  Created 16/11/2017
+//  Updated 17/03/2020
+
+
+//    *************************************
+//    **     D E C L A R A T I O N S     **
+//    *************************************
+
+// Simple OK message
+Declare/ GUI.MSGBOX(Message) : LEVEL(5)
+
+// [EN] Simple message avec le bouton OK et un titre
+// [EN] Simple OK message with title
+Declare/ GUI.MSGBOX(Message, Title) : LEVEL(5)
+
+// [EN] Simple OK and error type (0:Nothing, 1:Information, 2:Question 3:Caution, 4:Error)
+// [FR] Simple OK et type d'erreur (0:Rien, 1:Information, 2:Question, 3:Attention, 4:Erreur)
+Declare/ GUI.MSGBOX(Message, Title, Error_Type) : LEVEL(5)
+
+// [EN] Type Message (0:Ok button, 1:Yes/No, 2:Yes/No/Cancel, 3:TextBox+OK, 4:TextBox+Yes/No, 5:Textbox+Yes/No/cancel)
+// [FR] Type message (0:Bouton OK, 1:Oui/non 3:Oui/non/anuler, 3:Textebox+OK 4:TexteBox+Oui/Non, 5:Textrbox+Oui/Non/Annuler)
+Declare/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message) : LEVEL(5)
+
+// [EN] Exe_event for choice the event file executable
+// [FR] EXE_EVENT pour choisir le fichier executable d'evenement
+Declare/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message, exe_event) : LEVEL(5)
+
+// [EN] window_name : Nom de a fenetre msgbox
+// [FR] Twindow_name : msgbox window name
+Declare/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message, exe_event, window_name) : LEVEL(5)
+
+
+//    *************************************
+//    **         F U N C T I O N S       **
+//    *************************************
+
+Function/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message, exe_event)
+
+	CCP/ /SET.LEVEL = 1
+
+	// Create default msgbox with Error_Type
+	return/ /F:GUI.MSGBOX(%Message%,%Title%,%Error_Type%,%Type_Message%,%exe_event%,_MSGBOX__%_EXE_TID_%)
+
+End/ Function
+
+Function/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message)
+
+	CCP/ /SET.LEVEL = 1
+
+	// Create default msgbox with Error_Type
+	return/ /F:GUI.MSGBOX(%Message%,%Title%,%Error_Type%,%Type_Message%,%_EXE_PATH_%,_MSGBOX__%_EXE_TID_%)
+
+End/ Function
+
+
+Function/ GUI.MSGBOX(Message, Title, Error_Type)
+
+	CCP/ /SET.LEVEL = 1
+
+	// Create default msgbox with Error_Type
+	return/ /F:GUI.MSGBOX(%Message%,%Title%,%Error_Type%,0,%_EXE_PATH_%,MSGBOX__%_EXE_TID_%)
+
+End/ Function
+
+Function/ GUI.MSGBOX(Message, Title)
+
+	CCP/ /SET.LEVEL = 1
+
+	// Create default Msgbox
+	return/ /F:GUI.MSGBOX(%Message%,%Title%,0,0,%_EXE_PATH_%,MSGBOX__%_EXE_TID_%)
+
+End/ Function
+
+Function/ GUI.MSGBOX(Message)
+
+	CCP/ /SET.LEVEL = 1
+	
+	// Create default Msgbox
+	return/ /F:GUI.MSGBOX(%Message%,%OS_NAME% message!,0,0,%_EXE_PATH_%,MSGBOX__%_EXE_TID_%)
+
+End/ Function
+
+
+
+Function/ GUI.MSGBOX(Message, Title, Error_Type, Type_Message, exe_event, window_name)
+
+	CCP/ /SET.LEVEL = 1
+	
+	// [EN] Window Position
+	// [FR] Position de la fenetre
+	SET/ WIN_POS_X = 200
+	SET/ WIN_POS_Y = 100
+	
+	// [EN] Window size
+	// [FR] Taille de la fenetre
+	SET/ WIN_SIZ_X = 400
+	SET/ WIN_SIZ_Y = 100
+	
+	// [EN] Button size
+	// [FR] Taille du bouton
+	SET/ SIZ_BTN_X = 80
+	SET/ SIZ_BTN_Y = 24
+	
+	// [EN] Calculate X button positon for locate in the middle
+	// [FR] Calculer la positon X du bouton pour le placer au milieu
+	SET/ POS_BTN_X = /C((%WIN_SIZ_X% / 2) - (%SIZ_BTN_X% / 2))
+	
+	// [EN] Calculate Y button positon for locate to the down
+	// [FR] Calculer la positon Y du bouton pour le placer en bas
+	SET/ POS_BTN_Y = /C((%WIN_SIZ_Y% - %SIZ_BTN_Y%) - 10)
+	
+	
+	// [EN] Calculate X button (Textbox) positon for locate to the right
+	// [FR] Calculer la positon X du bouton (TexteBox) pour le placer a droite
+	SET/ POS_BTN_TXTB_X = /C(%WIN_SIZ_X% - (%SIZ_BTN_X% + 10))
+	SET/ POS_BTN_TXTB_Y = %POS_BTN_Y%
+	
+	
+	// [EN] And the size
+	// [FR] Et la taille
+	SET/ SIZ_BTN_TXTB_X = %SIZ_BTN_X%
+	SET/ SIZ_BTN_TXTB_Y = 28
+	
+	// [EN] And for the TextBox also
+	// [FR] Et pour le TexteBox aussi
+	SET/ SIZ_TXTB_X = 200
+	SET/ SIZ_TXTB_Y = 14
+	SET/ POS_TXTB_X = 70
+	SET/ POS_TXTB_Y = /C(%WIN_SIZ_Y% - (%SIZ_TXTB_Y% + 10))
+	
+	// Error type = "0" (Normal)
+	SET/ MSGBOX_ICO = 0
+	SET/ MSGBOX_ICOM = ICOM_DEF.PNG
+	SET/ MSGBOX_BTN = BTN_GRA3.PNG
+	SET/ MSGBOX_YES_BTN = BTN_GREN.PNG
+	SET/ MSGBOX_NO_BTN = BTN_RED.PNG
+	SET/ MSGBOX_CANCEL_BTN = BTN_GRAY.PNG
+	SET/ BACK_COLOR = 200,200,200
+	
+	// Information
+	IF/ "%Error_Type%" == "1" Then:
+		SET/ MSGBOX_ICO = ICO_INF.PNG
+		SET/ MSGBOX_ICOM = ICOM_INF.PNG
+		SET/ MSGBOX_BTN = BTN_GRA2.png
+		SET/ MSGBOX_YES_BTN = BTN_GREN.PNG
+		SET/ MSGBOX_NO_BTN = BTN_RED.PNG
+		SET/ BACK_COLOR = 090,200,200
+	End/ if
+	
+	// Question
+	IF/ "%Error_Type%" == "2" Then:
+		SET/ MSGBOX_ICO = ICO_QTN.PNG
+		SET/ MSGBOX_ICOM = ICOM_QTN.PNG
+		SET/ MSGBOX_BTN = BTN_GRA3.PNG
+		SET/ MSGBOX_YES_BTN = BTN_GREN.PNG
+		SET/ MSGBOX_NO_BTN = BTN_RED.PNG
+		SET/ BACK_COLOR = 090,090,200
+	End/ if
+	
+	// Caution / Avertissement
+	IF/ "%Error_Type%" == "3" Then:
+		SET/ MSGBOX_ICO = ICO_AVT.PNG
+		SET/ MSGBOX_ICOM = ICOM_AVT.PNG
+		SET/ MSGBOX_BTN = BTN_GRA3.PNG
+		SET/ MSGBOX_YES_BTN = BTN_GREN.PNG
+		SET/ MSGBOX_NO_BTN = BTN_RED.PNG
+		SET/ BACK_COLOR = 200,170,090
+	End/ if
+	
+	// Error / Erreur
+	IF/ "%Error_Type%" == "4" Then:
+		SET/ MSGBOX_ICO = ICO_ERR.PNG
+		SET/ MSGBOX_ICOM = ICOM_ERR.PNG
+		SET/ MSGBOX_BTN = BTN_GRA3.PNG
+		SET/ MSGBOX_YES_BTN = BTN_GREN.PNG
+		SET/ MSGBOX_NO_BTN = BTN_RED.PNG
+		SET/ BACK_COLOR = 200,090,090
+	End/ if
+	
+	IF/ "%exe_event%" == "%_EXE_PATH_%" Then: 
+		SET/ window_name = MSGBOX
+	End/ if
+	
+	// [EN] Display window
+	// [FR] Afficher la fenetre
+	Window/ %window_name%
+		.titre 			= "%Title%"
+		.PX				= "%WIN_POS_X%"
+		.PY				= "%WIN_POS_Y%"
+		.SX				= "%WIN_SIZ_X%"
+		.SY				= "%WIN_SIZ_Y%"
+		
+		
+		.TitleColor		= "240,240,240"
+		
+		.BackColor		= "%BACK_COLOR%"
+		.WindowColor	= "%BACK_COLOR%"
+		
+		.Opacity 		= "100"
+		
+		rem/ .TitleColor		= "230,230,230"
+		.Parameters 	= "TYPE:0 ALPHAMODE:1"
+
+		.icon			= "OS/MEDIA/GUI/MSGBOX/%MSGBOX_ICOM%"
+		
+		@#Handle_number Create/
+
+	End/ Window
+	
+	// [EN] Display text
+	// [FR] Afficher le texte
+	TextBlock/ text_%window_name%
+		.handle			= "%Handle_number%"
+		.Text			= "%Message%"
+		.Parameters     = "COL:0 MULTILINES:1"
+		
+		IF/ "%MSGBOX_ICO%" == "0" then:
+			.PX				= "20"
+		Else:
+			.PX				= "80"
+		End/ if
+		
+		.PY				= "20"
+		.SX				= "280"
+		.SY				= "70"
+		
+		Create/
+	End/ TextBlock
+	
+	// [EN] Display the BIG ICON
+	// [FR] Afficher la GROSSE ICONE
+	IF/ "%MSGBOX_ICO%" != "0" then:
+		Picturebox/ picturebox_%window_name%
+			.handle			= "%Handle_number%"
+			.Image			= "OS/MEDIA/GUI/MSGBOX/%MSGBOX_ICO%"
+			
+			.PX				= "10"
+			.PY				= "20"
+
+			// [EN] Adapt SX & SY dimentions from source image (IMGAUTO:1)
+			// [FR] Adapter les dimensions TX & TY depuis l'image source (IMGAUTO:1)
+			.Parameters		= "IMGAUTO:1"
+			
+			Create/
+		End/ Picturebox
+	End/ if
+	
+	// [EN] Display button(s)
+	// [FR] Afficher le(s) bouton(s)
+	IF/ "%Type_Message%" == "0" Then:
+	
+		// OK
+		Button/ OK_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_BTN%"
+			.text				= "OK"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+			
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			
+			Create/
+		End/ Button
+	End/ if
+	
+	IF/ "%Type_Message%" == "1" Then:
+	
+		
+		// YES/OUI
+		Button/ YES_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_YES_BTN%"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			@#Language CCP/ /LANG
+			IF/ "%Language%" == "FR" then:
+				.text				= "Oui"
+			Else:
+				.text				= "Yes"
+			End/ if
+			
+			// - 50 pixels
+			SET/ POS_BTN_X = /C(%POS_BTN_X% - 50)
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			Create/
+		End/ Button
+		
+		// NO/NON
+		Button/ NO_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_NO_BTN%"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			@#Language CCP/ /LANG
+			IF/ "%Language%" == "FR" then:
+				.text				= "Non"
+			Else:
+				.text				= "No"
+			End/ if
+			
+			// + 100 pixels
+			SET/ POS_BTN_X = /C(%POS_BTN_X% + 100)
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			Create/
+		End/ Button
+		
+	End/ if
+	
+	
+	// [EN] YES / NO / CANCEL buttons
+	// [FR] Boutons Oui / NON / ANNULER
+	IF/ "%Type_Message%" == "2" Then:
+	
+		
+		// YES/OUI
+		Button/ YES_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_YES_BTN%"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			@#Language CCP/ /LANG
+			IF/ "%Language%" == "FR" then:
+				.text				= "Oui"
+			Else:
+				.text				= "Yes"
+			End/ if
+			
+			// - 50 pixels
+			SET/ POS_BTN_X = /C(%POS_BTN_X% - 80)
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			
+			Create/
+		End/ Button
+		
+		// NO/NON
+		Button/ NO_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_NO_BTN%"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			@#Language CCP/ /LANG
+			IF/ "%Language%" == "FR" then:
+				.text				= "Non"
+			Else:
+				.text				= "No"
+			End/ if
+			
+			// + 100 pixels
+			SET/ POS_BTN_X = /C(%POS_BTN_X% + 100)
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			
+			Create/
+		End/ Button
+		
+		// CANCEL/ANULER
+		Button/ CANCEL_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_CANCEL_BTN%"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			@#Language CCP/ /LANG
+			IF/ "%Language%" == "FR" then:
+				.text				= "Annuler"
+			Else:
+				.text				= "Cancel"
+			End/ if
+			
+			// + 100 pixels
+			SET/ POS_BTN_X = /C(%POS_BTN_X% + 100)
+			.PX					= "%POS_BTN_X%"
+			.PY					= "%POS_BTN_Y%"
+			
+			.SX					= "%SIZ_BTN_X%"
+			.SY					= "%SIZ_BTN_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			Create/
+		End/ Button
+		
+	End/ if
+	
+	// [EN] OK + Textbox
+	// [FR] OK + TexteBox
+	IF/ "%Type_Message%" == "3" Then:
+	
+		// OK
+		Button/ OK_button_%window_name%
+			.handle 			= "%handle_number%"
+			.Image				= "OS/MEDIA/GUI/BUTTONS/%MSGBOX_BTN%"
+			.text				= "OK"
+			
+			// [EN] IMGAUTO:2 for stretch image
+			// [FR] IMGAUTO:2 pour etirer l'image
+			.Parameters			= "IMGAUTO:2"
+			
+			.PX					= "%POS_BTN_TXTB_X%"
+			.PY					= "%POS_BTN_TXTB_Y%"
+			
+			.SX					= "%SIZ_BTN_TXTB_X%"
+			.SY					= "%SIZ_BTN_TXTB_Y%"
+		
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			
+			Create/
+		End/ Button
+		
+		TextBox/ TextBox_%window_name%
+			.handle				= "%handle_number%"
+			.Text				= "Test"
+			
+			.parametres 		= "EDIT:1 MULTILINE:1"
+			rem/ .BackColor			= "255,255,255"
+			rem/ .TextColor			= "000,000,000"
+			
+			.CouleurFond		= "255,255,255"
+			.CouleurTexte		= "000,000,000"
+			
+			.PX					= "%POS_TXTB_X%"
+			.PY					= "%POS_TXTB_Y%"
+			
+			.SX					= "%SIZ_TXTB_X%"
+			.SY					= "%SIZ_TXTB_Y%"
+			
+			IF/ "%exe_event%" != "0" then: 
+				.event = "%exe_event%=MouseClick,Click,KeyPress"
+			End/ if
+			
+			Create/
+		
+		End/ TextBox
+	End/ If
+		
+	
+	// [EN] Return handle window number
+	// [FR] Retourner le numero de handle de la fenetre
+	return/ %handle_number%
+	
+	
+End/ Function
+
+
+
+
+
+
+//    *****************************************
+//    **     D E F A U L T   E V E N T S     **
+//    *****************************************
+
+// [EN] Msgbox without defined evenent, are automatically names "MSGBOX", and by default we CLOSE THIS !
+// [FR] Les msgbox sans d'evement definit sont automatiquement nomme "MSGBOX", et par defaut on les fermes!
+Function/ OK_Button_MSGBOX.Click()
+	CLOSE/ MSGBOX
+End/ Function
+
+Function/ YES_Button_MSGBOX.Click()
+	CLOSE/ MSGBOX
+End/ Function
+
+Function/ NO_Button_MSGBOX.Click()
+	CLOSE/ MSGBOX
+End/ Function
+
+Function/ CANCEL_Button_MSGBOX.Click()
+	CLOSE/ MSGBOX
+End/ Function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

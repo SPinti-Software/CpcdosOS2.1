@@ -17434,46 +17434,33 @@ _FIN_EXE_CCP_EXE:
 				End if
 			End if
 			
-			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				DEBUG("[CpcdosC+] Creation d'un message box " & CRLF _
-						& "Texte  '" & STR_Message & "'" & CRLF _
-						& "Titre  '" & STR_Titre & "'" & CRLF _
-						& "Erreur '" & STR_Erreur & "'" & CRLF _
-						& "Type   '" & STR_Type & "'" & CRLF _
-						& "Ev     '" & STR_EV & "'" & CRLF _
-						& "Nom    '" & STR_Nom & "'" & CRLF, _
-						Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-			Else
-				DEBUG("[CpcdosC+] Creating msgbox " & CRLF _
-						& "Texte  '" & STR_Message & "'" & CRLF _
-						& "Titre  '" & STR_Titre & "'" & CRLF _
-						& "Erreur '" & STR_Erreur & "'" & CRLF _
-						& "Type   '" & STR_Type & "'" & CRLF _
-						& "Ev     '" & STR_EV & "'" & CRLF _
-						& "Nom    '" & STR_Nom & "'" & CRLF, _
-						Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-			End if
+			CPCDOS_INSTANCE.SCI_INSTANCE.creer_Msgbox(STR_Nom, STR_Message, STR_Titre, val(STR_Erreur), val(STR_Type), STR_EV, _CLE_)
+		
 			
-			Scope
-				Dim handle_num 	as Integer
-				Dim Arguments 	as String = STR_Message
+			'Scope
+				'Dim handle_num 	as Integer
+				'Dim Arguments 	as String = STR_Message
 				
 				' Concatener les arguments selon ce qui a ete ecrit
-				if NOT STR_Titre = "" Then 	Arguments += "," & STR_Titre
-				if NOT STR_Erreur = "" Then Arguments += "," & STR_Erreur
-				if NOT STR_Type = "" Then 	Arguments += "," & STR_Type
-				if NOT STR_EV = "" Then 	Arguments += "," & STR_EV
-				if NOT STR_Nom = "" Then 	Arguments += "," & STR_Nom
+				'if NOT STR_Titre = "" Then 	Arguments += "," & STR_Titre
+				'if NOT STR_Erreur = "" Then Arguments += "," & STR_Erreur
+				'if NOT STR_Type = "" Then 	Arguments += "," & STR_Type
+				'if NOT STR_EV = "" Then 	Arguments += "," & STR_EV
+				'if NOT STR_Nom = "" Then 	Arguments += "," & STR_Nom
 				
 				
+
+				
+
 				' Pour recuperer le numero de PID si le @# a ete definit
-				if NOT CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour = "" Then
-					CpcdosCP_SHELL("@#" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				Else
-					CpcdosCP_SHELL("txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				End if
-			
-			End Scope
+				'if NOT CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour = "" Then
+				'	CpcdosCP_SHELL("@#" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+				'Else
+				'	CpcdosCP_SHELL("txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+				'End if
+				
+				
+			'End Scope
 			
 			' ====================================================================
 			END SCOPE
