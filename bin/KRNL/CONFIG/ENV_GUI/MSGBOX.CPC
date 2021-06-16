@@ -26,7 +26,7 @@ Function/ gui.msgbox.window(window_name, title, WIN_POS_X, WIN_POS_Y, WIN_SIZ_X,
 		.BackColor		= "%R%,%V%,%B%"
 		.WindowColor	= "%R%,%V%,%B%"
 		
-		.Opacity 		= "100"
+		.Opacity 		= "200"
 		
 		rem/ .TitleColor		= "230,230,230"
 		.Parameters 	= "TYPE:0 ALPHAMODE:1"
