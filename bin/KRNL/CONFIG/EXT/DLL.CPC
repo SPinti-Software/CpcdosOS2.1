@@ -1,6 +1,6 @@
 // This file allow to execute CPC format file
 
-msgbox/ Impossible d'ouvrir un fichier DLL.
+msgbox/ Unable to open DLL file. /TITRE:File format /ERREUR:3
 
 
 

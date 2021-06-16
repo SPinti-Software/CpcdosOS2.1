@@ -15981,6 +15981,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEMOVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_MouseMove 	= TRUE
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSECLICK") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_MouseClick 	= TRUE
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYPRESS") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_KeyPress 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYENTER") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_KeyEnter 	= TRUE
 									
 												End if
 												
@@ -21932,6 +21933,8 @@ _FIN_EXE_CCP_EXE:
 			
 			' Il y a 1 argument
 			IF NOT Arguments = "" Then this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) + 1
+
+
 			
 			' ON recupere le chemin d'acces de la fonction
 			this.MEMOIRE_CCP.TAB_FONCTION_CCP_SRC(Boucle) = Gest_variables_LIRE("_EXE_PATH_", 2, Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Auth_TID)

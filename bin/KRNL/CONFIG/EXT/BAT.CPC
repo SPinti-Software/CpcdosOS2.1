@@ -1,6 +1,6 @@
 // This file allow to execute CPC format file
 
-msgbox/ Fichier Batch a executer : '%_ARG_1%'
+msgbox/ ms-dos batch file %_ARG_1%' can't be executed here /TITRE:File format /ERREUR:3
 
 
 

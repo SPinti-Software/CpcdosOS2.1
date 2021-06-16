@@ -950,22 +950,23 @@ End Function
 Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, ev as String, CleID as Double) as integer
 	' Cette fonction cree un messagebox
 
-	Dim Position_X as integer = 200
-	Dim Position_Y as integer = 200
+	Dim Win_Position_X 	as integer = 200
+	Dim Win_Position_Y 	as integer = 200
+	Dim Win_Size_X 		as integer = 400
+	Dim Win_Size_Y 		as integer = 100
 
-	Dim Size_X as integer = 400
-	Dim Size_Y as integer = 100
+	
 
 	' Choice language
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		If Texte 			= "" then Texte = ""
 		If Titre 			= "" then Titre = "Message de " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
-		if ev 				= "" Then ev = ""
+		if ev 				= "" Then ev	= ""
 		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
 	Else
 		If Texte 			= "" then Texte = ""
 		If Titre 			= "" then Titre = "Message from " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
-		if ev 				= "" Then ev = ""
+		if ev 				= "" Then ev 	= ""
 		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
 	End if
 
@@ -995,29 +996,144 @@ Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String
 	' 3 = Avertissement
 	' 4 = Erreur
 
+	
+	Dim Txt_Position_X 	as integer = 20
+	Dim Txt_Position_Y 	as integer = 20
+	Dim Txt_Size_X 		as integer = 370
+	Dim Txt_Size_Y 		as integer = 50
+
+	Dim ico_Position_X 	as integer = 20
+	Dim ico_Position_Y 	as integer = 10
+	Dim ico_Size_X 		as integer = 48
+	Dim ico_Size_Y 		as integer = 48
+
+	Dim btn_Text		as String = "Ok"
+	Dim btn_image		as String = "BTN_GRA3.PNG"
+	Dim btn_Position_X 	as integer = Win_Size_X / 2
+	Dim btn_Position_Y 	as integer = Win_Size_Y - 40
+	Dim btn_Size_X 		as integer = 80
+	Dim btn_Size_Y 		as integer = 24
+	
+
 	' Normal
 	Dim msg_back_color 	as string = "200,200,200"
-	Dim msg_win_ico		as string = "ICOM_DEF.PNG"
+	Dim msg_win_icom	as string = "ICOM_DEF.PNG"
+	Dim msg_win_ico		as string = "ICO_DEF.PNG"
+	
+
 
 	if Type_Avertissement = 1 Then ' INFORMATION
 		msg_back_color  = "090,200,200"
-		msg_win_ico		= "ICOM_DEF.PNG"
+		msg_win_icom	= "ICOM_INF.PNG"
+		msg_win_ico		= ""
+		
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
 
 	Elseif Type_Avertissement = 2 Then ' QUESTION
 		msg_back_color 	= "090,090,200"
-		msg_win_ico		= "ICOM_INF.PNG"
+		msg_win_icom	= "ICOM_QTN.PNG"
+		msg_win_ico		= "ICO_QTN.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
 
 	Elseif Type_Avertissement = 3 Then ' AVERTISSEMENT
 		msg_back_color 	= "200,170,090"
-		msg_win_ico		= "ICOM_AVT.PNG"
+		msg_win_icom	= "ICOM_AVT.PNG"
+		msg_win_ico		= "ICO_AVT.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
 
 	Elseif Type_Avertissement = 4 Then ' ERREUR
 		msg_back_color 	= "200,090,090"
-		msg_win_ico		= "ICOM_ERR.PNG"
+		msg_win_icom	= "ICOM_ERR.PNG"
+		msg_win_ico		= "ICO_ERR.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
 
 	End if
 
-	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.window(" & nom_propriete & "," & Titre & "," & Position_X & "," & Position_Y & "," & Size_X & "," & Size_Y & "," & msg_back_color & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ win_msg_Handle = /F:gui.msgbox.window(" & nom_propriete & "," & Titre & "," & Win_Position_X & "," & Win_Position_Y & "," & Win_Size_X & "," & Win_Size_Y & "," & msg_back_color & "," & msg_win_icom & ")", _CLE_, 3, 0, "")
+	Dim win_msg_Handle as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("win_msg_Handle", 3, _CLE_))
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.text(" & nom_propriete & "," & win_msg_Handle & "," & Texte & "," & txt_Position_X & "," & txt_Position_Y & ")", _CLE_, 3, 0, "")
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.icon(" & nom_propriete & "," & win_msg_Handle & "," & ico_Position_X & "," & ico_Position_Y & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+
+	if Type_Avertissement = 0 Then ' Normal (OK)
+		btn_Text 	= "Ok"
+		btn_image	= "BTN_GRA2.png"
+
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 1 Then ' INFORMATION
+		btn_Text 	= "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 2 Then ' QUESTION
+		If CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			btn_Text = "Oui"
+		Else
+			btn_Text = "Yes"
+		End if
+		btn_image	= "BTN_GREN.PNG"
+		
+		btn_Position_X = btn_Position_X - btn_Size_X - 30
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "yes" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+		If CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			btn_Text = "Non"
+		Else
+			btn_Text = "No"
+		End if
+		btn_image	= "BTN_RED.PNG"
+		
+		btn_Position_X = btn_Position_X + btn_Size_X + 30
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "no" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 3 Then ' AVERTISSEMENT
+		btn_Text = "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 4 Then ' ERREUR
+		btn_Text = "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	End if
 
 	DEBUG(" ****** MSGBOX FINIT !", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 	

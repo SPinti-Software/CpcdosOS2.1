@@ -1,6 +1,6 @@
 // This file allow to execute CPC format file
 
-msgbox/ %_ARG_1%
+msgbox/ Fichier log a ouvrir %_ARG_1%
 
 
 

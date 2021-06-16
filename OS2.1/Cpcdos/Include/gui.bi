@@ -76,6 +76,7 @@ Type Proprietes_Objet
 	EV_MouseLeave		as boolean = true
 	EV_MouseClick		as boolean = true
 	EV_KeyPress			as boolean = true
+	EV_KeyEnter			as boolean = true
 	EV_Resize			as boolean = true
 	
 	' Si l'objet peut avoir un menu contextuel

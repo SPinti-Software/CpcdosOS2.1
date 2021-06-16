@@ -44,6 +44,7 @@ End/ function
 Function/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y)
 	' Display text
 
+	ccp/ /set.level = 1
 
 	// [EN] Display text
 	// [FR] Afficher le texte
@@ -86,13 +87,13 @@ Function/ gui.msgbox.icon(window_name, window_handle, pos_x, pos_y, img_path)
 
 End/ function
 
-Function/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y, size_x, size_y, img_path, exe_event)
+Function/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y, siz_x, siz_y, img_path, exe_event)
 	' Create button
 
 	ccp/ /set.level = 1
 
 
-	Button/ msgbox_btn_%name%_%window_name%
+	Button/ btn_defaut_%name%
 		.handle 			= "%window_handle%"
 		.Image				= "OS/MEDIA/GUI/BUTTONS/%img_path%"
 		
@@ -102,16 +103,16 @@ Function/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y
 
 		.text				= "%text%"
 		
-		// - 50 pixels
-		SET/ POS_BTN_X = /C(%POS_BTN_X% - 50)
 		.PX					= "%pos_x%"
 		.PY					= "%pos_y%"
 		
 		.SX					= "%siz_x%"
 		.SY					= "%siz_y%"
 	
-		IF/ "%exe_event%" != "0" then: 
-			.event = "%exe_event%=MouseClick,Click,KeyPress"
+		IF/ "%exe_event%" != "" then: 
+			.event = "%exe_event%=MouseClick,Click,KeyEnter"
+		else:
+			.event = "%_exe_path_%=MouseClick,Click,KeyEnter"
 		End/ if
 		Create/
 	End/ Button
@@ -119,10 +120,37 @@ Function/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y
 End/ function
 
 
+// Actions par defaut
+Function/ msgbox_no_name.KeyEnter(text)
+	CLOSE/ msgbox_no_name
+End/ Function
+
+Function/ btn_defaut_ok.MouseClick()
+	CLOSE/ msgbox_no_name
+End/ Function
+
+Function/ btn_defaut_ok.KeyEnter(text)
+	CLOSE/ msgbox_no_name
+End/ Function
 
 
 
+Function/ btn_defaut_yes.MouseClick()
+	CLOSE/ msgbox_no_name
+End/ Function
 
+Function/ btn_defaut_yes.KeyEnter(text)
+	CLOSE/ msgbox_no_name
+End/ Function
+
+
+Function/ btn_defaut_no.MouseClick()
+	CLOSE/ msgbox_no_name
+End/ Function
+
+Function/ btn_defaut_no.KeyEnter(text)
+	CLOSE/ msgbox_no_name
+End/ Function
 
 
 
