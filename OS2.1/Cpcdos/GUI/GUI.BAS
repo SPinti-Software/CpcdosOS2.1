@@ -1825,16 +1825,19 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 					If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 AND this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND NoDeplacer = 0 AND Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) Then
 						Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
 
-						ENTRER_SectionCritique()
+						
 						' doevents(0)
 
 						' Si l'utilisateur a encore le bouton presse = deplacement
 						Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
-						
+
+						ScreenLock
+						ENTRER_SectionCritique()
+
 						IF TypeClic = 1 Then ' Clic gauche
 							this.INST_INIT_GUI.DEPLACEMENT = _INDEX_FENETRE_
 							
-							ScreenLock
+							
 							' Retrecir la fenetre si agrandie
 							if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).PROP_TYPE.SizeUP = true Then
 								Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
@@ -1846,7 +1849,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							
 							' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
 							ActualiserGUI(2, this.INST_INIT_GUI.DEPLACEMENT)
-							ScreenUnlock
+							
 							Flip 1, 2
 							
 							
@@ -1862,6 +1865,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.OBJ_context_menu)
 							
 							SORTIR_SectionCritique()
+							ScreenUnlock
 
 							this.CLIC_PRESS_TITLE = true
 
@@ -1879,6 +1883,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						
 						
 						SORTIR_SectionCritique()
+						ScreenUnlock
 						
 						' CORRECTION BUG 25-JAN-2020 :
 						'	Fenetre arriere plan qui passait au dessus de la fenetre focus lors du clic 

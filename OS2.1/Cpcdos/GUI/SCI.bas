@@ -1068,7 +1068,7 @@ Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ win_msg_Handle = /F:gui.msgbox.window(" & nom_propriete & "," & Titre & "," & Win_Position_X & "," & Win_Position_Y & "," & Win_Size_X & "," & Win_Size_Y & "," & msg_back_color & "," & msg_win_icom & ")", _CLE_, 3, 0, "")
 	Dim win_msg_Handle as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("win_msg_Handle", 3, _CLE_))
 
-	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.text(" & nom_propriete & "," & win_msg_Handle & "," & Texte & "," & txt_Position_X & "," & txt_Position_Y & ")", _CLE_, 3, 0, "")
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.text(" & nom_propriete & "," & win_msg_Handle & "," & Texte & "," & txt_Position_X & "," & txt_Position_Y & "," & Txt_Size_X & "," & Txt_Size_Y & ")", _CLE_, 3, 0, "")
 
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.icon(" & nom_propriete & "," & win_msg_Handle & "," & ico_Position_X & "," & ico_Position_Y & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
 

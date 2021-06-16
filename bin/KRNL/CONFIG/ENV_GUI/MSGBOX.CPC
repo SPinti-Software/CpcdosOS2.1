@@ -2,7 +2,7 @@
 
 Declare/ gui.msgbox.window(window_name, title, WIN_POS_X, WIN_POS_Y, WIN_SIZ_X, WIN_SIZ_Y, R, V, B, MSGBOX_ICOM) : LEVEL(4)
 Declare/ gui.msgbox.icon(window_handle, pos_x, pos_y, path) : LEVEL(4)
-Declare/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y) : LEVEL(4)
+Declare/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y, siz_x, siz_y) : LEVEL(4)
 Declare/ gui.msgbox.icon(window_name, window_handle, pos_x, pos_y, img_path) : LEVEL(4)
 Declare/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y, size_x, size_y, img_path, exe_event) : LEVEL(4)
 
@@ -41,7 +41,7 @@ Function/ gui.msgbox.window(window_name, title, WIN_POS_X, WIN_POS_Y, WIN_SIZ_X,
 
 End/ function
 
-Function/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y)
+Function/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y, siz_x, siz_y)
 	' Display text
 
 	ccp/ /set.level = 1
@@ -57,8 +57,8 @@ Function/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y)
 
 		
 		.PY				= "%pos_y%"
-		.SX				= "%size_x%"
-		.SY				= "%size_y%"
+		.SX				= "%siz_x%"
+		.SY				= "%siz_y%"
 		
 		Create/
 	End/ TextBlock
