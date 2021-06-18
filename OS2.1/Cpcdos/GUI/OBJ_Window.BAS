@@ -551,7 +551,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 							POS_ICONE_X = Siz_X + POS_ICONE_X - SIZ_ICONE_X
 						End if
 						
-
+						
 						' Placer l'icone de l'application
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID, 0 + POS_ICONE_X, 0 + POS_ICONE_Y, 0, 0, Siz_X, Siz_Titre, this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, true, false) '255)
 						

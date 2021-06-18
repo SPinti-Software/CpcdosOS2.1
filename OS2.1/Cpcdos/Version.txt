@@ -321,7 +321,7 @@
 		--> 21	Ajouts de divers fonctionnalités.
 		--> 15	corrections importantes.
 		--> 4	optimisations.
-		--> 11	corrections et modifications mineures.
+		--> 12	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -423,6 +423,7 @@
 		- [GUI] Correction du textbox qui affiche un "-1" quand il n'y a pas de caractères.
 		- [GUI]	(UT) Amélioration de l'updater d'objets (UPD:1) pour l'affchage de l'heure et autres elements.
 					+ Correction d'interference OS ID.
+		- [GUI] Correction du clic en arrière plan suite à un clic sur une fenêtre (focus) qui disparait.
 		- [CPCDOSC+] Correction d'un bug lors d'un ping/ ou download/ si vous définissez l'OS ID via SYS/ /OS:OSname
 		- [CPCDOSC+] Correction de la commande 'Write/' & 'Ecrire/'.
 		- [CPCDOSC+] Correction des plantages hasardeux de CCP/ /Optimization = 1
