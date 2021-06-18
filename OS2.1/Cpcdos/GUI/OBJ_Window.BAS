@@ -551,7 +551,22 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 							POS_ICONE_X = Siz_X + POS_ICONE_X - SIZ_ICONE_X
 						End if
 						
-						
+						Dim ico_size_x as integer
+						Dim ico_size_y as integer
+
+						if this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_ORG_IMG_ID = 0 Then
+							' Resize icon
+							Dim Retour as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.ICO_S", 3, _CLE_))
+
+							if Retour > 0 Then
+								ico_size_x = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.ICO_SX", 3, _CLE_))
+								ico_size_y = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.ICO_SY", 3, _CLE_))
+								this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_ORG_IMG_ID = this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID
+
+								this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_ORG_IMG_ID, ico_size_x, ico_size_y)
+							End if
+						End if
+
 						' Placer l'icone de l'application
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID, 0 + POS_ICONE_X, 0 + POS_ICONE_Y, 0, 0, Siz_X, Siz_Titre, this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, true, false) '255)
 						
