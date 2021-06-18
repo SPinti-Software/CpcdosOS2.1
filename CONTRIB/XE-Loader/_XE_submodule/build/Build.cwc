@@ -1,0 +1,30 @@
+>
+-{pXE}=../
+>
+;Build cpp
+-c {pXE}/src/ -o obj/Win_{_sOpt}/  -DImWin -DUseWinFunc -DWinLastError 
+
+	-I _XE_override/
+	-I {pXE}/include/
+	-I {pXE}/src/ 
+	
+	-DD_MemoryCheck
+	-DD_REDIRECT_STDERR
+>
+;Generate executable
+-o obj/Win_{_sOpt}/ -#To _out/{_sOpt}/XE-Loader.* -lgdi32 
+	
+	;Enable large dll/so loading (> 650 mb)
+	-Wl,--large-address-aware
+	
+	;Reserve 64Mo at 0x4000000 (For XE-loading)
+	-Wl,--stack=0x4000000
+	;0x10000000   //DLL space
+	;0x140000000  //64
+	;0x180000000  //64 dll
+	
+	;Change adress base to enable Virtual Alloc from 0x4000000
+	-Wl,--image-base=0x10000000
+>
+-#Run _out/{_sOpt}/XE-Loader.exe  PutYourApp.exe
+>
