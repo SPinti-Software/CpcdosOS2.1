@@ -9,8 +9,8 @@
 
 		--> 13	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
-		--> 0	optimisations.
-		--> 3	corrections et modifications mineures.
+		--> 3	optimisations.
+		--> 4	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -63,10 +63,12 @@
 		
 		
 		[MODIFICATIONS]
-		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC
-		- [SCI] Amélioration de la précision du curseur.
+		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC (+Optimisation)
+		- [SCI] REFONTE TOTALE du MessageBox()  (+Optimisation)
+		- [SCI] Amélioration de la précision du curseur. (+Optimisation)
 		- [SHELL] La commande START/ fait désormais un switch automatique sur l'OS en question (SYS/ /OS)
 			Ce qui corrige la console graphique F9 et bien plus !
+		- [SCI] Possibilité de REDEFINIR une fonction déjà déclarée avec à nouveau "declare/"
 
 
 

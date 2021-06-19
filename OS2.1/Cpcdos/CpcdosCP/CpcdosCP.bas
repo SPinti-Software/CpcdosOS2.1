@@ -21903,19 +21903,56 @@ _FIN_EXE_CCP_EXE:
 			Dim NomFonction 			as string = Mid(Param, Position_Fonction, (Position_1erParenthese) - Position_Fonction)
 			
 			Dim Arguments 				as string = Mid(Param, Position_1erParenthese + 1, Position_2emParenthese - (Position_1erParenthese + 1))
-			
+			Dim Pos_Virgule_DEBUT 		as integer = 0
+			Dim Pos_Virgule_FIN 		as integer = 0
+
 			Dim Boucle as integer 
 			For Boucle = 1 to this.MEMOIRE_CCP._MAX_FONCTION_PUBLIC
+				
+				if len(NomFonction) > 0 Then
+					' Si le nom de fonction est deja declare
+					if ucase(this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle)) = Ucase(NomFonction) Then
+
+						Dim Boucle_ARGS as integer = 0
+
+						' Verifier le nombre d'arguments
+						For Boucle_ARGS = 0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
+							' Recuperer les positions
+							Pos_Virgule_DEBUT = Pos_Virgule_FIN + 1
+							Pos_Virgule_FIN = Instr(Pos_Virgule_DEBUT, Arguments, ",")
+
+							' Verifier la presence d'une vigule
+							IF Pos_Virgule_FIN = 0 Then
+								IF Boucle_ARGS = 0 Then exit for ' Aucun arguments
+								exit for
+							End if
+						Next Boucle_ARGS
+
+						' Si ca correspond au meme nombre d'arguments
+						if this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS Then
+							' ALORS C'EST LA MEME FONCTION, MAIS QU'ON REMPLACE !
+
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Redefinition de fonction pour " & NomFonction & "() avec " & Boucle_ARGS & " arguments.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Fonction redefinition for " & NomFonction & "() with " & Boucle_ARGS & " arguments.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+							exit for
+						End if
+					End if
+				End if
+
 				IF this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle) = "" Then
 					exit for
 				End if
 			Next Boucle
 
+			' Push le name
 			this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle) = Ucase(NomFonction)
 			
 			' On recupere le nombre d'arguments
-			Dim Pos_Virgule_DEBUT 	as integer = 0
-			Dim Pos_Virgule_FIN 	as integer = 0
+			Pos_Virgule_DEBUT 	= 0
+			Pos_Virgule_FIN 	= 0
 			
 			For Boucle_ARGS 		as integer = 0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
 				' Recuperer les positions
@@ -21926,7 +21963,7 @@ _FIN_EXE_CCP_EXE:
 				IF Pos_Virgule_FIN = 0 Then
 					IF Boucle_ARGS = 0 Then exit for ' Aucun arguments
 					' Ah .. C'est finis mon gros ;)
-					this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS
+					this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS ' Nombre d'arguments
 					exit for
 				End if
 			Next Boucle_ARGS
