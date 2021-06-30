@@ -59,6 +59,7 @@ rem option gosub
 #include once "OBJ_ProgressBar.BAS"
 #include once "OBJ_CheckBox.BAS"
 #include once "OBJ_Explorer.BAS"
+#include once "OBJ_Listbox.BAS"
 
 
 

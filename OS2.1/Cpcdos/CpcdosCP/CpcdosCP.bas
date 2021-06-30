@@ -149,6 +149,7 @@ Sub _SHELL_Cpcdos_OSx__._INIT_CpcdosCP_CMD()
 	this.Liste_CMD_FR(48) = "DECOMPRESSER/"		: this.Liste_CMD_EN(48) = "DECOMPRESS/"
 	this.Liste_CMD_FR(49) = "COMPRESSER/"		: this.Liste_CMD_EN(49) = "COMPRESS/"
 	this.Liste_CMD_FR(50) = "EXPLORER/"			: this.Liste_CMD_EN(50) = "EXPLORER/"
+	this.Liste_CMD_FR(51) = "LISTBOX/"			: this.Liste_CMD_EN(51) = "LISTBOX/"
 	' this.Liste_CMD_FR(52) = "fix/"			: this.Liste_CMD_EN(52) = "set/"
 	' this.Liste_CMD_FR(53) = "fix/"			: this.Liste_CMD_EN(53) = "set/"
 	' this.Liste_CMD_FR(54) = "fix/"			: this.Liste_CMD_EN(54) = "set/"
@@ -5082,6 +5083,140 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		End if ' **** EXPLORER/ ****
 	
 	_end_scope_CMD
+
+	_scope_CMD
+	
+		' ===============================================================
+		'  Commande pour creer un explorateur de fichiers
+		' ===============================================================
+		CommLANG(1) = "listbox/"
+		CommLANG(2) = "listbox/"
+		CommLANG(3) = "\\#//"
+		CommTrouve = 0 : NoCMD = 0
+		for boucle as integer = 1 to 2
+			IF OnCherche = CommLANG(boucle) Then
+				NoCMD = 0
+				exit for
+			Else
+				NoCMD = 1
+			End if
+		Next boucle
+		IF NoCMD = 1 then CommLANG(1) = "[F.#).|" : CommLANG(2) = "[F.#).|" : CommLANG(3) = "\\#//"
+		rem Afficher la liste des commandes avec anglais / francais
+		IF AfficherAide = 1 then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+				CommandesAide = CommandesAide & CRLF & " listbox/                  Creer une nouvelle instance d'une listbox"
+			Else
+				CommandesAide = CommandesAide & CRLF & " listbox/                  Create new listbox instance."
+			END IF
+		END IF
+		IF CommLANG(1) = OnCherche Then CommTrouve = 1
+		IF CommLANG(2) = OnCherche Then CommTrouve = 2
+		IF CommTrouve > 0 Then ' Afficher l'aide de la commande
+			IF AfficherAide = 2 then
+				Mess_Aide = ""
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Listbox'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit�e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un listbox dans un No de handle d'une fenetre existante"
+					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Texte				= " & CHR(34) & "Item1;Item2" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parametres			= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurTexte	 	= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurFond		= " & CHR(34) & "255,255,255" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\dossier\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Creer/"
+					Mess_Aide = Mess_Aide & CRLF & "   Fin/ listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : Imagebox/ , fenetre/"
+					Mess_Aide = Mess_Aide & CRLF
+				ELSEIF CPCDOS_INSTANCE.Utilisateur_Langage = 1 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Listbox'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
+					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create listbox instance in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.text				= " & CHR(34) & "item 1;item2" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parameters 		= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TextColor 			= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.BackColor			= " & CHR(34) & "220,220,220" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\folder\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Create/"
+					Mess_Aide = Mess_Aide & CRLF & "   End/ listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  See also : picturebox/ , window/ , textblock/"
+					Mess_Aide = Mess_Aide & CRLF
+				END IF
+
+				DEBUG(Mess_Aide, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				testCMD = 0
+				AfficherAide = 0
+				exit _scope_CMD, _scope
+			END IF
+			' Tester la syntaxe
+			testCMD	= CCP_Verifier_Syntaxe(Commande, CommPosition)
+			IF testCMD > 10 Then exit _scope_CMD, _scope
+			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
+				IF testCMD < 6 then
+					Affichage = 0
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
+				Else
+					Affichage = 1
+				END IF
+			Else
+				Affichage = 1
+			END IF
+			' Recuperer les Parametres
+			Param = MID(Commande, CommPosition + TailleComm + 2)
+			SCOPE
+			' ====================================================================
+			
+			' Enlever les espaces et mettre tout en majuscules
+			Dim NomListbox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
+			
+			IF INSTR(UCASE(NomListbox), "/MODIF") > 0 Then
+				NomListbox = MID(NomListbox, INSTR(UCASE(NomListbox), "/MODIF") + 7) & "~MODIF#"
+
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Mode edition d'un listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Listbox edition mode '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			Else
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Creation d'un listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Creating listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			End if
+		
+
+			CpcdosCP_SHELL = "IUG:LISTBOX_NOM=" & NomListbox
+			
+			' ====================================================================
+			END SCOPE
+			
+			exit _scope_CMD, _scope
+		End if ' **** Listbox/ ****
+	
+	_end_scope_CMD
 	
 	_scope_CMD
 	
@@ -5424,6 +5559,24 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Next boucle
 				
 				End if
+
+				if TypeObjet = 0 Then
+				
+					' Chercher les listbox
+					For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_Listbox
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Handle = Numero_Handle Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							exit for
+						End if
+					Next boucle
+				
+				End if
 				
 			
 			Else
@@ -5563,6 +5716,22 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 								' Indiquer que c'est une fenetre qu'on veut supprimer
 								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer
+								
+								' Et son numero d'index
+								Numero_INDEX = boucle
+								
+								exit for
+							End if
+						Next boucle
+					End if
+
+					if Trouve = false Then
+						' Chercher les listbox
+						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Nom = Param Then
+							
+								' Indiquer que c'est une fenetre qu'on veut supprimer
+								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
 								
 								' Et son numero d'index
 								Numero_INDEX = boucle
@@ -5725,6 +5894,18 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
 						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+
+					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox Then
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Actualisation graphique du listbox '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Refreshing listbox graphic '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+						End if
+						
+						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					End if
 					
 				End if
@@ -8948,6 +9129,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			iF Instr(UCASE(Param), "EXPLORER") > 0 Then
 				CpcdosCP_SHELL = "IUG:EXPLORER_FIN"
+				exit _scope_CMD, _scope
+			End if
+
+			iF Instr(UCASE(Param), "LISTBOX") > 0 Then
+				CpcdosCP_SHELL = "IUG:LISTBOX_FIN"
 				exit _scope_CMD, _scope
 			End if
 			
@@ -12467,6 +12653,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim _INDEX_PROGRESSBAR_		as integer = 0
 						Dim _INDEX_CHECKBOX_		as integer = 0
 						Dim _INDEX_EXPLORER_		as integer = 0
+						Dim _INDEX_LISTBOX_		as integer = 0
 						
 						Dim IUG_CREATION_FENETRE 	as string
 						Dim IUG_CREATION_BOUTON 	as string
@@ -12476,6 +12663,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim IUG_CREATION_PROGRESSBAR as string
 						Dim IUG_CREATION_CHECKBOX 	as string
 						Dim IUG_CREATION_EXPLORER 	as string
+						Dim IUG_CREATION_LISTBOX 	as string
 						
 						
 						Dim Buffer_lecture 			as String
@@ -15348,7 +15536,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).THREAD_OK
 
-															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_FENETRE_).PROP_TYPE.ContextMenu 
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.ContextMenu 
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).POS_Y
@@ -15360,7 +15548,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_IMAGE_ANCIEN 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMAGE_ANCIEN
 															
 															
-															GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).IMG_ORG_ID
+															' GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ORG_ID
 															
 															
 															GUI__PROP_IMG_BUFFER_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_BUFFER_ID
@@ -15472,7 +15660,224 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												Next _INDEX_EXPLORER_
 											
 											End if
+										
+										ElseIF Instr(RetourCCP, ":LISTBOX_NOM=") > 0 Then
+											IUG_CREATION_LISTBOX = MID(RetourCCP, Instr(RetourCCP, ":LISTBOX_NOM=") + 13)
 											
+											
+											IF Modification_IUG = True Then
+												For _INDEX_LISTBOX_ = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+												
+													IF IUG_CREATION_LISTBOX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Nom Then
+														' Verifier si la cle d'identification KERNEL, OS, USER, et PID est identique
+														IF CPCDOS_INSTANCE.get_id_kernel(_CLE_) 		= CPCDOS_INSTANCE.get_id_kernel(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
+															CPCDOS_INSTANCE.get_id_OS(_CLE_) 			= CPCDOS_INSTANCE.get_id_OS(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
+															CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) 	= CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
+															CPCDOS_INSTANCE.get_id_PID(_CLE_) 			= CPCDOS_INSTANCE.get_id_PID(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
+														
+					
+															
+															Dim ADD_NUM_R as String
+															Dim ADD_NUM_V as String
+															Dim ADD_NUM_B as String
+															
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du listbox '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																Else
+																	DEBUG("[CpcdosC+] GUI --> Listbox edition mode for '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																End If
+															End if
+															
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+																	DEBUG("[CpcdosC+] Recuperation des proprietes grahpiques en memoire...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																Else
+																	DEBUG("[CpcdosC+] Recovery graphical properties in memory...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																End If
+															End if
+
+															' Couleur du picturebox ===> GUI__PROP_COULEURFOND
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_V = val(Mid(GUI__PROP_COULEURFOND, 5, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_B = val(Mid(GUI__PROP_COULEURFOND, 9, 3))
+															
+															' Couleur de la police d'ecriture ===> GUI__PROP_COULEURTEXTE
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_R = val(Mid(GUI__PROP_COULEURTEXTE, 1, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_V = val(Mid(GUI__PROP_COULEURTEXTE, 5, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_B = val(Mid(GUI__PROP_COULEURTEXTE, 9, 3))
+															
+															' Transparence generale  ===> GUI_PROP_COULEURALPHA
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+															
+															' Bordure
+															if GUI__PROP_TYPE_BORDURE >= 1 then GUI__PROP_TYPE_BORDURE = 1 else GUI__PROP_TYPE_BORDURE = 0
+															
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
+															' Evenement
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
+															
+															GUI__DEJA_INITIALISE	= TRUE
+															
+															' Proprietes d'identification du Processus hebergeur
+															GUI__PROC_PARENT	 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Proc_PARENT
+															GUI__PID_PARENT			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.PID_PARENT 
+															
+															' Proprietes d'identification du Thread executif
+															GUI__THREAD_PARENT	 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.THREAD_PARENT
+															GUI__TID_PARENT			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.TID_PARENT
+															
+															' Proprietes d'identification d'Objet graphique hebergeur
+															GUI__Fenetre_PARENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Fenetre_PARENT
+															GUI__Index_FNT_PARENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Index_FNT_PARENT
+															GUI__Handle_PARENT 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Handle_PARENT
+															
+															' Proprietes d'identification de l'Objet concerne
+															GUI__Nom				= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Nom
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Index_ENFANT = _INDEX_LISTBOX_
+															GUI__Index_ENFANT		= _INDEX_LISTBOX_
+															GUI__Handle				= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.handle
+															
+															IUG_CREATION_LISTBOX 	= GUI__Nom
+															
+															Nouvelle_Cle_GUI 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_
+															
+															Nouvelle_OS_ID 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.OS_id
+															
+															' Proprietes uniques de l'objet concerne
+															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IUG_UPDATER 
+															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).THREAD_OK
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.ContextMenu 
+															
+															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).POS_X 
+															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).POS_Y
+															
+															GUI__PROP_TX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SIZ_X
+															GUI__PROP_TY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SIZ_Y
+															
+															GUI__PROP_IMAGE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMAGE
+															GUI__PROP_IMAGE_ANCIEN 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMAGE_ANCIEN
+															
+															
+															'GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_ORG_ID
+															
+															
+															GUI__PROP_IMG_BUFFER_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_BUFFER_ID
+															GUI__PROP_IMG_SELECTEUR_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_SELECTEUR_ID
+															GUI__PROP_IMG_SCROLL_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_SCROLL_ID
+															
+
+															GUI__PROP_SCROLLING_Y		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SCROLLING_Y
+															GUI__PROP_Mode_Affichage	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Mode_Affichage
+															
+															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).BIT_ORG
+															
+															GUI__PROP_TEXTE			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).TEXTE
+															
+															
+															GUI__PROP_TYPE 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.LES_TYPES
+															
+															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.AutoSizeIMG
+															
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Blurry_Mode
+															
+															
+															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 1 Then
+																ADD_NUM_R = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 10 Then
+																ADD_NUM_R = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 100 Then
+																ADD_NUM_R = "0"
+															End if
+
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 1 Then
+																ADD_NUM_V = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 10 Then
+																ADD_NUM_V = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 100 Then
+																ADD_NUM_V = "0"
+															End if
+															
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 1 Then
+																ADD_NUM_B = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 10 Then
+																ADD_NUM_B = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 100 Then
+																ADD_NUM_B = "0"
+															End if
+															GUI__PROP_COULEURTEXTE = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R & "," _
+																						& ADD_NUM_V & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V & ","_
+																						& ADD_NUM_B & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B
+															
+															ADD_NUM_R = "" : ADD_NUM_V = "" : ADD_NUM_B = ""
+															
+															' Couleur du conteneur  ===> GUI__PROP_COULEURFOND
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 1 Then
+																ADD_NUM_R = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 10 Then
+																ADD_NUM_R = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 100 Then
+																ADD_NUM_R = "0"
+															End if
+
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 1 Then
+																ADD_NUM_V = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 10 Then
+																ADD_NUM_V = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 100 Then
+																ADD_NUM_V = "0"
+															End if
+															
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 1 Then
+																ADD_NUM_B = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 10 Then
+																ADD_NUM_B = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 100 Then
+																ADD_NUM_B = "0"
+															End if
+															GUI__PROP_COULEURFOND = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R & "," _
+																						& ADD_NUM_V & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V & ","_
+																						& ADD_NUM_B & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B															
+															
+															ADD_NUM_R = "" : ADD_NUM_V = "" : ADD_NUM_B = ""
+															
+															' Type
+															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.DESKTOPMODE
+															
+															' Bordure
+															if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure >= 1 then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure = 1 else CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure = 0
+															
+															GUI__PROP_TYPE_BORDURE 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure
+
+															' Transparence generale  ===> GUI__PROP_COULEURALPHA
+															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Alpha)
+															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.MENU_CTX
+
+															' Fichier de fonction source pour les evenement des objets
+															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Fichier_evenement
+															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Liste_Evenements)
+
+															Exit for
+														End if
+													End if
+												Next _INDEX_LISTBOX_
+											
+											End if
 										
 										' Les fins des declaration d'objets
 										ELSEIF Instr(RetourCCP, "IUG:FENETRE_FIN") > 0 Then
@@ -15491,6 +15896,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IUG_CREATION_CHECKBOX = ""
 										ELSEIF Instr(RetourCCP, "IUG:EXPLORER_FIN") > 0 Then
 											IUG_CREATION_EXPLORER = ""
+										ELSEIF Instr(RetourCCP, "IUG:LISTBOX_FIN") > 0 Then
+											IUG_CREATION_LISTBOX = ""
 										
 										
 										' **** Proprietes graphiques ****
@@ -16969,6 +17376,156 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Ca ne vas pas re-creer la fenetre mais ca va simplement renvoyer un texte garce a /#RENVOIDEBUG:
 												RetourCCP = CpcdosCP_SHELL(Buffer_lecture & " /#RENVOIDEBUG:" & Retour_Resultat, Nouvelle_Cle_GUI, Niveau_2, Param_1, Param_2)
 
+											ELSEIF NOT IUG_CREATION_LISTBOX = "" Then
+												Dim Retour_Resultat as string
+												
+												
+												
+												IF Modification_IUG = True Then
+													IF GUI__Handle_PARENT > 0  Then
+														CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT = GUI__Handle_PARENT
+														' GUI__Handle_PARENT = 0
+													End if
+												else
+													Nouvelle_Cle_GUI = Nouvelle_Cle
+												End if
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet._CLE_ 		= Nouvelle_Cle_GUI
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Identification_Objet.OS_id 		= Nouvelle_OS_ID
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Initialisation_OK = GUI__DEJA_INITIALISE
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PROC_PARENT		= GUI__PROC_PARENT 		' Nom du processus parent (Optionnel)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PID_PARENT			= GUI__PID_PARENT 		' PID du parent 
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.THREAD_PARENT		= GUI__THREAD_PARENT 	' Nom du thread parent (Optionnel)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.TID_PARENT			= GUI__TID_PARENT	 	' Nom du thread parent (Optionnel)
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Fenetre_PARENT 	= GUI__Fenetre_PARENT 	' Nom de la fenetre
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_FNT_PARENT 	= GUI__Index_FNT_PARENT ' Index de la fenetre
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT 		= GUI__Handle_PARENT 	' Handle de la fenetre hebergeur
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.NOM				= IUG_CREATION_LISTBOX	' Nom de l'objet
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_ENFANT		= GUI__Index_ENFANT		' Index de l'objet
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle				= GUI__Handle			' Handle de l'objet (Unique)
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE			= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE", 3, _CLE_))	
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE	= Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE_OPACITE", 3, _CLE_))	
+												
+												IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE < 0 Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE = 0
+												ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE > 255 Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE = 255
+												End if
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE			= GUI__PROP_IMAGE
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_ANCIEN 	= GUI__PROP_IMAGE_ANCIEN
+									
+															
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_BUFFER_ID				= GUI__PROP_IMG_BUFFER_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SELECTEUR_ID 			= GUI__PROP_IMG_SELECTEUR_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SCROLL_ID 			= GUI__PROP_IMG_SCROLL_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SCROLLING_Y 				= GUI__PROP_SCROLLING_Y
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Mode_Affichage 			= GUI__PROP_Mode_Affichage
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+												
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.BIT_ORG			= GUI__PROP_BIT_ORG ' Obtenir le pointeur du context GZE
+												
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IUG_UPDATER = GUI__PROP_UPDATER
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX += 1
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.TEXTE 		= GUI__PROP_TEXTE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.POS_X		= GUI__PROP_PX
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.POS_Y		= GUI__PROP_PY
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SIZ_X		= GUI__PROP_TX
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SIZ_Y		= GUI__PROP_TY
+												
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
+
+												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_V = val(Mid(GUI__PROP_COULEURFOND, 5, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_B = val(Mid(GUI__PROP_COULEURFOND, 9, 3))
+												
+												' Couleur de la police d'ecriture ===> GUI__PROP_COULEURTEXTE
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_R = val(Mid(GUI__PROP_COULEURTEXTE, 1, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_V = val(Mid(GUI__PROP_COULEURTEXTE, 5, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_B = val(Mid(GUI__PROP_COULEURTEXTE, 9, 3))
+												
+												' Transparence generale  ===> GUI_PROP_COULEURALPHA
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+												
+												' Bordure
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+												
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+												' Menu contextuel
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
+												' Evenement
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
+												
+												
+												' Cette partie permet de gagner des performances en autorisant seulement la recherche
+												'  de quelques evenements. Si rien n'est precise, il recherchera tout.
+												IF Len(GUI__PROP_EVENEMENT_DISPO) > 0 Then
+													
+													' Si le developpeur precise les evenements alors on interdit tout
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_Click		= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseEnter	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseMove	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseLeave	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseClick	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_KeyPress	= FALSE
+												
+													' Et on autorise certain evenements
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "CLICK") 		> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_Click		= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEENTER") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseEnter 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSELEAVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseLeave 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEMOVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseMove 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSECLICK") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseClick 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYPRESS") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_KeyPress 	= TRUE
+
+									
+												End if
+												
+
+												
+												' Creer la listbox
+												if Modification_IUG = True Then
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, GUI__Index_ENFANT))
+												Else
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, 0))
+												End if
+
+												' On re-execute la commande mais uniquement pour faire un debug pour recuperer
+												'  le numero de PID et pouvoir le socker dans une variable
+												' Ca ne vas pas re-creer la fenetre mais ca va simplement renvoyer un texte garce a /#RENVOIDEBUG:
+												RetourCCP = CpcdosCP_SHELL(Buffer_lecture & " /#RENVOIDEBUG:" & Retour_Resultat, Nouvelle_Cle_GUI, Niveau_2, Param_1, Param_2)
+
 											End if
 											
 											Nouvelle_Cle_GUI = Nouvelle_Cle
@@ -16988,6 +17545,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IUG_CREATION_PROGRESSBAR 	= ""
 											IUG_CREATION_CHECKBOX 		= ""
 											IUG_CREATION_EXPLORER 		= ""
+											IUG_CREATION_LISTBOX 		= ""
 											
 											GUI__PROP_VALEUR = 0
 											
@@ -18836,6 +19394,20 @@ _FIN_EXE_CCP_EXE:
 						exit for
 					End if
 				Next boucle
+
+				' Chercher les listbox
+				For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet._CLE_ = Numero_KeyID Then
+					
+						' Indiquer que c'est une fenetre qu'on veut supprimer
+						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox
+						
+						' Et son numero d'index
+						Numero_INDEX = boucle
+						
+						exit for
+					End if
+				Next boucle
 				
 			ElseIf Numero_PID > 0 Then
 				' Supprimer un processus (Et tout ses threads)
@@ -18971,6 +19543,21 @@ _FIN_EXE_CCP_EXE:
 						
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							NombreObjetSuppreime = NombreObjetSuppreime + 1
+							
+							' Supprimer l'objet concerne
+							CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_obj(TypeObjet, Numero_INDEX)
+
+						End if
+
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.PID_PARENT > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.PID_PARENT = Numero_PID Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox
 							
 							' Et son numero d'index
 							Numero_INDEX = boucle
@@ -19217,6 +19804,24 @@ _FIN_EXE_CCP_EXE:
 					Next boucle
 				
 				End if
+
+				if TypeObjet = 0 Then
+				
+					' Chercher les boutons
+					For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Handle = Numero_Handle Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							exit for
+						End if
+					Next boucle
+				
+				End if
 				
 			
 			Else
@@ -19362,6 +19967,22 @@ _FIN_EXE_CCP_EXE:
 							
 								' Indiquer que c'est une fenetre qu'on veut supprimer
 								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer
+								
+								' Et son numero d'index
+								Numero_INDEX = boucle
+								
+								exit for
+							End if
+						Next boucle
+					End if
+
+					if TypeObjet = 0 Then
+						' Chercher les listbox
+						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Nom = Param Then
+							
+								' Indiquer que c'est une fenetre qu'on veut supprimer
+								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
 								
 								' Et son numero d'index
 								Numero_INDEX = boucle

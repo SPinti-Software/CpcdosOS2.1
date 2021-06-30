@@ -827,6 +827,56 @@ Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, 
 			End if
 			
 		End if
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Listbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Rafraichir"
+			Proprietes_defaut.item_list(0).action = ""
+
+			Proprietes_defaut.item_list(1).text = "-----"
+			Proprietes_defaut.item_list(1).action = ""
+
+			Proprietes_defaut.item_list(2).text = "Selectionner tout"
+			Proprietes_defaut.item_list(2).action = ""
+
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text(" & boucle_item & ")", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action(" & boucle_item & ")", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
 	End if
 
 	return Proprietes_defaut
@@ -1665,7 +1715,7 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' Go !
 						Pret_Pour_Evenement = TRUE
 					End if
-						' On est deja focus sur un bouton
+						' On est deja focus sur un explorer
 				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 					
 					' Recuperer l'index et le fichier evenement
@@ -1679,6 +1729,23 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						Nom_Objet = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet.Nom
 						_CLE_OBJ_ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet._CLE_
 						Texte_obj  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Texte
+						
+						' Go !
+						Pret_Pour_Evenement = TRUE
+					End if
+				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox Then
+					
+					' Recuperer l'index et le fichier evenement
+					Index_Focus_OBJ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX
+					Fichier_evenement = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).PROP_TYPE.Fichier_evenement
+					
+					' Verifier s'il y a un ficheir evenement
+					IF NOT Fichier_evenement = "" Then
+					
+						' Si oui on recupere le nom de l'objet et sa cle numerique
+						Nom_Objet = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Identification_Objet.Nom
+						_CLE_OBJ_ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Identification_Objet._CLE_
+						Texte_obj  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Texte
 						
 						' Go !
 						Pret_Pour_Evenement = TRUE
@@ -2020,6 +2087,20 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
 							Elements_Trouves += 1
 							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
+						End if
+					End if
+				Next _INDEX_
+			End if
+
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX > 0 Then
+			' Actualiser tous les LISTBOX
+				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
+						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).IUG_UPDATER > 0 then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).THREAD_OK = 1
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+							Elements_Trouves += 1
+							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX Then exit for
 						End if
 					End if
 				Next _INDEX_

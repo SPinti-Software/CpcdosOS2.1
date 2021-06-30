@@ -51,6 +51,7 @@ Type Cpcdos_GUI_TYPE
 		CONST ProgressBar		as integer = 6
 		CONST Checkbox			as integer = 7
 		CONST Explorer			as integer = 8
+		CONST Listbox			as integer = 9
 		
 		CONST Wallpaper			as integer = 101
 		CONST TOUT				as integer = 102
@@ -686,6 +687,53 @@ Type Cpcdos_GUI__EXPLORER
 	SIZ_Y					as Integer 	' Taille verticale
 End Type
 
+' ==== Pour la creation d'une ListBox ====
+Type Cpcdos_GUI__LISTBOX
+	public:
+	
+	' ** Identifications uniques de l'objet graphique **
+	Identification_Objet 	as _identification_objet_
+	
+	' ** Proprietes relationnelles et graphiques en commun **
+	PROP_TYPE 				as Proprietes_Objet
+	
+	
+	' ** Proprietes unique **
+	Initialisation_OK 		as boolean = FALSE ' Si l'objet a ete cree!
+	
+	IUG_UPDATER				as integer 	' Actualisation graphique en ms
+	THREAD_OK				as integer 	' Si le thread est execute ou non
+
+	DejaSize				as boolean 	' Si l'image a deja ete resize
+	IMAGE					as String 	' Chemin d'acces a la ressource
+	IMAGE_SURVOLE			as String 	' Chemin d'acces a la ressource
+	
+	IMAGE_ANCIEN 			as String 	' Ancien chemin d'acces a la ressource
+	IMAGE_SURVOLE_ANCIEN 	as String 	' Ancien chemin d'acces a la ressource
+	
+	NB_ICONE				as integer	' Nombre d'icones differents
+	IMG_ICONE_ID(24)		as integer	' Icones des formats de fichiers
+	
+	IMG_BUFFER_ID			as integer	' Buffer de l'explorer
+	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
+	IMG_SCROLL_ID			as integer	' Image du selecteur quand la souris survole un element
+	SCROLLING_Y				as integer 	' Position du scroller bar
+
+	Mode_Affichage			as integer 	' 0:Petite Liste,  1:Moyenne liste,  2:Icones
+
+	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
+	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
+										'  Ce qui permet en cas de changeent de resolutin d'ecran, de recharger l'image
+	
+	TEXTE					as String 	' Afficher du texte a l'interieur	
+
+	POS_X					as Integer 	' Position horizontale
+	POS_Y					as Integer 	' Position verticale
+	
+	SIZ_X					as Integer 	' Taille horizontale
+	SIZ_Y					as Integer 	' Taille verticale
+End Type
+
 
 Type CPCDOS_GUI_INIT__
 	public:
@@ -701,6 +749,7 @@ Type CPCDOS_GUI_INIT__
 	CONST _MAX_GUI_PROGRESSBAR 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_CHECKBOX 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_EXPLORER 	as integer = _MAX_GUI___OBJS
+	CONST _MAX_GUI_LISTBOX	 	as integer = _MAX_GUI___OBJS
 	
 	RELATIF_X					as integer ' Position origine relatif ORG<->CURSEUR horizontale
 	RELATIF_Y					as integer ' Position origine relatif ORG<->CURSEUR verticale
@@ -717,6 +766,7 @@ Type CPCDOS_GUI_INIT__
 	TEMP_GUI__PROGRESSBAR 		as Cpcdos_GUI__PROGRESSBAR
 	TEMP_GUI__CHECKBOX 			as Cpcdos_GUI__CHECKBOX
 	TEMP_GUI__EXPLORER 			as Cpcdos_GUI__EXPLORER
+	TEMP_GUI__LISTBOX 			as Cpcdos_GUI__LISTBOX
 	
 	RefreshGUI_Elements_FENETRE			as integer
 	RefreshGUI_Elements_BOUTON			as integer
@@ -726,6 +776,7 @@ Type CPCDOS_GUI_INIT__
 	RefreshGUI_Elements_PROGRESSBAR		as integer
 	RefreshGUI_Elements_CHECKBOX		as integer
 	RefreshGUI_Elements_EXPLORER		as integer
+	RefreshGUI_Elements_LISTBOX			as integer
 	
 	GUI__FENETRE	(0 to _MAX_GUI_FENETRE 		+ 1) 	as Cpcdos_GUI__FENETRE
 	GUI__BOUTON		(0 to _MAX_GUI_BOUTON 		+ 1) 	as Cpcdos_GUI__BOUTON
@@ -735,6 +786,7 @@ Type CPCDOS_GUI_INIT__
 	GUI__PROGRESSBAR(0 to _MAX_GUI_PROGRESSBAR 	+ 1) 	as Cpcdos_GUI__PROGRESSBAR
 	GUI__CHECKBOX	(0 to _MAX_GUI_CHECKBOX 	+ 1) 	as Cpcdos_GUI__CHECKBOX
 	GUI__EXPLORER	(0 to _MAX_GUI_EXPLORER 	+ 1) 	as Cpcdos_GUI__EXPLORER
+	GUI__LISTBOX	(0 to _MAX_GUI_LISTBOX 		+ 1) 	as Cpcdos_GUI__LISTBOX
 	
 End Type
 
@@ -761,6 +813,7 @@ Type _SCI_Cpcdos_OSx__
 		NULL_GUI__PROGRESSBAR 	as Cpcdos_GUI__PROGRESSBAR
 		NULL_GUI__CHECKBOX 		as Cpcdos_GUI__CHECKBOX
 		NULL_GUI__EXPLORER		as Cpcdos_GUI__EXPLORER
+		NULL_GUI__LISTBOX		as Cpcdos_GUI__LISTBOX
 	
 	public:
 	
@@ -963,6 +1016,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Creer_ProgressBar			(_index_ as integer, _INDEX_PID_ as integer)	as integer
 		Declare Function Creer_CheckBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
 		Declare Function Creer_Explorer				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_ListBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
 		
 		Declare Constructor()
 		Declare Destructor()

@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "19" 
+CONST _VJOUR as string 	= "30" 
 CONST _VMOIS as string 	= "06"
 CONST _VANNEE as string = "2021"
 
@@ -330,6 +330,7 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _MAX_GUI_PROGRESSBAR 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_CHECKBOX 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_EXPLORER 	as integer = _MAX_GUI___OBJS
+		CONST _MAX_GUI_LISTBOX 		as integer = _MAX_GUI___OBJS
 		
 		CONST _MAX_NOMBRE_OS		as integer = 8
 		
@@ -478,8 +479,9 @@ Type __Noyau_Cpcdos_OSx__
 		LOGGER_AU_DEMARRAGE		as boolean = FALSE ' Logger dans tous les cas dans le fichier debug.log
 		LOGGER_TOUT_AU_DEMARRAGE as boolean = FALSE ' Logger TOUT dans tous les cas dans le fichier debug.log
 		
-		' *** Explorer GUI object ***
+		' *** List GUI object ***
 		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 128 	' Nombre d'elements par pages
+		CONST _MAX_GUI_LISTBOX_ELEMENTS as integer = 128 	' Nombre d'elements par pages
 		
 		' *** Liste des formats programmes et icones associes **
 		const FORMAT_MAX					as integer = 24

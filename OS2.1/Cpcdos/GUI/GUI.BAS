@@ -254,6 +254,10 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
 				Creer_Explorer(index, index_PID) 'Actualiser si focus
 			End if
+		ElseIf Type_IUG = GUI_TYPE.Listbox then
+			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+				Creer_Listbox(index, index_PID) 'Actualiser si focus
+			End if
 		Else
 		
 		end if
@@ -801,7 +805,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		' Transferer le handle
 		CPC__GUI_Init_obj = this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle
 	
-	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Explorer  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Explorer Then
 	
 		Dim _INDEX_Fenetre_ as integer 
@@ -859,6 +863,64 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 
 		' Transferer le handle
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle
+	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Listbox  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	ELSEIF Type_De_GUI = this.GUI_TYPE.Listbox Then
+	
+		Dim _INDEX_Fenetre_ as integer 
+		' Verifier si le processus (PID) existe!
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
+				
+				exit for
+			END IF
+		Next _INDEX_Fenetre_
+		
+		' Verifier si le PID a ete trouve
+		IF _INDEX_ = 0 Then 
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
+			CPC__GUI_Init_obj = -1
+			ScreenUnlock
+			exit function
+		End if
+
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_) = _Proprietes.TEMP_GUI__LISTBOX
+			
+		Else
+		
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+		
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_) = _Proprietes.TEMP_GUI__LISTBOX
+			
+
+		End if
+		
+		' Creer l'objet
+		_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle = Creer_Listbox(_INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle
 	end if
 	
 	ScreenUnlock
@@ -1034,6 +1096,12 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 				End if
 				IF this.INST_INIT_GUI.GUI__EXPLORER(Boucle).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Identification_Objet.handle Then
 					CPC__GUI_SUPPRIMER_obj(this.GUI_TYPE.Explorer, Boucle)
+					
+					' Desincrementer le nombre d'objets present dans la fenetre parent
+					this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS - 1
+				End if
+				IF this.INST_INIT_GUI.GUI__LISTBOX(Boucle).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Identification_Objet.handle Then
+					CPC__GUI_SUPPRIMER_obj(this.GUI_TYPE.Listbox, Boucle)
 					
 					' Desincrementer le nombre d'objets present dans la fenetre parent
 					this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS - 1
@@ -1323,6 +1391,52 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 				DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 			End if
 		End if
+	ELSEIF Type_De_GUI = this.GUI_TYPE.Listbox Then
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] Suppression du listbox '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Nom & "' CleID:'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet._CLE_ & "' associe a la fenetre '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Fenetre_PARENT & "' (PID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.PID_PARENT & " TID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.TID_PARENT & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			Else
+				DEBUG("[SCI] Deleting listbox '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Nom & "' KeyID:'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet._CLE_ & "' associed to the window'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Fenetre_PARENT & "' (PID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.PID_PARENT & " TID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.TID_PARENT & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			End if
+		End if
+		
+		' Elements a actualiser
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_index_).IUG_UPDATER > 0 Then 
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX -= 1
+		End if
+		
+		' Supprimer les anciennes images!
+		if this.INST_INIT_GUI.GUI__LISTBOX(_index_).NB_ICONE > 0 Then
+			' Delete les icones 1 par 1
+			For ico_index as integer = 0 to this.INST_INIT_GUI.GUI__LISTBOX(_index_).NB_ICONE -1
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_ICONE_ID(ico_index))
+				this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_ICONE_ID(ico_index) = 0
+			Next ico_index
+		End if
+		
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_BUFFER_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_BUFFER_ID = 0
+		
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SELECTEUR_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SELECTEUR_ID = 0
+
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SCROLL_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SCROLL_ID = 0
+
+		
+		
+		
+		' Vider toutes les proprietes du bouton
+		this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_)				= this.NULL_GUI__LISTBOX
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			Else
+				DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			End if
+		End if
 	End if
 	
 	CPC__GUI_SUPPRIMER_obj = 1
@@ -1392,6 +1506,14 @@ Function _SCI_Cpcdos_OSx__.get_Emplacement_Libre(Type_De_GUI as integer) as inte
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
 			' Si aucun nom de processus est specifie alors l'emplacement est libre
 			IF this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Handle = 0 Then
+				get_Emplacement_Libre = _INDEX_
+				exit function
+			End if
+		Next _INDEX_
+	Elseif Type_De_GUI = this.GUI_TYPE.Listbox Then
+		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+			' Si aucun nom de processus est specifie alors l'emplacement est libre
+			IF this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Handle = 0 Then
 				get_Emplacement_Libre = _INDEX_
 				exit function
 			End if
@@ -3894,6 +4016,304 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										End if
 										
 									End if 
+								' ******************************************
+								' ** L I S T B O X          L I S T B O X ** ----------------------------------------------------
+								' ******************************************
+								
+								ElseIf The_Objet = "LISTBOX" Then 
+
+									Fichier_evenement  	= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement
+								
+									if NOT Fichier_evenement = "" Then
+									
+										' Infos du picturebox concerne
+										Index_Focus_OBJ 	= The_Objet_index
+										_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).Identification_Objet._CLE_
+										Nom_Objet 		 	= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).Identification_Objet.Nom
+
+										IF Interaction_TOUCHE(Pos_X, Pos_Y, _INDEX_FENETRE_, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).POS_X, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).POS_Y, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SIZ_X, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SIZ_Y) = TRUE Then
+											
+											Dim Retour_STR as String = ""
+											
+											' Pour pas que la fenetre soit aussi comprise
+											Evenement_Sur_Objet = TRUE
+
+											' *****************************************************************************************
+											' *** EVENEMENT : Si l'utilisateur clique dans l'objet graphique avec sa souris (CLICK) ***
+											' *****************************************************************************************
+											
+											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
+
+												' On indique qu'on FOCUS un Listbox
+												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+												
+												' Avec son index
+												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = The_Objet_index
+												
+												this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE
+												
+												this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
+												
+												
+												' Actualiser graphiquement le listbox pour l'effet de "pression"
+												'if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+													' Actualiser graphiquement le bouton pour l'effet de "survole"
+													Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+												'End if
+												
+												IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
+													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
+														' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
+														if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".Click(" & Type_Clic & ")", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																			
+															' Black LIST EVENT !
+															CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Click(1);"
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Click(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+															End if
+														End if
+													end if
+													
+													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click()") > 0 Then
+														if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".Click()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																			
+															' Black LIST EVENT !
+															CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Click();"
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Click()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+															End if
+														End if
+													End if
+												End if		
+
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if		
+																
+																
+												' On quitte cette boucle
+												exit for
+											Else
+											
+												' *******************************************************************
+												' *** EVENEMENT : Si l'utilisateur a finit de cliquer sur l'objet ***
+												' *******************************************************************
+												
+												IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE Then
+													this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = False
+													
+													
+													
+													' Actualiser graphiquement le bouton pour l'effet de "pression"
+													Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+											
+													IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
+													
+														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
+															' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
+															if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseClick(" & this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression_Bouton & ")", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																			
+																' Black LIST EVENT !
+																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1);"
+																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																End if
+															End if
+														End if
+														
+														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
+															IF CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseClick()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																			
+																' Black LIST EVENT !
+																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick();"
+																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																End if
+																
+															End if
+														End if
+													End if
+												End if
+											
+												' *****************************************************************************************************
+												' *** EVENEMENT : Si l'utilisateur ENTRE la souris dans l'objet pour la premiere fois (MouseEnter) ***
+												' *****************************************************************************************************
+												
+												if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+													IF NOT this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+														
+															IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
+																if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																		
+																	End if
+																End if
+															End if
+															
+															' L'objet est en cours de survole
+															this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
+															
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Listbox
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
+															
+															if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+																' Actualiser graphiquement le bouton pour l'effet de "survole"
+																Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+															End if
+
+															' On quitte cette boucle
+															exit for
+															
+														End if
+													End if
+													
+													
+													' *****************************************************************************
+													' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
+													' *****************************************************************************
+													
+													IF NOT this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														
+														IF 0 Then ' Desactiver l'event mousemove de
+															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
+																IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																	End if
+																End if
+															End if
+														End if
+														
+														' L'objet est en cours de survole
+														this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
+														
+														' Actualiser graphiquement le listbox pour l'effet de "pression"
+														if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+															' Actualiser graphiquement le bouton pour l'effet de "survole"
+															Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+														End if
+
+														' On quitte cette boucle
+														exit for
+														
+													End if
+												End if ' IF FOCUS
+											End if 
+										End if
+										
+										' *******************************************************************
+										' *** EVENEMENT : Si l'utilisateur a finit de cliquer sur l'objet ***
+										' *******************************************************************
+										
+										IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE Then
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = False
+											
+											' Actualiser graphiquement le listbox pour l'effet de "pression"
+											Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+									
+											IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
+												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseClick(" & Type_Clic & ")", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1);"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+																
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseClick()", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick();"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+											End if
+										End if
+										
+										' *****************************************************************************
+										' *** EVENEMENT : Si l'utilisateur SORT/Ne survole plus l'objet (MouseLeave) ***
+										' *****************************************************************************
+										
+										IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE Then
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = False
+											
+											IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseLeave = True Then
+												
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseLeave()") > 0 Then
+													' Si la souris de l'utilisateur sort de l'objet (MouseLeave)
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseLeave()", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseLeave();"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseLeave()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+											End if
+
+											
+											' Efface toutes traces
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = 0
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
+											
+											' Actualiser graphiquement le listbox pour l'effet de "pression"
+											if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+												' Actualiser graphiquement le bouton pour l'effet de "survole"
+												Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+											End if
+											
+											' On quitte cette boucle
+											exit for
+										End if
+										
+									End if 
+								
 								End if ' Scope des differents objets
 							End if
 						
@@ -4359,6 +4779,47 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								End if
 							End if
 						End if
+					ElseIF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Listbox Then
+						if this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Survole = TRUE Then
+						
+							this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
+							this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = 0
+							
+							Fichier_evenement = this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Fichier_evenement
+						
+							' Si l'evenement existe
+							if NOT Fichier_evenement = "" Then
+							
+								_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).Identification_Objet._CLE_
+								Nom_Objet 		 	= this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).Identification_Objet.Nom
+					
+								this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Survole = FALSE
+								
+								Evenement_A_Executer = "MouseLeave"
+								
+								IF this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.EV_MouseLeave = True Then
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] Appel d'un evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] Calling graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+										
+									' Si la souris de l'utilisateur sort de l'objet (MouseLeave)
+									CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+														":=##/F:" & Nom_Objet & "." & Evenement_A_Executer & "()", _CLE_OBJ_ , 2, 0, "")
+														
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] FIN de l'evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] END graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+								End if
+							End if
+						End if
 					End if ' .OBJET_SURVOLE_TYPE
 				End if ' IF OBJET_SURVOLE_INDEX__TMP > 0 Then
 			End if
@@ -4692,6 +5153,15 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						END IF
 					Next b
 
+					' Si le handle correspond a la fenetre, alors on trace le listbox
+					For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+						IF this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
+								AND this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
+								
+							Creer_Listbox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+						END IF
+					Next b
+
 					' Afficher la taskbar si disponible
 					if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.TaskBar > 0 Then
 						Display_Taskbar(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
@@ -4774,6 +5244,15 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 									AND this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT > 0 Then
 									
 								Creer_Explorer(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							END IF
+						Next b
+
+						' Si le PID correspond a la fenetre, alors on trace le listbox
+						For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							IF this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
+									AND this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
+									
+								Creer_Listbox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
