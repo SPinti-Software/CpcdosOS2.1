@@ -40,6 +40,10 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/checkbox.cpc
 // [EN] Explorer configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/explorer.cpc
 
+// [FR] Configuration de la listbox
+// [EN] Listbox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/listbox.cpc
+
 
 // [FR] Configuration du msgbox
 // [EN] Msgbox configuration

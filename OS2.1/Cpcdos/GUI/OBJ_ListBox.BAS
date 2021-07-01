@@ -148,6 +148,15 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim Espacement_POS_X_icon as integer  = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.ICON_MODE.SPACING", 3, _CLE_))
 				Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 
+				instance_FICHER_DOSSIER_.nb_elements = 5
+				instance_FICHER_DOSSIER_.nb_dossiers = 5
+				instance_FICHER_DOSSIER_.liste_Elements(0) = "Item 1"
+				instance_FICHER_DOSSIER_.liste_Elements(1) = "Item 2"
+				instance_FICHER_DOSSIER_.liste_Elements(2) = "Item 3"
+				instance_FICHER_DOSSIER_.liste_Elements(3) = "Item 4"
+				instance_FICHER_DOSSIER_.liste_Elements(4) = "Item 5"
+				
+
 				Dim Path_ListBox_program as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.PROGRAM", 3, _CLE_))
 				
 				' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
@@ -393,283 +402,78 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 						
 						Dim Resultat as Boolean
 						
-						if DisplayDrives = false Then
-							' Getting files and dirs
-
-							if Mode_Affichage = 0 or Mode_Affichage = 1 Then
-								Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, this.INST_INIT_GUI.GUI__ListBox(_index_).SCROLLING_Y / 8)
-							Else
-								Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.lister_Repertoire(Source, SourceRecherche, instance_FICHER_DOSSIER_, (this.INST_INIT_GUI.GUI__ListBox(_index_).SCROLLING_Y / 8)) ' + abs((Siz_X / Pos_Col_X_STEP) - 1))
-							End if
-						Else
-							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "]  Recuperations de la liste des lecteurs", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
-							Else
-								DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "]  Getting drive list", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
-							End if
-
-							' Getting drives
-							Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Drive_list_to_dir_instance(instance_FICHER_DOSSIER_)
-						End if
 						
-						If instance_FICHER_DOSSIER_.Est_OK = False Then
-							' ERREUR
-							DEBUG("0", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR)
+						dim Increment_X_icones as integer = 0
+						dim Increment_Y_icones as integer = 0
+
+
+						dim Pos_lst_X as integer = 0
+						dim Pos_lst_Y as integer = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
+
+						for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
 							
-							Dim Message_erreur as String = ERRAVT("ERR_064", 0)
-							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+							
+
+							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
+								' Mode Petite liste et moyenne liste
+								Pos_lst_Y = (b * (8 + espacement))
 							Else
-								DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] " & Message_erreur & ". '" & Source & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-							End if
-							
-						Else
-							Dim TailleCH 		as integer
-							Dim TailleFichier 	as uinteger
-							Dim TailleFinal 	as uinteger
-							Dim TexteTaille 	as String
-							Dim as String octets, kilo, mega, giga, tera
-							Dim Resultat_chaine as String = ""
-							
-							Dim TexteTaille_FINAL as String
+								' Mode icone
 
-							' Afficher la bonne taille (Octets, Kilos, Mega, Giga)
-							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								octets = "o"
-								kilo = "ko"
-								mega = "mo"
-								giga = "go"
-								tera = "to"
-							Else
-								octets = "b"
-								kilo = "kb"
-								mega = "mb"
-								giga = "gb"
-								tera = "tb"
-							End if
+								' Incrementer 1 par 1 position X des icones
+								Increment_X_icones += 1
 
+								' Calculer en pixels
+								Pos_lst_X = ((Increment_X_icones * Pos_Col_X_STEP) + 1) - (Pos_Col_X_STEP / 2)
 
-							dim Increment_X_icones as integer = 0
-							dim Increment_Y_icones as integer = 0
+								' Si on arrive au rebord de l'ListBox
+								if Pos_lst_X + Pos_Col_X_STEP >= Siz_X Then
+									
+									' On remet X a 1
+									Increment_X_icones = 0
 
-
-							dim Pos_lst_X as integer = 0
-							dim Pos_lst_Y as integer = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
-
-							for b as integer = 1 to instance_FICHER_DOSSIER_.nb_Elements
-								
-								
-
-								if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
-									' Mode Petite liste et moyenne liste
-									Pos_lst_Y = (b * (8 + espacement))
-								Else
-									' Mode icone
-
-									' Incrementer 1 par 1 position X des icones
-									Increment_X_icones += 1
-
-									' Calculer en pixels
+									' Re-calculer en pixels
 									Pos_lst_X = ((Increment_X_icones * Pos_Col_X_STEP) + 1) - (Pos_Col_X_STEP / 2)
 
-									' Si on arrive au rebord de l'ListBox
-									if Pos_lst_X + Pos_Col_X_STEP >= Siz_X Then
-										
-										' On remet X a 1
-										Increment_X_icones = 0
-
-										' Re-calculer en pixels
-										Pos_lst_X = ((Increment_X_icones * Pos_Col_X_STEP) + 1) - (Pos_Col_X_STEP / 2)
-
-										' et on decend d'un etage Y
-										Increment_Y_icones += 1
-										
-										' Calculer en pixels
-										Pos_lst_Y = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
-									End if
-								End if
-
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).EstUnDossier = True Then
-
-									TexteTaille = ""
-
-									' Dossier en cours
-									Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-
-									if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
-										' Icone MIN
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-
-										if DisplayDrives = true Then
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-										Else
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-										End if
-									Else
-										' Icone MAX
-										Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
-
-										dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
-										dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
-
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-
-										if DisplayDrives = true Then
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
-										Else
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
-										End if
-									End if
+									' et on decend d'un etage Y
+									Increment_Y_icones += 1
 									
+									' Calculer en pixels
+									Pos_lst_Y = (Increment_Y_icones * Pos_Col_Y_STEP) + 1
+								End if
+							End if
+
+
+							' Dossier en cours
+							Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
+
+							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
+								' Icone MIN
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+								if DisplayDrives = true Then
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
 								Else
-
-									
-									' Recuperer la taille du fichier et le convertir en KiloOctets
-									TailleFichier = instance_FICHER_DOSSIER_.attributs_Elements(b).taille
-									
-									' Incrmenter la taille total
-									TailleFinal += TailleFichier
-									
-									Scope 
-
-										' Attribuer l'unite correspondante a la taille
-										IF TailleFichier < 1 Then
-											' Fichier VIDE
-											TexteTaille = "0 " & octets
-										Else
-											IF (TailleFichier/CPCDOS_INSTANCE._TERA_OCTETS) < 1 Then ' Tera
-												IF (TailleFichier/CPCDOS_INSTANCE._GIGA_OCTETS) < 1 Then ' Giga
-													IF (TailleFichier/CPCDOS_INSTANCE._MEGA_OCTETS) < 1 Then ' Mega
-														IF (TailleFichier/CPCDOS_INSTANCE._KILO_OCTETS) < 1 Then ' Kilo
-															TexteTaille = TailleFichier & " " & octets ' OCTETS
-														Else
-															TexteTaille = Left(str(TailleFichier/1024), instr(str(TailleFichier/1024), ".") + 1) & " " & kilo ' KILOS
-														End if
-													Else
-														TexteTaille = Left(str(TailleFichier/1024^2), instr(str(TailleFichier/1024^2), ".") + 1) & " " & mega ' MEGA
-													End if
-												Else
-													TexteTaille = Left(str(TailleFichier/1024^3), instr(str(TailleFichier/1024^3), ".") + 1) & " " & giga ' GIGA
-												End if
-											Else
-												TexteTaille = Left(str(TailleFichier/1024^4), instr(str(TailleFichier/1024^4), ".") + 1) & " " & tera ' TERA
-											End if
-										End if
-									End Scope
-
-									' Fichier en cours - CRASH A REVOIR 10-JAN-2021
-									Lines_array(b) = "F:" & instance_FICHER_DOSSIER_.liste_Elements(b)
-									
-									if Mode_Affichage = 0 or Mode_Affichage = 1 Then
-										' Mode petite liste et mode moyenne liste
-
-										if len(instance_FICHER_DOSSIER_.liste_Elements(b)) > 16 Then
-											' Si le nom est trop grand pour etre affiche
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(instance_FICHER_DOSSIER_.liste_Elements(b), 1, 14) & "...", POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-										else
-											' Sinon on l'affiche normalement
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-										End if
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, TexteTaille, POS_Col_Taille , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-									Else
-										' Mode icones
-
-										Dim Nom_Element as string = instance_FICHER_DOSSIER_.liste_Elements(b)
-
-										if len(Nom_Element) > Size_ICON_Text_MAX Then
-											' Si le nom est trop grand pour etre affiche
-											Nom_Element = Mid(Nom_Element, 1, 8) & "..."
-										End if
-										
-										' Le positionner au centre de l'item
-										dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_Element)*8) / 2)
-
-										' Et le dessier dans le buffer
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_Element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-		
-									End if
-
-
-									Dim Extension as string
-									' Index de l'extension fichier
-									Dim Index_extension as integer = CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
-								
-									For boucle as integer = 1 to CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_MAX
-										if NOT CPCDOS_INSTANCE.FORMAT_Extention(boucle) = "" Then
-											Extension = Ucase(MID(instance_FICHER_DOSSIER_.liste_Elements(b), InstrREV(instance_FICHER_DOSSIER_.liste_Elements(b), ".") + 1))
-											
-											' Si extension correspond
-											if Extension = CPCDOS_INSTANCE.FORMAT_Extention(boucle) Then
-												Index_extension = boucle
-												exit for
-											End if
-										End if
-									Next boucle
-									
-									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-											DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Extension : " & Extension & " associe avec l'icone (" & Index_extension & ") '" & CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-										else
-											DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Extension : " & Extension & " associed with icon (" & Index_extension & ") '" & CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-										End if
-									end if
-									
-									if Mode_Affichage = 0 or Mode_Affichage = 1 Then
-										' Mode Petite icone et Moyenne icone
-
-										' Si pas d'icone, on met l'icone inconnu 
-										if CPCDOS_INSTANCE.FORMAT_Icones_min(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
-										
-										' Icone fichier
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(Index_extension), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-										
-										' Afficher la description
-										if Len(CPCDOS_INSTANCE.FORMAT_Description(Index_extension)) > 32 Then
-											' Si trop grand
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 29) & "...", POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-										Else
-											' Sinon on display normal
-											CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Mid(CPCDOS_INSTANCE.FORMAT_Description(Index_extension), 1, 32), POS_Col_Description , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-										End if
-									Else
-										' Mode Icone
-
-										dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
-
-										' Si pas d'icone, on met l'icone inconnu 
-										if CPCDOS_INSTANCE.FORMAT_Icones_max(Index_extension) = "NULL" Then Index_extension = CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW
-										
-										' Icone fichier
-										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(Index_extension), IMG_BUFFER_ID, Pos_X_icon_item, Pos_lst_Y)
-									End if
-								end if
-								
-								' ** Ajouter les autres attributs **
-								Dim Attribut_str as String
-								' Lecture Seule
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_ReadOnly = True Then Attribut_str += "read only "
-								
-								' Cache
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Hidden = True Then Attribut_str += "hidden "
-								
-								' Systeme
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_System = True Then Attribut_str += "system "
-								
-								' Archive
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Archive = True Then Attribut_str += ""
-								
-								' Normal
-								if instance_FICHER_DOSSIER_.attributs_Elements(b).attrib_Normal = True Then Attribut_str += ""
-
-								
-								if Mode_Affichage = 0 or Mode_Affichage = 1 Then
-									' Afficher l'attribut de fichier
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Attribut_str, POS_Col_Attribut , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
 								End if
-							next b
-							
+							Else
+								' Icone MAX
+								Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
 
-						End if
+								dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
+								dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
+
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+								if DisplayDrives = true Then
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
+								Else
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
+								End if
+							End if
+
+						next b
+							
 					End scope
 
 					if CPCDOS_INSTANCE.SCI_INSTANCE.EXP_SCROLL_ID > 0 Then
@@ -716,17 +520,8 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 
 											element = Mid(Lines_array(boucle), 3)
 
-											If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-												' FICHIER
-
-												Clic_FICHIER = true
-												exit for
-											elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
-												' DOSSIER
-
-												Clic_DOSSIER = true
-												exit for
-											End if
+											Clic_DOSSIER = true
+											exit for
 										End if
 									End if
 								Next boucle
@@ -772,18 +567,8 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 											' Retrouver l'element sur le quel l'utilisateur a clique
 											element = Mid(Lines_array(boucle), 3)
 
-											' Determiner si c'est un fichier ou dossier
-											If Mid(Lines_array(boucle), 1, 2) = "F:" Then 
-												' FICHIER
-
-												Clic_FICHIER = true
-												exit for
-											elseif Mid(Lines_array(boucle), 1, 2) = "D:" Then 
-												' DOSSIER
-
-												Clic_DOSSIER = true
-												exit for
-											End if
+											Clic_DOSSIER = true
+											exit for
 
 										End if
 
@@ -794,68 +579,28 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 
 							' --------------------------------------------------------------
 
-							if Clic_FICHIER = true Then
-								' ==== C ' E S T   U N   F I C H I E R ====
-
-								Dim path_fichier as string
-								
-								' FICHIER
-								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-									path_fichier = CPY_Source & element
-								else 
-									path_fichier = CPY_Source & "\" & element
-								End if
-								
-								' On execute le fichier
-								CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(path_fichier, This._CLE_, 3, 0, "")
-							ElseIf Clic_DOSSIER = true Then
+							If Clic_DOSSIER = true Then
 								' ==== C ' E S T    U N    D O S S I E R ====
-
-								if element = ".." OR element = "..\" Then
-									' Recuperer le dernier \
-									
-									Dim txt_avant as String = this.INST_INIT_GUI.GUI__ListBox(_index_).Texte
-
-									
-									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin, on le delete
-										CPY_Source = Mid(CPY_Source, 1, Len(CPY_Source) - 1)
-									End if
-									
-									' Chercher le dernier \
-									CPY_Source = Mid(CPY_Source, 1, InstrREV(CPY_Source, "\"))
-
-									this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source
-
-									if DESKTOPMODE = true Then
-										' Ouvrir un ListBox
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.ListBox(" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & ")", This._CLE_, 3, 0, "")
-
-										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = txt_avant ' ne rien modifier ;)
-
-									End if
-
 									
 
-								else
-									Dim txt_avant as String = this.INST_INIT_GUI.GUI__ListBox(_index_).Texte
+								Dim txt_avant as String = this.INST_INIT_GUI.GUI__ListBox(_index_).Texte
 
-									if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element & "\"
-									Else
-										if DisplayDrives = false Then
-											this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & "\" & element & "\"
-										else
-											this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element
-										End if
+								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
+									this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element & "\"
+								Else
+									if DisplayDrives = false Then
+										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & "\" & element & "\"
+									else
+										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element
 									End if
+								End if
 
-									if DESKTOPMODE = true Then
-										' Ouvrir un ListBox
-										CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.ListBox(" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & ")", This._CLE_, 3, 0, "")
+								if DESKTOPMODE = true Then
+									' Ouvrir un ListBox
+									' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.ListBox(" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & ")", This._CLE_, 3, 0, "")
 
-										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = txt_avant ' ne rien modifier ;)
+									this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = txt_avant ' ne rien modifier ;)
 
-									End if
 								End if
 
 								' Put scrolling at 0 when it change directory
@@ -909,9 +654,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 									if alpha_ < 1 Then alpha_ = 1
 
 									' Dessiner le scroll bar
-									' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_LEFT_BORDER_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_ID, IMG_BUFFER_ID, 0, Position_Y, alpha_)
-									' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_Survole_RIGHT_BORDER_ID, IMG_BUFFER_ID, Scrol_Bar_PX - 80, Position_Y, alpha_)
 									
 								Else
 									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
