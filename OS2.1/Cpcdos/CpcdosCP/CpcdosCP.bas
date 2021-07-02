@@ -4515,6 +4515,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "  Obtenir le texte du textebox"
 					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Focus le textbox"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /focus My_Textbox"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   TexteBox/ Mon_TexteBox"
 					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
@@ -4547,6 +4550,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Getting textbox text"
 					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Textbox focus"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /focus My_Textbox"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Example :"
 					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ My_Textbox"
@@ -4602,7 +4608,41 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim NomTextebox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
 			' Afficher le texte du textbox
-			IF INSTR(UCASE(NomTextebox), "/TEXT") > 0 Then
+			IF INSTR(UCASE(NomTextebox), "/FOCUS") > 0 Then
+				NomTextebox = ucase(MID(NomTextebox, INSTR(UCASE(NomTextebox), "/FOCUS") + 7))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							' Display !
+
+							DEBUG("[CpcdosC+] FOCUS Textbox(" & INDEX_Textbox & ") '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom & " KeyID " & _cle_win_Auth_Kernel, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							
+							dim _INDEX_FENETRE_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Index_FNT_PARENT
+							
+							' On indique qu'on FOCUS un Textbox
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox
+							
+							' Avec son index
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = INDEX_Textbox
+
+							' Dernière position
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte)
+						
+
+							
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			' Afficher le texte du textbox
+			ElseIF INSTR(UCASE(NomTextebox), "/TEXT") > 0 Then
 				NomTextebox = ucase(MID(NomTextebox, INSTR(UCASE(NomTextebox), "/TEXT") + 6))
 				
 				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX

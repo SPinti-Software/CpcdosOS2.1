@@ -148,13 +148,37 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim Espacement_POS_X_icon as integer  = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.ICON_MODE.SPACING", 3, _CLE_))
 				Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 
-				instance_FICHER_DOSSIER_.nb_elements = 5
-				instance_FICHER_DOSSIER_.nb_dossiers = 5
-				instance_FICHER_DOSSIER_.liste_Elements(0) = "Item 1"
-				instance_FICHER_DOSSIER_.liste_Elements(1) = "Item 2"
-				instance_FICHER_DOSSIER_.liste_Elements(2) = "Item 3"
-				instance_FICHER_DOSSIER_.liste_Elements(3) = "Item 4"
-				instance_FICHER_DOSSIER_.liste_Elements(4) = "Item 5"
+				
+				dim Text_work as String = Texte
+				instance_FICHER_DOSSIER_.nb_elements = 0
+				for boucle as integer = 1 to instance_FICHER_DOSSIER_.nb_MAX_elements
+
+					' S'il y a plusieurs elements
+					if instr(Text_work, ";") > 0 Then
+						' Recuperer l'item
+						dim item as String = Mid(Text_work, 1, Instr(Text_work, ";") - 1)
+
+						' Cuter apres le ;
+						Text_work = Mid(Text_work, Instr(Text_work, ";") + 1)
+
+						'DEBUG(" ****** item '" & item & "' Text_work:" & Text_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+
+						instance_FICHER_DOSSIER_.nb_elements += 1
+						instance_FICHER_DOSSIER_.liste_Elements(boucle) = item
+					Else
+						' S'il y a/reste 1 seul element
+						instance_FICHER_DOSSIER_.nb_elements += 1
+						instance_FICHER_DOSSIER_.liste_Elements(boucle) = Text_work
+
+						'DEBUG(" ****** item '" & Texte & "' Text_work:" & Text_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						
+						exit for
+					End if
+
+					
+					
+				Next boucle
+				
 				
 
 				Dim Path_ListBox_program as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.PROGRAM", 3, _CLE_))
@@ -281,123 +305,6 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				if DESKTOPMODE = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
 				
 				Scope
-					Texte = Rtrim(Texte)
-					
-					Dim Affichage_Breve as boolean
-					Dim Source 			as String
-					
-					
-					Dim SourceRecherche as String
-					Dim Source_exe_path as String
-					
-
-					Source 			= Rtrim(Rtrim(Ltrim(Ltrim(Texte, CHR(09))), CHR(09)))
-					CPY_Source		= CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source, TRUE, TRUE, FALSE)
-
-					' if len(Texte) > 0 Then
-					' 	if NOT Instr(Texte, "\") = Len(Texte) Then
-					'		Texte = "\"
-					' 	End if
-					' End if
-
-					' No path ! We displaying drives :-)
-					IF CPY_Source = "" Then DisplayDrives = true
-					IF Source = "" Then DisplayDrives = true
-				
-					
-					if DisplayDrives = false Then
-						IF Instr(CPY_Source, "\") > 0 Then
-
-							
-
-							' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
-							'  --> REP/ Dossier\*.*
-							SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
-							
-							If SourceRecherche = "" Then SourceRecherche = "\*.*"
-							
-							IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
-								SourceRecherche = "\*.*"
-							Else
-								Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
-								IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
-							End if
-				
-						Else
-							' Ex: REP/ .
-							' --> REP/ .\*.*
-							IF Len(CPY_Source) = 1 Then
-								IF CPY_Source = "." Then
-									SourceRecherche = ".\*.*"
-									Source = ""
-								Else
-									SourceRecherche = ".\*.*"
-									Source = ""
-								End if
-							Else
-								' EX: REP/
-								' --> REP/ *.*
-								SourceRecherche = "\*.*"
-								' Source = ""
-							End if
-						End if
-
-					End if
-
-					' S'il y a par erreur un \ avant le lecteur, on delete!
-					IF Instr(CPY_Source, "\") = 1 AND Instr(CPY_Source, ":") > 1 Then
-						CPY_Source = Mid(CPY_Source, 2)
-					End if
-
-					IF Instr(Source, "\") = 1 AND Instr(Source, ":") > 1 Then
-						Source = Mid(Source, 2)
-					End if
-
-
-					if DisplayDrives = false Then
-						' Si rien n'a ete precise
-						if Source = "" Then
-							' Si on ne precise rien, alors c'est le dossier courant dans l'executable
-							Source_exe_path = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
-							
-							' Verifier si la variable existe
-							if Source_exe_path = Ucase(CPCDOS_INSTANCE._CONTENU_IMPROPABLE) Then Source_exe_path = ""
-							
-							' Optimisation
-							IF NOT Source_exe_path = "" Then
-								Source = Source_exe_path
-								Source = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Source_exe_path, TRUE, TRUE, FALSE)
-
-								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-									Else
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-									End if
-								END IF
-							Else
-								Source = "."
-								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire CPCDOS avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-									Else
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Getting CPCDOS directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-									End if
-								END IF
-							End if
-						Else
-							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-									DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Recuperation du contenu du repertoire '" & Source & "' avec les filtres '" & SourceRecherche & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-								Else
-									DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Getting '" & Source & "' directory content with '" & SourceRecherche & "' filters ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-								End if
-							END IF
-						End if
-					End if
-					' Afficher le path
-					' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, CPY_Source, 32 , 1, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-				
 					scope
 						
 						Dim Resultat as Boolean
@@ -445,7 +352,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 
 
 							' Dossier en cours
-							Lines_array(b) = "D:" & instance_FICHER_DOSSIER_.liste_Elements(b)
+							Lines_array(b) = instance_FICHER_DOSSIER_.liste_Elements(b)
 
 							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
 								' Icone MIN
@@ -518,7 +425,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 									if Position_clic_Y >= Pos_lst_Y - (ZoneClic/3) Then
 										IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 
-											element = Mid(Lines_array(boucle), 3)
+											element = Lines_array(boucle)
 
 											Clic_DOSSIER = true
 											exit for
@@ -565,7 +472,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 										If Position_clic_Y > Pos_lst_Y 		AND 	Position_clic_Y < Pos_lst_Y + Pos_Col_Y_STEP Then
 
 											' Retrouver l'element sur le quel l'utilisateur a clique
-											element = Mid(Lines_array(boucle), 3)
+											element = Lines_array(boucle)
 
 											Clic_DOSSIER = true
 											exit for
@@ -580,38 +487,13 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 							' --------------------------------------------------------------
 
 							If Clic_DOSSIER = true Then
-								' ==== C ' E S T    U N    D O S S I E R ====
 									
-
-								Dim txt_avant as String = this.INST_INIT_GUI.GUI__ListBox(_index_).Texte
-
-								if Mid(CPY_Source, Len(CPY_Source)) = "\" Then ' Y'a deja un '\' a la fin
-									this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element & "\"
-								Else
-									if DisplayDrives = false Then
-										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & "\" & element & "\"
-									else
-										this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = CPY_Source & element
-									End if
-								End if
-
-								if DESKTOPMODE = true Then
-									' Ouvrir un ListBox
-									' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:GUI.ListBox(" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & ")", This._CLE_, 3, 0, "")
-
-									this.INST_INIT_GUI.GUI__ListBox(_index_).Texte = txt_avant ' ne rien modifier ;)
-
-								End if
-
-								' Put scrolling at 0 when it change directory
-								this.INST_INIT_GUI.GUI__ListBox(_index_).SCROLLING_Y = 0
-								reload = true ' Recharger l'objet
 								
 								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Changement de repertoire --> '" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] SELECTION --> '" & element & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 									else
-										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] Changing directory --> '" & this.INST_INIT_GUI.GUI__ListBox(_index_).Texte & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										DEBUG("[SCI] Creer_ListBox() [0x" & hex(this._CLE_) & "] SELECTION --> '" & element & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 									End if
 								end if
 
