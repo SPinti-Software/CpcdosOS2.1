@@ -29,38 +29,17 @@ Window/ listbox_window
         @#window_handle create/
 End/ Window
 
-
-
-picturebox/ img_display_mode
-	.handle		= "%window_handle%"
-	.parameters	= "IMGAUTO:0"
-	.PX		= "440"
-	.PY		= "1"
-	.sx		= "22"
-	.sy		= "22"
-
-        if/ "%DisplayMode%" == "0" then:
-	        .Image	= "%Displaymode_ICO_Path%"
-        else:
-                .Image	= "%Displaymode_LIST_Path%"
-        End/ if
-
-	.opacity	= "255"
-        .events         = "%_exe_path_%=MouseClick"
-	create/
-end/ Picturebox
-
  
 listbox/ listbox_gui
         .handle         = "%window_handle%"
         .parameters     = "EXPLOREMODE:%DisplayMode%"
-        .px             = "0"
-        .py             = "0"
+        .px             = "1"
+        .py             = "1"
         .sx             = "250"
-        .sy             = "190"
+        .sy             = "200"
         .opacity        = "255"
-        .textcolor      = "250,250,250"
-        .backcolor      = "100,100,100"
+        .textcolor      = "028,028,028"
+        .backcolor      = "255,255,255"
         .text           = "Element 1;element 2;ELEMENT 3;Et mon 4eme elemeeeent!"
         .events         = "%_exe_path_%"
         create/

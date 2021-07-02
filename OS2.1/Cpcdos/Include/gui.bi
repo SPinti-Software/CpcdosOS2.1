@@ -846,6 +846,7 @@ Type _SCI_Cpcdos_OSx__
 		FORMAT_file_icon_MAX_ID(FORMAT_MAX)	as integer
 		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer
 		EXP_BACKGROUND_ID					as integer
+		LST_BACKGROUND_ID					as integer ' Listbox !
 		EXP_SCROLL_ID						as integer
 
 		EXP_Survole_LEFT_BORDER_ID			as integer
