@@ -101,6 +101,10 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim Couleur_R 		as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_CTN_R
 				Dim Couleur_V 		as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_CTN_V
 				Dim Couleur_B 		as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_CTN_B
+
+				Dim Couleur_Select_R as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.SELECTED_COLOR_R", 3, _CLE_))
+				Dim Couleur_Select_G as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.SELECTED_COLOR_G", 3, _CLE_))
+				Dim Couleur_Select_B as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.SELECTED_COLOR_B", 3, _CLE_))
 				
 				Dim Couleur_FNT_R as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_FNT_R
 				Dim Couleur_FNT_V as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_FNT_V
@@ -356,7 +360,15 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 
 							if Mode_Affichage = 0 OR Mode_Affichage = 1 Then
 								' Icone MIN
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+								
+								if this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = b Then
+									' Couleur du selectionne
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
+								else
+									' Couleur du NON selectionne
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								End if
 
 								if DisplayDrives = true Then
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
@@ -370,7 +382,11 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 								dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
 								dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
 
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								if this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = b Then
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
+								Else
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+								End if
 
 								if DisplayDrives = true Then
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
@@ -426,6 +442,10 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 										IF Position_clic_Y <= Pos_lst_Y + ZoneClic  Then ' Si clic dans la zone
 
 											element = Lines_array(boucle)
+
+											' Memoriser le texte selectionne
+											this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = boucle
+											this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_str = element
 
 											Clic_DOSSIER = true
 											exit for

@@ -1068,14 +1068,14 @@ Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String
 	' Normal
 	Dim msg_back_color 	as string = "200,200,200"
 	Dim msg_win_icom	as string = "ICOM_DEF.PNG"
-	Dim msg_win_ico		as string = "ICO_DEF.PNG"
+	Dim msg_win_ico		as string = ""
 	
 
 
 	if Type_Avertissement = 1 Then ' INFORMATION
 		msg_back_color  = "090,200,200"
 		msg_win_icom	= "ICOM_INF.PNG"
-		msg_win_ico		= ""
+		msg_win_ico		= "ICO_INF.PNG"
 		
 
 		Txt_Position_X 	= 80
@@ -1120,7 +1120,9 @@ Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String
 
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.text(" & nom_propriete & "," & win_msg_Handle & "," & Texte & "," & txt_Position_X & "," & txt_Position_Y & "," & Txt_Size_X & "," & Txt_Size_Y & ")", _CLE_, 3, 0, "")
 
-	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.icon(" & nom_propriete & "," & win_msg_Handle & "," & ico_Position_X & "," & ico_Position_Y & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+	if NOT msg_win_ico = "" Then
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.icon(" & nom_propriete & "," & win_msg_Handle & "," & ico_Position_X & "," & ico_Position_Y & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+	End if
 
 	if Type_Avertissement = 0 Then ' Normal (OK)
 		btn_Text 	= "Ok"

@@ -47,6 +47,13 @@ End/ listbox
 
 // ===== GUI events =====
 
+Function/ listbox_gui.selected(item_str,item_index)
+        ccp/ /set.level = 1
+
+        msgbox/ Elements selectionne : %item_str% index:%item_index%
+
+end/ Function
+
 Function/ img_Drive.MouseClick()
         // Display drive list
 

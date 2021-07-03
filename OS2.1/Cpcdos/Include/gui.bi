@@ -725,7 +725,10 @@ Type Cpcdos_GUI__LISTBOX
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
 										'  Ce qui permet en cas de changeent de resolutin d'ecran, de recharger l'image
 	
-	TEXTE					as String 	' Afficher du texte a l'interieur	
+	TEXTE					as String 	' Afficher du texte a l'interieur
+
+	SELECTIONNE_index		as integer
+	SELECTIONNE_str			as string
 
 	POS_X					as Integer 	' Position horizontale
 	POS_Y					as Integer 	' Position verticale

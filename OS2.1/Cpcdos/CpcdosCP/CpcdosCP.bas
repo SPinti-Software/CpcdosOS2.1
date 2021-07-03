@@ -689,7 +689,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					dim cap_tmp as string = Rtrim(Ltrim(tst_Cap, chr(10)), chr(13))
 
 					if Instr(cap_tmp, ".") > 0 Then
-						Debug(" P2 Arrob:" & Arrob , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						if Arrob = false Then
 							if Instr(cap_tmp, "./") > 0 OR Instr(cap_tmp, ".\") > 0 Then exit for ' il s'agit purement d'un path
 							if Instr(cap_tmp, "/.") > 0 OR Instr(cap_tmp, "\.") > 0 Then exit for ' il s'agit purement d'un path

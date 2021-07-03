@@ -4064,6 +4064,23 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													' Actualiser graphiquement le bouton pour l'effet de "survole"
 													Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
 												'End if
+
+												Dim SELECTIONNE_index as integer = this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SELECTIONNE_index
+												Dim SELECTIONNE_str as string = this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SELECTIONNE_str
+
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Selected(2)") > 0 Then
+													' Si l'utilisateur selectionne (bouton enfonce) un element
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".Selected(" & SELECTIONNE_str & "," & SELECTIONNE_index & ")", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Selected(2);"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Selected(2)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												end if
 												
 												IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
