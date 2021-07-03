@@ -22030,6 +22030,12 @@ _FIN_EXE_CCP_EXE:
 				Dim NomProcessus as String
 				Dim NumeroPID as integer
 				
+				' Lister la liste des processus & threads
+				IF Instr(UCASE(Param), "/LIST") > 0 Then
+					CPCDOS_INSTANCE.get_List_Processus()
+				End if
+
+
 				IF Instr(UCASE(Param), "/PROCESSUS") > 0 Then
 					NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESSUS") + 11)
 				ElseIF Instr(UCASE(Param), "/PROCESS") > 0 Then

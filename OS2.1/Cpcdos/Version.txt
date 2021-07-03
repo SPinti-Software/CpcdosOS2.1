@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 15	Ajouts de divers fonctionnalités.
+		--> 16	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 3	optimisations.
 		--> 4	corrections et modifications mineures.
@@ -50,6 +50,15 @@
 			- CTX:0 --> desactivé (par defaut, sauf fenetre, textbox et explorer)
 			- CTX:1 --> activé (Profile par défaut)
 			- CTX:2 --> activé (Profile personnalisé)
+		- [CPCDOSC+] Ajout des parametres de commandes pour lister les processus & thread
+			- sys/ /process /list
+			- sys/ /process /list /nameonly
+			- sys/ /process /list /nocrlf
+			- sys/ /process /list /array My_Process_List_variable
+			- sys/ /thread /list
+			- sys/ /thread /list /nameonly
+			- sys/ /thread /list /nocrlf
+			- sys/ /process /list /array My_Thread_List_variable
 		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
 		- [SCI] Ajout du ALT+F4 pour fermer les fenetres focus ! :-)
 				Fenetre non fermables via le parametre CLOSE:0

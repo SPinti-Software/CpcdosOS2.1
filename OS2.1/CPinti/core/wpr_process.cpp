@@ -75,8 +75,8 @@ namespace cpinti
 				/** Identifiant Thread parent (Celui qui le cree) **/
 				gestionnaire_tache::Liste_Processus[Resultat].TID_Parent = gestionnaire_tache::Thread_en_cours;
 				
-				/** Nom du processus **/
-				// strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, NomProcessus, 16);
+				/** Nom du processus **/				
+				strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, NomProcessus, strlen(NomProcessus));
 			}
 			else
 			{

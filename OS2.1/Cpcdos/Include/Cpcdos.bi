@@ -560,6 +560,7 @@ Type __Noyau_Cpcdos_OSx__
 		Declare Function 	Fermer_processus	(PID as uinteger) 										as boolean
 		Declare Function 	Gerer_processus		(PID as uinteger, Action as integer) 					as integer
 		Declare Function 	get_Nom_Processus	(PID as uinteger) 										as String
+		Declare Function 	get_List_Processus	() 														as String
 		
 		Declare Function 	Creer_thread		(byref _STRUCT_THREAD as _STRUCT_THREAD_Cpcdos_OSx__) 	as uinteger
 		

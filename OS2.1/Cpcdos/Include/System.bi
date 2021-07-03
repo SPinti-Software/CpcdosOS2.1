@@ -510,10 +510,7 @@ End Type
 
 Type _SYSTEME_Cpcdos_OSx__ 
 	private:
-		CONST _MAX_PROCESSUS 	as integer = 128 ' fixe temporairement a 128
-		CONST _MAX_THREADS 		as integer = 256 ' fixe temporairement a 256
-	
-	
+
 		DBG_DEBUG as integer 		= 1	' Etat du debogeur
 		DBG_PRINTF as integer 		= 1 ' Afficher le printf des fonctions
 		DBG_CPINTI as integer 		= 1	' Afficher debug CPinti Core
@@ -579,6 +576,9 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare function 	ChargerJPG				(byval Chemin as string, byref Largeur as integer, byref Hauteur as integer, byref NombreCanaux as integer) as ubyte ptr
 		
 	public:	
+
+		CONST _MAX_PROCESSUS 	as integer = 128 ' fixe temporairement a 128
+		CONST _MAX_THREADS 		as integer = 256 ' fixe temporairement a 256
 	
 		CONST KEY_BEGIN				as String = CHR(255) & CHR(71) ' Touche debut
 		CONST KEY_END				as String = CHR(255) & CHR(79) ' Touche fin
