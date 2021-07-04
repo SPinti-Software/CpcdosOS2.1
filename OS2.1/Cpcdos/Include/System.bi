@@ -478,6 +478,7 @@ Type _FICHER_DOSSIER_
 		
 		liste_Elements		(0 to nb_MAX_elements)	as String
 		attributs_Elements	(0 to nb_MAX_elements)	as _Fichier_Dossier_attribs_
+		liste_icons			(0 to nb_MAX_elements)	as integer ' Listbox only
 		
 End Type
 

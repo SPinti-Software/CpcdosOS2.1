@@ -553,28 +553,31 @@ Type __Noyau_Cpcdos_OSx__
 		Declare Function 	Initialiser_BootScreen	(Type_rsc as boolean, source as string, PID_system as uinteger) as uinteger
 		Declare Function 	Load_Ressources			(Type_rsc as boolean, source as String, Res_X as integer, Res_Y as integer) as integer
 		
-		Declare Function 	Generer_RND			(Debut as double, Fin as double) 						as double
-		Declare Function 	get_En_Charge		() 														as boolean
-		Declare Sub 		En_Charge			(oui as boolean)
-		Declare Function 	Creer_processus		(ByRef _STRUCT_PROCESSUS as _STRUCT_PROCESSUS_Cpcdos_OSx__) 	as uinteger
-		Declare Function 	Fermer_processus	(PID as uinteger) 										as boolean
-		Declare Function 	Gerer_processus		(PID as uinteger, Action as integer) 					as integer
-		Declare Function 	get_Nom_Processus	(PID as uinteger) 										as String
-		Declare Function 	get_List_Processus	(display as integer)									as String
+		Declare Function 	Generer_RND				(Debut as double, Fin as double) 								as double
+		Declare Function 	get_En_Charge			() 																as boolean
+		Declare Sub 		En_Charge				(oui as boolean)
+		Declare Function 	Creer_processus			(ByRef _STRUCT_PROCESSUS as _STRUCT_PROCESSUS_Cpcdos_OSx__) 	as uinteger
+		Declare Function 	Fermer_processus		(PID as uinteger) 												as boolean
+		Declare Function 	Gerer_processus			(PID as uinteger, Action as integer) 							as integer
+		Declare Function 	get_Nom_Processus		(PID as uinteger) 												as String
+		Declare Function 	get_List_Processus		(display as integer)											as String
+		declare Function	get_pid_by_name_process	(process_name as string) 										as integer
+		declare Function	get_List_PID			(display as integer) 											as String
+		declare Function	get_List_Processus_icon (display as integer) 											as String
 		
-		Declare Function 	Creer_thread		(byref _STRUCT_THREAD as _STRUCT_THREAD_Cpcdos_OSx__) 	as uinteger
+		Declare Function 	Creer_thread		(byref _STRUCT_THREAD as _STRUCT_THREAD_Cpcdos_OSx__) 				as uinteger
 		
-		Declare Function 	Fermer_thread		(PID as uinteger, TID as uinteger, force as boolean) 	as integer
+		Declare Function 	Fermer_thread		(PID as uinteger, TID as uinteger, force as boolean) 				as integer
 		Declare Function 	Fin_thread			(PID as uinteger, TID as uinteger) as integer
-		Declare Function 	Gerer_thread		(PID as uinteger, TID as uinteger, Action as integer) 	as integer
-		Declare Function 	get_Nom_Thread		(TID as uinteger) 										as String
-		Declare Function 	get_ThreadEnCours	() 														as uinteger
-		Declare Function 	get_NombreThreads	() 														as uinteger
+		Declare Function 	Gerer_thread		(PID as uinteger, TID as uinteger, Action as integer) 				as integer
+		Declare Function 	get_Nom_Thread		(TID as uinteger) 													as String
+		Declare Function 	get_ThreadEnCours	() 																	as uinteger
+		Declare Function 	get_NombreThreads	() 																	as uinteger
 		
-		Declare Function 	Fichier_decompress	(ByVal Source as String, ByVal Destination as String) 	as integer
-		Declare Function 	Creer_repertoires_Parents(ByVal file As ZString Ptr) 						as boolean
+		Declare Function 	Fichier_decompress	(ByVal Source as String, ByVal Destination as String) 				as integer
+		Declare Function 	Creer_repertoires_Parents(ByVal file As ZString Ptr) 									as boolean
 		Declare Function	decompress_fichier	(ByVal zip_instance As zip_t Ptr, ByVal i As Integer, Destination as String) as boolean
-		Declare Function 	Fichier_compress	(ByVal Source as String, ByVal Destination as String) 	as integer
+		Declare Function 	Fichier_compress	(ByVal Source as String, ByVal Destination as String) 				as integer
 		
 		Declare Function	Lire_fichier_complet(ByVal Chemin as String) as String
 		Declare Function 	Fichier_Existe		(ByVal Chemin as String) as boolean

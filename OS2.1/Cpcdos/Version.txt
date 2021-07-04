@@ -58,13 +58,14 @@
 			- CTX:0 --> desactivé (par defaut, sauf fenetre, textbox et explorer)
 			- CTX:1 --> activé (Profile par défaut)
 			- CTX:2 --> activé (Profile personnalisé)
-		- [CPCDOSC+] Ajout des parametres de commandes pour lister les processus & thread
-			- sys/ /process /list
-			- sys/ /process /list /nameonly
-			- sys/ /process /list /array My_Process_List_variable
-			- sys/ /thread /list
-			- sys/ /thread /list /nameonly
-			- sys/ /process /list /array My_Thread_List_variable
+		- [CPCDOSC+] Ajout des parametres dans sys/ /process pour lister les processus & thread
+			- /list 			--> Lister les processus
+			- /listb 			--> Adapte pour les listbox avec ";" comme separateur
+			- /nameonly 		--> Nom seulement
+			- /icon 			--> Lister les icones par processus
+			- /index			--> Numero index seulement
+			- /array variable 	--> Stocker dans un taleau CpcdosC+
+			
 
 		
 

@@ -453,9 +453,8 @@ Function __Noyau_Cpcdos_OSx__.get_Nom_Processus(PID as uinteger) as String
 End Function
 
 Function __Noyau_Cpcdos_OSx__.get_List_Processus(display as integer) as String
-	' Cette fonction permet d'obtenir le nom d'un thread
-	'	PID		: Numero PID du processus
-	'   Retourne le nom du processus
+	' Cette fonction permet d'obtenir la liste de processus
+
 	' display :
 	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
 	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
@@ -493,6 +492,145 @@ Function __Noyau_Cpcdos_OSx__.get_List_Processus(display as integer) as String
 				Liste_Processus += processus_name & " [" & nb_thread & " threads];"
 			Elseif display = 6 Then
 				Liste_Processus += "[PID " & boucle & "] '" & processus_name & "' [" & nb_thread & " threads];"
+			Elseif display = 7 Then
+
+			End if
+		end if
+	Next boucle
+	
+	return Liste_Processus
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_List_PID(display as integer) as String
+	' Cette fonction permet d'obtenir la liste de PID
+
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	
+	Dim Liste_Processus as String = ""
+	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+		' Checker si le PID existe
+		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
+		' S'il existe
+		if len(processus_name) > 1 Then
+
+			if display = 0 Then
+				Liste_Processus += boucle & CRLF
+			Elseif display = 1 Then
+				
+			Elseif display = 2 Then
+				
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += boucle & ";"
+			Elseif display = 5 Then
+			
+			Elseif display = 6 Then
+
+			Elseif display = 7 Then
+
+			End if
+		end if
+	Next boucle
+	
+	return Liste_Processus
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_pid_by_name_process(process_name as string) as integer
+	' Cette fonction permet d'obtenir le nom d'un thread
+	'	PID		: Numero PID du processus
+	'   Retourne le nom du processus
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	if len(process_name) > 1 Then
+		Dim Liste_Processus as String = ""
+		for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+			' Checker si le PID existe
+			Dim processus_name_check as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+			
+
+			' S'il existe
+			if len(processus_name_check) > 1 Then
+				if Ucase(processus_name_check) =  ucase(process_name) Then
+					return boucle
+				End if
+			end if
+
+		next boucle
+	End if
+
+	return 0
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_List_Processus_icon(display as integer) as String
+	' Cette fonction permet d'obtenir la liste des icones des processus
+
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	
+	Dim Liste_Processus as String = ""
+	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+		' Checker si le PID existe
+		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
+		' S'il existe
+		if len(processus_name) > 1 Then
+			dim Icone_Window as integer
+
+			' Chercher une icone dans les fenetres
+			For _INDEX_FENETRE_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+				
+				' Chercher une fenetre qui correspond au PID
+				IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Identification_Objet.PID_PARENT = boucle Then
+					Icone_Window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).ICONE_IMG_ID
+				End if
+			Next _INDEX_FENETRE_
+
+			' S'il y a pas le nom de l'image minimum 5 lettres ex:".PNG"
+			if NOT Icone_Window > 1 Then
+				Icone_Window = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.ICO", 3,  CPCDOS_INSTANCE.SCI_INSTANCE._CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+			End if
+
+			if display = 0 Then
+				Liste_Processus += Icone_Window & CRLF
+			Elseif display = 1 Then
+				
+			Elseif display = 2 Then
+				
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += Icone_Window & ";"
+			Elseif display = 5 Then
+			
+			Elseif display = 6 Then
+
 			Elseif display = 7 Then
 
 			End if

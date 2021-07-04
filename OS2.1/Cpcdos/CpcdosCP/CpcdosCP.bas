@@ -5244,7 +5244,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim NomListbox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
 			IF INSTR(UCASE(NomListbox), "/SELECTED_INDEX") > 0 Then
-				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_INDEX") + 15))
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_INDEX") + 16))
 				
 				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
 
@@ -5257,14 +5257,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 
 							' Afficher l'index de l'item
-							DEBUG(str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_index), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							DEBUG(str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_index - 1), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 							exit for
 
 						end if
 					End if
 				Next INDEX_listbox
 			Elseif INSTR(UCASE(NomListbox), "/SELECTED_NAME") > 0 Then
-				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_NAME") + 14))
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_NAME") + 15))
 				
 				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
 
@@ -22086,19 +22086,54 @@ _FIN_EXE_CCP_EXE:
 				
 				' Lister la liste des processus & threads
 				IF Instr(UCASE(Param), "/LIST") > 0 Then
-					IF Instr(UCASE(Param), "/LISTB") > 0 Then
-						' ListBox mode
-						IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
-							DEBUG(CPCDOS_INSTANCE.get_List_Processus(0), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					IF Instr(UCASE(Param), "/ARRAY") > 0 Then
+						Dim NomVariable as String = Mid(Param, Instr(UCASE(Param), "/ARRAY") + 7)
+						Dim ListeProcessus as String
+						
+						IF Instr(UCASE(Param), "/INDEX") > 0 Then
+							ListeProcessus = CPCDOS_INSTANCE.get_List_PID(4)
 						Else
-							DEBUG(CPCDOS_INSTANCE.get_List_Processus(2), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							ListeProcessus = CPCDOS_INSTANCE.get_List_Processus(4)
+						End if
+
+						for index as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+							if instr(ListeProcessus, ";") > 0 Then
+								' Recuperer l'item
+								dim item as String = Mid(ListeProcessus, 1, Instr(ListeProcessus, ";") - 1)
+
+								' Cuter apres le ;
+								ListeProcessus = Mid(ListeProcessus, Instr(ListeProcessus, ";") + 1)
+
+								' Creer le tableau
+								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+							Else
+								dim item as String = ListeProcessus
+
+								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+
+								exit for
+							End if
+
+						Next index
+
+					
+
+					elseif Instr(UCASE(Param), "/LISTB") > 0 Then
+						' ListBox mode
+						if Instr(UCASE(Param), "/ICON") > 0 Then
+							' Get icon path
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus_icon(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						ElseIF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(6), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						End if
 					Else
 						' Liste en CRLF
 						IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
-							DEBUG(CPCDOS_INSTANCE.get_List_Processus(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(0), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						Else
-							DEBUG(CPCDOS_INSTANCE.get_List_Processus(6), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(2), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						End if
 					End if
 

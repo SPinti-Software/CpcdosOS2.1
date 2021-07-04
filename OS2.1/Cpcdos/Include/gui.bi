@@ -798,7 +798,7 @@ Type _SCI_Cpcdos_OSx__
 	private:
 		
 
-		_CLE_					as double ' Empreinte numerique
+		
 		OS_id					as integer
 		NombreOSEnCours			as integer
 		
@@ -822,6 +822,8 @@ Type _SCI_Cpcdos_OSx__
 	
 		CONST _MAX_NOMBRE_OS		as integer = 8
 		CONST _MAX_Taskbar_Elements as integer = 24
+
+		_CLE_						as double ' Empreinte numerique
 	
 		RetourVAR as String
 	

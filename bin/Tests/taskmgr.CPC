@@ -15,11 +15,11 @@ ccp/ /set.level = 1
 // ===== Build window =====
 Window/ taskmgr_win
 
-        .title          = "Gestionnaire de taches"
+        .title          = "CPinti Core Task manager - Sample"
         .parameters     = "TYPE:0 SIZ:1 SIZBTN:1"
         .px             = "140"
         .py             = "100"
-        .sx             = "300"
+        .sx             = "450"
         .sy             = "250"
         .opacity        = "255"
         .WindowColor    = "100,100,100"
@@ -30,27 +30,35 @@ Window/ taskmgr_win
         @#window_handle create/
 End/ Window
 
-@#list_process sys/ /process /list
+// Getting process list in Listbox format 
+@#list_process_listbox sys/ /process /listb
+
+// Getting icon process list in Listbox format
+@#list_icon_process_listbox sys/ /process /listb /icon
+
  
 listbox/ listbox_gui
         .handle         = "%window_handle%"
         .parameters     = "EXPLOREMODE:%DisplayMode% CTX:2"
         .px             = "1"
         .py             = "1"
-        .sx             = "300"
-        .sy             = "200"
+        .sx             = "450"
+        .sy             = "250"
         .opacity        = "255"
         .textcolor      = "028,028,028"
         .backcolor      = "255,255,255"
-        .text           = "%list_process%"
+        .text           = "%list_process_listbox%"
+        .Image          = "%list_icon_process_listbox%"
         .events         = "%_exe_path_%"
         create/
 End/ listbox
 
+// Recuperer la liste des nom de processus dans un tableau CpcdosC+
 ccp/ /set.level = 3
+sys/ /process /list /index /array list_process_pid
 
 set/ listbox_gui.ctx_text(0) = Arreter processus
-set/ listbox_gui.ctx_action(0) = /F:kill_selected_process()
+set/ listbox_gui.ctx_action(0) = /F:kill_selected_process() \#NO-FN
 
 set/ listbox_gui.ctx_text(1) = Suspendre processus
 set/ listbox_gui.ctx_action(1) = 
@@ -72,6 +80,8 @@ ccp/ /set.level = 1
 Function/ listbox_gui.selected(item_str,item_index)
         ccp/ /set.level = 1
 
+        /f:refresh()
+
 end/ Function
 
 
@@ -79,9 +89,33 @@ Function/ kill_selected_process()
         ccp/ /set.level = 1
 
         // Getting item name
-        @#item_name listbox/ /selected_name listbox_gui
+        @#item_index listbox/ /selected_index listbox_gui
 
-        msgbox/ Suppression de %item_name% !
+        // 
+        set/ proc_index_tmp =  \%list_process_pid(%item_index%)\% \#REFORMAT-VAR
+        set/ proc_index_tmp = %proc_index_tmp% \#REFORMAT-VAR
+        
+        close/ /PID %proc_index_tmp%
+
+        ccp/ /pause 1000
+
+        // Refresh list
+        /F:refresh()
+
+End/ function
+
+Function/ refresh()
+        // This function refresh list
+
+        @#list_process_listbox sys/ /process /listb
+        
+        listbox/ /modif:listbox_gui
+                .text           = "%list_process_listbox%"
+                create/
+        End/ listbox
+
+        ccp/ /set.level = 3
+        sys/ /process /list /index /array list_process_pid
 
 End/ function
 

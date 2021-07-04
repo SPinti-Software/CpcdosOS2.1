@@ -109,6 +109,8 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim Couleur_FNT_R as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_FNT_R
 				Dim Couleur_FNT_V as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_FNT_V
 				Dim Couleur_FNT_B as integer = this.INST_INIT_GUI.GUI__ListBox(_index_).PROP_TYPE.Couleur_FNT_B
+
+				Dim Image as string = this.INST_INIT_GUI.GUI__ListBox(_index_).Image
 				
 
 				Dim Couleur_ALPHA 	as integer
@@ -152,7 +154,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 				Dim Espacement_POS_X_icon as integer  = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LISTBOX.ICON_MODE.SPACING", 3, _CLE_))
 				Dim instance_FICHER_DOSSIER_ as _FICHER_DOSSIER_ 
 
-				
+				' ---- LISTE DES ELEMENTS ----
 				dim Text_work as String = Texte
 				instance_FICHER_DOSSIER_.nb_elements = 0
 				for boucle as integer = 1 to instance_FICHER_DOSSIER_.nb_MAX_elements
@@ -180,6 +182,43 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 					End if
 
 					
+					
+				Next boucle
+
+				' ---- LISTE DES ICONES ----
+				dim image_work as String = Image
+				instance_FICHER_DOSSIER_.nb_elements = 0
+				for boucle as integer = 1 to instance_FICHER_DOSSIER_.nb_MAX_elements
+
+					' S'il y a plusieurs elements
+					if instr(image_work, ";") > 0 Then
+						' Recuperer l'item
+						dim item as String = Mid(image_work, 1, Instr(image_work, ";") - 1)
+
+						' Cuter apres le ;
+						image_work = Mid(image_work, Instr(image_work, ";") + 1)
+
+						DEBUG(" ****** item '" & item & "' image_work:" & image_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+
+						instance_FICHER_DOSSIER_.nb_elements += 1
+						instance_FICHER_DOSSIER_.liste_icons(boucle) = val(item)
+					Else
+						' S'il y a/reste 1 seul element
+						instance_FICHER_DOSSIER_.nb_elements += 1
+						instance_FICHER_DOSSIER_.liste_icons(boucle) = val(image_work)
+
+						DEBUG(" ****** item '" & Image & "' image_work:" & image_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						
+						exit for
+					End if
+
+					for index as integer = 0 to 10
+						if Len(instance_FICHER_DOSSIER_.liste_icons(boucle)) > 1 Then
+							DEBUG(" ****** instance_FICHER_DOSSIER_.liste_icons(" & index & "):" & instance_FICHER_DOSSIER_.liste_icons(boucle), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)					
+						End if
+					Next index
+
+
 					
 				Next boucle
 				
@@ -370,11 +409,9 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								End if
 
-								if DisplayDrives = true Then
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-								Else
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MIN_ID(CPCDOS_INSTANCE.FORMAT_INDEX_DIR), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
-								End if
+								
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(instance_FICHER_DOSSIER_.liste_icons(b), IMG_BUFFER_ID, POS_Col_Icone, 0 + Pos_lst_Y)
+								
 							Else
 								' Icone MAX
 								Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
