@@ -5161,6 +5161,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un listbox dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir le nom de l'item selectionne"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_name my_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir l'index de l'item selectionne"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_index my_listbox"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
 					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
@@ -5183,6 +5189,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
 					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create listbox instance in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Getting selected item name"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_name My_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & " Getting selected item index"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_index My_listbox"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
@@ -5230,7 +5243,48 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Enlever les espaces et mettre tout en majuscules
 			Dim NomListbox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
-			IF INSTR(UCASE(NomListbox), "/MODIF") > 0 Then
+			IF INSTR(UCASE(NomListbox), "/SELECTED_INDEX") > 0 Then
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_INDEX") + 15))
+				
+				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).Identification_Objet.Nom) = NomListbox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							' Afficher l'index de l'item
+							DEBUG(str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_index), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							exit for
+
+						end if
+					End if
+				Next INDEX_listbox
+			Elseif INSTR(UCASE(NomListbox), "/SELECTED_NAME") > 0 Then
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_NAME") + 14))
+				
+				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).Identification_Objet.Nom) = NomListbox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							' Afficher le nom de l'item
+							DEBUG(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_str, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							exit for
+
+						end if
+					End if
+				Next INDEX_listbox
+
+			elseif INSTR(UCASE(NomListbox), "/MODIF") > 0 Then
 				NomListbox = MID(NomListbox, INSTR(UCASE(NomListbox), "/MODIF") + 7) & "~MODIF#"
 
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -22033,12 +22087,14 @@ _FIN_EXE_CCP_EXE:
 				' Lister la liste des processus & threads
 				IF Instr(UCASE(Param), "/LIST") > 0 Then
 					IF Instr(UCASE(Param), "/LISTB") > 0 Then
+						' ListBox mode
 						IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
 							DEBUG(CPCDOS_INSTANCE.get_List_Processus(0), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						Else
 							DEBUG(CPCDOS_INSTANCE.get_List_Processus(2), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						End if
 					Else
+						' Liste en CRLF
 						IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
 							DEBUG(CPCDOS_INSTANCE.get_List_Processus(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						Else
