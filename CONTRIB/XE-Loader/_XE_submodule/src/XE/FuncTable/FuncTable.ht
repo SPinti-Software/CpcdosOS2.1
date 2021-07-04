@@ -124,7 +124,9 @@
 
 /////////////////////////////
 
-//{"wcscpy"  				,(FUNC_) wcscpy },
+{"",			"wcscpy"  				,(FUNC_) imp_wcscpy },
+
+
 //{"GetModuleFileNameW"  	,(FUNC_) GetModuleFileNameW },
 //{"_open"  				,(FUNC_) impl_open },
 
@@ -266,6 +268,8 @@
 {"",			"CreateWindowExA"  				,(FUNC_) sys_CreateWindowExA },
 {"",			"CreateWindowExW"  				,(FUNC_) sys_CreateWindowExW },
 
+
+{"",			"CreateThread"  				,(FUNC_) th_CreateThread },
 {"",			"GetCurrentThread"  			,(FUNC_) th_GetCurrentThread },
 {"",			"GetCurrentThreadId"  			,(FUNC_) sys_GetCurrentThreadId },
 {"",			"GetThreadPriority"  			,(FUNC_) th_GetThreadPriority },

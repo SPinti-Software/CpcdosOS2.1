@@ -9,8 +9,11 @@
 #print * WRAPPER
 ' ============================ Fonctions publiques/wrapped =============================
 Declare Function 	cpc_mouse_state					cdecl Alias "cpc_mouse_state" 					(param as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
+Declare Function 	cpc_mouse_state_lck				cdecl Alias "cpc_mouse_state_lck" 				(param as integer, id_context as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
 Declare Function 	cpc_set_mouse 					cdecl Alias "cpc_set_mouse" 					(PX as integer, PY as integer, Visible as boolean) as boolean
+Declare Function 	cpc_set_mouse_lck				cdecl Alias "cpc_set_mouse_lck" 				(PX as integer, PY as integer, Visible as boolean, id_context as integer) as boolean
 Declare Function	cpc_get_key						cdecl Alias "cpc_get_key"						() as integer ' numero ascii
+Declare Function	cpc_get_key_lck					cdecl Alias "cpc_get_key_lck"					(id_context as integer) as integer ' numero ascii
 
 Declare Function 	cpc_Blitter 					cdecl Alias "cpc_Blitter" 						(ID as integer) as integer
 Declare Function 	cpc_Creer_Contexte 				cdecl Alias "cpc_Creer_Contexte" 				(TailleX as integer, TailleY as integer) as integer
@@ -45,6 +48,10 @@ dim shared ACU 				as integer = 0
 dim shared temps_precedent 	as double = 1
 
 Public Function cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer) as integer 
+	return cpc_mouse_state_lck(param, 0)
+End Function
+
+Public Function cpc_mouse_state_lck cdecl Alias "cpc_mouse_state_lck" (param as integer, id_context as integer) as integer 
 	' Obtenir les informations de la souris
 	' 0:clic 1:posx 2:posy, scrool, clip
 	
@@ -57,54 +64,199 @@ Public Function cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer)
 		DEBUG("[SCI] " & Message_erreur, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		return -1
 	else
-		' TYPE DE CLIC
-		if param = 0 then
-			return TypeClic
+
+		if id_context > 0 Then
+			' S'il y a un context ID, alors on s'assure qu'on est dans la bonne fenetre
+			IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
+
+				' Reduit ?
+				if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context)).PROP_TYPE.Reduit = false Then
+					
+					Dim YesItCan as boolean = true
+
+					' Si multi-thread no focus est disable
+					if CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false Then
+
+						' ET qu'on est PAS focus, ON QUITTE !
+						IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context) Then 
+							YesItCan = false
+						End if
+					End if
+
+					If YesItCan = true Then
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT <= 0 Then
+							if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context) > 0 Then
+						
+								' L'index de l'objet + index TID parent trouve, ON CONTINUE ! :)
+								IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).Identification_Objet.Handle_PARENT > 0 Then
+									' TYPE DE CLIC
+									if param = 0 then
+										return TypeClic
+										
+									' POSITION X
+									elseif param = 1 then
+										Dim Calc_Win_and_Picturebox_Position as integer = (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context)).POS_X - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).POS_X)
+										DEBUG("cpc_mouse_state_lck(" & id_context & ") X : " & Pos_X - Calc_Win_and_Picturebox_Position, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+										return Pos_X - Calc_Win_and_Picturebox_Position
+
+									' POSITION Y
+									elseif param = 2 then
+										Dim Calc_Win_and_Picturebox_Position as integer = (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context)).POS_Y - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).POS_Y)
+										DEBUG("cpc_mouse_state_lck(" & id_context & ") Y : " & Pos_Y - Calc_Win_and_Picturebox_Position, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+										return Pos_Y - Calc_Win_and_Picturebox_Position
+										
+									' SCROOL
+									elseif param = 3 then
+										return Scroll_Weel
+										
+									' CLIP
+									elseif param = 4 then
+										return Clip
+										
+									end if
+									
+									return -1 ' param number false
+								End if
+							End if
+						End if
+					End if
+				End if
+			End if
+		else
+			' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+
+			' TYPE DE CLIC
+			if param = 0 then
+				return TypeClic
+				
+				
+			' POSITION X
+			elseif param = 1 then
+				return Pos_X
+				
+			' POSITION Y
+			elseif param = 2 then
+				return Pos_Y
+				
+			' SCROOL
+			elseif param = 3 then
+				return Scroll_Weel
+				
+			' CLIP
+			elseif param = 4 then
+				return Clip
+			end if
 			
-			
-		' POSITION X
-		elseif param = 1 then
-			return Pos_X
-			
-		' POSITION Y
-		elseif param = 2 then
-			return Pos_Y
-			
-		' SCROOL
-		elseif param = 3 then
-			return Scroll_Weel
-			
-		' CLIP
-		elseif param = 4 then
-			return Clip
-		end if
-		
-		return -1 ' param number false
+			return -1 ' param number false
+		End if
 	end if
 	
 End function
 
 Public Function cpc_set_mouse cdecl Alias "cpc_set_mouse" (PX as integer, PY as integer, Visible as boolean) as boolean
+	return cpc_set_mouse_lck(PX, PY, Visible, 0)
+end function
+
+Public Function cpc_set_mouse_lck cdecl Alias "cpc_set_mouse_lck" (PX as integer, PY as integer, Visible as boolean, id_context as integer) as boolean
 	' Definir les informations X et Y et visibilite de la souris
 	
 	dim retour as integer
 	dim vis as integer
 	
 	if Visible = true then vis = 1 else vis = 0
-		
-	retour = Setmouse(PX, PY, 0)
-	
-	if retour = 0 then 
-		return true
+
+
+	if id_context > 0 Then
+		' S'il y a un context ID, alors on s'assure qu'on est dans la bonne fenetre
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
+
+			' Reduit ?
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context)).PROP_TYPE.Reduit = false Then
+				
+				Dim YesItCan as boolean = true
+
+				' Si multi-thread no focus est disable
+				if CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false Then
+
+					' ET qu'on est PAS focus, ON QUITTE !
+					IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context) Then 
+						YesItCan = false
+					End if
+				End if
+
+				If YesItCan = true Then
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT <= 0 Then
+						if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context) > 0 Then
+					
+							' L'index de l'objet + index TID parent trouve, ON CONTINUE ! :)
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).Identification_Objet.Handle_PARENT > 0 Then
+								retour = Setmouse(PX, PY, 0)
+								if retour = 0 then 
+									return true
+								else
+									return false
+								end if
+							End if
+						End if
+					End if
+				End if
+			End if
+		End if
 	else
-		return false
-	end if
+		' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+
+		retour = Setmouse(PX, PY, 0)
+		
+		if retour = 0 then 
+			return true
+		else
+			return false
+		end if
+	End if
+
 End function
 
 Public Function cpc_get_key cdecl Alias "cpc_get_key" () as integer ' numero ascii
+	return cpc_get_key_lck(0)
+End function
+
+Public Function cpc_get_key_lck cdecl Alias "cpc_get_key_lck" (id_context as integer) as integer ' numero ascii
 	' recuperer la touche
-	
-	return ASC(inkey)
+	if id_context > 0 Then
+		' S'il y a un context ID, alors on s'assure qu'on est dans la bonne fenetre
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
+
+			' Reduit ?
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context)).PROP_TYPE.Reduit = false Then
+				
+				Dim YesItCan as boolean = true
+
+				' Si multi-thread no focus est disable
+				if CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false Then
+
+					' ET qu'on est PAS focus, ON QUITTE !
+					IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID(id_context) Then 
+						YesItCan = false
+					End if
+				End if
+
+				If YesItCan = true Then
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT <= 0 Then
+						if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context) > 0 Then
+					
+							' L'index de l'objet + index TID parent trouve, ON CONTINUE ! :)
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).Identification_Objet.Handle_PARENT > 0 Then
+								return ASC(inkey)
+							End if
+						End if
+					End if
+				End if
+			End if
+		End if
+	else
+		' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+		return ASC(inkey)
+	End if
 End function
 
 Public Function cpc_Blitter cdecl Alias "cpc_Blitter" (ID as integer) as integer

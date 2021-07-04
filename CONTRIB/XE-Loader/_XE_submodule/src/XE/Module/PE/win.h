@@ -56,6 +56,17 @@
 
 	#define CONST const
 	#define VOID void
+	
+
+#ifndef __LP64__
+#define __LONG32 long
+#else
+#define __LONG32 int
+#endif
+
+typedef char CHAR;
+typedef short SHORT;
+typedef __LONG32 LONG;
 
 	#ifndef __SIZE_TYPE__
 	#  ifdef _WIN64
@@ -102,6 +113,40 @@
 #define __LONG32 int
 #endif
 
+
+	#ifdef _WIN64
+	#define MAX_NATURAL_ALIGNMENT sizeof(ULONGLONG)
+	#define MEMORY_ALLOCATION_ALIGNMENT 16
+	#else
+	#define MAX_NATURAL_ALIGNMENT sizeof(DWORD)
+	#define MEMORY_ALLOCATION_ALIGNMENT 8
+	#endif
+
+	#ifndef _WIN32_WINNT
+	#define _WIN32_WINNT 0x0600
+	#endif
+
+
+	#define __int8 char
+	#define __int16 short
+	#define __int32 int
+	#define __int64 long long
+
+	typedef __int64 LONGLONG;
+	typedef unsigned __int64 ULONGLONG;
+
+	#define MAXLONGLONG (0x7fffffffffffffffll)
+
+	typedef LONGLONG *PLONGLONG;
+	typedef ULONGLONG *PULONGLONG;
+	typedef LONGLONG USN;
+
+	#define _DWORDLONG_
+	typedef ULONGLONG DWORDLONG;
+	typedef DWORDLONG *PDWORDLONG;
+	
+	
+	
 	typedef char CHAR;
 	typedef CHAR *NPSTR,*LPSTR,*PSTR;
 	typedef unsigned char BYTE;
@@ -124,38 +169,67 @@
 	typedef __LONG32 *LPLONG;
 	typedef DWORD *PDWORD;
 	typedef DWORD *LPDWORD;
-	
-
-#ifdef _WIN64
-#define MAX_NATURAL_ALIGNMENT sizeof(ULONGLONG)
-#define MEMORY_ALLOCATION_ALIGNMENT 16
-#else
-#define MAX_NATURAL_ALIGNMENT sizeof(DWORD)
-#define MEMORY_ALLOCATION_ALIGNMENT 8
-#endif
-
-#ifndef _WIN32_WINNT
-#define _WIN32_WINNT 0x0600
-#endif
-
-
-#define __int8 char
-#define __int16 short
-#define __int32 int
-#define __int64 long long
-
-	typedef __int64 LONGLONG;
-	typedef unsigned __int64 ULONGLONG;
-
-	#define MAXLONGLONG (0x7fffffffffffffffll)
-
-	typedef LONGLONG *PLONGLONG;
-	typedef ULONGLONG *PULONGLONG;
-	typedef LONGLONG USN;
-
+		
+	#ifndef _LARGE_INTEGER_DEFINED
+	#define _LARGE_INTEGER_DEFINED
+	#if defined (__WIDL__)
+	typedef struct _LARGE_INTEGER
+	{
+	#else
+	typedef union _LARGE_INTEGER
+	{
+	struct
+	{
+	DWORD LowPart;
+	LONG HighPart;
+	}
+	DUMMYSTRUCTNAME;
+	struct
+	{
+	DWORD LowPart;
+	LONG HighPart;
+	}
+	u;
+	#endif
+	LONGLONG QuadPart;
+	}
+	LARGE_INTEGER;
+	typedef LARGE_INTEGER *PLARGE_INTEGER;
+	#if defined (__WIDL__)
+	typedef struct _ULARGE_INTEGER
+	{
+	#else
+	typedef union _ULARGE_INTEGER
+	{
+	struct
+	{
+	DWORD LowPart;
+	DWORD HighPart;
+	}
+	DUMMYSTRUCTNAME;
+	struct
+	{
+	DWORD LowPart;
+	DWORD HighPart;
+	}
+	u;
+	#endif
+	ULONGLONG QuadPart;
+	}
+	ULARGE_INTEGER;
+	typedef ULARGE_INTEGER *PULARGE_INTEGER;
+	typedef struct _LUID
+	{
+	DWORD LowPart;
+	LONG HighPart;
+	}
+	LUID,*PLUID;
+	#endif
 	#define _DWORDLONG_
 	typedef ULONGLONG DWORDLONG;
 	typedef DWORDLONG *PDWORDLONG;
+
+	
 
 	typedef struct _RTL_SRWLOCK { PVOID Ptr; } RTL_SRWLOCK,*PRTL_SRWLOCK;
 	typedef struct _RTL_CONDITION_VARIABLE { PVOID Ptr; } RTL_CONDITION_VARIABLE,*PRTL_CONDITION_VARIABLE;
@@ -810,19 +884,7 @@
 		} RTL_CRITICAL_SECTION,*PRTL_CRITICAL_SECTION;
 	  typedef PRTL_CRITICAL_SECTION LPCRITICAL_SECTION;
 
-	typedef long long LONGLONG;
-	typedef union _LARGE_INTEGER {
-		 struct {
-		  DWORD LowPart;
-		  LONG HighPart;
-		} DUMMYSTRUCTNAME;
-		struct {
-		  DWORD LowPart;
-		  LONG HighPart;
-		} u;
-
-		LONGLONG QuadPart;
-	  } LARGE_INTEGER;
+	
 
 	#define SHORT  short int
 

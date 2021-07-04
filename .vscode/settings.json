@@ -67,6 +67,7 @@
         "complex": "cpp",
         "csignal": "cpp",
         "set": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "filesystem": "cpp"
     }
 }

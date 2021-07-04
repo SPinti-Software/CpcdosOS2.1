@@ -34,8 +34,11 @@
 
 
 extern "C" int			cpc_mouse_state					(int param); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
+extern "C" int			cpc_mouse_state_lck				(int param, int id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
 extern "C" int			cpc_set_mouse					(int px, int py, bool visible);
+extern "C" int			cpc_set_mouse_lck				(int px, int py, bool visible, int id_context);
 extern "C" int			cpc_get_key						();
+extern "C" int			cpc_get_key_lck					(int id_context);
 
 extern "C" int 			cpc_Creer_Contexte				(int TAILLEX, int TAILLEYn);
 extern "C" void* 		cpc_Obtenir_Zone_Contexte		(int ID);
@@ -77,8 +80,11 @@ extern "C" void			cpc_SortirSectionCritique 		();
 		
 		// ************ For 3D Graphic engine ************
 		int				Mouse_state				(int param); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
+		int				Mouse_state_lck			(int param, int id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
 		int				Set_mouse				(int px, int py, bool visible);
+		int				Set_mouse_lck			(int px, int py, bool visible, int id_context);
 		int				Get_key					();
+		int				Get_key_lck				(int id_context);
 		
 		int 			Create_Context			(int TAILLEX, int TAILLEYn);			// Creer un contexte de donnees
 		void* 			Init_Get_Context_PTR	(int ID);								// Initialiser et obtenir le pointeur du contexte
@@ -134,17 +140,41 @@ extern "C" void			cpc_SortirSectionCritique 		();
 			3:Scrool wheel 
 		*/
 		
-		return cpc_mouse_state(param);
+		return Mouse_state_lck(param, 0);
+		
+	}
+
+	int CpcdosOSx_CPintiCore::Mouse_state_lck (int param, int id_context)
+	{
+		/* 
+			0:Clic state (1:left 2:right 3:middle)
+			1:Position X
+			2:Position Y
+			3:Scrool wheel 
+		*/
+		
+		return cpc_mouse_state(param, id_context);
 		
 	}
 	
 	int CpcdosOSx_CPintiCore::Set_mouse (int px, int py, bool visible)
 	{
-		return cpc_set_mouse(px, py, visible);
+		return Set_mouse_lck(px, py, visible, 0);
 	}
+
+	int CpcdosOSx_CPintiCore::Set_mouse_lck (int px, int py, bool visible, int id_context)
+	{
+		return cpc_set_mouse(px, py, visible, id_context);
+	}
+
 	int CpcdosOSx_CPintiCore::Get_key ()
 	{
-		return cpc_get_key();
+		return Get_key_lck(0);
+	}
+
+	int CpcdosOSx_CPintiCore::Get_key_lck (int id_context)
+	{
+		return cpc_get_key(id_context);
 	}
 	
 	int CpcdosOSx_CPintiCore::Create_Context(int TAILLEX, int TAILLEYn)

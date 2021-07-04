@@ -225,6 +225,24 @@ inl char* W2CStr_(char* _dest, const wchar_t*  _src, size_t len){
 inl char*  W2CStr(view_t* _dest, view_t*  _src){
 	return W2CStr_(_dest->data, (wchar_t*)_src->data, _src->size);
 }
+inl char* CStrW2_(wchar_t* _dest, const char*  _src, size_t len, size_t destlen){
+	const UTF8_t* input = (const UTF8_t*)_src;
+	
+	UTF16_t* utf16 = _dest;//+1 for null terminating char
+	
+	UTF16_t* outStart = (UTF16_t*)utf16;
+	ConversionResult res =	ConvertUTF8toUTF16(&input, &input[len], &utf16, &utf16[destlen], lenientConversion);
+	//Possible value of res: conversionOK || sourceExhausted || targetExhausted
+	
+	#ifdef D_Debug
+	if(res == sourceExhausted) {err_print("sourceExhausted");}
+	if(res == targetExhausted) {err_print("targetExhausted");}
+	#endif
+	
+	*utf16 = 0; //Terminate string
+	
+	return (char*)outStart;
+}
 //Use x4 size to be sure we can fit all char in UTF8 (length UTF16 x 4), 
 //using wcslen_ can take extra space (x2 for surogate) but it's more optimised vs utf16_len
 #define Vla_WstrC(_name, _wstr)        	  \

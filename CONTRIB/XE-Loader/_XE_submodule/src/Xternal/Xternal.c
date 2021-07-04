@@ -13,7 +13,8 @@
  * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
  *
 */
-#include "View.inc"
-#include "xIO.inc"
-#include "xDebug.inc"
-#include "xMemory.inc"
+#include "XE/_Config.h"
+#include "Xternal/View.inc"
+#include "Xternal/xIO.inc"
+#include "Xternal/xDebug.inc"
+#include "Xternal/xMemory.inc"

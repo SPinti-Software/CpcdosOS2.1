@@ -434,7 +434,10 @@ inl LPWSTR* WINAPI impl_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 	*pNumArgs = xe_arg_nb;
 	showfunc_ret("CommandLineToArgvW(pNumArgs: %d)[exe_arg:]", *pNumArgs, *xe_arg);
 	//TODO convert to wide
-	return (LPWSTR*)xe_arg;
+	// LPWSTR* w_argv = CommandLineToArgvW(w_command_line, &argc);
+	// LocalFree(w_argv);
+	return (LPWSTR*)malloc(1); 
+	//return (LPWSTR*)xe_arg; 
 	#endif
 }
 
@@ -442,7 +445,8 @@ inl LPWSTR* WINAPI impl_CommandLineToArgvW(LPCWSTR lpCmdLine,int* pNumArgs){
 
 //!int snprintf ( char * s, size_t n, const char * format, ... )
 inl int  impl_snwprintf( wchar_t* s, size_t n, const wchar_t* format, ... ){
-	showfunc_opt("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
+	//showfunc_opt("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
+	showfunc("snwprintf( s: %p, n: %d, format: %p, ... )", s,n,format); 
 /*
 	size_t len = wcslen(format);
 	printf("\nlength: %d \n", len);
@@ -502,6 +506,16 @@ int impl_vsprintf (char* s, const char *  format, va_list __local_argv){
 	return ret;
 }
 
+//#include <wchar.h>
+//!wchar_t *wcscpy(wchar_t *d, const wchar_t *s)
+uint16_t* imp_wcscpy(uint16_t* d, const uint16_t* s){
+	showfunc_opt("wcscpy( ... )","");
+	//wprintf(L"\nSource%s\n", s);
+	uint16_t* a = d;
+	while ((*d++ = *s++));
+	return a;
+}
+
 //!UINT ___lc_codepage_func(void)
 UINT impl_lc_codepage_func(void){
 	showfunc_opt("___lc_codepage_func( )", ""); 
@@ -541,7 +555,7 @@ int impl_fprintf( FILE* stream, const char* format, ...){
 //!int printf ( const char * format, ... )
 //int impl_printf( const char* format, va_list __local_argv){
 int impl_printf( const char* format, ...){
-	showfunc_opt("printf( stream: %p, format: %s, ... )",format); 
+	showfunc_opt("printf( stream: %p, format: %p, ... )",format); 
 	va_list _arg_;va_start (_arg_, format);
 	#ifdef USE_PRINTF
 	int ret = printf(_arg_);

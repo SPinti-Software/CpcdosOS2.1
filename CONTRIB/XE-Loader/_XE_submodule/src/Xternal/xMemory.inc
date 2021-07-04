@@ -70,12 +70,12 @@ fn void* x_calloc(size_t num, size_t size){
 	Alloc_Add();
 	#endif
 	
-	#if HAVE_Calloc
+	#ifdef HAVE_Calloc
 		return calloc(num, size);
-	#else
-		void* ret = malloc(size*num);
-		 memset(ret, 0, size*num);
 	#endif
+	
+	void* ret = malloc(size*num);
+	memset(ret, 0, size*num);
 	
 	#ifdef D_Debug
 	if(!ret) {

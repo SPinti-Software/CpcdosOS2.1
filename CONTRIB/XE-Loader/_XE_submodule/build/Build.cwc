@@ -26,5 +26,5 @@
 	;Change adress base to enable Virtual Alloc from 0x4000000
 	-Wl,--image-base=0x10000000
 >
--#Run _out/{_sOpt}/XE-Loader.exe  PutYourApp.exe
+-#Run _out/{_sOpt}/XE-Loader.exe  ElieWWW.exe
 >

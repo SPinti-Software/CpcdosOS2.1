@@ -52,7 +52,7 @@ int WINAPI
 	
 	xe_hInstance = _hInstance;
 	registerSignal();
-		 
+		
 	XE_Module* m = 
 	Xe_Load(_lpCmdLine);  // argv[0] is path
 	Xe_ExecuteMain(m);

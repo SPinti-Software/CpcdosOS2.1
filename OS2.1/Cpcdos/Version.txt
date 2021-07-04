@@ -53,11 +53,9 @@
 		- [CPCDOSC+] Ajout des parametres de commandes pour lister les processus & thread
 			- sys/ /process /list
 			- sys/ /process /list /nameonly
-			- sys/ /process /list /nocrlf
 			- sys/ /process /list /array My_Process_List_variable
 			- sys/ /thread /list
 			- sys/ /thread /list /nameonly
-			- sys/ /thread /list /nocrlf
 			- sys/ /process /list /array My_Thread_List_variable
 		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
 		- [SCI] Ajout du ALT+F4 pour fermer les fenetres focus ! :-)
@@ -94,9 +92,13 @@
 		
 		[AJOUT]
 		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
-		
-		[MODIFICATIONS]
+		- [Win32] Ajout du support des evenements de la souris et clavier.
+			Etat de la souris  	: cpc_mouse_state_lck(0) --> 0:clic 1:X 2:Y
+			Definir souris 		: cpc_set_mouse_lck(x, y, visible)
+			Obtenir touche		: cpc_get_key_lck()
 
+		[MODIFICATIONS]
+		- [XE-LOADER] Mise à jour et optimisation du code. @Maeiky
 
 		
 		

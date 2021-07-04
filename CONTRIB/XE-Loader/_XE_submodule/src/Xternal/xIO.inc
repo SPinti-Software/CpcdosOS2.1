@@ -20,8 +20,8 @@
 #include <stdarg.h> //va_list //va_start //va_end
 
 #ifdef D_Platform_Windows
-	//#include <windows.h>
-	imp_std void Sleep(uint32_t _millisecond); //-lKernel32
+	#include <windows.h>
+	//imp_std void Sleep(uint32_t _millisecond); //-lKernel32
 #endif
 
 fn void _Sleep(uint32_t _millisecond){

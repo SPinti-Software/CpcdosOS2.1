@@ -18,13 +18,14 @@
 
 #include "XE/Module/PE/PE_Loader.h"
 #include "XE/Module/ELF/ELF_Loader.h"
+void GDB_Send_AddSymbolFile(const char* _path, void* _text_adress);
 
 #include <unistd.h>
 #include <stdio.h>
 #include <errno.h>
 
-#include "XE/File.inc"  //Can be overrided
-#include "XE/Debug.inc" //Can be overrided
+#include "Xternal/xFile.inc"  //Can be overrided
+//#include "Xternal/xDebug.inc" //Can be overrided
 
 extern FILE* stdout_; 
 extern FILE* stderr_;
@@ -112,6 +113,7 @@ export XE_Module*
 	
 	stdout_ = (FILE*)stdout;
 	stderr_ = (FILE*)stderr;
+
 
 	dbg_printl(" -- Xe_Load -- [%s]", _sPath);
 	if(strlen(_sPath) <= 0){

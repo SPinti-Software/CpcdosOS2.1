@@ -57,6 +57,11 @@
 {"",			"GetConsoleMode"  			,(FUNC_) sys_GetConsoleMode},
 
 {"",			"CreateFileA"  				,(FUNC_) sys_CreateFileA},
+{"",			"CreateFileW"  				,(FUNC_) sys_CreateFileW},
+{"",			"GetFileSize"  					,(FUNC_) sys_GetFileSize },
+{"",			"SetFilePointerEx"  			,(FUNC_) sys_SetFilePointerEx },
+{"",			"ReadFile"  					,(FUNC_) sys_ReadFile },
+
 
 {"",			"GetTempPathA"  			,(FUNC_) sys_GetTempPathA},
 {"",			"CreateProcessA"  			,(FUNC_) sys_CreateProcessA},
