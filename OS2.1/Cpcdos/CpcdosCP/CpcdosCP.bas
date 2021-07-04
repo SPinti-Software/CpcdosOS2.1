@@ -22032,48 +22032,55 @@ _FIN_EXE_CCP_EXE:
 				
 				' Lister la liste des processus & threads
 				IF Instr(UCASE(Param), "/LIST") > 0 Then
-					CPCDOS_INSTANCE.get_List_Processus()
-				End if
-
-
-				IF Instr(UCASE(Param), "/PROCESSUS") > 0 Then
-					NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESSUS") + 11)
-				ElseIF Instr(UCASE(Param), "/PROCESS") > 0 Then
-					NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESS") + 9)
-				End if
-				
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Demande creation d'un nouveau processus '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+					IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
+						DEBUG(CPCDOS_INSTANCE.get_List_Processus(0), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					Else
-						DEBUG("[CpcdosC+] Asking creation new process  '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						DEBUG(CPCDOS_INSTANCE.get_List_Processus(2), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					End if
-				END IF
-				
-				Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
-				
-				' Remplir la structure
-				INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
-				INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
-				INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
-				INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
-				INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
-		
-				' Creer le processus
-				NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
 
-				
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+
+				else
+
+
+					IF Instr(UCASE(Param), "/PROCESSUS") > 0 Then
+						NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESSUS") + 11)
+					ElseIF Instr(UCASE(Param), "/PROCESS") > 0 Then
+						NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESS") + 9)
 					End if
-				END IF
-				
-				' Retourner le nouveau numero de PID
-				DEBUG("" & NumeroPID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-				
+					
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Demande creation d'un nouveau processus '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] Asking creation new process  '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					END IF
+					
+					Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
+					
+					' Remplir la structure
+					INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
+					INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
+					INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
+					INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
+					INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
+			
+					' Creer le processus
+					NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
+
+					
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					END IF
+					
+					' Retourner le nouveau numero de PID
+					DEBUG("" & NumeroPID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					
+				End if
 			End if
 
 			

@@ -114,6 +114,8 @@ namespace cpinti
 			
 			char					Nom_Processus[32]; 	/** Nom Processus **/
 
+			unsigned long			NB_Thread; /** Nombre de thread dans le processus **/
+
 			bool					Threads_Enfant[MAX_THREAD];
 			// static liste_threads 	Liste_Threads[MAX_THREAD] = {};
 		};

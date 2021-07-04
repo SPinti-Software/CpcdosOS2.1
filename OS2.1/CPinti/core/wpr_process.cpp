@@ -159,6 +159,13 @@ namespace cpinti
 			
 			return NombreProcess;
 		}
+
+		unsigned long cpinti_get_nombre_thread_in_processus(unsigned long PID)
+		{
+			// Cette fonction permet d'obtenir le nombre de thread dans un processus
+			
+			return gestionnaire_tache::Liste_Processus[PID].NB_Thread;
+		}
 		
 	}
 }

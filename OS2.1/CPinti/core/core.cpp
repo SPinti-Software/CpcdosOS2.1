@@ -606,7 +606,7 @@ namespace cpinti
 			Nombre_Threads++;
 			
 			// Nom du thread
-			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, NomThread, 30);
+			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, NomThread, strlen(NomThread));
 			
 			// Corriger les priorites
 			if(Liste_Threads[Thread_en_cours].Priorite < 2) 
@@ -634,6 +634,9 @@ namespace cpinti
 			
 			// Incrire le thread dans le processsus
 			Liste_Processus[pid].Threads_Enfant[Nouveau_TID]	= true;
+
+			// incrementer le nombre de thread dans le processus
+			Liste_Processus[pid].NB_Thread						+= 1;
 			
 			// Mettre a jour le TID dans l'adresse memoire
 			ptr_Update_TID(Arguments, Nouveau_TID);
@@ -722,8 +725,11 @@ namespace cpinti
 				Liste_Threads[tid].Etat_Thread 				= _ARRETE;
 				// Liste_Threads[tid].DM_arret					= false;
 				Liste_Threads[tid]._eip						= NULL;
-				
-				
+
+				// Decrementer le nombre de threads dans le processus
+				Liste_Processus[Liste_Threads[tid].PID].NB_Thread				-= 1;
+				if(Liste_Processus[Liste_Threads[tid].PID].NB_Thread < 0)
+					Liste_Processus[Liste_Threads[tid].PID].NB_Thread = 0;
 				
 				// Quitter le thread
 				pthread_exit(&Liste_Threads[tid].thread);

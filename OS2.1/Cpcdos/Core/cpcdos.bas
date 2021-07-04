@@ -452,26 +452,52 @@ Function __Noyau_Cpcdos_OSx__.get_Nom_Processus(PID as uinteger) as String
 	
 End Function
 
-Function __Noyau_Cpcdos_OSx__.get_List_Processus() as String
+Function __Noyau_Cpcdos_OSx__.get_List_Processus(display as integer) as String
 	' Cette fonction permet d'obtenir le nom d'un thread
 	'	PID		: Numero PID du processus
 	'   Retourne le nom du processus
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
 	
 	Dim Liste_Processus as String = ""
 	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
 		' Checker si le PID existe
 		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
 
-		if NOT processus_name = "" Then
-			DEBUG(" ****** processus_name(" & boucle & "): '" & processus_name & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-		end if
 		' S'il existe
 		if len(processus_name) > 1 Then
-			Liste_Processus += processus_name & ";"
+
+			' Recuperer le nombre de threads du processus
+			Dim nb_thread as integer = cpinti.gestionnaire_tache.cpinti_get_nombre_thread_in_processus(boucle)
+
+			if display = 0 Then
+				Liste_Processus += processus_name & CRLF
+			Elseif display = 1 Then
+				Liste_Processus += processus_name & " [" & nb_thread & " threads]" & CRLF
+			Elseif display = 2 Then
+				Liste_Processus += "[PID " & boucle & "] '" & processus_name & "' [" & nb_thread & " threads]" & CRLF
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += processus_name & ";"
+			Elseif display = 5 Then
+				Liste_Processus += processus_name & " [" & nb_thread & " threads];"
+			Elseif display = 6 Then
+				Liste_Processus += "[PID " & boucle & "] '" & processus_name & "' [" & nb_thread & " threads];"
+			Elseif display = 7 Then
+
+			End if
 		end if
 	Next boucle
-
-	DEBUG(" ****** Liste_Processus:" & Liste_Processus & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 	
 	return Liste_Processus
 End Function
