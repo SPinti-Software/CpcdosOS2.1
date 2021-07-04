@@ -167,8 +167,6 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 						' Cuter apres le ;
 						Text_work = Mid(Text_work, Instr(Text_work, ";") + 1)
 
-						'DEBUG(" ****** item '" & item & "' Text_work:" & Text_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-
 						instance_FICHER_DOSSIER_.nb_elements += 1
 						instance_FICHER_DOSSIER_.liste_Elements(boucle) = item
 					Else
@@ -176,8 +174,6 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 						instance_FICHER_DOSSIER_.nb_elements += 1
 						instance_FICHER_DOSSIER_.liste_Elements(boucle) = Text_work
 
-						'DEBUG(" ****** item '" & Texte & "' Text_work:" & Text_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-						
 						exit for
 					End if
 
@@ -198,25 +194,16 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 						' Cuter apres le ;
 						image_work = Mid(image_work, Instr(image_work, ";") + 1)
 
-						DEBUG(" ****** item '" & item & "' image_work:" & image_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-
 						instance_FICHER_DOSSIER_.nb_elements += 1
 						instance_FICHER_DOSSIER_.liste_icons(boucle) = val(item)
 					Else
 						' S'il y a/reste 1 seul element
 						instance_FICHER_DOSSIER_.nb_elements += 1
 						instance_FICHER_DOSSIER_.liste_icons(boucle) = val(image_work)
-
-						DEBUG(" ****** item '" & Image & "' image_work:" & image_work, CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 						
 						exit for
 					End if
 
-					for index as integer = 0 to 10
-						if Len(instance_FICHER_DOSSIER_.liste_icons(boucle)) > 1 Then
-							DEBUG(" ****** instance_FICHER_DOSSIER_.liste_icons(" & index & "):" & instance_FICHER_DOSSIER_.liste_icons(boucle), CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)					
-						End if
-					Next index
 
 
 					

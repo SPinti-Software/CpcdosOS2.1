@@ -142,9 +142,14 @@ namespace cpinti
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
 			//  PID				: Numero de processus
 			//  NomProcessus	: Variable NULL ou sera stocke le nom de variable
-			
-			return (const char*) gestionnaire_tache::Liste_Processus[PID].Nom_Processus;
-			
+
+
+			int etat_processus = cpinti_get_etat_processus(0, PID);
+
+			if ((etat_processus != _ARRETE) || (etat_processus != _EN_ARRET) || (etat_processus != _ZOMBIE))
+				return (const char*) gestionnaire_tache::Liste_Processus[PID].Nom_Processus;
+			else
+				return "";
 		}
 		
 		

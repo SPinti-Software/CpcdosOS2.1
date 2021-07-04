@@ -10,7 +10,7 @@ fenetre/ APP1
 	.CouleurFenetre		= "050,050,100"
 	.CouleurTitre		= "255,255,255"
 	.CouleurFond		= "150,000,220"
-	.Icone				= "%OS_GUI%/ICO_DEF.png"
+	.Icone				= "%OS_GUI%/FORMATS/MFOLDER.png"
 	rem/ .ImgTitre                  = "IMG_TITRE.PNG"
 	.event				= "%HOST_OS%/TEST.CPC"
 	@#Handle_Fenetre creer/

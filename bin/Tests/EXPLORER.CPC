@@ -22,6 +22,7 @@ Window/ file_explorer_window
         .sx             = "500"
         .sy             = "300"
         .opacity        = "255"
+        .Icone          = "%OS_GUI%/FORMATS/MFOLDER.png"
         .WindowColor    = "100,100,100"
         .TitleColor     = "200,200,200"
         .backcolor      = "100,100,100"

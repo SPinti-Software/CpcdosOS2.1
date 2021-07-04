@@ -362,7 +362,7 @@ namespace cpinti
 			Nombre_Processus++;
 			
 			// Nom du processus
-			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, NomProcessus, 32);
+			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, NomProcessus, strlen(NomProcessus));
 
 			// Son numero de TID (Thread IDentifiant)
 			Liste_Processus[Nouveau_PID].PID 				= Nouveau_PID;

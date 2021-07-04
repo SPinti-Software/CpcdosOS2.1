@@ -88,10 +88,11 @@ end/ Function
 Function/ kill_selected_process()
         ccp/ /set.level = 1
 
+
         // Getting item name
         @#item_index listbox/ /selected_index listbox_gui
 
-        // 
+        // Getting PID number from array (a optimiser !!)
         set/ proc_index_tmp =  \%list_process_pid(%item_index%)\% \#REFORMAT-VAR
         set/ proc_index_tmp = %proc_index_tmp% \#REFORMAT-VAR
         
@@ -107,10 +108,15 @@ End/ function
 Function/ refresh()
         // This function refresh list
 
+        // Getting process list in Listbox format 
         @#list_process_listbox sys/ /process /listb
+
+        // Getting icon process list in Listbox format
+        @#list_icon_process_listbox sys/ /process /listb /icon
         
         listbox/ /modif:listbox_gui
                 .text           = "%list_process_listbox%"
+                .Image          = "%list_icon_process_listbox%"
                 create/
         End/ listbox
 
