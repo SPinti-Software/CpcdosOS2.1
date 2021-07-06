@@ -20,6 +20,4 @@
 >
 ;---- Uncomment for direct update to VM ----
 -#Copy Lib/DJ_{_sOpt}/libXE.a ../../build/FB/lib/DOS/libXE.a >
-;-#Run ../../build/Make_FB.cwMake >
-;-#Copy "../../bin/CPCLDR.EXE" "C:/VM/PUBLIC Cpcdos OSx-disk1_Mount/CPCDOS/CPCLDR.EXE"
 >

@@ -22,8 +22,8 @@ static int
 
 int cpc_xe_loader_main(const char* _sPath) 
 {
-	dbg_printl("-== XE-Loader for Cpcdos OSx ==-");
-	dbg_printl("-== EXE & ELF LOADER==-");
+	dbg_printl("=== XE-Loader for Cpcdos OSx ===");
+	dbg_printl(" ==     EXE & ELF LOADER     ==");
 	setbuf(stdout, NULL);//Required to see every printf
 	setbuf(stderr, NULL);//Required to see every printf
 	registerSignal();

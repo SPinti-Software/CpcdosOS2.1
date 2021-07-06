@@ -47,6 +47,7 @@ fn void _exit_SUCCESS(){
 
 fn int _printf(const char* _format, ...){
 	
+	
 	#ifdef CpcDos
 		va_list arg;
 
@@ -65,7 +66,7 @@ fn int _printf(const char* _format, ...){
 		
 		return Retour;
 	#else
-		
+
 		va_list _arg;
 
 		va_start( _arg, _format );
