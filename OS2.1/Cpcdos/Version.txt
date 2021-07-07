@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 18	Ajouts de divers fonctionnalités.
+		--> 19	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 3	optimisations.
 		--> 4	corrections et modifications mineures.
@@ -65,7 +65,8 @@
 			- /icon 			--> Lister les icones par processus
 			- /index			--> Numero index seulement
 			- /array variable 	--> Stocker dans un taleau CpcdosC+
-			
+		- [CPCDOSC+] Ajout du parametre SYS/ /SCREEN /LISTB compatible pour les listbox
+			Ce qui permet de lister les resolutions avec ";" comme separateur.
 
 		
 
