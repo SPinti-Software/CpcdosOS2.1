@@ -1996,17 +1996,24 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 		SCOPE
 			' ********* D E B U T  *********
 			Dim Elements_Trouves as integer = 0
-			
+			Dim Index_window as integer = 0
 			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK > 0 Then
 				' Actualiser toutes les TextBlock
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBLOCK
 					
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+							
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2019,10 +2026,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_PROGRESSBAR
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_PROGRESSBAR Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT
+						
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+							
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_PROGRESSBAR Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2036,10 +2051,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_BOUTON Then exit for
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT
+						
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_BOUTON Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2051,11 +2074,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				' Actualiser tous checkbox
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_CHECKBOX
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
+						
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_CHECKBOX Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_CHECKBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2068,11 +2098,17 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).THREAD_OK = 1
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).THREAD_OK = 1
 
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBOX Then exit for
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2085,10 +2121,17 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2099,10 +2142,15 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -2152,21 +2200,21 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 				' On sait que le thread n'a pas ete lance, donc on cherche le PID de la fenetre parent
 				For _INDEX_PID_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).Identification_Objet.Handle_PARENT = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.handle Then
-						
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).PROP_TYPE.Ferme		= false AND _
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).PROP_TYPE.Reduit 	= false Then
 
-							
+							Dim LibererTemps 	as integer = 0
+							Dim ACU 			as integer = 0
+							Dim temps_precedent as double = timer
+							DIM ID_Bitmap 		as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID
+							' On indique dans l'instance que le thread est bien en cours!
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).THREAD_OK = 1
 
-						Dim LibererTemps 	as integer = 0
-						Dim ACU 			as integer = 0
-						Dim temps_precedent as double = timer
-						DIM ID_Bitmap 		as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID
-						' On indique dans l'instance que le thread est bien en cours!
-						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).THREAD_OK = 1
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE	(ID_Bitmap) = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID	(ID_Bitmap) = _INDEX_PID_
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index	(ID_Bitmap) = Boucle_Picturebox
+						End if
 
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE	(ID_Bitmap) = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID	(ID_Bitmap) = _INDEX_PID_
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index	(ID_Bitmap) = Boucle_Picturebox
-						
 						SORTIR_SectionCritique()
 						return CPCDOS_INSTANCE.__THREAD_OK
 					end if
@@ -2176,73 +2224,6 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 	Next Boucle_Picturebox
 	
 	SORTIR_SectionCritique()
-	
-						' while(EN_VIE)
-							' EN_VIE = false
-
-						
-							''Liberer le CPU
-							' doevents(0)
-							' Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
-
-							' if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
-							
-							' SCOPE
-							''********* D E B U T  *********
-							
-								' ENTRER_SectionCritique()
-								
-								''Si le bitmap s'est actualise
-								' if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actualise(ID_Bitmap) = true Then
-									
-									' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then 
-									
-										''L'index de l'objet + index TID parent trouve, on execute!
-										' IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).Identification_Objet.Handle_PARENT > 0 Then
-											'' Tant que son TID est en vie, on continue d'actualiser!
-											
-											' if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_FPS(temps_precedent, ACU) > 0 Then
-												''Afficher le nombre de FPS
-												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).TEXTE = "OpenGL 3D engine - SOFTWARE RENDERING - VIDEO_PTR:0x" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID) & " FPS:" & ACU & ".  "
-
-												' ACU = 0
-												' temps_precedent = timer
-											' else
-												' ACU = ACU + 1
-											' End if
-											
-											
-											' CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox, Boucle_Picturebox , _INDEX_PID_ )
-											' CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
-											
-										' else
-											''Si son TID est null, on quitte!
-											
-											' EN_VIE = FALSE
-										' End if
-									' End if ' GUI_Mode
-								' End if
-								' SORTIR_SectionCritique()
-								
-
-								
-							'' ********* F I N  *********
-			
-							' END SCOPE
-							' end if
-						' Wend ' while(EN_VIE)
-						
-					' End if
-					
-					' if EN_VIE = FALSE Then Return CPCDOS_INSTANCE.__THREAD_OK
-				' Next _INDEX_PID_
-			' End if
-		' End if
-	' Next Boucle_Picturebox
 
 
 	return CPCDOS_INSTANCE.__THREAD_OK

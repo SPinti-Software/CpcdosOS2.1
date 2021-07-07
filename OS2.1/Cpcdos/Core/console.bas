@@ -108,11 +108,15 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 		doevents(0) ' 10 ms
 		
 		
-		
-		
 		' Si un textebox est FOCUS, toute les entrees INKEY vont dedans
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
-			TexteBox_Focus = true
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).PROP_TYPE.Ferme 	= false AND _
+				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).PROP_TYPE.Reduit 	= false Then
+				TexteBox_Focus = true
+			Else
+				TexteBox_Focus = false
+			End if
+
 		else
 			TexteBox_Focus = false
 		End if
@@ -188,10 +192,7 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						
 						' DEBUG("  P1.1 ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 
-						'Touche F10 (console)
-						IF Donnees_COM = False Then
-							if TexteBox_Focus = false Then Touche_inkey = Inkey
-						End if
+						
 						
 						' Touche CTRL + PrintScreen - Capture d'ecran
 						if Touche_Inkey = CHR(16) Then
@@ -225,6 +226,11 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 							End if
 						End if
 
+						'Touche F10 (console)
+						IF Donnees_COM = False Then
+							if TexteBox_Focus = false Then Touche_inkey = Inkey
+						End if
+
 						' F9 (Temporaire !)
 						IF Touche_Inkey = CHR(255) & CHR(67) then	
 							' Si le mode graphique est execute
@@ -248,9 +254,10 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 
 							' Resolution en mode console
 							CPCDOS_INSTANCE.SYSTEME_INSTANCE.set_Resolution(SCR_MODE)
-						Else
-							if TexteBox_Focus = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Touche_Inkey = Touche_Inkey
+						'Else
+						'	if TexteBox_Focus = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Touche_Inkey = Touche_Inkey
 						END IF
+
 						Touche_Inkey = ""
 					End if
 				ELSE

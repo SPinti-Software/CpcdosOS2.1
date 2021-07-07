@@ -33,6 +33,10 @@
 
 // #include "leakchk.h"
 
+extern "C" unsigned long xe_cpinti_creer_thread(void* (* Fonction) (void * arg), unsigned long stackSize, void* threadParam)
+{
+	return cpinti::gestionnaire_tache::cpinti_creer_thread(0, 0, 0, 1, "external_thread", 0, Fonction, NULL, (unsigned long) threadParam);
+}
 
 namespace cpinti
 {

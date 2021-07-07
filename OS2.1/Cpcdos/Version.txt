@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 19	Ajouts de divers fonctionnalités.
+		--> 20	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 3	optimisations.
 		--> 4	corrections et modifications mineures.
@@ -43,6 +43,7 @@
 		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
 		- [SCI] Ajout du ALT+F4 pour fermer les fenetres focus ! :-)
 				Fenetre non fermables via le parametre CLOSE:0
+		- [SCI] Ajout de la première version du copier / coller dans le menu contextuel du Textbox (Copie brute)
 
 		- [CPCDOSC+] Ajout du parametre pour focus un textbox 
 			Textbox/ /focus My_Textbox
@@ -66,7 +67,7 @@
 			- /index			--> Numero index seulement
 			- /array variable 	--> Stocker dans un taleau CpcdosC+
 		- [CPCDOSC+] Ajout du parametre SYS/ /SCREEN /LISTB compatible pour les listbox
-			Ce qui permet de lister les resolutions avec ";" comme separateur.
+			Ce qui permet de lister les resolutions d'écran avec ";" comme separateur.
 
 		
 
@@ -76,6 +77,7 @@
 		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
+		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
 		- [GUI] Correction des problèmes d'evenements du Textblock.
 		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
 		

@@ -648,8 +648,8 @@ namespace cpinti
 			
 			// std::string offset_fonction_STR = std::to_string((unsigned long) Fonction);
 			// std::string tid_STR = std::to_string((unsigned long) Nouveau_TID);
-			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Fonction offset 0x" + std::to_string((unsigned long) Fonction), 
-									 " [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Offset function 0x" + std::to_string((unsigned long) Fonction),
+			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Fonction offset " + std::to_string((unsigned long) Fonction), 
+									 " [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Offset function " + std::to_string((unsigned long) Fonction),
 									 "", "",
 						Ligne_saute, Alerte_validation, Date_sans, Ligne_r_normal);
 			

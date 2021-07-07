@@ -68,6 +68,7 @@
         "csignal": "cpp",
         "set": "cpp",
         "xtree": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "thread": "c"
     }
 }

@@ -221,46 +221,50 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 	ScreenLock
 	
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(index_PID).Identification_Objet.OS_id Then
-		If Type_IUG = GUI_TYPE.Fenetre then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Fenetre( index) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.Bouton then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Bouton(index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.PictureBox then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_PictureBox(index, index_PID) 'Actualiser si focus
-			else
-				'IF this.MULTI_PICTUREBOX = TRUE then
-				'	Creer_PictureBox(index, index_PID) 'Actualiser si focus
-				'	ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
-				'End if
-			End if
-		ElseIf Type_IUG = GUI_TYPE.TextBlock then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBlock(index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.TextBox then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBox(index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.ProgressBar then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_ProgressBar(index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.Explorer then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Explorer(index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.Listbox then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Listbox(index, index_PID) 'Actualiser si focus
-			End if
-		Else
-		
-		end if
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_PID).PROP_TYPE.Ferme 	= false AND _
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_PID).PROP_TYPE.Reduit 	= false Then
+
+			If Type_IUG = GUI_TYPE.Fenetre then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Fenetre( index) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.Bouton then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Bouton(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.PictureBox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_PictureBox(index, index_PID) 'Actualiser si focus
+				else
+					'IF this.MULTI_PICTUREBOX = TRUE then
+					'	Creer_PictureBox(index, index_PID) 'Actualiser si focus
+					'	ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
+					'End if
+				End if
+			ElseIf Type_IUG = GUI_TYPE.TextBlock then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_TextBlock(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.TextBox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_TextBox(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.ProgressBar then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_ProgressBar(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.Explorer then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Explorer(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.Listbox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Listbox(index, index_PID) 'Actualiser si focus
+				End if
+			Else
+			
+			end if
+		End if ' fenetre visible ?
 	End if
 	
 	ScreenUnLock
@@ -5099,6 +5103,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
 
 			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Ferme = true Then Continue for
 
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0 _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then

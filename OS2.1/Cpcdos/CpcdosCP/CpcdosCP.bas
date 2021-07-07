@@ -474,13 +474,25 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
 							
 							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")							
+							
 							' EFFECTUER UN COLLER
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
+							Dim position_curseur as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos
+
+							' Placer le texte où est positionné le curseur
+							Dim Traitement as string = mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, 1, position_curseur) & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
+							
+							' Positionner apres le texte collé
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = len(Traitement)
+
+							' Completer la fin du texte
+							Traitement +=  mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, position_curseur)
+
+							'Mettre a jour
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Traitement
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
 
-							
 						
 							exit for
 						end if
