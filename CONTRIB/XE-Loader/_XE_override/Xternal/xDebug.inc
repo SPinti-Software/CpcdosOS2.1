@@ -33,7 +33,11 @@ jmp_buf jumpsignal;
 #define Use_LongJump
 
 //GDB will automaticly break here (with Cwc compiler)
-fn void GDB_Func_Break(){} //raise(SIGTRAP)? void __debugbreak();?
+fn void GDB_Func_Break(){
+	printf("\nGDB_Func_Break()\n")
+	void __debugbreak();
+} // raise(SIGTRAP)? 
+?
 fn void GDB_Func_ExecuteCmds(){} 
 
 void GDB_Send_AddSymbolFile(const char* _path, void* _text_adress){
