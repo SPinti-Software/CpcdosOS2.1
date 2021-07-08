@@ -45,6 +45,7 @@
 				Fenetre non fermables via le parametre CLOSE:0
 		- [SCI] Ajout de la première version du copier / coller dans le menu contextuel du Textbox (Copie brute)
 
+		- [CPCDOSC+] Ajout de la premiere version du gestionnaire de tâches. SYS/ /TASKMGR ou CTRL+SUPPR
 		- [CPCDOSC+] Ajout du parametre pour focus un textbox 
 			Textbox/ /focus My_Textbox
 		- [CPCDOSC+] Ajout du parametre pour obtenir l'index ou le nom de l'item selectionné dans le ListBox

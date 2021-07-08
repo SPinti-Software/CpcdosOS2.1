@@ -20281,11 +20281,17 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /ECRAN /LISTE 24"
 					Mess_Aide = Mess_Aide & CRLF & "      Et pour 32 bits"
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /ECRAN /LISTE 32"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "      Afficher pour le format Listbox"
+					Mess_Aide = Mess_Aide & CRLF & "       sys/ /ecran /listb 32"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Obtenir le pointeur de l'affichage video"
 					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /ecran /ptr"
 					Mess_Aide = Mess_Aide & CRLF & "    ou en hexadecimale"
 					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /ecran /hexaptr"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Afficher le gestionnaire de taches"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /taskmgr"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Utiliser une fonction wrapper (Experimentale)"
 					Mess_Aide = Mess_Aide & CRLF & "    Ceci est reserve aux developpeurs du SDK Cpcdos"
@@ -20472,10 +20478,17 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /SCREEN /LIST 24"
 					Mess_Aide = Mess_Aide & CRLF & "      And for 32 bits"
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /SCREEN /LIST 32"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "      Display for Listbox format"
+					Mess_Aide = Mess_Aide & CRLF & "       sys/ /screen /listb 32"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Getting video screen pointer"
 					Mess_Aide = Mess_Aide & CRLF & "    Sys/ /screen /ptr"
 					Mess_Aide = Mess_Aide & CRLF & "   or in hexadecimal"
 					Mess_Aide = Mess_Aide & CRLF & "    Sys/ /screen /hexaptr"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Display Task manager"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /taskmgr"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Using wrapper function (Experimental)"
 					Mess_Aide = Mess_Aide & CRLF & "    This is reserved to Cpcdos SDK devlopper"
@@ -21273,6 +21286,16 @@ _FIN_EXE_CCP_EXE:
 					END IF
 				End if
 			end if
+
+			' Executer le gestionnaire de taches 
+			IF Instr(UCASE(Param), "/TASKMGR") > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+					DEBUG("[CpcdosC+] Execution du gestionnaire de taches.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				Else
+					DEBUG("[CpcdosC+] Launching task manager.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				END IF
+				CpcdosCP_SHELL("/F:display_taskmgr()", _CLE_, 3, Param_1, Param_2) 
+			End if
 			
 '------------------------------- ECRAN --------------------------------
 			' Gerer l'ecran
@@ -21318,6 +21341,7 @@ _FIN_EXE_CCP_EXE:
 					DEBUG(str(CPCDOS_INSTANCE.SYSTEME_INSTANCE.test_Resolution(Resolution, val(Couleur))), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					exit _scope_CMD, _scope
 				End if
+				
 				
 
 				IF Instr(UCASE(Param), "/ECRAN") > 0 Then Param = MID(Param, Instr(UCASE(Param), "/ECRAN") + 6)

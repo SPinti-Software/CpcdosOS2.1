@@ -65,7 +65,9 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/DESKTOP.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/TASKBAR.cpc
 
 
-
+// [FR] Configuration du gestionnaire de taches
+// [EN] Task manager configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/taskmgr.cpc
 
 
 

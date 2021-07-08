@@ -173,7 +173,8 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 					
 					if NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
 						' Graphique N'EST pas en cours d'execution
-						
+
+
 						IF Donnees_COM = False AND this.HOOK_Console = false Then
 							if TexteBox_Focus = false Then Touche_inkey = Inkey
 						End if
@@ -191,7 +192,12 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						' Si en mode graphique, on recupere rien
 						
 						' DEBUG("  P1.1 ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
-
+						
+						'Touche F10 (console)
+						IF Donnees_COM = False Then
+							if TexteBox_Focus = false Then Touche_inkey = Inkey
+						End if
+						
 						
 						
 						' Touche CTRL + PrintScreen - Capture d'ecran
@@ -226,10 +232,13 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 							End if
 						End if
 
-						'Touche F10 (console)
-						IF Donnees_COM = False Then
-							if TexteBox_Focus = false Then Touche_inkey = Inkey
+						' Gestionnaire de taches
+						IF Touche_Inkey = CHR(255) & CHR(163) then
+							DEBUG("[SHELL] Opening task manager from user input", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:display_taskmgr()", CLE, this.Niveau, 0, "")
 						End if
+
+						
 
 						' F9 (Temporaire !)
 						IF Touche_Inkey = CHR(255) & CHR(67) then	
