@@ -199,7 +199,6 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						End if
 						
 						
-						
 						' Touche CTRL + PrintScreen - Capture d'ecran
 						if Touche_Inkey = CHR(16) Then
 							if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
