@@ -10,7 +10,7 @@
 		--> 20	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 3	optimisations.
-		--> 4	corrections et modifications mineures.
+		--> 6	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -81,7 +81,9 @@
 		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
 		- [GUI] Correction des problèmes d'evenements du Textblock.
 		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
-		
+		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
+		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
+
 		
 		[MODIFICATIONS]
 		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC (+Optimisation)
@@ -90,6 +92,7 @@
 		- [SHELL] La commande START/ fait désormais un switch automatique sur l'OS en question (SYS/ /OS)
 			Ce qui corrige la console graphique F9 et bien plus !
 		- [SCI] Possibilité de REDEFINIR une fonction déjà déclarée avec à nouveau "declare/"
+		- [CPCDOSC+] Modification de la variable _EXE_PATH_F_ en _EXE_PATH_DIR_
 
 
 
@@ -100,6 +103,7 @@
 			
 		[CORRECTIONS]
 		- [Win32] Correction d'un problème execution des fichiers .EXE et .ELF
+		- [CORE] Récupération du nom processus désormais impossible si le processus est fermé.
 		
 		[AJOUT]
 		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.

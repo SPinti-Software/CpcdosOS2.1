@@ -234,7 +234,8 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						' Gestionnaire de taches
 						IF Touche_Inkey = CHR(255) & CHR(163) then
 							DEBUG("[SHELL] Opening task manager from user input", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:display_taskmgr()", CLE, this.Niveau, 0, "")
+
+							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("cmd/ /F:display_taskmgr()", CLE, 2, 0, "")
 						End if
 
 						

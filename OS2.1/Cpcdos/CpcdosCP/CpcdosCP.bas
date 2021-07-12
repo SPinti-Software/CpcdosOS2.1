@@ -564,7 +564,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Si c'est une commande qui veut JUSTEMENT creer un thread pour la fonction
 			if Instr(UCASE(Commande), "CMD/") > 0 Then
-				IF Instr(UCASE(Commande), "/THREAD") > 0 Then
+				IF Instr(UCASE(Commande), "/CMD") > 0 OR Instr(UCASE(Commande), "/THREAD") > 0Then
 					NePasExec = true
 				end if
 			end if
@@ -4979,15 +4979,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				NomCheckBox = MID(NomCheckBox, INSTR(UCASE(NomCheckBox), "/MODIF") + 7) & "~MODIF#"
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[CpcdosC+] Mode edition d'une barre de progression '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Mode edition d'un checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
-					DEBUG("[CpcdosC+] Progress bar edition mode '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Checkbox edition mode '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[CpcdosC+] Creation d'une barre de progression '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Creation d'une checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
-					DEBUG("[CpcdosC+] Creating progress bar '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Creating checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
 			End if
 
@@ -10119,6 +10119,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim PosParam5				as Integer
 			Dim PosParam6				as Integer
 			Dim Thread_MaxStdMin		as Integer
+
+			Dim KEY_ByPrevioudPID		as double = 0
 			
 			Dim NumeroPID_cmd 		as integer = 0
 			Dim NomProcessus_cmd 	as String = ""
@@ -10126,6 +10128,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				NumeroPID_cmd = VAL(Mid(Param, instr(Ucase(Param), "/PID") + 5))
 				Param = Mid(Param, 1, instr(Ucase(Param), "/PID") - 1) & Mid(Param, instr(Instr(ucase(Param), "/PID"), Param, " ") + 1)
 				
+				KEY_ByPrevioudPID = _CLE_
 				' Redonner et regenerer les nouvelle infos du nouveau processus
 				Auth_PID = NumeroPID_cmd
 				_CLE_ = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Auth_TID)
@@ -10178,7 +10181,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			'  Car si elle est executee dans un autre thread il ne trouvera jamais la fonction
 			'  Du coup il faut re-preciser le fichier source
 			IF Instr(UCASE(Param), "/F:") > 0 AND Instr(UCASE(Param), "(") > Instr(UCASE(Param), "/F:") AND Instr(UCASE(Param), ")") > Instr(UCASE(Param), "(") Then 
-				Dim NomFichier_correction as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
+				Dim NomFichier_correction as string
+
+				
+				if KEY_ByPrevioudPID > 0 then
+					' Si on a utilise /PID /THREAD
+					NomFichier_correction = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_", 2, KEY_ByPrevioudPID))
+				Else
+					' Si on a utilise uniquement /THREAD
+					NomFichier_correction = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_", 2, _CLE_))
+				End if
+
 				Param = "EXE/ " & NomFichier_correction & " /FN:" & mid(Param, instr(Param, "/F:") + 3) & ") ->"
 				Param = MID(Param, 1, Instr(Param, ") ->") - 1) & "->" & _CLE_
 				
@@ -12845,7 +12858,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						CpcdosCP_SHELL("SET/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("SET/ _EXE_PATH_F_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PATH_DIR_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
 						
 						CpcdosCP_SHELL("SET/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
 						
@@ -22189,6 +22202,9 @@ _FIN_EXE_CCP_EXE:
 						NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESS") + 9)
 					End if
 					
+					' Reformater le nom du processus
+					NomProcessus = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(NomProcessus, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16)
+
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 							DEBUG("[CpcdosC+] Demande creation d'un nouveau processus '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
@@ -22196,27 +22212,47 @@ _FIN_EXE_CCP_EXE:
 							DEBUG("[CpcdosC+] Asking creation new process  '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 						End if
 					END IF
+
+					' Verifier s'il existe deja
+					dim test_existing_pid as integer = CPCDOS_INSTANCE.get_pid_by_name_process(NomProcessus)
+
+					if test_existing_pid > 0 Then
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Le processus existe deja (" & test_existing_pid & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Le processus existe deja (" & test_existing_pid & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							End if
+						END IF
+
+						NumeroPID = test_existing_pid
+
+					Else
 					
-					Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
-					
-					' Remplir la structure
-					INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
-					INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
-					INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
-					INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
-					INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
-			
-					' Creer le processus
-					NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
 
 					
-					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						Else
-							DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						End if
-					END IF
+						Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
+						
+						' Remplir la structure
+						INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
+						INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
+						INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
+						INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
+						INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
+				
+						' Creer le processus
+						NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
+
+						
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							End if
+						END IF
+
+					End if
 					
 					' Retourner le nouveau numero de PID
 					DEBUG("" & NumeroPID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)

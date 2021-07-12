@@ -201,7 +201,8 @@ Function __Noyau_Cpcdos_OSx__.Creer_processus(ByRef _STRUCT_PROCESSUS as _STRUCT
 	' Retourne le numero de PID du processus (Genere par CPinti Core)
 
 	ENTRER_SectionCritique()
-	_STRUCT_PROCESSUS.Nom = ucase(MID(_STRUCT_PROCESSUS.Nom, 1, 30))
+
+	_STRUCT_PROCESSUS.Nom = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(_STRUCT_PROCESSUS.Nom, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16) & chr(0) 
 	
 	' Dim NomProcessus_CHAR as CONST ZString PTR = 
 
@@ -361,8 +362,7 @@ Function __Noyau_Cpcdos_OSx__.Creer_thread(byref _STRUCT_THREAD as _STRUCT_THREA
 	' _ARG_1,2,3,4	: Arguments pour le thread
 	
 	' Renvoie le numero TID du thread corrrespondant au processus
-
-	_STRUCT_THREAD.Nom = ucase(MID(_STRUCT_THREAD.Nom, 1, 29)) & chr(0)
+	_STRUCT_THREAD.Nom = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(_STRUCT_THREAD.Nom, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16) & chr(0) 
 
 	_STRUCT_THREAD.THREAD_ID  = cpinti.gestionnaire_tache.cpinti_creer_thread(get_id_kernel(), _STRUCT_THREAD.OS_ID, _STRUCT_THREAD.USER_ID, _STRUCT_THREAD.PROC_ID, strptr(_STRUCT_THREAD.Nom), _STRUCT_THREAD.Priorite, _
 				ProcPtr(EXEC_THREAD), _STRUCT_THREAD.ARG_CP, cuint(VarPtr(_STRUCT_THREAD)))
@@ -481,17 +481,17 @@ Function __Noyau_Cpcdos_OSx__.get_List_Processus(display as integer) as String
 			if display = 0 Then
 				Liste_Processus += processus_name & CRLF
 			Elseif display = 1 Then
-				Liste_Processus += processus_name & " [" & nb_thread & " threads]" & CRLF
+				Liste_Processus += "[" & nb_thread & " threads] " & processus_name & CRLF
 			Elseif display = 2 Then
-				Liste_Processus += "[PID " & boucle & "] '" & processus_name & "' [" & nb_thread & " threads]" & CRLF
+				Liste_Processus += "[PID " & boucle & "] [" & nb_thread & " threads] '" & processus_name & "'"  & CRLF
 			Elseif display = 3 Then
 
 			Elseif display = 4 Then
 				Liste_Processus += processus_name & ";"
 			Elseif display = 5 Then
-				Liste_Processus += processus_name & " [" & nb_thread & " threads];"
+				Liste_Processus += "[" & nb_thread & " threads] " & processus_name & ";"
 			Elseif display = 6 Then
-				Liste_Processus += "[PID " & boucle & "] '" & processus_name & "' [" & nb_thread & " threads];"
+				Liste_Processus +="[PID " & boucle & "] [" & nb_thread & " threads] '" & processus_name & "';"
 			Elseif display = 7 Then
 
 			End if

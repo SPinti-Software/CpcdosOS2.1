@@ -146,10 +146,17 @@ namespace cpinti
 
 			int etat_processus = cpinti_get_etat_processus(0, PID);
 
-			if ((etat_processus != _ARRETE) || (etat_processus != _EN_ARRET) || (etat_processus != _ZOMBIE))
+
+			if ((etat_processus != _ARRETE) && (etat_processus != _EN_ARRET) && (etat_processus != _ZOMBIE))
 				return (const char*) gestionnaire_tache::Liste_Processus[PID].Nom_Processus;
 			else
+			{
+				cpinti_dbg::CPINTI_DEBUG("[AVERTISSEMENT] Le processus [PID:" + std::to_string(PID) + "] n'existe pas (" + std::to_string(etat_processus) + ")", 
+										"[WARNING] Process [PID:" + std::to_string(PID) + "] not exist (" + std::to_string(etat_processus) + ")",
+										"core::gestionnaire_tache", "cpinti_get_nom_processus()",
+							Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
 				return "";
+			}
 		}
 		
 		
