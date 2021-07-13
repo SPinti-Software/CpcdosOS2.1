@@ -1,5 +1,48 @@
+/*  -== XE-Loader ==-
+ *
+ *  Load [.exe .elf / .dll .so] from memory and remap functions
+ *  Run your binaries on any x86 hardware
+ *
+ *  @autors
+ *   - Maeiky
+ *  
+ * Copyright (c) 2021 - V·Liance
+ *
+ * The contents of this file are subject to the Apache License Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * If a copy of the Apache License Version 2.0 was not distributed with this file,
+ * You can obtain one at https://www.apache.org/licenses/LICENSE-2.0.html
+ *
+*/
+#if defined(__DJGPP__) || defined(USE_ATTRIBUTE_CALL_TYPE) 
+#define  CallType_C	  	__attribute__((cdecl))
+#define  CallType_Std 	__attribute__((stdcall))
+#else
+#define  CallType_C	  	__cdecl
+#define  CallType_Std 	__stdcall
+#endif
+
+
+#ifdef __cplusplus
+#define fn extern "C" 	CallType_C 
+#define func_std extern "C" CallType_Std 
+#else
+#define fn 	 CallType_C 
+#define func_std CallType_Std 
+#endif
+
+#ifdef D_Dynamic_Export
+	#define export __declspec(dllexport) fn
+#elif D_Dynamic_Link
+	#define export __declspec(dllimport) fn
+#else
+	 #define export fn
+#endif
 #define _enum_  typedef struct {enum  
 #define enum_ val;}_();
+//////////////////////////////////
+//////////////////////////////////
+//////////////////////////////////
 
 //!Sys/File.inc//
 typedef struct File{
@@ -46,10 +89,11 @@ typedef struct XE_Module{
 	XE_Arch_ arch;
 }XE_Module;
 
+//////////////
+//////////////
+extern "C" int cpc_xe_loader_main(const char* _sPath);
 extern "C" XE_Module* Xe_Load(const char* _sPath);
 extern "C" int Xe_ExecuteMain(XE_Module* _module);
 extern "C" int End(XE_Module* _mainModule);
-
-extern "C" int cpc_xe_loader_main(const char* _sPath);
-	
-	
+//////////////
+//////////////
