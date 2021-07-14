@@ -5960,7 +5960,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							End if
 						End if
 						
-						DEBUG(" ****** Creer P1", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
 						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
@@ -13963,9 +13962,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition de la fenetre '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition de la fenetre(" & _INDEX_FENETRE_ & ") '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Window edition mode for '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Window(" & _INDEX_FENETRE_ & ") edition mode for '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14280,9 +14279,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du bouton '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du bouton(" & _INDEX_BOUTON_ & ") '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Button edition mode for '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Button(" & _INDEX_BOUTON_ & ") edition mode for '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14493,9 +14492,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du picturebox '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du picturebox(" & _INDEX_PICTUREBOX_ & ") '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Picturebox edition mode for '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Picturebox(" & _INDEX_PICTUREBOX_ & ") edition mode for '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14706,9 +14705,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebloc '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebloc(" & _INDEX_TEXTBLOCK_ & ") '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Textblock edition mode for '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Textblock(" & _INDEX_TEXTBLOCK_ & ") edition mode for '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14912,9 +14911,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebox '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebox(" & _INDEX_TEXTBOX_ & ") '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Textbox edition mode for '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Textbox(" & _INDEX_TEXTBOX_ & ") edition mode for '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -15126,9 +15125,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition de la barre de progression '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition de la barre de progression(" & _INDEX_PROGRESSBAR_ & ") '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Progress Bar edition mode for '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Progress Bar(" & _INDEX_PROGRESSBAR_ & ") edition mode for '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -15360,9 +15359,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition d'un check box'" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition d'un check box(" & _INDEX_CHECKBOX_ & ") '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Check box edition mode for '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Check box(" & _INDEX_CHECKBOX_ & ") edition mode for '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -15583,9 +15582,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du explorer '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du explorer(" & _INDEX_EXPLORER_ & ") '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Explorer edition mode for '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Explorer(" & _INDEX_EXPLORER_ & ") edition mode for '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -15787,23 +15786,23 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												For _INDEX_LISTBOX_ = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
 												
 													IF IUG_CREATION_LISTBOX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Nom Then
+														
 														' Verifier si la cle d'identification KERNEL, OS, USER, et PID est identique
 														IF CPCDOS_INSTANCE.get_id_kernel(_CLE_) 		= CPCDOS_INSTANCE.get_id_kernel(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
 															CPCDOS_INSTANCE.get_id_OS(_CLE_) 			= CPCDOS_INSTANCE.get_id_OS(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
-															CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) 	= CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
-															CPCDOS_INSTANCE.get_id_PID(_CLE_) 			= CPCDOS_INSTANCE.get_id_PID(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
-														
-					
-															
+															CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) 	= CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
+															' CPCDOS_INSTANCE.get_id_PID(_CLE_) 			= CPCDOS_INSTANCE.get_id_PID(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
+
+													
 															Dim ADD_NUM_R as String
 															Dim ADD_NUM_V as String
 															Dim ADD_NUM_B as String
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du listbox '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du listbox(" & IUG_CREATION_LISTBOX & ") '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Listbox edition mode for '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Listbox(" & IUG_CREATION_LISTBOX & ") edition mode for '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -17484,7 +17483,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Creer l'explorer
 												if Modification_IUG = True Then
-													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, GUI__Index_ENFANT))
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, _INDEX_EXPLORER_))
 												Else
 													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, 0))
 												End if
@@ -17496,8 +17495,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 											ELSEIF NOT IUG_CREATION_LISTBOX = "" Then
 												Dim Retour_Resultat as string
-												
-												
 												
 												IF Modification_IUG = True Then
 													IF GUI__Handle_PARENT > 0  Then
@@ -17515,22 +17512,22 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PROC_PARENT		= GUI__PROC_PARENT 		' Nom du processus parent (Optionnel)
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PID_PARENT			= GUI__PID_PARENT 		' PID du parent 
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PID_PARENT		= GUI__PID_PARENT 		' PID du parent 
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.THREAD_PARENT		= GUI__THREAD_PARENT 	' Nom du thread parent (Optionnel)
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.TID_PARENT			= GUI__TID_PARENT	 	' Nom du thread parent (Optionnel)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.TID_PARENT		= GUI__TID_PARENT	 	' Nom du thread parent (Optionnel)
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Fenetre_PARENT 	= GUI__Fenetre_PARENT 	' Nom de la fenetre
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_FNT_PARENT 	= GUI__Index_FNT_PARENT ' Index de la fenetre
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT 		= GUI__Handle_PARENT 	' Handle de la fenetre hebergeur
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT 	= GUI__Handle_PARENT 	' Handle de la fenetre hebergeur
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.NOM				= IUG_CREATION_LISTBOX	' Nom de l'objet
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_ENFANT		= GUI__Index_ENFANT		' Index de l'objet
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle				= GUI__Handle			' Handle de l'objet (Unique)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle			= GUI__Handle			' Handle de l'objet (Unique)
 												
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE			= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE", 3, _CLE_))	
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE							= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE", 3, _CLE_))	
 												
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE	= Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE_OPACITE", 3, _CLE_))	
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE					= Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE_OPACITE", 3, _CLE_))	
 												
 												IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE < 0 Then
 													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE = 0
@@ -17634,7 +17631,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Creer la listbox
 												if Modification_IUG = True Then
-													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, GUI__Index_ENFANT))
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, _INDEX_LISTBOX_))
 												Else
 													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, 0))
 												End if

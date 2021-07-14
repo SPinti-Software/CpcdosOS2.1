@@ -869,6 +869,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Listbox  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Listbox Then
+
 	
 		Dim _INDEX_Fenetre_ as integer 
 		' Verifier si le processus (PID) existe!
@@ -897,6 +898,8 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			ScreenUnlock
 			exit function
 		End if
+
+		
 
 		IF _INDEX_MODIF_ > 0  Then 
 			
