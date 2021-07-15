@@ -95,14 +95,14 @@ Fin/ Picturebox
 
 ccp/ /set.level = 3
 
-set/ Image2.ctx_text(0) = PHOTO Ultimaaa
-set/ Image2.ctx_action(0) = msgbox/ Clic on first
+set/ Image2.ctx_text[1] = PHOTO Ultimaaa
+set/ Image2.ctx_action[1] = msgbox/ Clic on first
 
-set/ Image2.ctx_text(1) = Item 2
-set/ Image2.ctx_action(1) = msgbox/ Clic on 2nd
+set/ Image2.ctx_text[1] = Item 2
+set/ Image2.ctx_action[1] = msgbox/ Clic on 2nd
 
-set/ Image2.ctx_text(2) = Item 3
-set/ Image2.ctx_action(2) = msgbox/ Clic on 3th
+set/ Image2.ctx_text[2] = Item 3
+set/ Image2.ctx_action[2] = msgbox/ Clic on 3th
 
 set/ Image2.ctx_number = 3
 
@@ -142,7 +142,7 @@ Fin/ Imagebox
 
 Textbox/ MonTexteBox
 	.handle			= "%handle_fenetre%"
-	.parametres             = "EDIT:1 MULTILINE:0"
+	.parametres             = "EDIT:1 MULTILINE:0 CTX:2"
 	.PX                     = "50"
 	.PY                     = "50"
 	.TX                     = "200"
@@ -153,6 +153,7 @@ Textbox/ MonTexteBox
 	.event                  = ""
 	Creer/
 Fin/ Textebox
+
 
 Checkbox/ MonCheckbox
 	.handle 			= "%Handle_Fenetre%"
@@ -240,6 +241,11 @@ function/ btn_cursor_config.MouseClick()
 
 end/ function
 
-
-
+:BOUCLE:
+// ...
+if/ "blabla" = "blabla" then:
+	goto/ BOUCLE  
+	// Ici le noyau croit que "boucle" est encore dans le contexte "then:"
+	//  Du coup il accumule en mémoire « then: then: then: etc… » et CRASH
+End/ if
 
