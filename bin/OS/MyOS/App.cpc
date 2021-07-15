@@ -142,7 +142,7 @@ Fin/ Imagebox
 
 Textbox/ MonTexteBox
 	.handle			= "%handle_fenetre%"
-	.parametres             = "EDIT:1 MULTILINE:0 CTX:2"
+	.parametres             = "EDIT:1 MULTILINE:0"
 	.PX                     = "50"
 	.PY                     = "50"
 	.TX                     = "200"
@@ -153,7 +153,6 @@ Textbox/ MonTexteBox
 	.event                  = ""
 	Creer/
 Fin/ Textebox
-
 
 Checkbox/ MonCheckbox
 	.handle 			= "%Handle_Fenetre%"
@@ -241,11 +240,6 @@ function/ btn_cursor_config.MouseClick()
 
 end/ function
 
-:BOUCLE:
-// ...
-if/ "blabla" = "blabla" then:
-	goto/ BOUCLE  
-	// Ici le noyau croit que "boucle" est encore dans le contexte "then:"
-	//  Du coup il accumule en mémoire « then: then: then: etc… » et CRASH
-End/ if
+
+
 

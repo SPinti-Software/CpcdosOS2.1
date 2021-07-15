@@ -9,7 +9,7 @@ SET/ CPC_GUI.CURSOR_IMG = %OS_GUI%\CURSOR\CURSOR.PNG
 
 // [FR] Le curseur graphique de chargement
 // [EN] Graphic loading cursor
-SET/ CPC_GUI.LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
+SET/ CPC_GUI.CURSOR_LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
 
 
 // [FR] Vitesse MAX / MIN

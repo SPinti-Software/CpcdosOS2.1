@@ -63,7 +63,7 @@ textbox/ txtb_load_img
     .py             = "56"
     .tx             = "250"
     .ty             = "16"
-    .text           = "%CPC_GUI.LOAD_IMG%"
+    .text           = "%CPC_GUI.CURSOR_LOAD_IMG%"
     .backcolor      = "255,255,255"
     .TextColor      = "000,000,000"
     create/

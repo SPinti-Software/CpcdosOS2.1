@@ -75,17 +75,17 @@ function/ __display_taskmgr()
         sys/ /process /list /index /array list_process_pid
 
         // Config contextmenu
-        set/ listbox_gui.ctx_text(0) = Arreter processus
-        set/ listbox_gui.ctx_action(0) = /F:kill_selected_process() \#NO-FN
+        set/ listbox_gui.ctx_text[0] = Arreter processus
+        set/ listbox_gui.ctx_action[0] = /F:kill_selected_process() \#NO-FN
 
-        set/ listbox_gui.ctx_text(1) = Suspendre processus
-        set/ listbox_gui.ctx_action(1) = 
+        set/ listbox_gui.ctx_text[1] = Suspendre processus
+        set/ listbox_gui.ctx_action[1] =  
 
-        set/ listbox_gui.ctx_text(2) = Reprendre processus
-        set/ listbox_gui.ctx_action(2) = 
+        set/ listbox_gui.ctx_text[2] = Reprendre processus
+        set/ listbox_gui.ctx_action[2] =  
 
-        set/ listbox_gui.ctx_text(3) = Annuler
-        set/ listbox_gui.ctx_action(3) = 
+        set/ listbox_gui.ctx_text[3] = Annuler
+        set/ listbox_gui.ctx_action[3] =  
 
 
         set/ listbox_gui.ctx_number = 4
@@ -114,11 +114,8 @@ Function/ kill_selected_process()
         // Getting item name
         @#item_index listbox/ /selected_index listbox_gui
 
-        // Getting PID number from array (a optimiser !!)
-        set/ proc_index_tmp =  \%list_process_pid(%item_index%)\% \#REFORMAT-VAR
-        set/ proc_index_tmp = %proc_index_tmp% \#REFORMAT-VAR
-        
-        close/ /PID %proc_index_tmp%
+        // Getting PID number from array
+        close/ /PID %list_process_pid[item_index]%
 
         ccp/ /pause 100
 

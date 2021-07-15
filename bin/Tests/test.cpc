@@ -27,14 +27,14 @@ button/ Mon_Bouton
 	creer/
 end/ button
 
-set/ Mon_Bouton.ctx_text(0) = Item 1
-set/ Mon_Bouton.ctx_action(0) = msgbox/ Clique sur Item 1
+set/ Mon_Bouton.ctx_text[0] = Item 1
+set/ Mon_Bouton.ctx_action[0] = msgbox/ Clique sur Item 1
 
-set/ Mon_Bouton.ctx_text(1) = Item 2
-set/ Mon_Bouton.ctx_action(1) = msgbox/ Clique sur Item DEUX
+set/ Mon_Bouton.ctx_text[1] = Item 2
+set/ Mon_Bouton.ctx_action[1] = msgbox/ Clique sur Item DEUX
 
-set/ Mon_Bouton.ctx_text(2) = Item 3
-set/ Mon_Bouton.ctx_action(2) = msgbox/ Clique sur Item TROIIIIIIIIIS !
+set/ Mon_Bouton.ctx_text[2] = Item 3
+set/ Mon_Bouton.ctx_action[2] = msgbox/ Clique sur Item TROIIIIIIIIIS !
 
 set/ Mon_Bouton.ctx_number = 3
 

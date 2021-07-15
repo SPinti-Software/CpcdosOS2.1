@@ -335,8 +335,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 
 								Dim Retour as string	
 								' Path image
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_image(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_image(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_image[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_image[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image(index) = retour
@@ -346,8 +346,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Position relative
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_pos_relative(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_pos_relative(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_pos_relative[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_pos_relative[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_pos_relative(index) = val(retour)
@@ -355,8 +355,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Position X
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_px(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_px(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_px[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_px[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_px(index) = val(retour)
@@ -364,8 +364,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Position y
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_py(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_py(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_py[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_py[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_py(index) = val(retour)
@@ -373,8 +373,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Size X 
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_sx(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_sx(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_sx[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_sx[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_sx(index) = val(retour)
@@ -382,8 +382,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Size Y
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_sy(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_sy(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_sy[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_sy[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_sy(index) = val(retour)
@@ -391,8 +391,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Parameters
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_param(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_param(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_param[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_param[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_param(index) = retour
@@ -400,8 +400,8 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								end if
 
 								' Alpha opacite
-								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_alpha(" & index & ")", 4, _CLE_)
-								DEBUG("[SCI] design_Image_alpha(" & index & ") --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								Retour = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("design_Image_alpha[" & index & "]", 4, _CLE_)
+								DEBUG("[SCI] design_Image_alpha[" & index & "] --> '" & retour & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 								if len(retour) > 0 Then
 									if NOT instr(retour, CPCDOS_INSTANCE._CONTENU_IMPROPABLE) > 0 then
 										design_Image_alpha(index) = val(retour)
@@ -690,7 +690,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						End if
 					end if
 
-					
+					' Temporaire !
 					this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode = 6
 
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

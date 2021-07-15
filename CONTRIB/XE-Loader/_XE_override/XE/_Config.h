@@ -44,7 +44,7 @@
 #define Show_FuncTable
 
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
-#define Show_AllFuncTable
+// #define Show_AllFuncTable
 
 //Use the standard Widows VirtualAlloc allocation or the more portable ExeLoader version
 //#define USE_Windows_VirtualAlloc

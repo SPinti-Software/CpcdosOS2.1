@@ -1,6 +1,6 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.5         *** 
-	***        Juillet 2021 For public        ***
+	***       00 Juillet 2021 For public      ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 
 	#################
@@ -10,7 +10,7 @@
 		--> 20	Ajouts de divers fonctionnalités.
 		--> 7	corrections importantes.
 		--> 3	optimisations.
-		--> 6	corrections et modifications mineures.
+		--> 7	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -83,6 +83,7 @@
 		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
 		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
 		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
+		- [CPCDOSC+] Remplacement du nom de variable %CPC_GUI.LOAD_IMG% par %CPC_GUI.CURSOR_LOAD_IMG%.
 
 		
 		[MODIFICATIONS]

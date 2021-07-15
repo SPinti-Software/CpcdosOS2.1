@@ -9,23 +9,23 @@ CCP/ /SET.LEVEL = 4
 
 // [FR] Chemin d'acces jusqu'a l'image
 // [EN] Path to image
-// set/ design_Image(0) = path.png
+// set/ design_Image[0] = path.png
 
 // [FR] Position relative
 //      0 : Haut gauche  1 : Haut droit  2 : Bas gauche  3 : Bas droite
 // [EN] Relative position 
 //      0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
-// set/ design_Image_pos_relatif(0) = 1
+// set/ design_Image_pos_relatif[0] = 1
 
 // [FR] Position X, Y (relatif a 'design_Image_pos_relatif')
 // [EN] X, Y position (relative to 'design_Image_pos_relatif')
-// set/ design_Image_px(0) = 0
-// set/ design_Image_py(0) = 0
+// set/ design_Image_px[0] = 0
+// set/ design_Image_py[0] = 0
 
 // [FR] Taille x, y
 // [EN] X, Y size
-// set/ design_Image_sx(0) = 7
-// set/ design_Image_sy(0) = 7
+// set/ design_Image_sx[0] = 7
+// set/ design_Image_sy[0] = 7
 
 // [FR] Parametres exemples :
 //    "SX(WIN)"      : Recupere la taille X de la fenetre
@@ -37,58 +37,58 @@ CCP/ /SET.LEVEL = 4
 //    "SY(WIN)"      : Getting window size Y
 //    "SXCALC(-14)"  : Substract or add X size
 //    "SYCALC(14)"   : Substract or add Y size
-// set/ design_Image_param(0) = ""
+// set/ design_Image_param[0] = ""
 
 // [FR] Opacite de l'image (0 -> 255)
 // [EN] Image opacity
-// set/ design_Image_alpha(0) = 255
+// set/ design_Image_alpha[0] = 255
 
 // ============================================
 // ============================================
 
 // [FR] Rebord arrondi haut/gauche
 // [EN] Rounded top/left
-set/ design_Image(0) = OS\MEDIA\GUI\WINDOW\WIN_TL.PNG
-set/ design_Image_pos_relative(0) = 0
-set/ design_Image_px(0) = 0
-set/ design_Image_py(0) = 0
-set/ design_Image_sx(0) = 7
-set/ design_Image_sy(0) = 7
-set/ design_Image_param(0) = ""
-set/ design_Image_alpha(0) = 255
+set/ design_Image[0] = OS\MEDIA\GUI\WINDOW\WIN_TL.PNG
+set/ design_Image_pos_relative[0] = 0
+set/ design_Image_px[0] = 0
+set/ design_Image_py[0] = 0
+set/ design_Image_sx[0] = 7
+set/ design_Image_sy[0] = 7
+set/ design_Image_param[0] = ""
+set/ design_Image_alpha[0] = 255
 
 // [FR] Rebord arrondi haut/droit
 // [EN] Rounded top/right
-set/ design_Image(1) = OS\MEDIA\GUI\WINDOW\WIN_TR.PNG
-set/ design_Image_pos_relative(1) = 1
-set/ design_Image_px(1) = 0
-set/ design_Image_py(1) = 0
-set/ design_Image_sx(1) = 7
-set/ design_Image_sy(1) = 7
-set/ design_Image_param(1) = ""
-set/ design_Image_alpha(1) = 255
+set/ design_Image[1] = OS\MEDIA\GUI\WINDOW\WIN_TR.PNG
+set/ design_Image_pos_relative[1] = 1
+set/ design_Image_px[1] = 0
+set/ design_Image_py[1] = 0
+set/ design_Image_sx[1] = 7
+set/ design_Image_sy[1] = 7
+set/ design_Image_param[1] = ""
+set/ design_Image_alpha[1] = 255
 
 // [FR] Barre haut central
 // [EN] Middle top bar
-set/ design_Image(2) = OS\MEDIA\GUI\WINDOW\WIN_TM.PNG
-set/ design_Image_pos_relative(2) = 1
-set/ design_Image_px(2) = 7
-set/ design_Image_py(2) = 0
-set/ design_Image_sx(2) = 0
-set/ design_Image_sy(2) = 7
-set/ design_Image_param(2) = "resize(true), sx(win), sxcalc(-14)"
-set/ design_Image_alpha(2) = 255
+set/ design_Image[2] = OS\MEDIA\GUI\WINDOW\WIN_TM.PNG
+set/ design_Image_pos_relative[2] = 1
+set/ design_Image_px[2] = 7
+set/ design_Image_py[2] = 0
+set/ design_Image_sx[2] = 0
+set/ design_Image_sy[2] = 7
+set/ design_Image_param[2] = "resize(true), sx(win), sxcalc(-14)"
+set/ design_Image_alpha[2] = 255
 
 // [FR] Barre titre centrale
 // [EN] Central title bar
-set/ design_Image(3) = OS\MEDIA\GUI\WINDOW\WIN_TITL.PNG
-set/ design_Image_pos_relative(3) = 1
-set/ design_Image_px(3) = 0
-set/ design_Image_py(3) = 7
-set/ design_Image_sx(3) = 0
-set/ design_Image_sy(3) = 0
-set/ design_Image_param(3) = "resize(true) sx(win) sy(title)"
-set/ design_Image_alpha(3) = 255
+set/ design_Image[3] = OS\MEDIA\GUI\WINDOW\WIN_TITL.PNG
+set/ design_Image_pos_relative[3] = 1
+set/ design_Image_px[3] = 0
+set/ design_Image_py[3] = 7
+set/ design_Image_sx[3] = 0
+set/ design_Image_sy[3] = 0
+set/ design_Image_param[3] = "resize(true) sx(win) sy(title)"
+set/ design_Image_alpha[3] = 255
 
 
 
