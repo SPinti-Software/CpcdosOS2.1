@@ -59,11 +59,11 @@ namespace cpinti
 		static bool						EVALUATION_CPU		= false;
 		static unsigned long 			NombreCycles 		= 0;
 		static unsigned long 			NombreCyles_MAX		= 0;
-		static unsigned long				InLiveCompteur 		= 0;
+		static unsigned long			InLiveCompteur 		= 0;
 		static time_t 					Temps_Depart 		= (time_t) NULL;
 		static time_t 					Temps_Actuel		= (time_t) NULL;
 		static double 		 			Temps_total 		= 0;
-		static unsigned long				saut_comptage		= 0;
+		static unsigned long			saut_comptage		= 0;
 		static long						Compteur_Cycle_cpu	= 0;
 		
 		
@@ -71,17 +71,17 @@ namespace cpinti
 		
 		static struct 		itimerval instance_Timer[MAX_TIMERS] = {};
 		static bool			SECTION_CRITIQUE 	= false;
-		static long 			compteur 			= 0;
+		static long 		compteur 			= 0;
 		static unsigned long Nombre_Tache 		= 0;
-		static unsigned long Nombre_Threads 		= 0;
+		static unsigned long Nombre_Threads 	= 0;
 		static unsigned long Nombre_Timer 		= 0;
 		static unsigned long Thread_en_cours 	= 0;
 		
 		/**** Structure du thread ****/
 		struct liste_threads
 		{
-			long				Priorite;		/** Priorite 0-128 **/
-			long				Priorite_count;	/** Compteur priorite **/
+			long			Priorite;		/** Priorite 0-128 **/
+			long			Priorite_count;	/** Compteur priorite **/
 			unsigned long 	Etat_Thread;	/** ARRETE, PAUSE, EXECUTION **/
 			bool			DM_arret;
 			unsigned long	Zombie_Count;	/** Nombre boucle avant mort **/
@@ -102,7 +102,7 @@ namespace cpinti
 		/**** Structure du processus ****/
 		struct list_processus
 		{
-			long						Priorite;			/** **/
+			long					Priorite;			/** **/
 			unsigned long 			Etat_Processus;		/** ARRETE, PAUSE, EXECUTION **/
 			
 			unsigned long			KID; 				/** ID kernel **/

@@ -70,10 +70,10 @@ set/ handle_desktop = /F:Init_Desktop(MyDesktop, ./, %pos_x%, %pos_y%, %size_X%,
 // Executer barre.CPC dans le processus "_MENUS_" via son PID
 CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 
-exe/ & tests/tchat.cpc
+// exe/ & tests/tchat.cpc
 
 // Executer app.cpc dans le processus "_APP_" via son PID
-CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
+// CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
 
 // exe/ & tests/explorer.cpc
@@ -81,6 +81,7 @@ CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 refresh/ /all
 
 sys/ /os:myos
+
 
 
 

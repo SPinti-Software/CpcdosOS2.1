@@ -33,9 +33,25 @@
 
 // #include "leakchk.h"
 
-extern "C" unsigned long xe_cpinti_creer_thread(void* (* Fonction) (void * arg), unsigned long stackSize, void* threadParam)
+
+extern "C" unsigned long xe_cpinti_creer_thread(void* (* Fonction) (void * arg), unsigned long stackSize, void* threadParam, bool ExecuteThreadNow)
 {
-	return cpinti::gestionnaire_tache::cpinti_creer_thread(0, 0, 0, 1, "external_thread", 0, Fonction, NULL, (unsigned long) threadParam);
+	return cpinti::gestionnaire_tache::cpinti_creer_thread(0, 0, 0, 1, "external_thread", 0, Fonction, NULL, (unsigned long) threadParam, ExecuteThreadNow);
+}
+
+extern "C" void xe_cpinti_doevents(unsigned long time_ms)
+{
+	cpinti::cpinti_doevents(time_ms);
+}
+
+extern "C" void xe_cpinti_ENTRER_SectionCritique()
+{
+	cpinti::gestionnaire_tache::begin_SectionCritique();
+}
+
+extern "C" void xe_cpinti_SORTIR_SectionCritique()
+{
+	cpinti::gestionnaire_tache::end_SectionCritique();
 }
 
 namespace cpinti
@@ -47,6 +63,12 @@ namespace cpinti
 		unsigned long cpinti_creer_thread(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char* NomThread, 
 																		long Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned long ARG_TH)
 		{
+			return cpinti_creer_thread(0, 0, 0, 1, NomThread, 0, Fonction, NULL, (unsigned long) ARG_TH, true);
+		}
+
+		unsigned long cpinti_creer_thread(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char* NomThread, 
+																		long Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned long ARG_TH, bool ExecuteThreadNow)
+		{
 			
 
 			// Cette fonction va permettre de creer un nouveau processus vierge (Qui hebergera vos threads)
@@ -57,6 +79,7 @@ namespace cpinti
 			//			> 0 : Numero de PID
 
 			ENTRER_SectionCritique();
+
 
 			// On ajoute un thread depuis le CORE
 			unsigned long Resultat = gestionnaire_tache::ajouter_Thread(Fonction, NomThread, PID, Priorite, ARG_TH);
@@ -81,8 +104,10 @@ namespace cpinti
 
 				SORTIR_SectionCritique();
 
-				doevents(10000);
 
+				// Executer le thread maintenant
+				if(ExecuteThreadNow == true)
+					doevents(10000);
 			}
 			else
 			{

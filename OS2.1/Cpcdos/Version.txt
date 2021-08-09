@@ -37,7 +37,7 @@
 
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
 		- [SCI] Ajout de l'objet ListBox, qui permet d'afficher une liste d'élements selectionnable avec évènement.
-		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
+		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter 	" (1 --> 5)
 		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
 		- [SCI] Ajout du menu contextuel (Menu clic droit personnalisable depuis CONTEXT.CPC + evenements)
 		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%

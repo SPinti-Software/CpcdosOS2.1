@@ -41,13 +41,17 @@
 
 extern "C" long 		cpc_clean	();
 
+
+extern "C" unsigned long xe_cpinti_get_ThreadEnCours()
+{
+	return cpinti::gestionnaire_tache::get_ThreadEnCours();
+}
+
 namespace cpinti 
 { 
 	namespace gestionnaire_tache
 	{ 
 	
-		
-		
 		void IamInLive()
 		{
 			// Ne pas calculer si le CPU est en evaluation
@@ -658,7 +662,7 @@ namespace cpinti
 		
 			Thread_en_cours = Nouveau_TID;
 			
-			Interruption_Timer(0);
+			// Interruption_Timer(0);
 
 
 			// Retourner l'ID
@@ -728,7 +732,7 @@ namespace cpinti
 
 				// Decrementer le nombre de threads dans le processus
 				Liste_Processus[Liste_Threads[tid].PID].NB_Thread				-= 1;
-				if(Liste_Processus[Liste_Threads[tid].PID].NB_Thread < 0)
+				if(Liste_Processus[Liste_Threads[tid].PID].NB_Thread <= 0)
 					Liste_Processus[Liste_Threads[tid].PID].NB_Thread = 0;
 				
 				// Quitter le thread

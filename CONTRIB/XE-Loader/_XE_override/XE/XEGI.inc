@@ -1,16 +1,48 @@
+
+/************** F R O M  C P C D O S   W R A P P E R **************/
+
 // ---- Buffer / context from Cpcdos ---- //
-extern long		cpc_Creer_Contexte			(long TAILLEX, long TAILLEYn);
-extern void*	cpc_Obtenir_Zone_Contexte	(long ID);
-extern long		cpc_Blitter					(long ID);
+extern long					cpc_Creer_Contexte			(long TAILLEX, long TAILLEYn);
+extern void*				cpc_Obtenir_Zone_Contexte	(long ID);
+extern long					cpc_Blitter					(long ID);
 
 // ---- User input from cpcdos ---- //
-extern long		cpc_mouse_state_lck			(long param, long id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
-extern long		cpc_set_mouse_lck			(long px, long py, bool visible, long id_context);
-extern long		cpc_get_key_lck				(long id_context);
+extern long					cpc_mouse_state_lck			(long param, long id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
+extern long					cpc_set_mouse_lck			(long px, long py, bool visible, long id_context);
+extern long					cpc_get_key_lck				(long id_context);
+
+
+
+
+/************** F R O M   C P I N T I   C O R E   W R A P P E R **************/
+
+// ---- Create thread ---- //
+extern unsigned long 		xe_cpinti_creer_thread		(void* (* Fonction) (void * arg), unsigned long stackSize, void* threadParam, bool ExecuteThreadNow);
+
+// ---- Doevent (Calling CPinti Core scheduler) ---- //
+extern void 				xe_cpinti_doevents			(unsigned long time_ms);
+
+// ---- Getting threads info ---- //
+extern unsigned long 		xe_cpinti_get_ThreadEnCours	();
+
+// ---- Getting process infos ---- //
+extern unsigned long 		xe_cpinti_get_pid_from_tid	();
+// extern unsigned long 		xe_cpinti_get_pid_from_tid	(unsigned long time_ms);
+
+
+// ---- Critical section  ---- //
+extern void 				xe_cpinti_ENTRER_SectionCritique();
+extern void 				xe_cpinti_SORTIR_SectionCritique();
+
+
+/**********************************************************************/
+
+
 
 int UserInputUpdate(uint32_t h, long id_context);
 
-uint32_t Create_context(ContextInf _ctx){
+uint32_t Create_context(ContextInf _ctx)
+{
 	aContext_count++; //Important: Skip the zero index (NULL)
 	int idx = aContext_count;
 	
@@ -93,3 +125,55 @@ uint32_t Sys_ProcessMsg(XEGI_SysMsg _msg)
 	return 0;
 }
 
+
+uint32_t Sys_CreateThread(void* (* threadMain) (void * arg), unsigned long stackSize, void* threadParam)
+{
+	xe_cpinti_ENTRER_SectionCritique();
+	_printl("[CPCDOS] Using CPinti Core threads");
+	unsigned long result = xe_cpinti_creer_thread((void* (*) (void *)) threadMain, stackSize, (void*) threadParam, false);
+	_printl("[CPCDOS] Results TID CPinti Core thread : %lu", result);
+	xe_cpinti_SORTIR_SectionCritique();
+
+	return result;
+}
+
+void Sys_Sleep(int32_t time_ms)
+{
+	xe_cpinti_doevents(time_ms);
+}
+
+void Sys_EnterCriticalSection()
+{
+	// Entrer dans une section critique
+	xe_cpinti_ENTRER_SectionCritique();
+}
+
+void Sys_TryEnterCriticalSection()
+{
+	// Entrer dans une section critique
+	xe_cpinti_ENTRER_SectionCritique();
+}
+
+void Sys_LeaveCriticalSection()
+{
+	// Sortir d'une section critique
+	xe_cpinti_SORTIR_SectionCritique();
+}
+
+void* Sys_GetCurrentThread()
+{
+	// Obtenir le thread courant
+	return (void*) xe_cpinti_get_ThreadEnCours();
+}
+
+double Sys_GetCurrentThreadId()
+{
+	// Obtenir le thread courant
+	return (double)  xe_cpinti_get_ThreadEnCours();
+}
+
+double Sys_GetCurrentProcessId()
+{
+	// Obtenir le thread courant
+	return (double)  xe_cpinti_get_pid_from_tid();
+}
