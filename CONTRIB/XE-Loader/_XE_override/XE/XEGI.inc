@@ -177,3 +177,27 @@ double Sys_GetCurrentProcessId()
 	// Obtenir le thread courant
 	return (double)  xe_cpinti_get_pid_from_tid();
 }
+
+
+
+
+
+//-------- OVERRIDED --------//
+
+uintptr_t XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam)
+{
+	uintptr_t thdl =0;
+
+	if ((thdl = (uintptr_t)Sys_CreateThread((void* (*) (void *))threadMain, stackSize,(LPVOID)threadParam))){
+		return thdl;
+	}
+	_printl("Error, no thread created");
+}
+
+void XeGI_Sleep(int32_t _ms)
+{
+	Sys_Sleep(_ms);
+}
+
+
+//-------- OVERRIDED --------//
