@@ -3,12 +3,6 @@
 
 set/ actual_path = C:\CPCDOS\OS
 
-set/ DisplayMode = 0
-
-ccp/ /set.level = 3
-set/ Displaymode_ICO_Path = OS/MEDIA/GUI/btn_ico.PNG
-set/ Displaymode_LIST_Path = OS/MEDIA/GUI/btn_list.PNG
-ccp/ /set.level = 1
 
 
 // ===== Build window =====
@@ -32,7 +26,7 @@ End/ Window
  
 listbox/ listbox_gui
         .handle         = "%window_handle%"
-        .parameters     = "EXPLOREMODE:%DisplayMode%"
+        .parameters     = "EXPLOREMODE:0"
         .px             = "1"
         .py             = "1"
         .sx             = "250"
@@ -41,6 +35,7 @@ listbox/ listbox_gui
         .textcolor      = "028,028,028"
         .backcolor      = "255,255,255"
         .text           = "Element 1;element 2;ELEMENT 3;Et mon 4eme elemeeeent!"
+        .Image          = ""
         .events         = "%_exe_path_%"
         create/
 End/ listbox
@@ -53,122 +48,6 @@ Function/ listbox_gui.selected(item_str,item_index)
         msgbox/ Elements selectionne : %item_str% index:%item_index%
 
 end/ Function
-
-Function/ img_Drive.MouseClick()
-        // Display drive list
-
-        // Modify listbox path
-	listbox/ /modif:listbox_gui
-		.text = ""
-		create/
-	end/ listbox
-
-End/ Function
-
-Function/ img_Previous.MouseClick()
-        // Back path
-
-End/ Function
-
-Function/ img_Next.MouseClick()
-        // fordward path
-
-End/ Function
-
-
-Function/ img_display_mode.MouseClick()
-        // Switch between list / icon mode display
-
-
-        
-        listbox/ /modif:listbox_gui
-
-                // Getting actual parameter
-		@#ParamActuel .parameters
-                
-                if/ "%ParamActuel%" == "EXPLOREMODE:0" then:
-                        set/ DisplayMode = 2
-                else:
-                        set/ DisplayMode = 0
-                End/ if
-
-                // Edit displaying mode
-                .parameters = "EXPLOREMODE:%DisplayMode%"
-
-                create/
-	end/ listbox
-
-
-        // Update picturebox display
-        picturebox/ /modif:img_display_mode
-
-                if/ "%DisplayMode%" == "0" then:
-                        set/ path_img = %Displaymode_ICO_Path%
-                else:
-                        set/ path_img = %Displaymode_LIST_Path%
-                End/ if
-
-                .Image	= "%path_img%"
-
-                create/
-        end/ Picturebox
-
-End/ function
-
-Function/ listbox_gui.MouseClick()
-        // Update textbox path
-
-        // Get path text
-        listbox/ /modif:listbox_gui
-                @#new_path .text
-        end/ listbox
-
-        // Modify path text in the textbox
-        textbox/ /modif:txt_path
-		.text = "%new_path%"
-		create/
-	end/ textbox
-End/ Function
-
-
-Function/ txt_path.KeyEnter(texte)
-        // Valid and display wrote path from textbox
-        
-        // Stay in level 1, because for read variable %texte%, this is in level 1
-        ccp/ /set.level = 1
-
-        // Modify listbox path
-	listbox/ /modif:listbox_gui
-		.text = "%texte%"
-		create/
-	end/ listbox
-
-End/ Function
-
-
-
-Function/ listbox_window.Resize(sizeup)
-	// If user change window size
-
-	// Getting window size informations
-	window/ /modif:listbox_window
-		@#Win_Size_X .sx
-		@#Win_Size_Y .sy
-	end/ window
-	
-        // According textbox size
-        set/ Win_Size_Y = /C(%Win_Size_Y% - 23)
-
-        // And modify listbox object size
-	listbox/ /modif:listbox_gui
-		.sx     = "%Win_Size_X%"
-		.sy     = "%Win_Size_Y%"
-		create/
-	end/ listbox
-
-End/ function
-
-
 
 
 

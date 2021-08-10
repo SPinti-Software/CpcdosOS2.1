@@ -37,7 +37,7 @@
 
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
 		- [SCI] Ajout de l'objet ListBox, qui permet d'afficher une liste d'élements selectionnable avec évènement.
-		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter "BLURRY:1" (1 --> 5)
+		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter 	" (1 --> 5)
 		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
 		- [SCI] Ajout du menu contextuel (Menu clic droit personnalisable depuis CONTEXT.CPC + evenements)
 		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
@@ -69,7 +69,6 @@
 			- /array variable 	--> Stocker dans un taleau CpcdosC+
 		- [CPCDOSC+] Ajout du parametre SYS/ /SCREEN /LISTB compatible pour les listbox
 			Ce qui permet de lister les resolutions d'écran avec ";" comme separateur.
-
 		
 
 		[CORRECTIONS]
@@ -94,6 +93,8 @@
 			Ce qui corrige la console graphique F9 et bien plus !
 		- [SCI] Possibilité de REDEFINIR une fonction déjà déclarée avec à nouveau "declare/"
 		- [CPCDOSC+] Modification de la variable _EXE_PATH_F_ en _EXE_PATH_DIR_
+		- [SCI] Propriété .OPACITY d'un picturebox varie entre 1 et 255. Si OPACITY = "0" alors le mode ALPHA est désactivé.
+			Idéale pour afficher les rendu visuels dans un picturebox depuis un moteur de rendu dynamique. (3D, html etc...)
 
 
 
@@ -107,14 +108,17 @@
 		- [CORE] Récupération du nom processus désormais impossible si le processus est fermé.
 		
 		[AJOUT]
+		- [Win32] Intégration du gestionnaire de threads des applications Win32 sous CPinti Core.
 		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
 		- [Win32] Ajout du support des evenements de la souris et clavier.
 			Etat de la souris  	: cpc_mouse_state_lck(0) --> 0:clic 1:X 2:Y
 			Definir souris 		: cpc_set_mouse_lck(x, y, visible)
 			Obtenir touche		: cpc_get_key_lck()
+		
 
 		[MODIFICATIONS]
 		- [XE-LOADER] Mise à jour et optimisation du code. @Maeiky
+
 
 		
 		

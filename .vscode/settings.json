@@ -69,6 +69,7 @@
         "set": "cpp",
         "xtree": "cpp",
         "filesystem": "cpp",
-        "thread": "c"
+        "thread": "c",
+        "codecvt": "cpp"
     }
 }

@@ -2076,7 +2076,7 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer
 						put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
 					End if
 				Else
-					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), ALPHA
+					put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), pset
 				End if
 				
 				Function = true

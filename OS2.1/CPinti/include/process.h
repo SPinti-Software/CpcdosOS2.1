@@ -14,6 +14,9 @@ namespace cpinti
 		const char* 	cpinti_get_nom_processus				(unsigned long PID);
 		unsigned long 	cpinti_get_nombre_processus				();
 		unsigned long	cpinti_get_nombre_thread_in_processus	(unsigned long PID);
+
+		unsigned long 	cpinti_get_pid_from_tid();
+		unsigned long 	cpinti_get_pid_from_tid(unsigned tid);
 		
 	}
 }

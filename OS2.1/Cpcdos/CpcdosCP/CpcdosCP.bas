@@ -20340,6 +20340,9 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers"
 					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers personnalisee"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update /votreDossier/VotreConfig.ini"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Charger la liste des icones GUI"
 					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 
 					Mess_Aide = Mess_Aide & CRLF
@@ -20530,6 +20533,9 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Update file format list"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Update personalized file format list"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update /yourpath/yourconfig.ini"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Load GUI icon list"
 					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 

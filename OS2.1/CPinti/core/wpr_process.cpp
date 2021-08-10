@@ -33,6 +33,17 @@
 
 // #include "leakchk.h"
 
+
+extern "C" unsigned long xe_cpinti_get_pid_from_tid()
+{
+	return cpinti::gestionnaire_tache::cpinti_get_pid_from_tid();
+}
+
+extern "C" unsigned long xe_cpinti_get_pid_from_tid_val(unsigned long time_ms)
+{
+	return cpinti::gestionnaire_tache::cpinti_get_pid_from_tid(time_ms);
+}
+
 namespace cpinti
 {
 	
@@ -177,6 +188,22 @@ namespace cpinti
 			// Cette fonction permet d'obtenir le nombre de thread dans un processus
 			
 			return gestionnaire_tache::Liste_Processus[PID].NB_Thread;
+		}
+
+		unsigned long cpinti_get_pid_from_tid()
+		{
+			// Cette fonction permet d'obtenir le numero du PID du thread
+
+			return gestionnaire_tache::Liste_Threads[get_ThreadEnCours()].PID;
+
+		}
+
+		unsigned long cpinti_get_pid_from_tid(unsigned tid)
+		{
+			// Cette fonction permet d'obtenir le numero du PID du thread
+
+			return gestionnaire_tache::Liste_Threads[tid].PID;
+
 		}
 		
 	}
