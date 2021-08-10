@@ -157,7 +157,7 @@ bouton/ btn_apply
 	.Handle		= "%window_handle%"
 	.Parametres	= "IMGAUTO:2"
 	.PX		    = "10"
-	.PY		    = "170"
+	.PY		    = "150"
 	.tx		    = "100"
 	.ty		    = "24"
 	.opacite	= "255"
@@ -209,8 +209,6 @@ Fonction/ btn_apply.MouseClick()
 
     // Load graphics
     sys/ /load-cursor-gui
-
-    sys/ /debug = 0
 
 Fin/ Fonction
 

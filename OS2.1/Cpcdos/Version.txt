@@ -8,9 +8,9 @@
 	#################
 
 		--> 20	Ajouts de divers fonctionnalités.
-		--> 7	corrections importantes.
+		--> 8	corrections importantes.
 		--> 3	optimisations.
-		--> 7	corrections et modifications mineures.
+		--> 9	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -79,6 +79,7 @@
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
 		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
 		- [GUI] Correction des problèmes d'evenements du Textblock.
+		- [GUI] Correction de clignottements intempestifs du curseur graphique personnalisé.
 		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
 		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
 		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
