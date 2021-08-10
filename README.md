@@ -2,57 +2,56 @@
 
 ![](https://cpcdos.net/user/themes/cpcdos/images/logo.png)
 
-Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx.
-Cette version sera maintenue à jour jusqu'à ce que la [version OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) sera prête. (Without FreeDos)
+This is officially the source code for the OSx Cpcdos kernel.
+This version will be maintained until [OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2) is ready. (Without FreeDos)
 
-Créé le 15 Juillet 2011.
-Code source publié officiellement le 09 Janvier 2021.
+Created on 15 July 2011.
+Source code officially released on 09 January 2021.
 
-#### Informations
-_Le projet à été nettoyé, tous les **elements prototype** qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code ou bien des morceaux de copyright, vous pouvez y passer outre. La version OS2.1 va finalement rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos_
-
+#### Information
+The project has been cleaned up, all **prototype elements** that no longer work such as boot, GDT, low memory management ...etc, have been swept from the project! Our apologies if there are any bits or comments like this left in the code or any copyrighted bits, you can skip it. The OS2.1 version will finally stay focused on top of FreeDOS. While OS2.2 will be developed without FreeDos_.
 
 Platform  | Build Status
  --- | --- 
 Windows | [![Build status](https://ci.appveyor.com/api/projects/status/nfkdxmis9s2s4d4s?svg=true)](https://ci.appveyor.com/project/Maeiky/cpcdosos2-1)
 
-## Comment contribuer
-- Créez un fork du dépôt sur votre compte GitHub.
-- Faites votre contribution tout en testant si cela marche (allez voir le paragraphe sur la compilation ci-dessous).
-- Faites un push de vos modifications sur votre fork.
-- Créez une pull-request via votre fork. AppVeyor fera des tests pour voir si tout va bien. Le propriétaire du dépôt se chargera de vérifier et, si tout va bien, de merge votre contribution dès que possible !
+## How to contribute
+- Create a fork of the repository on your GitHub account.
+- Make your contribution while testing if it works (see the paragraph on compilation below).
+- Make a push of your changes to your fork.
+- Create a pull-request via your fork. AppVeyor will test to see if everything is fine. The repository owner will check and, if all is well, merge your contribution as soon as possible!
 
-## Comment compiler
- - Téléchargez et installez la dernière version de [CWC](https://github.com/VLiance/Cwc)
- - Puis exécutez simplement le fichier `OS2.1\_Make_CpcDos_.cwMake` _associé à CWC_
- - Assurez-vous d'avoir une machine virtuelle [éditable](https://github.com/VLiance/VW_Viewer) ou un support USB bootable Cpcdos (Tuto Cpcdos [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
- Il est recommandé d'utiliser [VMware workstation player 16](https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&productId=1039&rPId=55794) et ne pas avoir installé la version pro sur votre machine, au risque d'avoir moins d'options de configuration de votre carte réseau.
-   N'hésitez pas à utiliser une ancienne VM cpcdos déjà configurée pour la mettre à jour.
- - Copiez simplement le nouveau fichier généré `CPCLDR.EXE` dans votre répertoire `\CPCDOS`
- - Executez-le avec votre OS !
+## How to compile
+ - Download and install the latest version of [CWC](https://github.com/VLiance/Cwc)
+ - Then simply run the `OS2.1\_Make_CpcDos_.cwMake` _associated with CWC_ file
+ - Make sure you have a [editable] virtual machine (https://github.com/VLiance/VW_Viewer) or a bootable USB Cpcdos device (Cpcdos Tutorial [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
+ It is recommended to use [VMware workstation player 16](https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&productId=1039&rPId=55794) and not to have the pro version installed on your machine, as you may have less options to configure your network card.
+   Feel free to use an old cpcdos VM already configured to update it.
+ - Simply copy the newly generated `CPCLDR.EXE` file into your `CPCDOS` directory
+ - Run it with your OS !
  
-## Comment participer au projet
-Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
+## How to participate in the project
+Join the [Cpcdos discord](https://discord.com/invite/3Qm8xDp)
 
-## Liens officiel
-- [Site web - cpcdos.net](https://cpcdos.net)
+## Official links
+- [Website - cpcdos.net](https://cpcdos.net)
 - [Forum - developpez.net](https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos)
 
-## Mettre à jour
-- Depuis le [site web](https://cpcdos.net) ci-dessus.
-- Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
+## Update
+- From the [website](https://cpcdos.net) above.
+- Directly from your CpcdosC+ console: `sys/ /update-get-install`
 
-## Développeur(s)
- - Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS & GoatOS
+## Developer(s)
+ - Sébastien FAVIER - Designer of Cpcdos since 2011 - Daddy of CraftyOS & GoatOS
  
-### Contributeurs principaux
- - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).
- - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Principal intégrateur backend du site WEB.
- - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du [groupe Discord](https://discord.com/invite/3Qm8xDp)
+### Main contributors
+ - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Main SDK contributor (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).
+ - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Main backend integrator of the website.
+ - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Main moderator of the [Discord group](https://discord.com/invite/3Qm8xDp)
 
-### Ultima testers & Développeurs d'OS Cpcdos
- - Léo VACHET - Un papoune de CraftyOS/GoatOS
- - Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS
+### Ultima testers & OS Cpcdos developers
+ - Léo VACHET - A CraftyOS/GoatOS daddy
+ - Timothée LUSSIAUD - Another CraftyOS/GoatOS daddy
  - Meaxy - ElieOS
  - Chrapati - Hexac System
  - Nadir - MineOSX
@@ -66,11 +65,11 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  - NiceY0mi - NoobOS
  - vip181
 
-[Le reste ici](https://cpcdos.net/fr/contributors)
+[The rest here](https://cpcdos.net/fr/contributors)
 
-_La plupart des systèmes cités ci-dessus sont opensource_
+Most of the above systems are open source_.
 
-### Remerciements & Contributions
+### Acknowledgements & Contributions
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
  - [Monax](https://github.com/sleepy-monax)
  - [d0p1](https://github.com/d0p1s4m4)
@@ -78,6 +77,4 @@ _La plupart des systèmes cités ci-dessus sont opensource_
  - [PolentesAxel](https://github.com/PolentesAxel)
  - [supercyp](https://github.com/Supercip971)
  
-_Les membres contributeur & ex-contributeurs, s'il manque votre nom, n'hésitez pas à vous rajouter ou modifier votre pseudo_
-
- 
+_Contributor & ex-contributor members, if your name is missing, feel free to add or modify your nickname_.
