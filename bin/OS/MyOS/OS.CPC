@@ -73,7 +73,7 @@ CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 // exe/ & tests/tchat.cpc
 
 // Executer app.cpc dans le processus "_APP_" via son PID
-// CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
+CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
 
 // exe/ & tests/explorer.cpc

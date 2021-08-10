@@ -169,39 +169,38 @@ Fin/ Bouton
 
 Fonction/ btn_apply.MouseClick()
 
-
-    sys/ /debug = 2
+    ccp/ /set.level = 2
 
     // Icon path
     textbox/ /modif:txtb_img
-        @#CURSOR_IMG  .text
+        @#CURSOR_IMG .handle
     end/ textbox
     set/ CPC_GUI.CURSOR_IMG = %CURSOR_IMG%
 
     textbox/ /modif:txtb_load_img
-        @#LOAD_IMG  .text
+        @#LOAD_IMG .text
     end/ textbox
     set/ CPC_GUI.LOAD_IMG = %LOAD_IMG%
 
     // MIN speed
     textbox/ /modif:txtb_speed_min
-        @#CURSOR_MIN_SPEED  .text
+        @#CURSOR_MIN_SPEED .text
     end/ textbox
     set/ CPC_GUI.CURSOR_MIN_SPEED = %CURSOR_MIN_SPEED%
 
     // MAX speed
     textbox/ /modif:txtb_speed_max
-        @#CURSOR_MAX_SPEED  .text
+        @#CURSOR_MAX_SPEED .text
     end/ textbox
     set/ CPC_GUI.CURSOR_MAX_SPEED = %CURSOR_MAX_SPEED%
 
     textbox/ /modif:txtb_inertial_speed
-        @#CURSOR_INERTIA_SPEED  .text
+        @#CURSOR_INERTIA_SPEED .text
     end/ textbox
     set/ CPC_GUI.CURSOR_INERTIA_SPEED = %CURSOR_INERTIA_SPEED%
 
     textbox/ /modif:txtb_intertial_const
-        @#CURSOR_CONSTANT_SPEED  .text
+        @#CURSOR_CONSTANT_SPEED .text
     end/ textbox
     set/ CPC_GUI.CURSOR_CONSTANT_SPEED = %CURSOR_CONSTANT_SPEED%
 
