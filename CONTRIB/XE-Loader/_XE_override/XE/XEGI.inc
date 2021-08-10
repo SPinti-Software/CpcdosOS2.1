@@ -53,10 +53,10 @@ uint32_t Create_context(ContextInf _ctx)
 	{
 		// Get ID context from cpcdos
 		aContext[idx].id_context = cpc_Creer_Contexte((long) aContext[idx].width, (long)aContext[idx].height);
-		showinf("Create_Context()= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
+		showinf("Create_Context()= idx: %d, id.context: %zu, height: %d, width: %d", idx,  aContext[idx].id_context, aContext[idx].height,  aContext[idx].width);
 	}
 
-	showinf("PixView= idx: %d, height: %d, width: %d", idx,  aContext[idx].height,  aContext[idx].width);
+	showinf("PixView= idx: %d,  height: %d, width: %d", idx, aContext[idx].height,  aContext[idx].width);
 	showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );
 	return (uint32_t)idx;
 }
@@ -85,7 +85,7 @@ ContextInf* Blit_context(uint32_t _idx, const void* _pixels, int _SrcWidth)
 		_printl("hndl:%zu - Blit_context(%l) [%dx%d]", aContext[1].id_context, aContext[_idx].height, aContext[_idx].width);
 
 		// Blit fram buffer to cpcdos SCI
-		cpc_Blitter((long) aContext[1].id_context);
+		cpc_Blitter((long) aContext[_idx].id_context);
 
 	}	
 
@@ -116,7 +116,7 @@ int UserInputUpdate(uint32_t h, long id_context)
 	// When user mouse move
 	aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(MOUSEMOVE), .x=posx, .y=posy });
 
-	_printl("hndl:%zu - UserInputUpdate(%l) - Mouse state [clic:%ld] [%ldx%ld] ", h, aContext[1].id_context, clic, posx, posy);
+	_printl("hndl:%zu - UserInputUpdate(%l) - Mouse state [clic:%ld] [%ldx%ld] ", h, id_context, clic, posx, posy);
 }
 
 

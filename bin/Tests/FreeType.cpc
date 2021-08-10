@@ -1,0 +1,62 @@
+rem/ bitmap render test
+
+// WARNING !!! PLEASE COPY ARIAL.TTF FILE TO CPCDOS FOLDER !! (Or edit and recompile Freetype sources!)
+
+Window/ bitmap_test
+
+        .title          = "FreeType - Windows TTF file rendering experimentation"
+        .parameters     = ""
+        .px             = "150"
+        .py             = "60"
+        .sx             = "640"
+        .sy             = "480"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .TitleColor     = "255,255,255"
+        .BackColor      = "000,000,000"
+        .events         = ""
+
+        @#window_handle create/
+
+End/ Window
+
+
+sys/ /debug = 2
+sys/ /debug /cpinticore = 1
+
+// Executer OpenGL Win32 dans un nouveau thread
+@#NumeroThread cmd/ /thread[MAX] exe/ /Win32 tests/FreeType.exe
+
+// (temporaire!!) Utiliser le numero de thread suivant 
+set/ NumeroThread = /c(%NumeroThread% + 1)
+
+// Convertir en handle
+Fix/ Handle = /C(%NumeroThread% * 1024)
+
+CCP/ /PAUSE 3000
+
+@#ImgID SYS/ /BITMAP /Get /IDbyHandle %Handle%
+
+
+Picturebox/ render
+
+
+        .handle         = "%window_handle%"
+        .parameters     = "UPD:1"
+        .px             = "0"
+        .py             = "0"
+        .sx             = "640"
+        .sy             = "480"
+        .opacity        = "0"
+        .image          = "#%ImgID%"
+
+        create/
+
+End/ Picturebox
+
+
+
+
+
+
+
