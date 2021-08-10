@@ -1242,23 +1242,26 @@ End Function
 
 Sub _SCI_Cpcdos_OSx__.Blitter_Video()
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-		ENTRER_SectionCritique()
+		
 		
 		Dim as integer Pos_X, Pos_Y, Presente
 	
 		Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y)
 		CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
 		
-		SORTIR_SectionCritique()
+		
 	END IF
 End sub
 
 Sub _SCI_Cpcdos_OSx__.Blitter_Video(byval Pos_X as integer, Pos_Y as integer, SourisPresente as integer)
 
+	
+	ENTRER_SectionCritique()
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
 		' Afficher copier la page video WORK a la page principal pour l'ecran
 		Flip (CPCDOS_INSTANCE._PAGE_VIDEO_WORK, CPCDOS_INSTANCE._PAGE_VIDEO_MAIN)
 		
+		ScreenLock
 		' *** CURSEUR CUSTOM ***
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = false Then
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_ID) <> 0 Then
@@ -1274,7 +1277,10 @@ Sub _SCI_Cpcdos_OSx__.Blitter_Video(byval Pos_X as integer, Pos_Y as integer, So
 			End if
 			
 		End if
+		ScreenUnLock
 	End if
+	SORTIR_SectionCritique()
+	
 End Sub
 
 Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer : On local Error Goto Intercept_Error
