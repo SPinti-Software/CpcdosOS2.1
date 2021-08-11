@@ -25,7 +25,7 @@ Windows | [![Build status](https://ci.appveyor.com/api/projects/status/nfkdxmis9
  - Download and install the latest version of [CWC](https://github.com/VLiance/Cwc)
  - Then simply run `OS2.1\_Make_CpcDos_.cwMake` _associated with CWC_ file
  - Make sure you have an [editable] virtual machine (https://github.com/VLiance/VW_Viewer) or a bootable drive with Cpcdos installed (Cpcdos Tutorial [No1](https://www.youtube.com/user/cpcdososx) [No2](https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos))
- It is recommended to use [VMware workstation player 16](https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&productId=1039&rPId=55794) make sure that you don't have to pro version on your machine, as you may have less options to configure your network card.
+ It is recommended to use [VMware workstation player 16](https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&productId=1039&rPId=55794) make sure that you don't have the pro version on your machine, as you may have less options to configure your network card.
    Feel free to use an older Cpcdos VM already configured to make the update process easier.
  - Simply copy the newly generated `CPCLDR.EXE` file into your `CPCDOS` directory
  - Run it with your OS !
@@ -38,7 +38,7 @@ Join the [Cpcdos discord](https://discord.com/invite/3Qm8xDp)
 - [Forum - developpez.net](https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos) :warning: the forum is in french :warning:
 
 ## Update
-- From the [our website](https://cpcdos.net).
+- From [our website](https://cpcdos.net).
 - Directly from your CpcdosC+ console: `sys/ /update-get-install`
 
 ## Developer(s)
