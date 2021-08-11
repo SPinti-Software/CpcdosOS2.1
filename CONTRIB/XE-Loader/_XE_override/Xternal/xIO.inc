@@ -32,6 +32,10 @@ fn void _Sleep(uint32_t _millisecond){
 	#ifdef D_Platform_Windows
 		Sleep(_millisecond); //-lKernel32
 	#endif
+
+	#ifdef CpcDos
+		xe_cpinti_doevents(_millisecond);
+	#endif
 }
 
 fn void _exit_FAILURE(){

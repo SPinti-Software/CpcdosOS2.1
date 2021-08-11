@@ -137,10 +137,6 @@ uint32_t Sys_CreateThread(void* (* threadMain) (void * arg), unsigned long stack
 	return result;
 }
 
-void Sys_Sleep(int32_t time_ms)
-{
-	xe_cpinti_doevents(time_ms);
-}
 
 void Sys_EnterCriticalSection()
 {
@@ -192,11 +188,6 @@ uintptr_t XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stack
 		return thdl;
 	}
 	_printl("Error, no thread created");
-}
-
-void XeGI_Sleep(int32_t _ms)
-{
-	Sys_Sleep(_ms);
 }
 
 
