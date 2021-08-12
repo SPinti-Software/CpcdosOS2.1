@@ -21,9 +21,6 @@ Window/ bitmap_test
 End/ Window
 
 
-sys/ /debug = 2
-sys/ /debug /cpinticore = 1
-
 // Executer OpenGL Win32 dans un nouveau thread
 @#NumeroThread cmd/ /thread[MAX] exe/ /Win32 tests/FreeType.exe
 

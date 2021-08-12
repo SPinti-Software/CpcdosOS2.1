@@ -1,6 +1,6 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.5         *** 
-	***       00 Juillet 2021 For public      ***
+	***       00 aout 2021 For public      ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 
 	#################
@@ -8,7 +8,7 @@
 	#################
 
 		--> 20	Ajouts de divers fonctionnalités.
-		--> 8	corrections importantes.
+		--> 9	corrections importantes.
 		--> 3	optimisations.
 		--> 9	corrections et modifications mineures.
 
@@ -80,6 +80,7 @@
 		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
 		- [GUI] Correction des problèmes d'evenements du Textblock.
 		- [GUI] Correction de clignottements intempestifs du curseur graphique personnalisé.
+		- [GUI] Correction du problème de sensibilité/inertie du curseur. voir KRNL/CONFIG/ENV_GUI/CURSOR.CPC
 		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
 		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
 		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
@@ -109,7 +110,7 @@
 		- [CORE] Récupération du nom processus désormais impossible si le processus est fermé.
 		
 		[AJOUT]
-		- [Win32] Intégration du gestionnaire de threads des applications Win32 sous CPinti Core.
+		- [Win32] Prise en charge du multi-threading des applications Win32 sous CPinti Core.
 		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
 		- [Win32] Ajout du support des evenements de la souris et clavier.
 			Etat de la souris  	: cpc_mouse_state_lck(0) --> 0:clic 1:X 2:Y
