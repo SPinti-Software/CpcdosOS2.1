@@ -46,21 +46,21 @@ Join the [Cpcdos discord](https://discord.com/invite/3Qm8xDp)
  
 ### Main contributors
  - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Main SDK contributor (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).
- - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Main backend integrator of the website.
- - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Main moderator of the [Discord group](https://discord.com/invite/3Qm8xDp)
+ - Meaxy - ElieOS and Operating system experimentations
+ - Chrapati - Hexac System + Tutorials and help for the community 
 
 ### Ultima testers & OS Cpcdos developers
  - Léo VACHET - One of the father of CraftyOS/GoatOS
  - Timothée LUSSIAUD - Another father of CraftyOS/GoatOS
- - Meaxy - ElieOS
- - Chrapati - Hexac System
+ - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Main backend integrator of the website.
+ - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Main moderator of the [Discord group](https://discord.com/invite/3Qm8xDp)
+ - 04Kylian - FireFlyOS
  - Nadir - MineOSX
  - PokeCraft - LeviathanOS
  - iplux - MaverickOS
  - FicelleYTB
  - Climax
  - D3nX
- - 04Kylian - FireFlyOS
  - Léo ENDOR
  - NiceY0mi - NoobOS
  - vip181
@@ -71,10 +71,11 @@ Most of the above systems are open source.
 
 ### Acknowledgements & Contributions
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
- - [Monax](https://github.com/sleepy-monax)
  - [d0p1](https://github.com/d0p1s4m4)
+ - [supercyp](https://github.com/Supercip971)
+ - [Monax](https://github.com/sleepy-monax)
  - [alexbelm48](https://github.com/alexbelm48)
  - [PolentesAxel](https://github.com/PolentesAxel)
- - [supercyp](https://github.com/Supercip971)
+ 
  
 _Contributor & ex-contributor members, if your name is missing, feel free to add or modify your nickname_.

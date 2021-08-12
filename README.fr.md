@@ -47,14 +47,14 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
  
 ### Contributeurs principaux
  - Mickael BANVILLE ([Maeiky](https://github.com/Maeiky)) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).
- - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Principal intégrateur backend du site WEB.
- - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du [groupe Discord](https://discord.com/invite/3Qm8xDp)
+ - Meaxy - ElieOS - Expérimentations du système d'exploitation
+ - Chrapati - Hexac System - Tutoriels et aides pour la communauté.
 
 ### Ultima testers & Développeurs d'OS Cpcdos
  - Léo VACHET - Un papoune de CraftyOS/GoatOS
  - Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS
- - Meaxy - ElieOS
- - Chrapati - Hexac System
+ - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Principal intégrateur backend du site WEB.
+ - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Principal modérateur du [groupe Discord](https://discord.com/invite/3Qm8xDp)
  - Nadir - MineOSX
  - PokeCraft - LeviathanOS
  - iplux - MaverickOS
@@ -72,12 +72,11 @@ _La plupart des systèmes cités ci-dessus sont opensource_
 
 ### Remerciements & Contributions
  - [Keyboard-Slayer](https://github.com/Keyboard-Slayer)
- - [Monax](https://github.com/sleepy-monax)
  - [d0p1](https://github.com/d0p1s4m4)
+ - [supercyp](https://github.com/Supercip971)
+ - [Monax](https://github.com/sleepy-monax)
  - [alexbelm48](https://github.com/alexbelm48)
  - [PolentesAxel](https://github.com/PolentesAxel)
- - [supercyp](https://github.com/Supercip971)
+ 
  
 _Les membres contributeur & ex-contributeurs, s'il manque votre nom, n'hésitez pas à vous rajouter ou modifier votre pseudo_
-
- 
