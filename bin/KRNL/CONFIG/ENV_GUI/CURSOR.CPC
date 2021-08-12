@@ -20,7 +20,7 @@ SET/ CPC_GUI.CURSOR_MIN_SPEED = 10.0
 // [FR] Vitesse inertielle
 // [EN] Inertia speed
 SET/ CPC_GUI.CURSOR_INERTIA_SPEED = 300.0
-SET/ CPC_GUI.CURSOR_CONSTANT_SPEED = 5.0
+SET/ CPC_GUI.CURSOR_CONSTANT_SPEED = 0.5
 
 // [FR] Espacement entre le curseur et sablier
 // [EN] Space between cursor and load cursor

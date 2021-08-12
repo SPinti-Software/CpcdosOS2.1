@@ -17,6 +17,9 @@
 
 #ifdef CpcDos
 	extern void	cpc_cpinti_debug_plus_cpinticore(const char* texte, int Ecran, int Log, int Alerte, int RetourPLGN, int CR_LF, int DisplDate, int Signature, const char* File);
+	
+	// ---- Doevent (Calling CPinti Core scheduler) ---- //
+	extern void 				xe_cpinti_doevents			(unsigned long time_ms);
 #endif
 
 #include <stdlib.h>

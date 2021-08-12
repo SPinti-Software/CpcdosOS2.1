@@ -176,19 +176,65 @@ double Sys_GetCurrentProcessId()
 
 
 
+//////////////// MESSAGES ////////////////
 
+uint32_t XeGI_Get_ContextMsg(hdl_t _context){
 
-//-------- OVERRIDED --------//
+    //aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONDOWN)});
+    //aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(LBUTTONUP)});
+    //aSysMsg(add,(XEGI_SysMsg){.handle=_context, .type=XEGI_Msg_(MOUSEMOVE), .x=MouseX, .y=MouseY });
+    return 1;
+}
+
+//////////////////// THREAD ////////////////////
 
 uintptr_t XeGI_CreateThread(XEGI_THREAD_START_ROUTINE threadMain, uint32_t stackSize, void* threadParam)
 {
-	uintptr_t thdl =0;
+    uintptr_t thdl =0;
 
 	if ((thdl = (uintptr_t)Sys_CreateThread((void* (*) (void *))threadMain, stackSize,(LPVOID)threadParam))){
 		return thdl;
 	}
 	_printl("Error, no thread created");
+	return 1;
 }
 
+void* XeGI_GetCurrentThread()
+{
+	// Obtenir le thread courant
+	return Sys_GetCurrentThread();
+	
+}
+void XeGI_EnterCriticalSection(void* _handle)
+{
 
-//-------- OVERRIDED --------//
+}
+void XeGI_LeaveCriticalSection(void* _handle)
+{
+
+}
+
+////////////////////// FILE //////////////
+//typedef struct {
+//    hdl_t handle;
+//    uint32_t  pos;
+//    uint32_t  size;
+//    char*  path;
+//} XEGI_FileOp;
+size_t 
+    XeGI_GetFileSize(XEGI_FileOp* _file)
+{
+    return 0;
+}
+bool 
+    XeGI_ReadFile(XEGI_FileOp* _file)
+{
+    // _file->size = XeGI_GetFileSize(_file->path)
+    // _file->data = malloc _file->size
+    return false;
+}
+bool 
+    XeGI_WriteFile(XEGI_FileOp* _file)
+{
+    return false;
+}
