@@ -758,6 +758,7 @@ Type CPCDOS_GUI_INIT__
 	RELATIF_Y					as integer ' Position origine relatif ORG<->CURSEUR verticale
 	
 	DEPLACEMENT 				as integer ' Si la fenetre se deplace
+	REDIMENTIONNEMENT			as integer ' Si la fenetre se resize
 	POSITION(0 to _MAX_GUI_FENETRE+1) 	as Integer ' Ordre fenetrale
 	
 	' Instancier les Type
@@ -988,6 +989,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Fenetre_FOCUS				(INDEX_FENETRE as integer) 									as integer
 		Declare Function Sizing_window_button		(SizeUP as boolean, index as integer) 						as boolean
 		Declare Function DeplacerFenetre_TO_POS		(POS_X as integer, POS_Y as integer) 						as integer
+		Declare Function DeplacerFenetre_TO_SIZE	(SIZE_X as integer, SIZE_Y as integer) 						as integer
 		Declare Function ActualiserGUI				(ModeActu as integer, index as integer) 					as integer
 		Declare Function Display_Taskbar			(index_fenetre as integer) 									as boolean
 		Declare Function Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) 						as integer

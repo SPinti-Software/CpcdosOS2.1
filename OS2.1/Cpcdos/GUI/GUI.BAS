@@ -1949,6 +1949,60 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = false
 					End if
 
+					' L'utilisateur reste appuye sur la zone de resize
+					IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) - 50 AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
+						IF Pos_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y - 100) AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
+							Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
+
+							' Si l'utilisateur a encore le bouton presse = deplacement
+							Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+							IF TypeClic = 1 Then ' Clic gauche
+								
+								ScreenLock
+								ENTRER_SectionCritique()
+
+								this.INST_INIT_GUI.REDIMENTIONNEMENT = _INDEX_FENETRE_
+								
+								
+								' Retrecir la fenetre si agrandie
+								if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.SizeUP = true Then
+									'Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
+									
+									'Fenetre_FOCUS(this.INST_INIT_GUI.DEPLACEMENT)
+								end if
+								
+								'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_X - Pos_X
+								'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_Y = Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_Y
+
+								' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
+								ActualiserGUI(2, this.INST_INIT_GUI.REDIMENTIONNEMENT)
+								
+								SORTIR_SectionCritique()
+								ScreenUnlock
+
+								Flip 1, 2
+
+								'this.INST_INIT_GUI.RELATIF_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_X
+								'this.INST_INIT_GUI.RELATIF_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_Y
+								
+								
+							Else
+
+								' Flip 3, 1
+								' ActualiserGUI(0, 0)
+								this.INST_INIT_GUI.REDIMENTIONNEMENT = 0
+								this.INST_INIT_GUI.RELATIF_X = 0
+								this.INST_INIT_GUI.RELATIF_Y = 0
+							End if
+
+							exit for
+
+						End if
+					End if
+
+					
+					
 
 					' Clic barre de titre
 					If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 AND this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND NoDeplacer = 0 AND Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) Then
@@ -5085,7 +5139,25 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_POS(POS_X as integer, POS_Y as int
 		' Redessiner la fenetre
 		Creer_Fenetre(this.INST_INIT_GUI.DEPLACEMENT)
 	End if
-	DeplacerFenetre_TO_POS = 1
+
+	return 1
+
+End function
+
+Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as integer) as integer
+	REM Cette fonction permet de resize la fenetre via la souris
+
+	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Identification_Objet.OS_id Then
+		' Modifier la position X et Y
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y
+
+		
+		' Redessiner la fenetre
+		Creer_Fenetre(this.INST_INIT_GUI.REDIMENTIONNEMENT)
+	End if
+
+	return 1
 
 End function
 
