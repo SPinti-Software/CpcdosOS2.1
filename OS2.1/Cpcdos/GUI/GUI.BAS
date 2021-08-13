@@ -2042,6 +2042,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 
 						if this.CLIC_PRESS_TITLE = true Then return 1
 						
+						Dim NoExitFor_Loop as boolean = false
 						
 						For _IN_ORDR_OBJ_ as integer = 0 to this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Nombre_OBJETS
 
@@ -2486,6 +2487,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	
 
 												IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+
 												
 													IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
 														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
@@ -2507,9 +2509,11 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.PictureBox
 													this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
-													
+
 													' On quitte cette boucle
-													exit for
+													'exit for
+													continue for
+
 													
 												End if
 												
@@ -2533,13 +2537,16 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													End if
 												End if
+
+
 												' L'objet est en cours de survole
 												this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
 												
 												
 												
 												' On quitte cette boucle
-												exit for
+												'exit for
+												continue for
 											End if
 										End if
 										

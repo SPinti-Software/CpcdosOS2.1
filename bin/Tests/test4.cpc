@@ -1,0 +1,74 @@
+window/ Ma_Fenetre
+	.titre          = "Test"
+	.px             = "140"
+	.py             = "60"
+	.sx             = "250"
+	.sy             = "150"
+	.opacity 	    = "100"
+	.parameters	    = ""
+	.WindowColor    = "255,255,255"
+	.TitleColor	    = "200,200,200"
+	.BackColor	    = "255,255,255"
+	.event		    = ""
+	@#Handle_Fenetre create/
+end/ window
+
+picturebox/ picture1
+	.Handle		= "%Handle_Fenetre%"
+	.parameters	= "IMGAUTO:2"
+	.PX			= "20"
+	.PY			= "20"
+	.sx			= "50"
+	.sy			= "30"
+	.opacity	= "255"
+	.Image		= "%OS_GUI%/Buttons/BTN_BLCK.png"
+	.event		= "%_EXE_PATH_%"
+	creer/
+end/ picturebox
+
+picturebox/ picture2
+	.Handle		= "%Handle_Fenetre%"
+	.parameters	= "IMGAUTO:2"
+	.PX			= "20"
+	.PY			= "50"
+	.sx			= "50"
+	.sy			= "30"
+	.opacity	= "255"
+	.Image		= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.event		= "%_EXE_PATH_%"
+	creer/
+end/ picturebox
+
+picturebox/ picture3
+	.Handle		= "%Handle_Fenetre%"
+	.parameters	= "IMGAUTO:2"
+	.PX			= "20"
+	.PY			= "80"
+	.sx			= "50"
+	.sy			= "30"
+	.opacity	= "255"
+	.Image		= "%OS_GUI%/Buttons/BTN_GREN.png"
+	.event		= "%_EXE_PATH_%"
+	creer/
+end/ picturebox
+
+
+Fonction/ picture1.MouseLeave()
+
+	txt/ LEAVE picto1 ! 
+	
+Fin/ Fonction
+
+Fonction/ picture2.MouseLeave()
+
+	txt/ LEAVE picto2 ! 
+	
+Fin/ Fonction
+
+Fonction/ picture3.MouseLeave()
+
+	txt/ LEAVE picto3 ! 
+	
+Fin/ Fonction
+
+
