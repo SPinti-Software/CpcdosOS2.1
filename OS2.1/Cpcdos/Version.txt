@@ -1,16 +1,16 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.5         *** 
-	***       00 aout 2021 For public      ***
+	***        15 aout 2021 For public        ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 
 	#################
 	#### En bref ####
 	#################
 
-		--> 20	Ajouts de divers fonctionnalités.
+		--> 22	Ajouts de divers fonctionnalités.
 		--> 9	corrections importantes.
 		--> 3	optimisations.
-		--> 9	corrections et modifications mineures.
+		--> 10	corrections et modifications mineures.
 
 		--> Gain de stabilité : +5%
 		--> Note de stabilité : 14/20
@@ -34,8 +34,10 @@
 	
 		[AJOUTS]
 		- [Win32] Premiere version du support chargeur fichiers .ELF (Prototype ! Pas fiable !)
+		- [Win32] Ajout du support multi-threading des fichiers exécutables Win32.
 
 		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
+		- [SCI] Ajout du redimentionnement manuel des fenêtre en bas à droite des fenêtres + curseur personnalisable.
 		- [SCI] Ajout de l'objet ListBox, qui permet d'afficher une liste d'élements selectionnable avec évènement.
 		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter 	" (1 --> 5)
 		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
@@ -78,6 +80,7 @@
 		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
 		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
 		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
+		- [SCI] Correction d'un probleme de redimentionnement de l'image de la barre de titre.
 		- [GUI] Correction des problèmes d'evenements du Textblock.
 		- [GUI] Correction de clignottements intempestifs du curseur graphique personnalisé.
 		- [GUI] Correction du problème de sensibilité/inertie du curseur. voir KRNL/CONFIG/ENV_GUI/CURSOR.CPC

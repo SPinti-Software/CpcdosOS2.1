@@ -5159,7 +5159,9 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as 
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y
 
-		
+		' Forcer a reloader les bitmaps
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).design_Image_LOADED = false
+
 		' Redessiner la fenetre
 		Creer_Fenetre(this.INST_INIT_GUI.REDIMENTIONNEMENT)
 	End if
