@@ -989,6 +989,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Interaction_TOUCHE			(Pos_Souris_X as integer, Pos_Souris_Y as integer, INDEX_Fenetre as integer, POS_X as integer, POS_Y as integer, SIZ_X as integer, SIZ_Y as integer) as boolean
 		Declare Function Fenetre_FOCUS				(INDEX_FENETRE as integer) 									as integer
 		Declare Function Sizing_window_button		(SizeUP as boolean, index as integer) 						as boolean
+		Declare Function Sizing_window_ending		(INDEX_FENETRE as integer) 									as boolean
 		Declare Function DeplacerFenetre_TO_POS		(POS_X as integer, POS_Y as integer) 						as integer
 		Declare Function DeplacerFenetre_TO_SIZE	(SIZE_X as integer, SIZE_Y as integer) 						as integer
 		Declare Function ActualiserGUI				(ModeActu as integer, index as integer) 					as integer

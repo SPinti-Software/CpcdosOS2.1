@@ -1949,59 +1949,62 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = false
 					End if
 
-					' L'utilisateur reste appuye sur la zone de resize
-					IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_X AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
-						IF Pos_Y > ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
-							Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
+					
+					if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL = true Then
+						' L'utilisateur reste appuye sur la zone de resize
+						IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_X AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
+							IF Pos_Y > ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
+								Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
 
-							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL = true Then
+								
 								this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL_display = true
-							End if
-
-							' Si l'utilisateur a encore le bouton presse = deplacement
-							Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
-
-							IF TypeClic = 1 Then ' Clic gauche
 								
-								ScreenLock
-								ENTRER_SectionCritique()
 
-								this.INST_INIT_GUI.REDIMENTIONNEMENT = _INDEX_FENETRE_
-								
-								
-								' Retrecir la fenetre si agrandie
-								if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.SizeUP = true Then
-									'Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
+								' Si l'utilisateur a encore le bouton presse = deplacement
+								Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+								IF TypeClic = 1 Then ' Clic gauche
 									
-									'Fenetre_FOCUS(this.INST_INIT_GUI.DEPLACEMENT)
-								end if
-								
-								'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_X - Pos_X
-								'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_Y = Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_Y
+									ScreenLock
+									ENTRER_SectionCritique()
 
-								' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
-								ActualiserGUI(2, this.INST_INIT_GUI.REDIMENTIONNEMENT)
-								
-								SORTIR_SectionCritique()
-								ScreenUnlock
+									this.INST_INIT_GUI.REDIMENTIONNEMENT = _INDEX_FENETRE_
+									
+									
+									' Retrecir la fenetre si agrandie
+									if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.SizeUP = true Then
+										'Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
+										
+										'Fenetre_FOCUS(this.INST_INIT_GUI.DEPLACEMENT)
+									end if
+									
+									'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_X - Pos_X
+									'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_Y = Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_Y
 
-								Flip 1, 2
+									' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
+									ActualiserGUI(2, this.INST_INIT_GUI.REDIMENTIONNEMENT)
+									
+									SORTIR_SectionCritique()
+									ScreenUnlock
 
-								'this.INST_INIT_GUI.RELATIF_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_X
-								'this.INST_INIT_GUI.RELATIF_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_Y
-								
-								
-							Else
+									Flip 1, 2
 
-								' Flip 3, 1
-								' ActualiserGUI(0, 0)
-								this.INST_INIT_GUI.REDIMENTIONNEMENT = 0
-								this.INST_INIT_GUI.RELATIF_X = 0
-								this.INST_INIT_GUI.RELATIF_Y = 0
+									'this.INST_INIT_GUI.RELATIF_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_X
+									'this.INST_INIT_GUI.RELATIF_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_Y
+									
+									
+								Else
+
+									' Flip 3, 1
+									' ActualiserGUI(0, 0)
+									this.INST_INIT_GUI.REDIMENTIONNEMENT = 0
+									this.INST_INIT_GUI.RELATIF_X = 0
+									this.INST_INIT_GUI.RELATIF_Y = 0
+								End if
+
+								exit for
+
 							End if
-
-							exit for
-
 						End if
 					End if
 
@@ -5002,9 +5005,9 @@ Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souri
 		' Position Y < (Position Y de la fenetre (+taille titre) + Position Y de l'objet + Taille Y de l'objet )
 		' *********************************************************************************
 		if Pos_Souris_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-				+ POSITION_Y - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) _
+				+ POSITION_Y) _
 		   AND Pos_Souris_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-					+ POSITION_Y - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE + TAILLE_Y) Then
+					+ POSITION_Y + TAILLE_Y) Then
 			' *********************************************************************************
 			' L'utilisateur a clique dans le conteneur de l'objet qui correspond a l'axe Y	
 			' *********************************************************************************
@@ -5134,6 +5137,60 @@ Function _SCI_Cpcdos_OSx__.Sizing_window_button(SizeUP as boolean, INDEX_FENETRE
 	return true
 End Function
 
+Function _SCI_Cpcdos_OSx__.Sizing_window_ending(INDEX_FENETRE as integer) as boolean
+	' Cette fonction permet d'executer l'evenement du ResizeEnd()
+
+		
+	' Recuperer les dimensions
+	Dim Siz_X as integer = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Siz_X
+	Dim Siz_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Siz_Y
+	
+	
+	
+	Dim Fichier_evenement as String = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Fichier_evenement
+						
+	' Si l'evenement existe
+	if NOT Fichier_evenement = "" Then
+	
+		Dim _CLE_OBJ_ as double = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_
+		Dim Nom_Objet as String = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom
+		
+		IF this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.EV_Resize = True Then
+		
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Appel d'un evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALEUR,VALEUR) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Calling graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALUE,VALUE) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+
+			if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2)") > 0 Then
+				if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+							":=##/F:" & Nom_Objet & ".ResizeEnd(" & Siz_X & "," & Siz_Y &")", _CLE_OBJ_ , 2, 0, "") _
+							= "ERR_050" Then
+										
+					' Black LIST EVENT !
+					CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2);"
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+					End if
+				End if
+			end if
+								
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] FIN de l'evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALEUR,VALEUR) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] END graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALUE,VALUE) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+	End if
+	
+	return true
+End Function
+
 Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_POS(POS_X as integer, POS_Y as integer) as integer
 	REM Cette fonction permet de deplacer la fenetre via la souris
 
@@ -5155,6 +5212,10 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as 
 	REM Cette fonction permet de resize la fenetre via la souris
 
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Identification_Objet.OS_id Then
+
+		if SIZE_X < 50 Then SIZE_X = 50
+		if SIZE_Y < 10 Then SIZE_Y = 10
+
 		' Modifier la position X et Y
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y

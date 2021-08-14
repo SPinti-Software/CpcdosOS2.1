@@ -115,7 +115,7 @@ fenetre/ APP2
 	.tx				= "400"
 	.ty				= "226"
 	.Opacite        = "190"
-	.Parametres     = "TYPE:0 ALPHAMODE:1 BLURRY:6 CTX:1"
+	.Parametres     = "TYPE:0 ALPHAMODE:1 BLURRY:6 CTX:1 SIZ:0"
 	.CouleurFenetre	= "050,050,100"
 	.CouleurTitre	= "120,120,210"
 	.CouleurFond	= "100,240,100"
@@ -239,4 +239,8 @@ function/ btn_cursor_config.MouseClick()
 	exe/ & tests/cursor.cpc
 
 end/ function
+
+
+
+
 

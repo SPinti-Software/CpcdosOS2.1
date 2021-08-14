@@ -1994,6 +1994,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						ScreenLock
 						' Si la fenetre etait en deplacement
 						Flip 3, 2
+
+						Dim var_redimentionnement as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT
 						
 						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT 			= 0
 						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT 	= 0
@@ -2003,6 +2005,12 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_Y 			= 0
 						
 						ScreenUnlock
+
+						' Executer l'evenement du ResizeEnd
+						if var_redimentionnement > 0 Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_ending(var_redimentionnement)
+						End if
+
 						' doevents(0) ' 1 millisecondes
 						
 						' Si la fenetre est pas en deplacement mais les positions changes
