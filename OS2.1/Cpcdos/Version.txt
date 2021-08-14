@@ -7,15 +7,15 @@
 	#### En bref ####
 	#################
 
-		--> 22	Ajouts de divers fonctionnalités.
+		--> 23	Ajouts de divers fonctionnalités.
 		--> 9	corrections importantes.
 		--> 3	optimisations.
-		--> 10	corrections et modifications mineures.
+		--> 11	corrections et modifications mineures.
 
-		--> Gain de stabilité : +5%
+		--> Gain de stabilité : +10%
 		--> Note de stabilité : 14/20
 
-		--> Gain de performances : +30% (Fenetres)
+		--> Gain de performances : +40% (Fenetres)
 		--> Note de performances : 15/20
 
 		--> Probabilités de crash
@@ -48,6 +48,7 @@
 		- [SCI] Ajout de la première version du copier / coller dans le menu contextuel du Textbox (Copie brute)
 
 		- [CPCDOSC+] Ajout de la premiere version du gestionnaire de tâches. SYS/ /TASKMGR ou CTRL+SUPPR
+		- [CPCDOSC+] Ajout de l'évènement .ResizeEnd() quand l'utilisateur a finit de redimentionner manuellement la fenêtre.
 		- [CPCDOSC+] Ajout du parametre pour focus un textbox 
 			Textbox/ /focus My_Textbox
 		- [CPCDOSC+] Ajout du parametre pour obtenir l'index ou le nom de l'item selectionné dans le ListBox
@@ -88,6 +89,7 @@
 		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
 		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
 		- [CPCDOSC+] Remplacement du nom de variable %CPC_GUI.LOAD_IMG% par %CPC_GUI.CURSOR_LOAD_IMG%.
+		- [CPCDOSC+] L'evenement ResizeEnd() est desormais exécuté après l'évènement Resize() du bouton des fenêtres.
 
 		
 		[MODIFICATIONS]

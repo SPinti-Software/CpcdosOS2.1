@@ -5004,10 +5004,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souri
 		' ET
 		' Position Y < (Position Y de la fenetre (+taille titre) + Position Y de l'objet + Taille Y de l'objet )
 		' *********************************************************************************
-		if Pos_Souris_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-				+ POSITION_Y) _
-		   AND Pos_Souris_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-					+ POSITION_Y + TAILLE_Y) Then
+		if Pos_Souris_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + POSITION_Y) _
+		   AND Pos_Souris_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + POSITION_Y + TAILLE_Y) Then
 			' *********************************************************************************
 			' L'utilisateur a clique dans le conteneur de l'objet qui correspond a l'axe Y	
 			' *********************************************************************************
@@ -5124,13 +5122,9 @@ Function _SCI_Cpcdos_OSx__.Sizing_window_button(SizeUP as boolean, INDEX_FENETRE
 		End if
 	End if
 	
-	
-	' Recharger les bitmap de la fenetre
-	
-	' reset memory  /  reset ID   /  Objets
-	' CPC__GUI_SUPPRIMER_bitmaps_fenetre(INDEX_FENETRE, false, true, false)
-	
-	' doevents(0)
+	' Executer l'evenement ResizeEnd
+	Sizing_window_ending(INDEX_FENETRE)
+
 	
 	Fenetre_FOCUS(INDEX_FENETRE)
 	
