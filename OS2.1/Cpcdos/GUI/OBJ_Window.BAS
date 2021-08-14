@@ -78,11 +78,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				Dim CONTENEUR_COMPLET as boolean = this.INST_INIT_GUI.GUI__FENETRE(_index_).CONTENEUR_COMPLET
 				if CONTENEUR_COMPLET = TRUE Then Siz_Titre = 0 ' Le conteneur vraiment au complet
 
+				Dim Taille_X_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+				Dim Taille_Y_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y()
 				
-				
-				Dim Siz_X as integer 		= this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_X
-				Dim Siz_Y as integer
-				
+				Dim Siz_X as integer 			= this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_X
+				Dim Siz_Y as integer			= this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_Y
+
+
+				' Pas necessaire car deja fait en amont
+				if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
+					' Faire des corrections a la source
+					CPCDOS_INSTANCE.SCI_INSTANCE.Collision_correction(_index_)
+				End if
+
 				
 				IF CONTENEUR_COMPLET = FALSE Then
 					Pos_Y = Pos_Y - Siz_Titre
@@ -96,9 +104,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 				Dim IMG_TITRE	as String = this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_TITRE
 				
-				Dim Taille_X_ecran as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+				
 				
 
+				
 
 
 				
@@ -553,7 +562,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 
 							End if ' If deja loaded
 						end if ' Si n'est pas en cours de redimentionnement
-						
+
 						' Display les elements
 						for index as integer = 0 to array_design_MAX
 							if this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) > 0 Then

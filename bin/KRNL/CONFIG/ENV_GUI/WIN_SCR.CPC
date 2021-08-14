@@ -1,23 +1,23 @@
 // USER
 CCP/ /SET.LEVEL = 3
 
-// ---- APPLICATION COLISION ----
+// ---- APPLICATION COLLISION ----
 
-// [FR] Colision de la fenetre avec le bord gauche.
-// [EN] Window colision  to the left
-set/ CPC_GUI.window.screen_colision_left = -5
+// [FR] Collision de la fenetre avec le bord gauche.
+// [EN] Window collision  to the left
+set/ CPC_GUI.window.screen_collision_left = 5
 
-// [FR] Colision de la fenetre avec le bord droit
-// [EN] Window colision  to the right
-set/ CPC_GUI.window.screen_colision_right = -5
+// [FR] Collision de la fenetre avec le bord droit
+// [EN] Window collision  to the right
+set/ CPC_GUI.window.screen_collision_right = 5
 
-// [FR] Colision de la fenetre avec le bord haut
-// [EN] Window colision  to the top
-set/ CPC_GUI.window.screen_colision_top = 1
+// [FR] Collision de la fenetre avec le bord haut
+// [EN] Window collision  to the top
+set/ CPC_GUI.window.screen_collision_top = -40
 
-// [FR] Colision de la fenetre avec le bord bas.
-// [EN] Window colision  to the down
-set/ CPC_GUI.window.screen_colision_down = -500
+// [FR] Collision de la fenetre avec le bord bas.
+// [EN] Window collision  to the down
+set/ CPC_GUI.window.screen_collision_down = 100
 
 
 // ---- APPLICATION SIZING  ----

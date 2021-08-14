@@ -108,6 +108,9 @@ Type Proprietes_Objet
 	Sizeable		as boolean = true
 	Sizeable_ANGL 	as boolean = true
 	Sizeable_ANGL_display as boolean = false
+
+	' Enable collision correction
+	Collision		as boolean
 	
 	Reduit			as boolean
 	Reductable		as boolean = true
@@ -919,6 +922,12 @@ Type _SCI_Cpcdos_OSx__
 		' Colorisation
 		design_Image_alpha(0 to array_design_MAX) 	as integer
 
+
+		screen_collision_left				as integer
+		screen_collision_right				as integer
+		screen_collision_top				as integer
+		screen_collision_down				as integer
+
 		
 		BT_CLOSE_IMG_ID						as integer
 		BT_CLOSE_ORG_IMG_ID					as integer
@@ -996,6 +1005,7 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Display_Taskbar			(index_fenetre as integer) 									as boolean
 		Declare Function Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) 						as integer
 		Declare Function Interaction_SOURIS_OBJ		(Index_Fenetre as integer) 									as integer
+		Declare Sub 	 Collision_correction		(Index_Fenetre as integer)
 		
 		' *** SCI ***
 		Declare Function Initialiser_ECRAN			(Resolution as String, Bits as integer) 					as integer

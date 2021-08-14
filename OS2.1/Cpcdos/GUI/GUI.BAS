@@ -81,6 +81,13 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String
 		
 		charger_Curseurs(tmpTID+1024)
 
+
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_left"	, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_right"	, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_top"		, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_down"	, 3, _CLE_))
+
+
 		' L'afficher sur l'ecran
 		Flip 3, 2
 		Flip 3, 1
@@ -5189,9 +5196,16 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_POS(POS_X as integer, POS_Y as int
 	REM Cette fonction permet de deplacer la fenetre via la souris
 
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).Identification_Objet.OS_id Then
+
+		
+
+
 		' Modifier la position X et Y
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X = POS_X
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y = POS_Y
+
+		' Appliquer une correction
+		CPCDOS_INSTANCE.SCI_INSTANCE.Collision_correction(this.INST_INIT_GUI.DEPLACEMENT)
 
 		
 		' Redessiner la fenetre
@@ -5725,3 +5739,38 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_OBJ(Index_Fenetre as integer) as i
 	
 	Interaction_SOURIS_OBJ = 1
 End Function
+
+
+Sub _SCI_Cpcdos_OSx__.Collision_correction(Index_Fenetre as integer)
+	' Cette fonction permet de corriger la sortie d'ecran relatif a des coordonnees programmes dans WIN_SCR.CPC
+
+	if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).PROP_TYPE.Collision = true Then
+		' ===========================================
+		' ***** Collision aux abords de l'ecran *****
+		' ===========================================
+
+		Dim Taille_X_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+		Dim Taille_Y_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y()
+
+		' Gauche
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_X <= -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_X = -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left
+		End if
+
+		' Haut
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_Y <= -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_Y = -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top
+		End if
+
+		' Droite
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_X + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_X > Taille_X_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right  Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_X = (Taille_X_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right) - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_X
+		End if
+
+		' Bas
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_Y + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_Y > Taille_Y_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down  Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_Y = (Taille_Y_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down) - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_Y
+		End if
+
+	end if ' Collision
+End sub
