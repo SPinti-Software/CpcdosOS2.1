@@ -67,7 +67,7 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 		
 			Scope
 				Dim Pos_Fenetre_X 		as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-				Dim Pos_Fenetre_Y 		as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+				Dim Pos_Fenetre_Y 		as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y' + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
 				Dim Siz_Fenetre_X		as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
 				Dim Siz_Fenetre_Y		as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
 				

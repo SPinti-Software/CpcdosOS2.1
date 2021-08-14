@@ -636,6 +636,12 @@ Type _SYSTEME_Cpcdos_OSx__
 		CURSEUR_LOAD_POS_X			as integer = 14 	' Espacement X par rapport au curseur
 		CURSEUR_LOAD_POS_Y			as integer = 0 		' Espacement Y
 
+		CURSEUR_Resize_ID			as integer = 0		' curseur de resizing
+		CURSEUR_Resize_Siz_X		as integer = 19
+		CURSEUR_Resize_Siz_Y		as integer = 19
+		CURSEUR_Resize_zone_X		as integer = 50		' Zone d'interaction
+		CURSEUR_Resize_zone_Y		as integer = 50		' Zone d'interaction
+
 		Mouse_Pos_X					as integer 	= 0
 		Mouse_Pos_Y					as integer 	= 0
 		Mouse_max_Speed				as double 	= 0.02

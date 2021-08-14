@@ -11,6 +11,15 @@ SET/ CPC_GUI.CURSOR_IMG = %OS_GUI%\CURSOR\CURSOR.PNG
 // [EN] Graphic loading cursor
 SET/ CPC_GUI.CURSOR_LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
 
+// [FR] Le curseur graphique de resize manuel des fenetres
+// [EN] Windows manual resizing cursor
+SET/ CPC_GUI.CURSOR_RESIZE_IMG = %OS_GUI%\CURSOR\WinszRDW.PNG
+SET/ CPC_GUI.CURSOR_RESIZE_Size_X = 19
+SET/ CPC_GUI.CURSOR_RESIZE_Size_Y = 19
+
+SET/ CPC_GUI.CURSOR_RESIZE_zone_X = 80
+SET/ CPC_GUI.CURSOR_RESIZE_zone_Y = 80
+
 
 // [FR] Vitesse MAX / MIN
 // [EN] MAX / MIN speed

@@ -107,6 +107,7 @@ Type Proprietes_Objet
 	SizeUP			as boolean = false' Etat de la fenetre TRUE:Agrandie
 	Sizeable		as boolean = true
 	Sizeable_ANGL 	as boolean = true
+	Sizeable_ANGL_display as boolean = false
 	
 	Reduit			as boolean
 	Reductable		as boolean = true
