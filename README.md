@@ -41,6 +41,9 @@ Join the [Cpcdos discord](https://discord.com/invite/3Qm8xDp)
 - From [our website](https://cpcdos.net).
 - Directly from your CpcdosC+ console: `sys/ /update-get-install`
 
+## Releases note
+ - News into [Version.txt](https://github.com/SPinti-Software/CpcdosOS2.1/blob/master/OS2.1/Cpcdos/Version.txt)
+
 ## Developer(s)
  - Sébastien FAVIER - Designer of Cpcdos since 2011 - Father of CraftyOS & GoatOS
  
