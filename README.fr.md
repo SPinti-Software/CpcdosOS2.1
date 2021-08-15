@@ -42,6 +42,9 @@ Rejoignez le [discord Cpcdos](https://discord.com/invite/3Qm8xDp)
 - Depuis le [site web](https://cpcdos.net) ci-dessus.
 - Directement depuis votre console CpcdosC+ : `sys/ /update-get-install`
 
+## Releases note
+ - Nouveautes dans [Version.txt](https://github.com/SPinti-Software/CpcdosOS2.1/blob/dev/OS2.1/Cpcdos/Version.txt)
+
 ## Développeur(s)
  - Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS & GoatOS
  
