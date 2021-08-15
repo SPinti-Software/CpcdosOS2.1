@@ -49,6 +49,8 @@
 		- [SCI] Ajout du module de gestion des collision des fenêtres aux abords de l'écran avec les coordonnees programmables.
 		- [CPCDOSC+] Ajout de la premiere version du gestionnaire de tâches. SYS/ /TASKMGR ou CTRL+SUPPR
 		- [CPCDOSC+] Ajout de l'évènement .ResizeEnd() quand l'utilisateur a finit de redimentionner manuellement la fenêtre.
+		- [CPCDOSC+] Ajout des propriétés des fenêtres MINSIZ_X,  MINSIZ_Y,  MAXSIZ_X, MAXSIZ_Y pour définir la taille
+				maximale et minimale d'une fenetre
 		- [CPCDOSC+] Ajout du parametre pour focus un textbox 
 			Textbox/ /focus My_Textbox
 		- [CPCDOSC+] Ajout du parametre pour obtenir l'index ou le nom de l'item selectionné dans le ListBox

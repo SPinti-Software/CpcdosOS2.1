@@ -92,6 +92,9 @@ Type Proprietes_Objet
 	
 	Press			as boolean
 	Release			as boolean
+
+	IsPriority		as boolean
+	Prio_effet_count as integer
 	
 	
 	Active			as boolean
@@ -108,6 +111,11 @@ Type Proprietes_Objet
 	Sizeable		as boolean = true
 	Sizeable_ANGL 	as boolean = true
 	Sizeable_ANGL_display as boolean = false
+
+	Minimal_size_X	as integer
+	Minimal_size_Y	as integer
+	Maximal_size_X	as integer
+	Maximal_size_Y	as integer
 
 	' Enable collision correction
 	Collision		as boolean
@@ -897,6 +905,8 @@ Type _SCI_Cpcdos_OSx__
 
 
 		' ------------ WINDOWS ---------------
+
+		priority_window									as integer
 
 		const array_design_MAX 							as integer = 24
 

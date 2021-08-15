@@ -1054,6 +1054,13 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 					DEBUG("[SCI] Deleting " & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS & " instancied objects...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 				End if
 			End if
+
+			' Si c'etait une fenetre prioritaire, on la delete
+			if CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = _INDEX_ Then CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			
+			' On s'assure qu'elle ne reviendra pas!
+			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).PROP_TYPE.IsPriority = false
+
 			' Suppression des bitmaps
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).BT_CLOSE_IMG_ID)
 			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).BT_CLOSE_IMG_ID = 0
@@ -1609,9 +1616,30 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	
 		 _INDEX_FENETRE_ = this.INST_INIT_GUI.POSITION(_INDEX_)
 
+		' Sil y a fenetre prioritaire dans l'OS alors se fixer dessus
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.priority_window > 0 Then 
+			IF CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).Identification_Objet.OS_id Then
+				if NOT this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).Identification_Objet.Nom = "" Then
+					this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).PROP_TYPE.Reduit = false
+					_INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.priority_window
+				else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+				End if
+			else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			End if
+		End if
+		
+
 		If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true Then Continue for
+
+		
 		
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Identification_Objet.OS_id Then
+			' Sil y a une fenetre prioritaire. NE PLUS interagir avec les autres elements du bureau
+			
+			
+
 			' Si la position de la souris est superieur au bord gauche ET inferieur au bord droit (Relatif a l'odre fenetrale)
 			IF Pos_X >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
 
@@ -5036,8 +5064,26 @@ Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souri
 End function
 
 Function _SCI_Cpcdos_OSx__.Fenetre_FOCUS(INDEX_FENETRE as integer) as integer
-	REM Cette fonction permet d'afficher au premier plan la fenetre choisie
+	' Cette fonction permet d'afficher au premier plan la fenetre choisie
+
 	ScreenLock
+
+	' Verifier s'il y a un fenetre prioritaire, si oui on la laisse focus
+	if INDEX_FENETRE > 0 Then
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.priority_window > 0 Then 
+			IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.OS_id Then
+				if NOT this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom = "" Then
+					INDEX_FENETRE = CPCDOS_INSTANCE.SCI_INSTANCE.priority_window
+				Else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+				End if
+			Else
+				' Si l'os ID n'est pas la bonne, on l'enleve
+				CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			End if
+		End if
+	End if
+
 	dim a_fenetre as integer = this.INST_INIT_GUI.POSITION(1)
 	
 	IF INDEX_FENETRE > 0 Then
@@ -5239,6 +5285,31 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as 
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X + 5
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y + 5
 
+		' Corriger la taille selon les donnees utilisateur
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X > 0 Then
+			if SIZE_X < this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y > 0 Then
+			if SIZE_Y < this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X > 0 Then
+			if SIZE_X > this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y > 0 Then
+			if SIZE_Y > this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y
+			End if
+		end if
+
 		' Forcer a reloader les bitmaps
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).design_Image_LOADED = false
 
@@ -5272,6 +5343,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 
 			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
 
 			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
 			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Ferme = true Then Continue for

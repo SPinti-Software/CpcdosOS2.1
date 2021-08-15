@@ -11,7 +11,7 @@ SET/ SCR_SAVE = %CPC_TEMP%\SCR
 
 // Et APRES vous pouvez charger le votre
 
-set/ SCR_RES = 1024x768
+set/ SCR_RES = 800x600
 set/ SCR_BIT = 32
 
 ccp/ /fix.niveau = 4

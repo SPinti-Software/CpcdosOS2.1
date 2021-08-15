@@ -92,6 +92,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				End if
 
 				
+				
 				IF CONTENEUR_COMPLET = FALSE Then
 					Pos_Y = Pos_Y - Siz_Titre
 					Siz_Y = this.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_Y + Siz_Titre + 4
@@ -192,6 +193,23 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 				
 				Dim Ombre_PX as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PX
 				Dim Ombre_PY as integer = this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Ombre_PY
+				
+				if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.IsPriority = true Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SCI] Creer_Window() Est une fenetre prioritaire!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+					else
+						DEBUG("[SCI] Creer_Window() Window is in priority !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+					End if
+				End if
+
+
+				' Checker si la fenetre est prioritaire ou non
+				if CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0 Then
+					if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.IsPriority = true Then
+						CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = _index_
+					End if
+				End if
+				
 
 				Dim Couleur_ALPHA 		as integer
 
@@ -563,6 +581,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_LOADED = true
 
 							End if ' If deja loaded
+
 						
 
 							' Display les elements
@@ -693,6 +712,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						' Ecrire titre dans le buffer
 						Draw string CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID), (0 + POS_TITRE_X, 0 + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
 					End if
+					
 
 					' Conteneur
 					if TYPE_OBJ = 0 OR TYPE_OBJ = 2 OR TYPE_OBJ = 4 Then
@@ -752,7 +772,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 							End if
 						end if
 
-						this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.IsPriority = true Then
+							this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Taille_X_ecran, Taille_Y_ecran, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						Else
+							this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							
+						End if
 
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -774,8 +799,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						' Supprimer l'ancien buffer
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID)
 
-						' Creer un nouveau buffer
-						this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.IsPriority = true Then
+							' Creer un nouveau buffer
+							this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Taille_X_ecran, Taille_Y_ecran, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						Else
+							this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("window_background(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+						End if
 
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -790,18 +819,37 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 					' Repliquer et transformer le buffer de la fenetre
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, 0, 0, 0, 0, Siz_X, Siz_Y, this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, effet_img._shadow_effect, 0, false)
 
-					' Capturer
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y - 5)
+					' Si la fenetre est prioritaire, alors on floute l'arriere plan
+					if this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.IsPriority = true Then
+					
+						' Faire l'effet degrade progressif avec le flou
 
-					' Flou avec le background flou aussi
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode / 2)
+						' Capturer tout l'ecran
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, 1, 1, Taille_X_ecran-1, Taille_Y_ecran-1)
 
-					' Placer le fond flou en premier
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
+						' Flouter
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, 4)
 
-					' Ecrire le buffer sur le buffer video
+						' Placer le fond flou en premier
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, 1, 1, 0, 0, Taille_X_ecran-1, Taille_Y_ecran-1, true)', Couleur_ALPHA)
+
+					
+					Else
+
+						' Capturer
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y - 5)
+
+						' Flou avec le background flou aussi
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, this.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Blurry_Mode / 2)
+
+						' Placer le fond flou en premier
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
+
+					end if
+
+
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, Pos_x, Pos_Y, 0, 0, Siz_X, Siz_Y, true, Couleur_ALPHA)
-
+			
 					
 					'if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
 

@@ -6,7 +6,7 @@ fenetre/ APP1
 	.tx					= "420"
 	.ty					= "263"
 	.Opacite			= "150"
-	.Parametres			= "TYPE:0 ALPHAMODE:0 BLURRY:6 CTX:1"
+	.Parametres			= "TYPE:0 ALPHAMODE:0 BLURRY:6 CTX:1 MINSIZ_X:400P MINSIZ_Y:200P MAXSIZ_X:600P MAXSIZ_Y:400P"
 	.CouleurFenetre		= "050,050,100"
 	.CouleurTitre		= "255,255,255"
 	.CouleurFond		= "150,000,220"
@@ -78,7 +78,19 @@ Bouton/ Mon_Bouton3
 	creer/
 Fin/ Bouton
 
-
+Bouton/ Mon_Bouton4
+	.Handle			= "%Handle_Fenetre%"
+	.Parametres		= "IMGAUTO:2"
+	.PX				= "180"
+	.PY				= "160"
+	.tx				= "100"
+	.ty				= "30"
+	rem/ .opacite		= "100"
+	.texte			= "Priority"
+	.Image			= "%OS_GUI%/Buttons/BTN_BLUE.png"
+	.event			= "%_exe_path_%"
+	creer/
+Fin/ Bouton
 
 picturebox/ Image2
 	.Handle			= "%Handle_Fenetre%"
@@ -239,6 +251,31 @@ function/ btn_cursor_config.MouseClick()
 	exe/ & tests/cursor.cpc
 
 end/ function
+
+function/ Mon_Bouton4.MouseClick()
+	ccp/ /set.level = 1
+
+	fenetre/ MyPRIO_WIN
+		.titre 			= "My priority window !"
+		.px				= "400"
+		.py				= "400"
+		.tx				= "300"
+		.ty				= "200"
+		.Opacite        = "190"
+		.Parametres     = "PRIORITY:1"
+		.CouleurFenetre	= "050,200,050"
+		.CouleurTitre	= "120,120,210"
+		.CouleurFond	= "100,240,100"
+		.Icone			= "%OS_GUI%/ICO_CFT.png"
+		.event			= ""
+		@#Handle_Fenetre creer/
+	Fin/ fenetre
+
+end/ function
+
+
+
+
 
 
 

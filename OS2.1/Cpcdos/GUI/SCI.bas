@@ -1298,7 +1298,7 @@ Sub _SCI_Cpcdos_OSx__.Blitter_Video(byval Pos_X as integer, Pos_Y as integer, So
 		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID) <> 0 Then
 			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Fenetre_FOCUS(0)).PROP_TYPE.Sizeable_ANGL_display = true Then
 				display_resize_only = true
-				if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID, (Pos_X+4) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_X, (Pos_Y+4) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_Y, true)
+				if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID, (Pos_X+6) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_X, (Pos_Y+4) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_Y, true)
 			End if
 		End if
 
@@ -1925,6 +1925,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 			if CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = true Then
 				if TypeClic = 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = false
 			End if
+
+			
 			
 			if Presente <> 0 Then
 				Dim Message_erreur as string = ERRAVT("ERR_060", 0)
