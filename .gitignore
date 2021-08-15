@@ -3,7 +3,6 @@ CPCLDR.EXE
 
 # Object file 
 *.o 
-*.a 
 *.obj 
 
 # Transpilled files
@@ -29,3 +28,7 @@ djgpp/
 *.d
 /OS2.1/Copy to VM.bat
 /bin/ldopt.tmp
+bin/OS/MEDIA/GUI/BUTTONS/THUMBS.DB
+bin/OS/MEDIA/GUI/CURSOR/THUMBS.DB
+bin/OS/MEDIA/GUI/CHECKBOX/THUMBS.DB
+bin/OS/MEDIA/GUI/MSGBOX/THUMBS.DB

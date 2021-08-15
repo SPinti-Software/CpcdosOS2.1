@@ -1,0 +1,292 @@
+======================================================================
+              Microsoft(R) Product Support Services
+       NETSHARE.EXE Workgroup Add-On for MS-DOS, Version 3.11
+======================================================================
+                                                   Revision Date: 9/94
+                                                       1 Disk Included
+
+The following information applies to Microsoft Workgroup Add-On for
+MS-DOS, version 3.11 (TM).
+
+----------------------------------------------------------------------
+| INFORMATION PROVIDED IN THIS DOCUMENT AND ANY SOFTWARE THAT MAY    |
+| ACCOMPANY THIS DOCUMENT IS PROVIDED "AS IS" WITHOUT WARRANTY OF    |
+| ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED   |
+| TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A  |
+| PARTICULAR PURPOSE. The user assumes the entire risk as to the     |
+| accuracy and the use of this document and included software. This  |
+| document and software may be copied and distributed subject to the |
+| following conditions: 1) All text must be copied without           |
+| modification and all pages must be included; 2) If software is     |
+| included, all files on the disk(s) must be copied without          |
+| modification (the MS-DOS(R) utility diskcopy is appropriate for    |
+| this purpose); 3) All components of this document and included     |
+| software must be distributed together; and 4) This document and    |
+| included software may not be distributed for profit.               |
+|                                                                    |
+| Copyright (C) 1994 Microsoft Corporation. All Rights Reserved.     |
+| Microsoft and MS-DOS are registered trademarks and Windows is a    |
+| trademark of Microsoft Corporation.                                |
+|--------------------------------------------------------------------|
+| Support Disclaimer: No support is provided for this product, it is |
+| strictly provided "as is."                                         |
+|--------------------------------------------------------------------|
+
+                            INTRODUCTION
+                            ============
+
+NETSHARE.EXE (NetShare) is a utility you can use to easily share
+directories and printers in Microsoft Workgroup Add-On for MS-DOS,
+version 3.11. NetShare replaces the command-line sharing function
+with a user-friendly interface.
+
+
+                     INSTALLING AND USING NETSHARE
+                     =============================
+
+Preparing to Install NetShare
+-----------------------------
+
+To successfully use NetShare, you must first enable sharing.
+
+To enable file and/or printer sharing:
+
+1. Change to the Workgroup Add-On for MS-DOS directory (usually
+   called C:\NET). For example:
+
+      cd\net
+
+2. Type "setup" (without the quotation marks) and press ENTER.
+
+3. Choose Change Setup Options.
+
+4. Choose Change Sharing Options.
+
+5. Choose the type of sharing you want (File, Print, or both).
+
+NOTE: If you try to share a file or printer and sharing is not
+enabled, one of the following error messages is displayed:
+
+ - Error 7387: File sharing is not enabled.
+                 
+   -or-
+
+ - Error 7386: Print sharing is not enabled.
+
+Installing NetShare
+-------------------
+
+ - To install NetShare to a hard disk, copy the NETSHARE.EXE file
+   into the same directory that contains Workgroup Add-On for
+   MS-DOS as follows
+
+      copy <drive>:\netshare.exe <destination>
+
+   where <drive> is the drive and directory from which you are
+   copying NETSHARE.EXE and <destination> is the directory
+   containing Workgroup Add-On for MS-DOS (usually C:\NET).
+
+ - To install to a floppy disk:
+
+   Copy the NETSHARE.EXE file to the root directory of your
+   floppy disk.
+
+Using NetShare
+--------------
+
+To start NetShare, type "netshare" (without the quotation marks)
+at the MS-DOS command prompt and press ENTER. You can use the
+following keys and key combinations in NetShare:
+
+Press this                   To do this
+------------------------     ---------------------------------
+
+ALT+<highlighted letter>     Choose the highlighted option
+
+ESC                          Exit NetShare or an open message
+                             window
+
+TAB                          Select the next field
+
+SHIFT+TAB                    Select the previous field
+
+SPACEBAR                     Insert or remove the selection (x)
+                             in a check box
+
+UP ARROW & DOWN ARROW        Move the selection bar in the
+                             Current Shares box
+
+Sharing Files
+-------------
+
+For sharing files, the following options are available:
+
+Share Name  (Required)  This is the name you assign to a
+                        directory on your local hard disk drive.
+
+Path  (Required)        This is the path to the directory you
+                        want to share.
+                        
+                        NOTE: If you share a directory, all of
+                        its subdirectories are also shared.
+                        You can share local directories only.
+
+Comment  (Optional)     This is a text string you associate
+                        with the shared directory to provide
+                        information to the person connecting
+                        to it.
+
+Re-Share at Startup     If you select this option, the directory
+                        specified above is shared each time you
+                        log on to the network.
+
+Full Access Password    If you select this option, people
+                        connecting to the above share will have
+                        full (read/write) access to that share.
+                        If you enter a password, they must
+                        provide this password to obtain access.
+
+Read-Only Password      If you select this option, people
+                        connecting to the above share will have
+                        read-only access to that share. If you
+                        enter a password, they must provide
+                        this password to obtain access.
+
+Share                   Select this option when the Full Access
+                        Password, Read-Only Password, and/or
+                        Re-Share at Startup options are filled.
+
+Stop Sharing            Select this option if you want to stop
+                        sharing a particular directory.
+
+Share Printer           Select this option to share a printer.
+
+Exit                    Choose Exit to quit NetShare and return
+                        to an MS-DOS command prompt.
+
+Current Shares          Select this option to list the
+                        directories you currently have shared.
+
+The following example demonstrates how to share a directory
+called MYWORK and select some of the above options:
+
+1. In the Share Name box, type the following:
+
+      mywork
+
+2. In the Path box, type the path to MYWORK. For example:
+
+      c:\mywork
+
+3. If you want to reshare this directory each time you log
+   on to the network, select the Re-Share at Startup option.
+   (An "x" should appear in the check box.)
+
+4. Select the type of access (Full or Read-Only) you want
+   people connecting to your computer to have, and enter
+   a password if you want people to specify this password
+   before obtaining access.
+
+5. Select Share, then choose Exit.
+
+Sharing Printers
+----------------
+
+Share Name (Required)   This is the name you assign to a
+                        directory on your local hard disk
+                        drive.
+
+Port (Required)         This specifies the port on which
+                        the printer you want to share is
+                        located. You can share local
+                        printers only. The NetShare utility
+                        supports printers connected to
+                        parallel ports only.
+
+Comment (Optional)      This is a text string you associate
+                        with the shared printer to provide
+                        information to the person connecting
+                        to it.
+
+Re-Share at Startup     If you select this option, the
+                        printer specified above is shared
+                        each time you log on to the network.
+
+Password                If you enter a password, people must
+                        provide this password to obtain access
+                        to your shared printer.
+
+Share                   Select this option if the above
+                        options are filled in.
+
+Stop Sharing            Choose this option to stop sharing a
+                        particular printer.
+
+Share Dirs              Choose this option to share files.
+
+Exit                    Choose Exit to quit NetShare and return
+                        to an MS-DOS command prompt.
+
+Current Shares          Select this option to list the
+                        directories you currently have shared.
+
+The following example demonstrates how to share an HP LaserJet 4
+printer:
+
+1. In Share Name box, type "HP LaserJet 4" (without the quotation
+   marks).
+
+2. Enter the port on which the printer is located.
+
+3. If you want to reshare this printer each time you log on to
+   the network, select the Re-Share at Startup option. (An "x"
+   should appear in the check box.)
+
+4. Enter a password if you want people to specify this password
+   before obtaining access.
+
+5. Select Share, then choose Exit.
+
+Technical Notes
+---------------
+
+ - To run NetShare in Microsoft Windows (TM), type the following
+   in an MS-DOS session:
+
+      netshare /w
+
+   NOTE: Microsoft Workgroup Add-On for MS-DOS is supported in
+   Windows in standard mode only; do NOT attempt to run
+   NetShare in 386 enhanced mode.
+
+ - When NetShare loads or when a share is deleted, two
+   temporary files are created:
+
+      XNETSHR.TXT and XNETSHR.BAT
+
+   NetShare deletes these files after it is finished using them.
+
+   This process may be slower on floppy disk drives and slower
+   computers.
+
+ - NetShare does not work on write-protected disks or read-only
+   shared directories. It must be able to create the above
+   temporary files in the same directory where it is located.
+
+ - By default, the maximum number of shares in Workgroup Add-On
+   for MS-DOS is eight. Perform the following steps to increase
+   this number:
+
+   1. Open the SYSTEM.INI file located in the Workgroup Add-On
+      for MS-DOS directory (usually C:\NET) in a text editor.
+
+   2. Increase the MAXSHARES setting in the [NETWORK] section
+      as follows:
+
+         MAXSHARES=<maximum number of shares>
+
+      For example:
+
+         MAXSHARES=10
+ 
+   3. Save the changes and then restart your computer.

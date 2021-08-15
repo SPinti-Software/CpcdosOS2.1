@@ -1,0 +1,43 @@
+	HIRAM.EXE - Upper Memory Extender for Older 80x86 CPUs
+
+
+Users who really want to free the last byte of low memory can try the old
+HIRAM package [74 KB, German freeware]:
+http://www.uwe-sieber.de/files/hiram.zip
+
+HIRAM is similar to UMBPCI, but from 1993, and made for 286, 386 and 486
+computers.
+The functions of UMBPCI are splitted here into two programs. One enables the
+memory and the other makes it visible to DOS.
+
+The latter one is called HIRAM.EXE and works fine with MS-DOS 5.00 - 7.xx [MS
+Windows 95/98] and the memory enabled by UMBPCI.
+
+To make this work, you need these Config.sys lines in this EXACT order:
+
+dos=high,umb
+device=c:\umbpci\umbpci.sys	// This enables the upper memory.
+device=c:\umbpci\hiram.exe	// This makes the upper memory visible to DOS
+				// through a small XMS 2.0 handler.
+devicehigh=c:\windows\himem.sys	// Yes, you can load HIMEM.SYS high!
+
+The trick is that HIRAM implements the function "Request XMS UMB" without
+HIMEM.SYS, while UMBPCI does it in the official way, by extending HIMEM.SYS
+with this function.
+
+When "DEVICEHIGH=C:\WINDOWS\HIMEM.SYS" comes, DOS takes all XMS-UMBs from
+HIRAM.EXE, and HIRAM deactivates its XMS function to allow the real HIMEM.SYS
+to load.
+Without "DOS=HIGH,UMB" HIMEM.SYS would stop with something like "Another XMS
+driver is already installed" because HIRAM has no reason to deactivate its
+small XMS handler.
+
+Using HIRAM.EXE you can save 1 KB of low memory in comparison to loading
+UMBPCI by itself.
+Wow! ;-)
+
+
+mail@uwe-sieber.de
+uwe.sieber@gmx.de
+
+7th July 1999

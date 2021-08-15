@@ -12,12 +12,12 @@
 	  http://cpcdos.fr.nf/
 	  
  Condition :
-	Ce fichier réservé uniquement aux adhérants du developpement C/C++ 
+	Ce fichier rÃ©servÃ© uniquement aux adhÃ©rants du developpement C/C++ 
 	du noyau. Pour toutes questions : sebastien.ordinateur@hotmail.fr
 
  Description :
 	Wrapper du noyau Cpcdos & CPinti Core pour la programmation 
-	C/C++ de modules externe. Ceci va permettre aux adhérants de créer 
+	C/C++ de modules externe. Ceci va permettre aux adhÃ©rants de crÃ©er 
 	des fonctions native pour cpcdos. Il s'agit du wrapper qui permet
 	l'execution de vos fonction C/C++ externe.
 	
@@ -32,8 +32,10 @@
 #include <stdio.h>
 #include <string.h>
 
+
 /* NE PAS MODIFIER / DON'T MODIFY */
-#include "include/ExeLoader.h"	/* ExeLoader */
+#include "XE-Loader/XE-Loader.h"	/* ExeLoader */
+
 #include "include/OpenGL.h"	/* OpenGL */
 // #include "include/LLVM.h"		/* LowLevelVirtualMachine */
 
@@ -50,7 +52,11 @@
 #include "include/example4.h" 		/* simple test for you */
 
 #include "..\OS2.1\CPinti\include\leakchk.h"
- 
+
+#ifndef cpc_CCP_Exec_Commande_ret
+	extern "C" char* 		cpc_CCP_Exec_Commande_ret		(const char* COMMANDE, int ID);
+#endif
+
 namespace Wrapper_Cpcdos
 {
 	
@@ -64,6 +70,7 @@ namespace Wrapper_Cpcdos
 	#define LLVM				11 	/* NE PAS MODIFIER / DON'T MODIFY */
 	#define GZE_GRAPHIC_ENGINE 	12 	/* NE PAS MODIFIER / DON'T MODIFY */
 	#define OPENGL_MESA_ENGINE 	13 	/* NE PAS MODIFIER / DON'T MODIFY */
+
 	///////////////////////////////////
 	
 	
@@ -100,9 +107,10 @@ namespace Wrapper_Cpcdos
 			case EXE_LOADER:{
 				// [FR] Chargeur d'executable Win32 PE
 				// [EN] Win32 PE executable loader
+
+				return cpc_xe_loader_main((const char*) ARG_1);
+
 				
-				fStartExeLoader((const char*) ARG_1);
-				return 1;
 			}
 			
 			/* NE PAS MODIFIER / DON'T MODIFY */

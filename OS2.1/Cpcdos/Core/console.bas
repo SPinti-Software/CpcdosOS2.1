@@ -108,11 +108,15 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 		doevents(0) ' 10 ms
 		
 		
-		
-		
 		' Si un textebox est FOCUS, toute les entrees INKEY vont dedans
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
-			TexteBox_Focus = true
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).PROP_TYPE.Ferme 	= false AND _
+				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).PROP_TYPE.Reduit 	= false Then
+				TexteBox_Focus = true
+			Else
+				TexteBox_Focus = false
+			End if
+
 		else
 			TexteBox_Focus = false
 		End if
@@ -169,7 +173,8 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 					
 					if NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
 						' Graphique N'EST pas en cours d'execution
-						
+
+
 						IF Donnees_COM = False AND this.HOOK_Console = false Then
 							if TexteBox_Focus = false Then Touche_inkey = Inkey
 						End if
@@ -187,19 +192,61 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						' Si en mode graphique, on recupere rien
 						
 						' DEBUG("  P1.1 ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
-
+						
 						'Touche F10 (console)
 						IF Donnees_COM = False Then
 							if TexteBox_Focus = false Then Touche_inkey = Inkey
 						End if
 						
+						
+						' Touche CTRL + PrintScreen - Capture d'ecran
+						if Touche_Inkey = CHR(16) Then
+							if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
+								CPCDOS_INSTANCE.Screenshot(_CLE_)
+							End if
+						End if
+
+						' ALT + F4 - Fermer une fenetre
+						IF Touche_Inkey = CHR(255) & CHR(107) then
+
+							Dim index_fenetre as integer = CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0)
+							Dim Nom_fenetre as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Identification_Objet.Nom
+							Dim Handle_fenetre as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).Identification_Objet.handle
+
+
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.Fermable = true Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SHELL] Fermeture fenetre (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " depuis ALT+F4", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								Else
+									DEBUG("[SHELL] Closing window (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " from ALT+F4 user key", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								End If
+
+								CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ /handle " & Handle_fenetre, _CLE_, 3, 0, "")
+							Else
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SHELL] Fermeture fenetre INTERDITE (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " depuis ALT+F4", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								Else
+									DEBUG("[SHELL] FORBIDDEN closing window (" & index_fenetre & ") '" & Nom_fenetre & "' handle:" & Handle_fenetre & " from ALT+F4 user key", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+								End If
+							End if
+						End if
+
+						' Gestionnaire de taches
+						IF Touche_Inkey = CHR(255) & CHR(163) then
+							DEBUG("[SHELL] Opening task manager from user input", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Avertissement, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("cmd/ /F:display_taskmgr()", CLE, 2, 0, "")
+						End if
+
+						
+
 						' F9 (Temporaire !)
 						IF Touche_Inkey = CHR(255) & CHR(67) then	
 							' Si le mode graphique est execute
 							
-							Dim Auth_Kernel				as uinteger = CPCDOS_INSTANCE.get_id_kernel		()
-							Dim Auth_OS					as uinteger = CPCDOS_INSTANCE.get_id_OS			()
-							Dim Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur()
+							Dim Auth_Kernel				as uinteger = CPCDOS_INSTANCE.get_id_kernel		(_CLE_)
+							Dim Auth_OS					as uinteger = CPCDOS_INSTANCE.get_id_OS			(_CLE_)
+							Dim Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_)
 							Dim Auth_PID				as uinteger = CPCDOS_INSTANCE.get_id_PID		(_CLE_)
 							Dim Auth_TID				as uinteger = CPCDOS_INSTANCE.get_id_TID		(_CLE_)
 							
@@ -216,9 +263,10 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 
 							' Resolution en mode console
 							CPCDOS_INSTANCE.SYSTEME_INSTANCE.set_Resolution(SCR_MODE)
-						Else
-							if TexteBox_Focus = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Touche_Inkey = Touche_Inkey
+						'Else
+						'	if TexteBox_Focus = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Touche_Inkey = Touche_Inkey
 						END IF
+
 						Touche_Inkey = ""
 					End if
 				ELSE
@@ -693,7 +741,7 @@ Sub _CONSOLE_Cpcdos_OSx__.Haut_Console()
 	ENTRER_SectionCritique()
 	
 	ScreenLock
-	Dim Titre 				as String = "** Cpcdos OS" & _VERSION_MAJEUR & " " & _VERSION_MINEUR & " **"
+	Dim Titre 				as String = "** Cpcdos OS" & _VERSION_MAJEUR & " " & _VERSION_MINEUR & " " & _VERSION_ETAT & "**"
 	' Dim BUILD_				as String = "(BUILD:" & _VERSION_BUILD & ")"
 	Dim HeureDate			as String = CPCDOS_INSTANCE.get_Heure(CPCDOS_INSTANCE.get_Time_format()) & " " & CPCDOS_INSTANCE.get_Date(CPCDOS_INSTANCE.get_Date_format())
 	
@@ -944,7 +992,7 @@ Function _CONSOLE_Cpcdos_OSx__.GET_Touche Alias "GET_Touche" (ByVal thread_struc
 					IF ValidationEntree = TRUE Then
 						
 						' Fabriquer la commande CpcdosC+
-						Dim Commande_CCP as String = "FIX/ " & this.FIXQuestion & " = " & this.Buffer_commande
+						Dim Commande_CCP as String = "SET/ " & this.FIXQuestion & " = " & this.Buffer_commande
 						
 						ValidationEntree = False
 						

@@ -1,35 +1,30 @@
-
-
 	= = = = = = = = = = = = = = = = = = = = = = =
-	***         Cpcdos OS2.1 BETA 1.4         *** 
-	***       00 Fevrier 2021 For public      ***
+	***         Cpcdos OS2.1 BETA 1.5         *** 
+	***        15 aout 2021 For public        ***
 	= = = = = = = = = = = = = = = = = = = = = = =
-	
-	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
-		Anciens fichiers prototypes non utilisés (GDT, boot, multicore, network experimentations...) 
 
 	#################
 	#### En bref ####
 	#################
 
-		--> 5	Ajouts de divers fonctionnalités.
-		--> 3	corrections importantes.
-		--> 0	optimisations.
-		--> 2	corrections et modifications mineures.
+		--> 25	Ajouts de divers fonctionnalités.
+		--> 9	corrections importantes.
+		--> 3	optimisations.
+		--> 12	corrections et modifications mineures.
 
-		--> Gain de stabilité : +2%
-		--> Note de stabilité : 13/20
+		--> Gain de stabilité : +10%
+		--> Note de stabilité : 14/20
 
-		--> Gain de performances : +2%
-		--> Note de performances : 13/20
+		--> Gain de performances : +40% (Fenetres)
+		--> Note de performances : 15/20
 
 		--> Probabilités de crash
-				Réseau	: 10% (Plus stable!)
-				SHELL	: 12%
-				GUI		: 8%
-				3D		: 2%
-				I/O		: 28%
-				Win32	: 25%
+				Réseau	: 10%
+				SHELL	: 15%
+				GUI		: 15%
+				3D		: 1%
+				I/O		: 10%
+				Win32	: 20%
 				GENERAL	: 30%
 			
 			
@@ -38,30 +33,84 @@
 	#############################
 	
 		[AJOUTS]
-		- [GUI] Ajout de  la première version de l'objet Explorer. 
-				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
-				
-		- [SYSTEME] Ajout du support de lecture de fichiers .INI
-		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
-					Il est possible de personnaliser les formats de fichiers .CPC .EXE .PNG .DLL etc... avec 
-					un programme associé, description et une icône pour l'objet graphique Explorateur
-		
-		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-update" qui permet de mettre a jour la liste des formats de fichiers
-						depuis KRNL\CONFIG\FORMATS.INI
-					ou "SYS/ /Fileformat-update MonFichier.ini" pour choisir son propre profile de format.
-		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-gui-load" qui permet de charger graphiquement les icônes associés
-						aux formats des fichier. (Taille minimale et maximale).
+		- [Win32] Premiere version du support chargeur fichiers .ELF (Prototype ! Pas fiable !)
+		- [Win32] Ajout du support multi-threading des fichiers exécutables Win32.
+
+		- [SCI / SYSTEME] Ajout de la personnalisation du curseur (Icone, vitesse, inertie ...)
+		- [SCI] Ajout du redimentionnement manuel des fenêtre en bas à droite des fenêtres + curseur personnalisable.
+		- [SCI] Ajout de l'objet ListBox, qui permet d'afficher une liste d'élements selectionnable avec évènement.
+		- [SCI] Ajout de l'effet de flou pour les objets graphiques. Parametre a ajouter 	" (1 --> 5)
+		- [SCI] Ajout de l'effet de flou lors du déplacement des fenêtres.
+		- [SCI] Ajout du menu contextuel (Menu clic droit personnalisable depuis CONTEXT.CPC + evenements)
+		- [SCI] Ajout de la fonction de screenshot (CTRL+PrntScr) dont le path du dossier d'enregistrement est la variable %SCR_SAVE%
+		- [SCI] Ajout du ALT+F4 pour fermer les fenetres focus ! :-)
+				Fenetre non fermables via le parametre CLOSE:0
+		- [SCI] Ajout de la première version du copier / coller dans le menu contextuel du Textbox (Copie brute)
+		- [SCI] Ajout du module de gestion des collision des fenêtres aux abords de l'écran avec les coordonnees programmables.
+		- [CPCDOSC+] Ajout de la premiere version du gestionnaire de tâches. SYS/ /TASKMGR ou CTRL+SUPPR
+		- [CPCDOSC+] Ajout de l'évènement .ResizeEnd() quand l'utilisateur a finit de redimentionner manuellement la fenêtre.
+		- [CPCDOSC+] Ajout des propriétés des fenêtres MINSIZ_X,  MINSIZ_Y,  MAXSIZ_X, MAXSIZ_Y pour définir la taille
+				maximale et minimale d'une fenetre
+		- [CPCDOSC+] Ajout du parametre pour focus un textbox 
+			Textbox/ /focus My_Textbox
+		- [CPCDOSC+] Ajout du parametre pour obtenir l'index ou le nom de l'item selectionné dans le ListBox
+			- Listbox/ /selected_index MaListeBox
+			- Listbox/ /selected_name MaListeBox
+		- [CPCDOSC+] Ajout des commandes Windows/ 
+			- Windows/ /SizeUp MyWindow 	- Agrandir une fenetre
+			- Windows/ /SizeDown MyWindow	- Reduire une fenetre
+			- Windows/ /Reduct MyWindow		- Reduire une fenetre
+			- Windows/ /Restaure MyWindow	- Restaurer une fenetre
+		- [CPCDOSC+] Ajout du parametre du menu contextuel "CTX" pour les objets GUI
+			- CTX:0 --> desactivé (par defaut, sauf fenetre, textbox et explorer)
+			- CTX:1 --> activé (Profile par défaut)
+			- CTX:2 --> activé (Profile personnalisé)
+		- [CPCDOSC+] Ajout des parametres dans sys/ /process pour lister les processus & thread
+			- /list 			--> Lister les processus
+			- /listb 			--> Adapte pour les listbox avec ";" comme separateur
+			- /nameonly 		--> Nom seulement
+			- /icon 			--> Lister les icones par processus
+			- /index			--> Numero index seulement
+			- /array variable 	--> Stocker dans un taleau CpcdosC+
+		- [CPCDOSC+] Ajout du parametre SYS/ /SCREEN /LISTB compatible pour les listbox
+			Ce qui permet de lister les resolutions d'écran avec ";" comme separateur.
+		- [CPCDOSC+] Ajout du parametre des fenetres "COLLISION" 0=Desactivé 1=Activé
+			Par défaut activé pour toutes les fenêtres, ce qui permet aux fenêtres d'être soumise
+			aux rebords limites autour de l'écran (Configurable depuis WIN_SCR.CPC)
 		
 
 		[CORRECTIONS]
-		- [GUI] Correction inchoérences de la capacitée maximale des checkbox confondues avec les checkbox
-		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
-		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
-		
+		- [BITMAP] Correction du problème de transparence lors ce que le canal RGB est egale a zero.
+		- [SCI] Correction du problème d'affichage 32 bits des PNG. (Effet escaliers)
+		- [SCI] Correction du textbox apparant durant le déplacement d'une fenêtre
+		- [SCI] Amelioration de la prise en charge du canal ALPHA des fichiers PNG. 
+		- [SCI] Correction de l'ouverture d'un dossier sur le bureau qui n'ouvrait pas au bon path
+		- [SCI] Correction de la visibilité des objets graphique après réduction de la fenêtre.
+		- [SCI] Correction d'un probleme de redimentionnement de l'image de la barre de titre.
+		- [GUI] Correction des problèmes d'evenements du Textblock.
+		- [GUI] Correction de clignottements intempestifs du curseur graphique personnalisé.
+		- [GUI] Correction du problème de sensibilité/inertie du curseur. voir KRNL/CONFIG/ENV_GUI/CURSOR.CPC
+		- [KERNEL] Correction d'un crash lors de la creation d'une fenetre en hors zone graphique.
+		- [CPCDOSC+] Correction de la commande CMD/ /PID: qui n'accomplissait pas correctement sa tâche.
+		- [CPCDOSC+] Remplacement des caracteres interdits dans le nom de processus et limité a 16 caracteres.
+		- [CPCDOSC+] Remplacement du nom de variable %CPC_GUI.LOAD_IMG% par %CPC_GUI.CURSOR_LOAD_IMG%.
+		- [CPCDOSC+] L'evenement ResizeEnd() est desormais exécuté après l'évènement Resize() du bouton des fenêtres.
+
 		
 		[MODIFICATIONS]
-		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux
-		- [SYSTEME] Affiche désormais le répertoire ".." dans du listing d'un répertoire.
+		- [SCI] REFONTE TOTALE de la fenêtre graphique. Possibilité de la personnaliser depuis WIN_DGN.CPC (+Optimisation)
+		- [SCI] REFONTE TOTALE du MessageBox()  (+Optimisation)
+		- [SCI] Amélioration de la précision du curseur. (+Optimisation)
+		- [SHELL] La commande START/ fait désormais un switch automatique sur l'OS en question (SYS/ /OS)
+			Ce qui corrige la console graphique F9 et bien plus !
+		- [SCI] Possibilité de REDEFINIR une fonction déjà déclarée avec à nouveau "declare/"
+		- [CPCDOSC+] Modification de la variable _EXE_PATH_F_ en _EXE_PATH_DIR_
+		- [CPCDOSC+] Modification des variables dans WIN_SCR.CPC au sujet du mot anglais "colision" en "collision"
+		- [SCI] Propriété .OPACITY d'un picturebox varie entre 1 et 255. Si OPACITY = "0" alors le mode ALPHA est désactivé.
+			Idéale pour afficher les rendu visuels dans un picturebox depuis un moteur de rendu dynamique. (3D, html etc...)
+		
+
+
 
 	#######################
 	##### CPinti Core #####
@@ -69,14 +118,21 @@
 	
 			
 		[CORRECTIONS]
-		
+		- [Win32] Correction d'un problème execution des fichiers .EXE et .ELF
+		- [CORE] Récupération du nom processus désormais impossible si le processus est fermé.
 		
 		[AJOUT]
+		- [Win32] Prise en charge du multi-threading des applications Win32 sous CPinti Core.
+		- [Win32] ajout de la fonction cpc_eval() qui permet d'exécuter une commande CpcdosC+ avec un retour.
+		- [Win32] Ajout du support des evenements de la souris et clavier.
+			Etat de la souris  	: cpc_mouse_state_lck(0) --> 0:clic 1:X 2:Y
+			Definir souris 		: cpc_set_mouse_lck(x, y, visible)
+			Obtenir touche		: cpc_get_key_lck()
 		
-		
+
 		[MODIFICATIONS]
-		- [Exeloader] Intégration de la nouvelle mise à jour permettant l'exécution native de programmes
-						OpenGL mesa avec emulation des shaders GPU sur CPU et plus...
+		- [XE-LOADER] Mise à jour et optimisation du code. @Maeiky
+
 
 		
 		
@@ -96,10 +152,176 @@
 			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
 			!!! Cette limitation pour le développement est temporaire!!!
 			
-		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant la prochaine 
-			 update, est de libérer manuellement les ressources utilisées via la commande FIX/ ou SET/. 
-				Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" à la fin de votre programme
-				pour supprimer manuellement la variable et ses données en memoire.
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant est de libérer manuellement 
+		  	les ressources utilisées via la commande FIX/ ou SET/. Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" 
+			  à la fin de votre programme pour supprimer manuellement la variable et ses données en memoire.
+			
+		2) Entracelage PNG non supporté.
+			
+		3) Interface BIOS APM (Advanced Power Management) ne fonctionne qu'avec les version 
+			v1.2 et plus. Il y a des BIOS qui n'embarquent plus ce système. Mais 
+			fonctionne sur une interface APCI qui n'est pas encore pris en charge par Cpcdos.
+			
+			Il est donc fort probable qu'après l'execution des commandes SYS/ /ARRETER
+			votre PC ne s'éteindra jamais. Et qu'avec SYS/ /VEILLE qu'il ne se mettra
+			jamais en veille/Mode economie.
+			
+			La commande SYS/ /REDEMARRER ne fonctionne pas sur certain intel de 4eme génération et plus.
+		
+			
+		4) Le garbage Collector de BITMAPs ne met pas (encore) à jours le nombre de Mega octets
+			utilisés en haut de la console.
+		
+		5) Plantage du systeme au changement de bit de couleurs en console avec un OS ayant 1 fenêtre ou plus.
+		
+		6) Plantage du système si l'utilisateur exécute une instance d'OpenGL / GZE en 16 ou 24 bits.
+			TEMPORAIREMENT, il faut impérativement utiliser le 32 bits de couleurs en cas de rendu 3D.
+			Ceci est causé par le blittage RGBA du buffer provenant du moteur qu'il faut convertir a chaud
+			si ce dernier ne crée par de buffer 16 ou 24 bits.
+
+		7) Freeze avec une image rectangulaire au niveau du curseur lors du retour sur la GUI.
+		
+		8) Satistiques du trafic réseau non actualisées
+		
+		9) Quelques bugs d'exécution des commandes copier/, supprimer/, renommer/, dossier/
+		
+		10) L'ecriture d'une machine a Cpcdos en debug RS232 (Port com) ne fonctionne qu'en lecture
+			SYS/ /DEBUG /COM1 = 2
+
+
+-----------------------------------------------------------------------------------------------------------	
+
+	= = = = = = = = = = = = = = = = = = = = = = =
+	***         Cpcdos OS2.1 BETA 1.4         *** 
+	***         7 Mars 2021 For public        ***
+	= = = = = = = = = = = = = = = = = = = = = = =
+	
+	---> FULLY CLEANED FOR PUBLIC CODE SOURCE
+		Anciens fichiers prototypes non utilisés (GDT, boot, multicore, network experimentations...) 
+
+	#################
+	#### En bref ####
+	#################
+
+		--> 14	Ajouts de divers fonctionnalités.
+		--> 9	corrections importantes.
+		--> 1	optimisations.
+		--> 8	corrections et modifications mineures.
+
+		--> Gain de stabilité : +10%
+		--> Note de stabilité : 14/20
+
+		--> Gain de performances : +2%
+		--> Note de performances : 13/20
+
+		--> Probabilités de crash
+				Réseau	: 10%
+				SHELL	: 15%
+				GUI		: 20%
+				3D		: 1%
+				I/O		: 10%
+				Win32	: 20%
+				GENERAL	: 30%
+			
+			
+	#############################
+	##### Cpcdos OSx kernel #####
+	#############################
+	
+		[AJOUTS]
+		- [GUI] Ajout de  la première version de l'objet Explorer. ( Mode Liste & Icones )
+				Qui permet de naviguer dans les dossiers et ouvrir des fichiers et programmes graphiquement depuis votre souris ;)
+				+ Association graphique des extentions + programmes associés modifiable.
+		- [GUI] Ajout de la fonction CpcdosC+ init_desktop() qui permet de créer un bureau d'icones. Attribuable depuis la propriete fenetre "DESKTOPMODE:1"
+		- [GUI] Ajout de la barre des taches. Attribuable depuis la propriete fenetre "TASKBAR:1" (horizontale) ou "TASKBAR:2" (Verticale)
+		- [GUI] Ajout de la possibilité de desactiver le multithreading d'un picturebox quand la fenêtre parent n'est pas focus.
+				--> %CPC_GUI.PICTUREBOX.MULTITHREAD.NOFOCUS%
+		
+
+		- [SYSTEME] Ajout du support de lecture de fichiers .INI
+		- [SYSTEME] Ajout de la gestion des extensions de fichiers.
+					Il est possible de personnaliser les formats de fichiers .CPC .EXE .PNG .DLL etc... avec 
+					un programme associé, description et une icône pour l'objet graphique Explorateur
+		
+		- [CPCDOSC+] Ajout de la commande "SYS/ /fileformat-update" qui permet de mettre a jour la liste des formats de fichiers
+						depuis KRNL\CONFIG\FORMATS.INI
+					ou "SYS/ /Fileformat-update MonFichier.ini" pour choisir son propre profile de format.
+		- [CPCDOSC+] Ajout de la commande "SYS/ /file-format-gui-load" qui permet de charger graphiquement les icônes associés
+						aux formats des fichier. (Taille minimale et maximale).
+		- [CPCDOSC+] Ajout de la fonction CPC.EXECUTION() permettant en interne, d'exécuter des fichiers .CPC avec des arguments
+		- [CPCDOSC+] Ajout de l'argument \#SAMEID pour EXE/ qui permet de conserver l'ID et ne pas le regénérer.
+		- [CPCDOSC+] Ajout d'un avertissement lors de l'utilisation de la syntaxe française.
+		- [CPCDOSC+] Ajout des variables d'état du network :
+						%CPC.SYS.NET.INST% 			--> Network Installé ? (Pilote réseau OK)
+						%CPC.SYS.NET.LOCAL% 		--> Réseau local répondant (Ping vers une quelconque machine)
+						%CPC.SYS.NET.GATEWAY% 		--> Réseau avec passerelle uniquement
+						%CPC.SYS.NET.INTERNET% 		--> Accès au réseau internet
+						%CPC.SYS.NET.INTERNET_DNS% 	--> Accès au réseau internet + DNS ! 
+		
+
+		[CORRECTIONS]
+		- [GUI] Correction incohérences de la capacitée maximale des checkbox confondues avec les checkbox
+		- [GUI] Correction d'une resolution de creation de contexte qui était écrit en dur.
+
+		- [MEMORY] Correction de crash provoqués lors ce qu'un bitmap NULL est copié dans un bitmap non-null
+		- [MEMORY] Correction d'un crash dans Modifier_BITMAP_texte() si l'ID est négatif.
+		- [MEMORY] GROSSES corrections préventives de probables crachs + amélioration tracage debug.
+
+		- [GUI] Correction d'une mauvaise gestion de modification des boutons.
+		- [GUI] Correction de la commande REFRESH/ qui ne fonctionnait absolument pas.
+
+		- [SCI] Correction d'un freeze provoqué par une section critique ouverte mais non fermée. (IMG_Changer_taille)
+		- [SCI] Correction de l'impossibilité de fermer le desktop et taskbar depuis son Handle ID.
+
+		- [CPCDOSC+] Correction d'un conflit de syntaxe avec les propriétés graphiques et les nom de fichiers.
+		- [CPCDOSC+] Correction de la commande DIR/ qui ne fonctionnait pas correctement.
+		
+		
+		[MODIFICATIONS]
+		- [SYSTEME] Remplace désormais les //, /// et //// par \ pour les opérations de lecture de bas niveaux
+		- [SYSTEME] Affiche désormais le répertoire ".." dans du listing d'un répertoire.
+		- [SYSTEME] Nouveau logo ASCII-ART de boot - Chrapati
+		- [SCI] Optimisation lors du chargement des elements graphiques d'une fenetre. Tous les elements commun tels que
+				les boutons fermeture, agrandissement, barre titre etc.. seront chargés qu'une seule fois dans une mémoire partagée.
+		- [SCI] Amélioration de la tracabilité du debug lors de la création des elements graphiques.
+
+
+	#######################
+	##### CPinti Core #####
+	#######################
+	
+			
+		[CORRECTIONS]
+		- [NETWORK] Correction de problèmes d'actualisation des statistiques de téléchargement.
+		
+		[AJOUT]
+		
+		
+		[MODIFICATIONS]
+		- [Exeloader] Intégration de la nouvelle mise à jour permettant l'exécution native de programmes
+						OpenGL mesa LLVM pipe avec emulation des shaders GPU sur CPU et plus...
+
+		
+		
+
+	#######################
+	##### Bugs connus #####
+	#######################
+	
+		0) SOURIS QUI S'AFFOLE : C'est un bug du driver dos qui partage le même buffer. La solution :
+			Re-provoquer l'erreur : En remplissant du buffer en faisant la même chose... mais plus exagéré.
+			--> Sur la GUI de Cpcdos, il faut rester appuyer sur une touche du clavier tel que "S" par exemple, et tenter de caller le mieux possible 
+				la souris en bas a gauche pendant 1 à 3 secondes (ça dépend de la vitesse des timers de machines) , insistez 3, 4 fois et vous retrouvez la souris!
+			
+		1) BUG Garbage collector. Les variables de niveau 1, 2, 3 qui ne se soumettent pas au garbage collector..
+		  -> PROBLEME : Les variables / donnees restent en mémoire même après fermeture du processus.
+			Ce qui entraine des bugs dans les programmes après une longue utilisation du noyau
+			car le nombre de variables par niveau et par processus ont un nombre limité de 256.
+			!!! Cette limitation pour le développement est temporaire!!!
+			
+		  -> SOLUTION : Pour combler ce problème, un petit réflèxe du langage C, à avoir en attendant est de libérer manuellement 
+		  	les ressources utilisées via la commande FIX/ ou SET/. Utilisez donc la commande "FIX/ /S MaVariable"  ou  "SET/ /S MaVariable" 
+			  à la fin de votre programme pour supprimer manuellement la variable et ses données en memoire.
 			
 		2) Entracelage PNG non supporté.
 			
@@ -149,7 +371,7 @@
 		--> 21	Ajouts de divers fonctionnalités.
 		--> 15	corrections importantes.
 		--> 4	optimisations.
-		--> 10	corrections et modifications mineures.
+		--> 12	corrections et modifications mineures.
 
 		--> Gain de stabilité : +2%
 		--> Note de stabilité : 13/20
@@ -251,6 +473,7 @@
 		- [GUI] Correction du textbox qui affiche un "-1" quand il n'y a pas de caractères.
 		- [GUI]	(UT) Amélioration de l'updater d'objets (UPD:1) pour l'affchage de l'heure et autres elements.
 					+ Correction d'interference OS ID.
+		- [GUI] Correction du clic en arrière plan suite à un clic sur une fenêtre (focus) qui disparait.
 		- [CPCDOSC+] Correction d'un bug lors d'un ping/ ou download/ si vous définissez l'OS ID via SYS/ /OS:OSname
 		- [CPCDOSC+] Correction de la commande 'Write/' & 'Ecrire/'.
 		- [CPCDOSC+] Correction des plantages hasardeux de CCP/ /Optimization = 1
@@ -260,7 +483,7 @@
 		[MODIFICATIONS]
 		- [NOYAU] Modification du nom de variable CPC_GUI.WINDOW.TITLE_TY par CPC_GUI.WINDOW.TITLE_SY
 				+ Modification du nom de variable dans KRNL/CONFIG/ENV_GUI/WIN_TITL.CPC
-
+		- [GUI] Refonte du MESSAGEBOX.
 		- [GUI] Textebox : Le curseur paraitra blanc quand la couleur du fond sera foncée
 		- [GUI] Optimisation : Desormais, tous les objets graphiques où leur fonctions d'evenements est introuvable, l'appel de fonction sera
 				mise dans une black list. Ce dernier permet d'augmenter la réactivité des interactions graphiques, et évite de chercher et tenter

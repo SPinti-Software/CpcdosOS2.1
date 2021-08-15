@@ -176,6 +176,31 @@ Type _interface_APM_
 		
 End Type
 
+Type tImage
+	As Integer width, height, pitch
+	as integer bpp
+	As Long Ptr pixels
+
+End Type
+
+enum effet_img
+	_pset
+	_preset
+	_and
+	_or
+	_xor
+	_trans
+	_alpha
+	_alpha_value
+	_add
+	_add_value
+	_shadow_effect
+	_custom_1
+	_custom_2
+	_custom_3
+	_custom_4
+End enum
+
 
 ' ===== Cette structure permet de gerer les fichiers JPG =====
 enum
@@ -276,11 +301,14 @@ Type _memoire_bitmap
 		Declare Function Creer_BITMAP				(Nom as String, TX as integer, TY as integer, byval handle_parent as integer)									as integer
 		Declare Function Creer_BITMAP_depuis_PTR	(Nom as String, Pointeur as Any PTR, byval handle_parent as integer) 											as integer
 		Declare Function Creer_BITMAP_depuis_PTR	(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, TX_ as integer, TY_ as integer) 					as integer
+		Declare Function Creer_BITMAP_depuis_PTR	(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, tag_id as integer, TX_ as integer, TY_ as integer) 					as integer
 		Declare Function Creer_BITMAP				(TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP				(Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP				(byval NumeroID as integer, Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP_depuis_FILE	(byval ImageSource as String, byval handle_parent as integer) 													as integer
 		
+		Declare Function apply_blurry				(byval NumeroID as integer, intensite as integer) as boolean
+		Declare Function apply_blurry				(byval NumeroID_Background as integer, byval NumeroID as integer, intensite as integer) as boolean
 		Declare Function Reload_FILE				(byval NumeroID as integer) as boolean
 		Declare Function Auto_Reload_FILE			() 							as boolean
 		Declare Function Supprimer_ID_Objets		() 							as boolean
@@ -294,6 +322,7 @@ Type _memoire_bitmap
 		Declare Function Modifier_BITMAP_depuis_PTR	(byval NumeroID as integer, Pointeur as Any PTR)								as boolean
 		Declare Function Modifier_BITMAP_depuis_PTR_CP(byval NumeroID as integer, Pointeur as Any ptr) 								as boolean
 		Declare Function Modifier_BITMAP_CP			(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer) as boolean
+		Declare Function Modifier_BITMAP_CP			(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer, alpha_ as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval Pointeur as any ptr, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval NumeroID as integer, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Recuperer_BITMAP_PTR		(byval NumeroID as integer) 														as any ptr
@@ -301,6 +330,8 @@ Type _memoire_bitmap
 		Declare Function Recuperer_BITMAP_x			(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_y			(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_bits		(byval NumeroID as integer)														as integer
+		Declare Function Recuperer_BITMAP_xybit		(byval NumeroID as integer)	 													as string
+		
 		Declare Function Recuperer_BITMAP_taille	(byval NumeroID as integer)														as integer
 		Declare Function Recuperer_BITMAP_Nombre	()																				as Integer
 		Declare Function Recuperer_BITMAP_Liste		()																				as String
@@ -309,6 +340,7 @@ Type _memoire_bitmap
 		Declare Function Recuperer_BITMAP_ptr_by_Handle	(byval handle as integer) 													as any ptr
 		Declare Function Recuperer_BITMAP_Handle	(byval NumeroID as integer)														as Integer
 		Declare Function Recuperer_BITMAP_nom		(byval NumeroID as integer)														as String
+		Declare Function Recuperer_BITMAP_tag_id	(byval NumeroID as integer) 													as integer
 		Declare Function GarbageCollector			() 																				as String
 		
 		Declare Function IsPresent_BITMAP_byhandle	(byval handle as integer) 														as integer
@@ -325,6 +357,8 @@ Type _memoire_bitmap
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		
+		Declare Function Capture_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX as integer, SY as integer) as boolean
+
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer)																																		as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer)																											as boolean
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer)																		as boolean
@@ -340,7 +374,9 @@ Type _memoire_bitmap
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean, valeur as integer) 							as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean, valeur as integer)as boolean
 	
-		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, byval NumeroID_Destination as integer, CanalAlpha as boolean, noth as boolean = false) 	as boolean
+		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, byval NumeroID_Destination as integer, CanalAlpha as boolean, noth as boolean = false) as boolean
+		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, byval NumeroID_Destination as integer, effet as effet_img, valeur as integer, ef as boolean) as boolean
+		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, effet as effet_img, valeur as integer, ef as boolean) as boolean
 		
 		
 		Actu_Bitmap_TYPE(0 to _MAX_BITMAP_ID)	as integer
@@ -365,6 +401,8 @@ Type _memoire_bitmap
 		handle_parent(0 to _MAX_BITMAP_ID)	as integer
 		
 		Nom			(0 to _MAX_BITMAP_ID)	as String
+
+		TAG_ID		(0 to _MAX_BITMAP_ID)	as integer
 		
 		donnees_RVBA(0 to _MAX_BITMAP_ID)	as any ptr
 		
@@ -444,15 +482,40 @@ Type _FICHER_DOSSIER_
 		
 		liste_Elements		(0 to nb_MAX_elements)	as String
 		attributs_Elements	(0 to nb_MAX_elements)	as _Fichier_Dossier_attribs_
+		liste_icons			(0 to nb_MAX_elements)	as integer ' Listbox only
 		
+End Type
+
+' Structure MID - Structure temporaire
+type _info_disques field = 1
+	level_info 				as ushort ' Toujours 0
+	serial_number 			as uinteger
+	volume_label(0 to 10) 	as ubyte
+	sysfile_nom(0 to 7) 	as ubyte   ' FAT, FAT16, FAT32, ?
+end type
+
+Type _DRIVES_ 
+	public:
+		Est_OK										as boolean
+		
+		CONST nb_MAX_elements						as Integer = 26 ' Temporaire
+		
+		nb_elements									as Integer = 0
+		nb_drives									as integer = 0
+
+		Drives_LETTER		(0 to nb_MAX_elements)	as String
+		Drives_LABEL		(0 to nb_MAX_elements)	as String
+		Drives_SYSFILE		(0 to nb_MAX_elements)	as String
+		Drives_SERIAL_No	(0 to nb_MAX_elements)	as String
+
+		Drives_SIZE			(0 to nb_MAX_elements)	as integer
+		Drives_FREE_SIZE	(0 to nb_MAX_elements)	as integer
+
 End Type
 
 Type _SYSTEME_Cpcdos_OSx__ 
 	private:
-		CONST _MAX_PROCESSUS 	as integer = 128 ' fixe temporairement a 128
-		CONST _MAX_THREADS 		as integer = 256 ' fixe temporairement a 256
-	
-	
+
 		DBG_DEBUG as integer 		= 1	' Etat du debogeur
 		DBG_PRINTF as integer 		= 1 ' Afficher le printf des fonctions
 		DBG_CPINTI as integer 		= 1	' Afficher debug CPinti Core
@@ -518,6 +581,9 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare function 	ChargerJPG				(byval Chemin as string, byref Largeur as integer, byref Hauteur as integer, byref NombreCanaux as integer) as ubyte ptr
 		
 	public:	
+
+		CONST _MAX_PROCESSUS 	as integer = 128 ' fixe temporairement a 128
+		CONST _MAX_THREADS 		as integer = 256 ' fixe temporairement a 256
 	
 		CONST KEY_BEGIN				as String = CHR(255) & CHR(71) ' Touche debut
 		CONST KEY_END				as String = CHR(255) & CHR(79) ' Touche fin
@@ -556,6 +622,38 @@ Type _SYSTEME_Cpcdos_OSx__
 		cpu_pourcentage				as uinteger
 		
 		COM_INSTANCE	(0 to 8)	as _COM_PORT__	' Ports COM pour le debogage ou autre
+
+		' Liste des lecteurs, cdrom, floppy etc..
+		drives_list 				as _DRIVES_
+
+		' Ignorer les lecteurs de disquettes trop lente
+		Ignore_FLOPPY_A				as boolean = true
+		Ignore_FLOPPY_B				as boolean = true
+
+		' Curseur graphique
+
+		CURSEUR_ID					as integer
+		CURSEUR_AFFICHER			as boolean = false ' Afficher le curseur ou non
+		
+		CURSEUR_LOAD_ID				as integer
+		CURSEUR_LOAD_AFFICHER_STACK as integer = 0 		' Nombre de stack operant un temps de chargement long
+		CURSEUR_LOAD_POS_X			as integer = 14 	' Espacement X par rapport au curseur
+		CURSEUR_LOAD_POS_Y			as integer = 0 		' Espacement Y
+
+		CURSEUR_Resize_ID			as integer = 0		' curseur de resizing
+		CURSEUR_Resize_Siz_X		as integer = 19
+		CURSEUR_Resize_Siz_Y		as integer = 19
+		CURSEUR_Resize_zone_X		as integer = 50		' Zone d'interaction
+		CURSEUR_Resize_zone_Y		as integer = 50		' Zone d'interaction
+
+		Mouse_Pos_X					as integer 	= 0
+		Mouse_Pos_Y					as integer 	= 0
+		Mouse_max_Speed				as double 	= 0.02
+		Mouse_min_Speed 			As double 	= 10.0
+		Mouse_inertia_Speed 		As double 	= 300.0
+		Mouse_constant_Speed 		As double 	= 8.0
+
+		UseFB_Mouse					as boolean = false
 		
 		Declare Function get_cpu_pourcent() as uinteger
 		
@@ -621,15 +719,26 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function get_Resolution_X		()														as Integer
 		Declare Function get_Resolution_Y		()														as Integer
 		Declare Function get_BitsparPixels		() 														as Integer
-		Declare Function get_BitsparPixels		(compatibilite_24to32_ as boolean)							as Integer
+		Declare Function get_BitsparPixels		(compatibilite_24to32_ as boolean)						as Integer
 		Declare Function get_OctetsParPixels	() 														as Integer
+
+		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer) 		as integer
+		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer, byref Scroll_Weel as integer, byref TypeClic as integer, byref clip as integer) as integer
 		
 		' **** Fichiers images ****
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
-		Declare function bit_converter			(byref source as any ptr) 																		as any ptr
+		' Effet flou
+		
+		Declare function buffer_to_blurry		(byref image_src as any ptr, intensite as integer)																		as Any Ptr
+		Declare Function FastBlur				(img As tImage, iRadius As Ubyte)																						As Any Ptr
+		Declare Function BlurPass				(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) 															As Any Ptr
+		
+		Declare function bit_converter			(byref source as any ptr) 																								as any ptr
 		Declare function trans32 				(ByVal Source As UInteger, ByVal Destination As UInteger, ByVal Parametres As Any Ptr ) 								As UInteger
 		Declare Function charger_PNG			(byval Fichier as String,  byval Bits as integer, prio as integer) 														as any ptr
 		Declare function charger_PNG			(byval Fichier as String,  byval Bits  as integer, prio as integer, byref Hauteur as integer, byref Largeur as integer) as any ptr
+
+		Declare Function Save_png				(source as integer, Fichier as string) 																					as boolean
 		
 		Declare Function charger_JPG			(byval Fichier as String,  Bits as integer, prio as integer) 															as any ptr
 		Declare function charger_JPG			(byval Fichier as String,  Bits  as integer, prio as integer, byref Hauteur as integer, byref Largeur as integer) 		as any ptr
@@ -647,10 +756,24 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function creer_Repertoire		(ByVal NomDossierABS as String, Attributs as String) 																	as integer
 		Declare Function creer_Repertoire__fbcrt(NomDossier as String, Attributs as String) 																			as boolean
 		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_) 										as boolean
+		Declare Function lister_Repertoire		(RepertoireSource as String, Filtre as String, ByRef Resultat as _FICHER_DOSSIER_, jump as integer) 					as boolean
+
+		' Lecteurs
+		Declare Function Display_all_drives		() 																														as boolean
+		Declare Function Drive_list_to_dir_instance (ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) 																as boolean
+		Declare Function Display_drive			(index as integer) 																														as boolean
+		Declare Function update_drives			() 																														as boolean
+
+		Declare Function get_Drives				() 																														as boolean
+		Declare Function get_Size_drive			(lettre_lecteur as string, index as integer) 																			as boolean		
+		Declare Function get_MID_drive			(lettre_lecteur as string, index as integer) 																			as boolean
+		
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean, Check_SFN as boolean, SFN as boolean) 								as String
 		Declare Function check_NomAutorise		(byval NomElement as String, PathComplet as boolean) 																	as boolean
 
 		Declare Function getHandleType			(byval NumeroHandle as integer) 																						as String
+		
+		
 
 		Declare Constructor()
 		Declare Destructor()

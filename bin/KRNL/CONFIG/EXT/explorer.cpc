@@ -1,0 +1,272 @@
+// Explorer GUI program
+
+Declare/ GUI.EXPLORER(dir_path) : LEVEL(5)
+Declare/ GUI.EXPLORER(dir_path, display_mode) : LEVEL(5)
+
+
+Function/ GUI.EXPLORER(dir_path)
+	// Explorer
+
+	/F:GUI.EXPLORER(%dir_path%, 0)
+End/ function
+
+Function/ GUI.EXPLORER(dir_path, icon_mode)
+	// This function allow to create explorer GUI program
+
+	// Public variables
+	ccp/ /set.level = 3
+	set/ actual_path = C:\CPCDOS\OS
+	set/ Displaymode_ICO_Path = OS/MEDIA/GUI/btn_ico.PNG
+	set/ Displaymode_LIST_Path = OS/MEDIA/GUI/btn_list.PNG
+	set/ DisplayMode = 0
+
+	// Private variables
+	ccp/ /set.level = 1
+	set/ actual_path = %dir_path%
+	set/ DisplayMode = %icon_mode%
+	
+
+
+	// ===== Build window =====
+	Window/ file_explorer_window
+		.title          = "File explorer"
+		.parameters     = "TYPE:0 SIZ:1 SIZBTN:1"
+		.px             = "50"
+		.py             = "120"
+		.sx             = "500"
+		.sy             = "300"
+		.opacity        = "255"
+		.WindowColor    = "100,100,100"
+		.TitleColor     = "200,200,200"
+		.backcolor      = "100,100,100"
+		.events         = "%_exe_path_%"
+
+		@#window_handle create/
+	End/ Window
+
+	// ===== Build GUI objects in the window =====
+	picturebox/ img_Drive
+		.handle		= "%window_handle%"
+		.parameters	= "IMGAUTO:0"
+		.PX			= "2"
+		.PY			= "0"
+		.sx			= "22"
+		.sy			= "22"
+		.Image		= "OS/MEDIA/GUI/MDRIVE.PNG"
+		.opacity	= "255"
+		.events    	= "%_exe_path_%"
+
+		create/
+	end/ Picturebox
+
+	picturebox/ img_Previous
+		.handle		= "%window_handle%"
+		.parameters	= "IMGAUTO:0"
+		.PX			= "28"
+		.PY			= "4"
+		.sx			= "13"
+		.sy			= "13"
+		.Image		= "OS/MEDIA/GUI/PREV.PNG"
+		.opacity	= "255"
+		.events     = "%_exe_path_%"
+
+		create/
+	end/ Picturebox
+
+	picturebox/ img_Next
+		.handle		= "%window_handle%"
+		.parameters	= "IMGAUTO:0"
+		.PX			= "45"
+		.PY			= "4"
+		.sx			= "13"
+		.sy			= "13"
+		.Image		= "OS/MEDIA/GUI/NEXT.PNG"
+		.opacity	= "255"
+		.events     = "%_exe_path_%"
+
+		create/
+	end/ Picturebox
+
+	// %actual_path%
+	Textbox/ txt_path
+		.Handle         = "%window_handle%"
+		.Parameters     = "BORD:1 COL:1"
+		.Text           = "%actual_path%"
+		.PX             = "64"
+		.PY             = "2"
+		.BackColor      = "110,110,110"
+		.TextColor      = "250,250,250"
+		.sx             = "370"
+		.sy             = "18"
+		.events         = "%_exe_path_%=KeyEnter"
+
+		create/
+	End/ Textbox
+
+
+	picturebox/ img_display_mode
+		.handle		= "%window_handle%"
+		.parameters	= "IMGAUTO:0"
+		.PX			= "440"
+		.PY			= "1"
+		.sx			= "22"
+		.sy			= "22"
+
+		if/ "%DisplayMode%" == "0" then:
+			.Image	= "%Displaymode_ICO_Path%"
+		else:
+			.Image	= "%Displaymode_LIST_Path%"
+		End/ if
+
+		.opacity	= "255"
+		.events     = "%_exe_path_%=MouseClick"
+
+		create/
+	end/ Picturebox
+
+
+	
+	explorer/ explore_gui
+		.handle         = "%window_handle%"
+		.parameters     = "EXPLOREMODE:%DisplayMode%"
+		.px             = "0"
+		.py             = "23"
+		.sx             = "500"
+		.sy             = "274"
+		.opacity        = "255"
+		.textcolor      = "250,250,250"
+		.backcolor      = "100,100,100"
+		.text           = "%actual_path%"
+		.events         = "%_exe_path_%"
+
+		create/
+	End/ explorer
+
+End/ function
+
+// ===== GUI events =====
+
+Function/ img_Drive.MouseClick()
+	// Display drive list
+
+	// Modify explorer path
+	explorer/ /modif:explore_gui
+		.text = ""
+		create/
+	end/ explorer
+
+End/ Function
+
+Function/ img_Previous.MouseClick()
+	// Back path
+
+End/ Function
+
+Function/ img_Next.MouseClick()
+	// fordward path
+
+End/ Function
+
+
+Function/ img_display_mode.MouseClick()
+	// Switch between list / icon mode display
+
+	explorer/ /modif:explore_gui
+
+		// Getting actual parameter
+		@#ParamActuel .parameters
+                
+		if/ "%ParamActuel%" == "EXPLOREMODE:0" then:
+			set/ DisplayMode = 2
+		else:
+			set/ DisplayMode = 0
+		End/ if
+
+		// Edit displaying mode
+		.parameters = "EXPLOREMODE:%DisplayMode%"
+
+		create/
+	end/ explorer
+
+
+	// Update picturebox display
+	picturebox/ /modif:img_display_mode
+
+		if/ "%DisplayMode%" == "0" then:
+			set/ path_img = %Displaymode_ICO_Path%
+		else:
+			set/ path_img = %Displaymode_LIST_Path%
+		End/ if
+
+		.Image	= "%path_img%"
+
+		create/
+	end/ Picturebox
+
+End/ function
+
+Function/ explore_gui.MouseClick()
+	// Update textbox path
+
+	// Get path text
+	explorer/ /modif:explore_gui
+			@#new_path .text
+	end/ explorer
+
+	// Modify path text in the textbox
+	textbox/ /modif:txt_path
+		.text = "%new_path%"
+		create/
+	end/ textbox
+End/ Function
+
+
+Function/ txt_path.KeyEnter(texte)
+        // Valid and display wrote path from textbox
+	
+	// Stay in level 1, because for read variable %texte%, this is in level 1
+	ccp/ /set.level = 1
+
+	// Modify explorer path
+	explorer/ /modif:explore_gui
+		.text = "%texte%"
+		create/
+	end/ explorer
+
+End/ Function
+
+
+
+Function/ file_explorer_window.ResizeEnd(Win_Size_X, Win_Size_Y)
+	// If user change window size
+
+	ccp/ /set.level = 1
+	
+	// According textbox size
+	set/ Win_Size_Y = /C(%Win_Size_Y% - 23)
+
+        // And modify explorer object size
+	explorer/ /modif:explore_gui
+		.sx     = "%Win_Size_X%"
+		.sy     = "%Win_Size_Y%"
+		create/
+	end/ explorer
+
+	refresh/ /all
+
+End/ function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

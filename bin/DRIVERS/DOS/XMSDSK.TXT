@@ -1,0 +1,340 @@
+ex : XMSDSK.EXE 51200 R: /t /y
+                                  XMSDSK.EXE
+                                      &
+                                  EMSDSK.EXE
+
+                           Franck UBERTO - 98/08/12
+                          38000 Grenoble - FRANCE
+                                   Email : uberto@esrf.fr
+
+
+These utilities are two RAMdisks. For some people they surely will lack of
+some "bells and whistles", but I made them efficient and simple to use.
+There are 2 programs because I wanted to optimize size and speed, so one is
+for XMS and the other one is for EMS.
+To get help for running them, just type: XMSDSK (or EMSDSK) /?.
+
+You can use them on 286 and upper (use EMSDSK86 for 8086 CPU). Once installed
+they will take about half a Kbyte of memory.
+
+You can resize the disk (down to zero, or up to 2 Gb if available) at any
+time and so regain memory for another usage. This is possible on DOS command 
+line but *NOT* under WINDOWS because of virtualization. The transient part of 
+EXE will compute all parameters for the new disk (the same ones used by
+MS-DOS for hard disk, so they should be convenient for all cases).
+
+Take care, if you shell out of a DOS program and modify the size of the disk:
+in the case you have set TEMP (or TMP) environment variable on the ramdisk or
+you have told this program to use the RAM disk, then some (hidden) files may
+have been created and some (not) pleasant things can happen.
+
+These RAM disks can be installed *ON THE COMMAND LINE* (and hence in
+autoexec.bat for example, see below). This way users can even *CHOOSE THE
+DRIVE LETTER* to be used.
+
+Although the installation method (on command line) has been successfully
+tested on MS-DOS 3.x, 4.0, 5.0, 6.x (adapted years ago from "Undocumented DOS"
+by Andrew Schulman, Addison-Wesley), it can't be certified that other MS-DOS 
+versions or 'clones' support it.
+BUT see the compatibility list somewhere below.
+
+By _SPECIFYING A DRIVE_ this permits to install the RAM disk between or after
+CDROM and network disks (some people want to have them at given 'letter' 
+drives; unfortunately MS-DOS assigns drive name as they are loaded). BTW this 
+method can improve some disk cache behaviour (if the cache can't be disabled
+for a given drive, by loading the RAM disk after the cache software, this 
+latter does not see the RAM disk and so does not try to cache it: it is not 
+only superfluous to cache a RAM disk but it wastes cache resources).
+
+NB1: for a drive to be successfully used when specified on the command line
+     one must take care that this drive is <= LASTDRIVE , default value
+     (when not set in config.sys) is E.
+
+NB2: when DBLSPACE/DRVSPACE is loaded there is 2 LASTDRIVE to take into 
+     account: the one in CONFIG.SYS and another one in DBLSPACE/DRVSPACE.INI.
+     This latter is a read-only, hidden, system file located, in general, on 
+     your boot disk, or C:, or the host-disk.
+     It seems that the highest of the 2 values takes precedence, but there 
+     are exceptions (else it won't be funny  :-) ): if one or more drives are
+     installed on "slots" reserved for DBLSPACE/DRVSPACE then LASTDRIVE is 
+     incremented accordingly.
+     Sorry, I tried to be as clear as possible but I can't be more as it's 
+     very far to be clear for my poor person.  :) :)
+
+
+You can use and distribute these files: it's FREEWARE.
+
+So ENJOY ...
+
+
+  
+  * Some hints ...
+  -----------------
+  
+  * About XMS and EMS memory ...
+  
+XMS memory is allocated in _contiguous_ block. So you can have the surprise
+of not being able to resize XMSDSK although MEM (or other) reports that you
+have plenty of XMS mem available, strange isn't it?
+The fact is that other programs may have requested fixed blocks of memory
+and now XMS mem is _fragmented_. Yes just like old DOS memory!
+The solution is to load programs which need fixed mem blocks _before_ XMSDSK
+so as to prevent XMS fragmentation. This way you'll be able to resize XMSDSK
+from 0 to up the last Kbyte of available XMS memory.
+
+This is another advantage of loading the RAM disk from the command line.
+  
+Note that on some systems fragmentation can nevertheless persist: this is
+related to the way these BIOS or hardware configuration deal with upper mem.
+  
+This fragmentation is not seen with EMSDSK because EMS mem (true or emulated)
+is, sort of, "scrambled" to appear to be contiguous.
+
+From version 1.9g up is included some of my tools to report a brief status of
+EMS and XMS managers (EMSTAT.EXE and XMSTAT.EXE). Is included too SETXMSTO.EXE 
+which tries to convince old versions of HIMEM.SYS (from MSDOS 6.x) of managing 
+more than 64MB.
+Run SETXMSTO, it displays a little usage and how much memory BIOS knows of.
+If it displays that func. 15E801 is not supported and you try to set an XMS
+size then you're on your own: USE AT YOUR OWN RISK.
+The best way to make a quick but deep test is to set the biggest RAMdisk you 
+can and launch SCANDISK in surface test, in this mode all sectors (and 
+therefore all RAM used) will be tested.
+If SETXMSTO displays that func. 2F4309 is not supported then you don't have 
+HIMEM 3.09+ (or your XMS manager does not use this function!). For QEMM before
+version 8 try the parameter USERAM.
+
+
+  * About disks in general ...
+
+Always try to work in a sub-directory: the root directory is assigned a fixed
+size when the disk is formatted and, in most cases, it is limited to 512
+entries (files or directories) so the root can be "overflowed" although
+there's a lot of space left on the disk.
+This is particularly true as XMSDSK and EMSDSK are resizable disks: root size
+depends on the total size of the disk.
+This is even more of a concern if you use long filenames under Win95: long
+filename takes up one entry for the equivalent short name and several other
+entries to store the long name. So this should fill up the root directory
+very quickly.
+
+About cluster size, this can be shortened to a single sentence: less clusters,
+more speed but more wasted space as well. Since version 1.9i, user can select
+the cluster size when installing the RAMdisk from the command line.
+
+
+  * About Win95 ... (from a happy user  :-)
+  
+Reaction of Windows 95 with EMSDSK/XMSDSK:
+
+Loading from  | Autoexec.bat      | Config.sys
+--------------+-------------------+----------------
+XMSDSK        | No Problems (1)   | Big Warning (2)
+--------------+-------------------+----------------
+EMSDSK        | No Problems (1)   | Big Warning (2)
+--------------+-------------------+----------------
+EMSDSK86      | No Problems (1)   | Big Warning (2)
+
+(1):          *** See below "More about Win95" ***
+Win95 does use the 16-Bit (=compatibility) mode to access this drive
+but leaves all other drives unaffected and 32-Bit access functional.
+A little note:
+With EMS/XMSDSK loaded you might sometimes hear about 1 to 3 seconds
+of increades HD activity during startup of the Graphical User Interface.
+This is normal and doesn't do anything bad.
+
+(2):
+Win95 starts up with a warning that a driver from CONFIG.SYS
+reduces the system performance.
+If you right-click your "Workplace" then Properties->Performance
+You will see that all drives are used in compatibility mode,
+which in that case DOES harm the performance.
+
+So the solution is to put the ramdisk into your autoexec.bat and
+Win95 will use this drive without any problems. Even if the size is
+zero, you will only get an "unable to access" message when
+trying to read from that drive for example from the Explorer.
+You will have to define the size of that drive before the start of
+the Graphical User Interface.
+
+This little testing was done with XMS/EMSDSK version 1.9e on
+a P5/133 MHz/48MB RAM/DOS 7.0/Win95, self built of course,
+by Joachim Otahal <jou@gmx.net>
+
+
+  * More about Win95 ...
+  
+Starting from version 1.9g RAMdisk label is hard-coded to MS-RAMDRIVE, this
+suppresses the annoying Win95 message about "drive X: is using compatibility
+mode".
+
+
+
+  * Examples of use
+  ------------------
+
+  device[high]='path'\XMSDSK.EXE [size in Kbytes] (or EMSDSK.EXE)
+     Install ramdisk in config.sys.
+     If size is not specified then disk has a null size.
+     NO DRIVE LETTER, and NO other options, can be specified from config.sys.
+
+  If the RAM disk is not loaded, at the first time the EXE will be run it
+  will ask to do so. So if you want to do it purposely, in autoexec.bat for
+  example, type:
+
+  XMSDSK [size in Kbytes] [drive:] [/c##] [/t] /y (or EMSDSK)
+     This will try to load driver in upper mem without being prompted.
+     The driver part is relocated in the "best fit" place, first in upper
+     memory otherwise, if unsuccessful, in lower memory. This should prevent
+     memory fragmentation.
+     If a drive is specified then it will be tried, otherwise first available
+     drive will be used. Drive must be <= LASTDRIVE (in config.sys or 
+     dblspace/drvspace.ini, see NB2 above).
+     Parameter /t can be used to tell the driver to allocate XMS memory from
+     the top addresses instead of lower ones. Some machines under Win95 hang 
+     up when there's no free memory under 16 MBytes. It can be used too if 
+     you have problem playing sounds under Windows. These 2 issues seem to be
+     related to DMA buffering.
+     Parameter /c is used to set a cluster size. Without it the RAMdisk is 
+     formatted to have the least number of clusters (more speed). With /c you
+     can specify a cluster size from 1 to 64 sectors (syntax: /c## or /c ##).
+     Remember too that clusters are always a power of 2. If the given size 
+     can't work (too much clusters) the next good size will be used, so
+     setting "/c1" will always give the smallest cluster size possible (less 
+     wasted space).
+     Options are not case-sensitive, can be entered in any order, with or 
+     without space.
+
+  XMSDSK (or EMSDSK)
+     On DOS command line, tells you the size and drive used by the ramdisk.
+
+  XMSDSK <size in Kbytes> [/t] [/c##] (or EMSDSK)
+     Modify the size of the ramdisk.
+     Eventually setting the cluster size and using "top" XMS memory.
+
+  XMSDSK <size in Kbytes> /y [/c ##] [/t] (or EMSDSK)
+     In a batch file this prevents being prompted when modifying size.
+     XMSDSK (and EMSDSK) returns a value which can be used with "errorlevel"
+     to tell where it is installed: 0 if not installed or in case of error,
+     1 for drive A (huh?), 2 for B (huh huh?), 3 for C (hmmm?), etc ...
+
+  XMSDSK /u (or EMSDSK)
+     Remove driver from memory, disk doesn't exist anymore.
+     
+  XMSDSK /u /y (or EMSDSK)
+     Same as above, without prompting.  :-)
+  
+  XMSDSK /? (or EMSDSK)
+     A little help.
+
+
+  NB1: size is in Kbytes (1024 bytes) and rounded to the upper 16 Kbytes.
+  NB2: it's BETTER TO NOT USE LOADHIGH with EMS/XMSDSK as it can relocate
+       itself with more success than DOS could do.
+
+
+  * History
+  ----------
+
+    v1.0  (May 92)   Initial version.
+    v1.1  (Jun 92)   Adds some optimization in resident part.
+    v1.2  (Oct 93)   Adds some tests in size redefinition part.
+    v1.3  (Apr 94)   Corrects a bug when requested size was around 4000 Kb
+                     and another one which limited size to 16 Mb.
+                     Adds more accurate error messages instead of "error
+                     during installation".
+    v1.4  (Feb 96)   Some cosmetic cleaning.
+    v1.5  (Mar 96)   Adds possibility of installation on the command line.
+    v1.6  (Apr 96)   Drive to be used can be specified on the command line.
+                     Corrects a bug which prevent compatibility with SCANDISK
+                     (may be other?) program.
+                     Adds option y.
+    v1.7  (Apr 96)   Bug fix.
+    v1.8  (Apr 96)   Some cleaning.
+    v1.9  (Sep 96)   Supports up to 64 Mbytes.
+                     Adds option u to remove driver from memory.
+                     EMSDSK and EMSDSK86 can be used in place of each other
+                     safely.  :-)
+    v1.9a (Sep 96)   Supports up to 2 Gbytes. This should stop the question
+                     about "could it support more than xxxKb?".  :)
+    v1.9b (Oct 96)   Corrects a problem with DBLSPACE/DRVSPACE.
+    v1.9c (Dec 96)   TSR part is now relocated "dynamically" in upper memory.
+                     Fixes a problem with NWDOS 7 XMS manager.
+                     Some cosmetic change.
+    v1.9d (Dec 96)   Fixes a bug in options parser.
+                     !!! Options parser is _CASE SENSITIVE_.
+    v1.9e (Mar 97)   Kills some bugs (problems around 32 Mbytes).
+		     Sticks to FAT12 up to 32 Mbytes to get higher speed.
+    v1.9f (Mar 97)   Some cosmetic change to get GUEST95 happy.
+                     Adds some hints to this doc about Win95.
+    v1.9g (Oct 97)   Disk label is hard-coded to MS-RAMDRIVE to get Win95
+                     users happier.
+		     Adds some helper to convince MSDOS 6.x HIMEM of
+		     supporting more than 64MB (does it really work?).
+                     New documentations.
+		     Changes the relocation algorithm.
+    v1.9h (Mar 98)   Options are no more case sensitive.
+                     Parameter "/t" added to allocate memory from top of XMS
+		     memory.
+		     XMS 3 functions not used anymore. A lot of so-called 
+		     "XMS 3 compliant" server manages block memory larger than 
+		     64MB very strangely. Now, "surprise", Win95 can use RAM 
+		     disk in excess of 64MB without problem, should be the 
+		     same for Win3.1x or other XMS 2+ manager.
+    v1.9i (Aug 98)   Parameter "/c" added, to set a cluster size.
+
+
+  Thanks, for their help and testing (or suggestion), to:
+    Philippe Ahles <>
+    Mervyn Baldwin <vyn@abaldwin.demon.co.uk>
+    Ethan Brodsky <ebrodsky@pobox.com>
+    Frank Decandia <tron@agoron.com>
+    Lee Goldstein <72077.2054@compuserve.com>
+    Peter Hayward <peter@cdsl.demon.co.uk>
+    Armand Kadrichu <a.kadrichu@intelsat.int>
+    Bernard Marone <marone@conline.com>
+    Steve Murray <Rocket9977@aol.com>
+    Pino Navato <pnavato@geocities.com>
+    Gabriele Neukam <Gabriele.Neukam@t-online.de>
+    Jim Oliver <jim.oliver@welcom.gen.nz>
+    Joachim Otahal <jou@gmx.net>
+    Michel Peru <peru@esrf.fr>
+    Vladimir Plotto <V.Plotto@frec.bull.fr>
+    Mike Ray <mer1@cornell.edu>
+    Matt Sephton <u5ms@csc.liv.ac.uk>
+    John Stockton <jrs@dclf.npl.co.uk>
+    Michel Toussaint <100334.2645@compuserve.com>
+    Bruce M.Vrana <Bruce.M.Vrana@usa.dupont.com>
+    Edward Wittenberg <wew@papa.uncp.edu>
+    Ian Woolley <iwoolley@southcom.com.au>
+
+
+PS1: as you may have seen this package is FREEWARE. I would be glad if you
+     appreciate (more :-) or less :-( ) it to send a little Email message.
+     Thanks.
+    
+PS2: EMS/XMSDSK is known to work with the following Operating Systems:
+     MSDOS 3 to 7 (Win95), DosEmu (Linux), NWDOS 7 (OpenDOS/DR-DOS 7), 
+     PCDOS 7.
+     May be other?
+     It works too with these "special" apps: DBLSPACE/DRVSPACE, GUEST/GUEST95,
+     Stacker 4.
+
+
+  * Disclaimer
+  -------------
+
+Copyright (C) 1992-1998  Franck UBERTO.
+All rights reserved.
+
+This package is offered to you "AS IS" without any warranty. This software has
+been thoroughly tested but no guarantee is given that it will work on every
+computer. The copyright owner may not be held liable for any damages, direct
+or consequential, which may result from the the use of this program.
+
+This archive is freely distributable. You may use the software and share it
+with all your friends (or others) as long as the program is supplied in its
+original, unmodified form, which includes this documentation. This program
+must not be distributed for profit.
+
+All trademarks herein given are the proprietary of their respective holders.

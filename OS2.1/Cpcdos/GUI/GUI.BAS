@@ -4,6 +4,7 @@
 ' Reecriture le 13/10/2016
 ' Mise a jour le 14/12/2017
 
+' 27-01-2021	: AJOUT du support explorer + desktop
 ' 14-14-2017	: AJOUT du support multi-OS.
 ' 22-11-2017 	: AJOUT du support d'interaction evenementielle de la barre de progression
 ' 26-10-2017	: AJOUT du support d'interaction evenementielle du TexteBox
@@ -76,7 +77,16 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String
 		charger_Fond(var_SCR_IMG, tmpTID+1024)
 		
 		
+		charger_Curseurs_properties()
+		
 		charger_Curseurs(tmpTID+1024)
+
+
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_left"	, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_right"	, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_top"		, 3, _CLE_))
+		CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down 	= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.screen_collision_down"	, 3, _CLE_))
+
 
 		' L'afficher sur l'ecran
 		Flip 3, 2
@@ -202,19 +212,10 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String
 		
 		' Actualiser tout
 		ActualiserGUI(0, 0)
-
-	End if
-	
-	' ///////////////////////////////////////
-	
-	
-	
-	if Test_Resolution = 1 Then ' OK
-		Function = 1
-	Else
-	
+		return 1
+	else
 		SORTIR_SectionCritique()
-		Function = 0
+		return 0
 	End if
 	
 End function
@@ -227,42 +228,50 @@ Sub _SCI_Cpcdos_OSx__.IUG_Updater(Type_IUG as integer, index as integer, index_P
 	ScreenLock
 	
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(index_PID).Identification_Objet.OS_id Then
-		If Type_IUG = GUI_TYPE.Fenetre then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Fenetre(this.INST_INIT_GUI, index) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.Bouton then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Bouton(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.PictureBox then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_PictureBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			else
-				IF this.MULTI_PICTUREBOX = TRUE then
-					Creer_PictureBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-					ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_PID).PROP_TYPE.Ferme 	= false AND _
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index_PID).PROP_TYPE.Reduit 	= false Then
+
+			If Type_IUG = GUI_TYPE.Fenetre then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Fenetre( index) 'Actualiser si focus
 				End if
-			End if
-		ElseIf Type_IUG = GUI_TYPE.TextBlock then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBlock(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.TextBox then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_TextBox(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.ProgressBar then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_ProgressBar(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			End if
-		ElseIf Type_IUG = GUI_TYPE.Explorer then
-			IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
-				Creer_Explorer(this.INST_INIT_GUI, index, index_PID) 'Actualiser si focus
-			End if
-		Else
-		
-		end if
+			ElseIf Type_IUG = GUI_TYPE.Bouton then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Bouton(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.PictureBox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_PictureBox(index, index_PID) 'Actualiser si focus
+				else
+					'IF this.MULTI_PICTUREBOX = TRUE then
+					'	Creer_PictureBox(index, index_PID) 'Actualiser si focus
+					'	ActualiserGUI(1, this.INST_INIT_GUI.POSITION(1))
+					'End if
+				End if
+			ElseIf Type_IUG = GUI_TYPE.TextBlock then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_TextBlock(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.TextBox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_TextBox(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.ProgressBar then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_ProgressBar(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.Explorer then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Explorer(index, index_PID) 'Actualiser si focus
+				End if
+			ElseIf Type_IUG = GUI_TYPE.Listbox then
+				IF this.INST_INIT_GUI.POSITION(1) = index_PID Then
+					Creer_Listbox(index, index_PID) 'Actualiser si focus
+				End if
+			Else
+			
+			end if
+		End if ' fenetre visible ?
 	End if
 	
 	ScreenUnLock
@@ -284,7 +293,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= FENETRE =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	IF Type_De_GUI = this.GUI_TYPE.Fenetre Then
-		
+
 		' Si le handle est superieur a 0, donc verifier si ce handle existe! 
 		IF _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle > 0 Then
 			IF _INDEX_MODIF_ = 0 Then
@@ -297,10 +306,15 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 						exit for
 					END IF
 				Next _BOUCLE_
-			
+
 				' Verifier si le PID parent a ete trouve
 				IF _INDEX_ = 0 Then 
-					Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " est introuvable!"
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					Else
+						DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					End if
+
 					CPC__GUI_Init_obj = -1
 					ScreenUnlock
 					exit function
@@ -341,6 +355,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 			
 			' Associer son numero de handle unique de la fenetre
 			_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle	= CPCDOS_INSTANCE.Generer_RND(100, 999)
+
+			' SI c'est un taskbar
+			if _Proprietes.TEMP_GUI__FENETRE.PROP_TYPE.TaskBar > 0 Then
+				CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_
+			End if
 			
 			' /!\ Transferer les proprietes temporaires dans les proprietes definitives /!\
 			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_) 					= _Proprietes.TEMP_GUI__FENETRE
@@ -353,46 +372,85 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		' Lui donner son index
 		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.Index_Enfant = _INDEX_
 
+		
+
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle = Creer_Fenetre(_Proprietes, _INDEX_)
+		_Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle = Creer_Fenetre(_INDEX_)
 					
 		
 		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__FENETRE.Identification_Objet.handle
 
+		' Sil y a une taskbar
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win > 0 Then
+			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_ Then ' Et que c'est pas elle même
+				' On actualise le contenu de la taskbar
+				ActualiserGUI(1, CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win)
+
+			End if
+		End if
+
+		
+
+
+
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Bouton Then
 	
-		Dim _INDEX_PID_ as integer 
+		Dim _INDEX_Fenetre_ as integer 
 		' Verifier si le processus (PID) existe!
-		For _INDEX_PID_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
-			IF _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.Handle Then
-			
-				' Obtenir l'emplacement memoire libre
-				_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
 				
 				exit for
 			END IF
-		Next _INDEX_PID_
+		Next _INDEX_Fenetre_
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le PID fenetre parent " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Handle_Parent & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
 		End if
+		
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
+			
+		Else
+		
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+		
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
 
-		' Lui donner son numero d'index
-		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.Index_Enfant = _INDEX_
-		
-		' Generer un numero handle
-		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
-		
-		' Transferer les proprietes temporaires dans les proprietes definitives
-		this.INST_INIT_GUI.GUI__BOUTON(_INDEX_) = _Proprietes.TEMP_GUI__BOUTON
+		End if
 		
 		' Creer l'objet
-		CPC__GUI_Init_obj = Creer_Bouton(_Proprietes, _INDEX_, _INDEX_PID_)
+		_Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle = Creer_Bouton(_INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__BOUTON.Identification_Objet.handle
+		
 	
 	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= PICTURE BOX =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.PictureBox Then
@@ -415,7 +473,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -457,6 +519,12 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 						DEBUG("[CpcdosC+] Creating PictureBox thread [" & "_CPCDOS_THREAD_PICTUREBOX~" & _Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle & "] ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					End if
 				END IF
+
+				if Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.PICTUREBOX.MULTI_THREAD.NO_FOCUS", 3, _CLE_)) = 1 Then
+					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = true
+				Else
+					CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = false
+				End if
 
 				Scope
 				
@@ -506,7 +574,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle = Creer_PictureBox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__PICTUREBOX.Identification_Objet.handle = Creer_PictureBox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -533,7 +601,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -561,7 +633,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		_Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle = Creer_TextBlock(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		_Proprietes.TEMP_GUI__TEXTBLOCK.Identification_Objet.handle = Creer_TextBlock(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -588,7 +660,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__TEXTBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -616,7 +692,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.handle = Creer_TextBox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.handle = Creer_TextBox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -643,7 +719,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__PROGRESSBAR.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -671,7 +751,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.handle = Creer_ProgressBar(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.handle = Creer_ProgressBar(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
@@ -698,7 +778,11 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 	
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le handle fenetre parent " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.Handle_PARENT & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__CHECKBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
@@ -726,48 +810,132 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 		End if
 		
 		' Creer l'objet
-		this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle = Creer_Checkbox(_Proprietes, _INDEX_, _INDEX_Fenetre_)
+		this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle = Creer_Checkbox(_INDEX_, _INDEX_Fenetre_)
 	
 		
 		' Transferer le handle
 		CPC__GUI_Init_obj = this.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.handle
 	
-	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Bouton  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Explorer  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 	ELSEIF Type_De_GUI = this.GUI_TYPE.Explorer Then
 	
-		Dim _INDEX_PID_ as integer 
+		Dim _INDEX_Fenetre_ as integer 
 		' Verifier si le processus (PID) existe!
-		For _INDEX_PID_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
-			IF _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.Handle Then
-			
-				' Obtenir l'emplacement memoire libre
-				_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
 				
 				exit for
 			END IF
-		Next _INDEX_PID_
+		Next _INDEX_Fenetre_
 		
 		' Verifier si le PID a ete trouve
 		IF _INDEX_ = 0 Then 
-			Print "Le PID fenetre parent " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Handle_Parent & " est introuvable!"
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
 			CPC__GUI_Init_obj = -1
 			ScreenUnlock
 			exit function
 		End if
 
-		' Lui donner son numero d'index
-		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Index_Enfant = _INDEX_
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			
+		Else
 		
-		' Generer un numero handle
-		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
 		
-		' Transferer les proprietes temporaires dans les proprietes definitives
-		this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_) = _Proprietes.TEMP_GUI__EXPLORER
+			
+
+		End if
 		
 		' Creer l'objet
-		CPC__GUI_Init_obj = Creer_Explorer(_Proprietes, _INDEX_, _INDEX_PID_)
+		_Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle = Creer_Explorer(_INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__EXPLORER.Identification_Objet.handle
+	' =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= Listbox  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	ELSEIF Type_De_GUI = this.GUI_TYPE.Listbox Then
+
+	
+		Dim _INDEX_Fenetre_ as integer 
+		' Verifier si le processus (PID) existe!
+		For _INDEX_Fenetre_ = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			IF _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.Handle_Parent = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_Fenetre_).Identification_Objet.handle Then
+				
+				IF _INDEX_MODIF_ = 0 Then
+					' Obtenir l'emplacement memoire libre
+					_INDEX_  = get_Emplacement_Libre(Type_De_GUI)
+				else
+					_INDEX_ = _INDEX_MODIF_
+				End if
+				
+				exit for
+			END IF
+		Next _INDEX_Fenetre_
 		
-	END IF
+		' Verifier si le PID a ete trouve
+		IF _INDEX_ = 0 Then 
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[GUI] Le handle fenetre parent " & _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle & " est introuvable!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			Else
+				DEBUG("[GUI] Parent window handle " & _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle & " is missing !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			End if
+			CPC__GUI_Init_obj = -1
+			ScreenUnlock
+			exit function
+		End if
+
+		
+
+		IF _INDEX_MODIF_ > 0  Then 
+			
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_) = _Proprietes.TEMP_GUI__LISTBOX
+			
+		Else
+		
+			 ' Obtenir l'emplacement memoire libre
+			_INDEX_ = get_Emplacement_Libre(Type_De_GUI)
+			
+			' Lui donner son numero d'index
+			_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.Index_Enfant = _INDEX_
+			
+			' Associer son handle a celui du processus parent
+			_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle = CPCDOS_INSTANCE.Generer_RND(100, 999)
+		
+			' Transferer les proprietes temporaires dans les proprietes definitives
+			this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_) = _Proprietes.TEMP_GUI__LISTBOX
+			
+
+		End if
+		
+		' Creer l'objet
+		_Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle = Creer_Listbox(_INDEX_, _INDEX_Fenetre_)
+
+		' Transferer le handle
+		CPC__GUI_Init_obj = _Proprietes.TEMP_GUI__LISTBOX.Identification_Objet.handle
+	end if
 	
 	ScreenUnlock
 End Function
@@ -886,6 +1054,13 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 					DEBUG("[SCI] Deleting " & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS & " instancied objects...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 				End if
 			End if
+
+			' Si c'etait une fenetre prioritaire, on la delete
+			if CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = _INDEX_ Then CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			
+			' On s'assure qu'elle ne reviendra pas!
+			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).PROP_TYPE.IsPriority = false
+
 			' Suppression des bitmaps
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).BT_CLOSE_IMG_ID)
 			this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).BT_CLOSE_IMG_ID = 0
@@ -942,6 +1117,12 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 				End if
 				IF this.INST_INIT_GUI.GUI__EXPLORER(Boucle).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Identification_Objet.handle Then
 					CPC__GUI_SUPPRIMER_obj(this.GUI_TYPE.Explorer, Boucle)
+					
+					' Desincrementer le nombre d'objets present dans la fenetre parent
+					this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS - 1
+				End if
+				IF this.INST_INIT_GUI.GUI__LISTBOX(Boucle).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Identification_Objet.handle Then
+					CPC__GUI_SUPPRIMER_obj(this.GUI_TYPE.Listbox, Boucle)
 					
 					' Desincrementer le nombre d'objets present dans la fenetre parent
 					this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_).Nombre_OBJETS - 1
@@ -1214,9 +1395,61 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_SUPPRIMER_obj(Type_De_GUI as Integer, _INDEX
 		
 		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SELECTEUR_ID)
 		this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SELECTEUR_ID = 0
+
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SCROLL_ID)
+		this.INST_INIT_GUI.GUI__EXPLORER(_index_).IMG_SCROLL_ID = 0
+
+		
+		
 		
 		' Vider toutes les proprietes du bouton
 		this.INST_INIT_GUI.GUI__EXPLORER(_INDEX_)				= this.NULL_GUI__EXPLORER
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			Else
+				DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			End if
+		End if
+	ELSEIF Type_De_GUI = this.GUI_TYPE.Listbox Then
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] Suppression du listbox '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Nom & "' CleID:'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet._CLE_ & "' associe a la fenetre '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Fenetre_PARENT & "' (PID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.PID_PARENT & " TID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.TID_PARENT & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			Else
+				DEBUG("[SCI] Deleting listbox '" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Nom & "' KeyID:'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet._CLE_ & "' associed to the window'" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Fenetre_PARENT & "' (PID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.PID_PARENT & " TID:" & this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.TID_PARENT & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+			End if
+		End if
+		
+		' Elements a actualiser
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_index_).IUG_UPDATER > 0 Then 
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX -= 1
+		End if
+		
+		' Supprimer les anciennes images!
+		if this.INST_INIT_GUI.GUI__LISTBOX(_index_).NB_ICONE > 0 Then
+			' Delete les icones 1 par 1
+			For ico_index as integer = 0 to this.INST_INIT_GUI.GUI__LISTBOX(_index_).NB_ICONE -1
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_ICONE_ID(ico_index))
+				this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_ICONE_ID(ico_index) = 0
+			Next ico_index
+		End if
+		
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_BUFFER_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_BUFFER_ID = 0
+		
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SELECTEUR_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SELECTEUR_ID = 0
+
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SCROLL_ID)
+		this.INST_INIT_GUI.GUI__LISTBOX(_index_).IMG_SCROLL_ID = 0
+
+		
+		
+		
+		' Vider toutes les proprietes du bouton
+		this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_)				= this.NULL_GUI__LISTBOX
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -1298,6 +1531,14 @@ Function _SCI_Cpcdos_OSx__.get_Emplacement_Libre(Type_De_GUI as integer) as inte
 				exit function
 			End if
 		Next _INDEX_
+	Elseif Type_De_GUI = this.GUI_TYPE.Listbox Then
+		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+			' Si aucun nom de processus est specifie alors l'emplacement est libre
+			IF this.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Handle = 0 Then
+				get_Emplacement_Libre = _INDEX_
+				exit function
+			End if
+		Next _INDEX_
 	End if
 	
 	get_Emplacement_Libre = 0
@@ -1352,8 +1593,8 @@ Sub _SCI_Cpcdos_OSx__.set_OSid(Num_ID as integer)
 End Sub
 
 Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as integer, Type_Clic as integer) as integer
-	REM Cette fonction permet de savoir sur quelle fenetre l'utilisateur a clique
-	REM Renvoie le PID
+	' Cette fonction permet de savoir sur quelle fenetre l'utilisateur a clique
+	' Renvoie le PID
 	
 	
 	' Ce qui permet de savoir si on peut executer un ev si la souris est hors de la fenetre
@@ -1370,238 +1611,461 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	Dim Fichier_evenement 		as String 	= ""
 
 	
+
 	For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 	
 		 _INDEX_FENETRE_ = this.INST_INIT_GUI.POSITION(_INDEX_)
 
+		' Sil y a fenetre prioritaire dans l'OS alors se fixer dessus
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.priority_window > 0 Then 
+			IF CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).Identification_Objet.OS_id Then
+				if NOT this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).Identification_Objet.Nom = "" Then
+					this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.priority_window).PROP_TYPE.Reduit = false
+					_INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.priority_window
+				else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+				End if
+			else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			End if
+		End if
+		
+
+		If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true Then Continue for
+
+		
 		
 		IF CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Identification_Objet.OS_id Then
+			' Sil y a une fenetre prioritaire. NE PLUS interagir avec les autres elements du bureau
+			
+			
+
 			' Si la position de la souris est superieur au bord gauche ET inferieur au bord droit (Relatif a l'odre fenetrale)
 			IF Pos_X >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
 
 				' Si la position de la souris est superieur au bord haut ET inferieur au bord bas (Relatif a l'odre fenetrale)
-				IF Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
+				IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
 					' L'utiliateur a clique dans la fenetre!
 
 					
+					
 					IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 4) Then
-						' Mettre cette fenetre au premier plan seulement en cas de clic :)
-						IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
-							Fenetre_FOCUS(_INDEX_FENETRE_)
-							NoDeplacer = 1
-						Else
-							NoDeplacer = 0
+
+						
+
+						' if ClicElementTaskBar = false Then
+							if NOT _INDEX_FENETRE_ = CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre Then
+								' Mettre cette fenetre au premier plan seulement en cas de clic :)
+								IF NOT Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+									Fenetre_FOCUS(_INDEX_FENETRE_)
+									NoDeplacer = 1
+								Else
+									NoDeplacer = 0
+								End if
+							End if
+						' End if
+
+
+						Dim ClicElementTaskBar as boolean = false
+						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar > 0 Then
+							if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = true
+								' On parourt tous les elements de la barre des taches jusqu'a tomber sur celui ou la souris se trouve.
+								for indexage as integer = 0 to _MAX_Taskbar_Elements
+
+									' S'il clique dans l'espace X
+									if Pos_X > CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px(indexage) AND Pos_X < (CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px(indexage) + CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sx(indexage)) Then
+
+										' Puis dans l'espace Y
+										if Pos_Y > CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py(indexage) AND Pos_Y < (CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py(indexage) + CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sy(indexage)) Then
+											' L'utilisateur a clique dans un element de la taskbar!
+
+											ClicElementTaskBar = true
+
+											if this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = true Then
+
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Restauration de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' depuis la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window restauration (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' from the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+
+												' Si elle etait pas focus, hop on la restaure!
+												this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = false
+												Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
+
+												ActualiserGUI(0, 0)
+
+											Elseif this.INST_INIT_GUI.POSITION(2) = CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) Then
+
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' to the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+
+												' Si la fenetre est deja FOCUS et pas reduite
+												' Hop on reduit la fenetre dans la barre des taches
+												this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).PROP_TYPE.Reduit = true
+												ActualiserGUI(0, 0)
+											else
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Focus de la fenetre (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window focus (" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage) & ") '" & this.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage)).Titre & "' to the taskbar. ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+
+												' Focuser la fenetre
+												Fenetre_FOCUS(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position(indexage))
+												ActualiserGUI(0, 0)
+											End if
+
+											exit for
+
+										End if
+									End if
+								Next Indexage
+							End if
+							if ClicElementTaskBar = true Then return 1
 						End if
 
+
 						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
-							' ==== On ferme la fenetre par le bouton X ====
-							
-							IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 3 Then ' Droite
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X)) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 2 Then ' Centre
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 1 Then ' Gauche
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
-										
-										' On supprime la fenetre
-										CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
-										NoDeplacer = 1
-									End if
-								End if
-							End if
-						end if
-						
-						' --------------------------------------------------------------------------------------------------
-						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable = true Then
-							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.SizeUP = false then
-								' ==== On agrandit la fenetre par le bouton du milieu ====
+						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 Then
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable = true Then
+								' ==== On ferme la fenetre par le bouton X ====
 								
-								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 3 Then ' Droite
+								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 3 Then ' Droite
 									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X)) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) Then
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X)) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) Then
 										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
 											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
 										End if
 									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 2 Then ' Centre
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 2 Then ' Centre
 								
 									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X Then
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X Then
 										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
 											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
 										End if
 									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 1 Then ' Gauche
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_POS = 1 Then ' Gauche
 								
 									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X) Then
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X) Then
 										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_CLOSE_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_CLOSE_X Then
 											
-											' on agrandit la fenetre!
-											Sizing_window_button(true, _INDEX_FENETRE_)
+											' On supprime la fenetre
+											CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_fenetre(_INDEX_FENETRE_)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
 										End if
 									End if
 								End if
-							Else
-								' --------------------------------------------------------------------------------------------------
-								
-								' ==== On retrecit la fenetre par le bouton du milieu ====
+							end if
 							
-								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 3 Then ' Droite
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X)) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
-											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
-											NoDeplacer = 1
+							' --------------------------------------------------------------------------------------------------
+							
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable = true Then
+								if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.SizeUP = false then
+									' ==== On agrandit la fenetre par le bouton du milieu ====
+									
+									IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 3 Then ' Droite
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X)) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 2 Then ' Centre
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_POS = 1 Then ' Gauche
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X) Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEUP_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEUP_X Then
+												
+												' on agrandit la fenetre!
+												Sizing_window_button(true, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
 										End if
 									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 2 Then ' Centre
+								Else
+									' --------------------------------------------------------------------------------------------------
+									
+									' ==== On retrecit la fenetre par le bouton du milieu ====
 								
-									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X Then
-										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
-											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
-											NoDeplacer = 1
+									IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 3 Then ' Droite
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X)) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 2 Then ' Centre
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
+										End if
+									ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 1 Then ' Gauche
+									
+										' X
+										IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) _
+										AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X) Then
+											' Y
+											IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
+											AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+												
+												' on retrecit la fenetre!
+												Sizing_window_button(false, _INDEX_FENETRE_)
+												NoDeplacer = 1
+												this.CLIC_PRESS_TITLE = true
+												return 1
+											End if
 										End if
 									End if
-								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_POS = 1 Then ' Gauche
+								End if
+							End if 'if sizeable
+							
+							' --------------------------------------------------------------------------------------------------
+							
+							if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reductable = true Then
+								' ==== On reduit la fenetre ====
+								IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 3 Then ' Droite
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X)) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) Then
+										' Y
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
+											
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 2 Then ' Centre
 								
 									' X
-									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X) _
-									  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X) Then
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X Then
 										' Y
-										IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) _
-										  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_SIZEDOWN_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_SIZEDOWN_X Then
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
 											
-											' on retrecit la fenetre!
-											Sizing_window_button(false, _INDEX_FENETRE_)
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
 											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
+										End if
+									End if
+								ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 1 Then ' Gauche
+								
+									' X
+									IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) _
+									AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X) Then
+										' Y
+										IF Pos_Y >= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
+										AND Pos_Y <= ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
+											
+											' on reduit la fenetre!
+											IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+												IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+													DEBUG("[SCI] Reduction de la fenetre (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' depuis bouton reduction, dans la barre des taches.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												else
+													DEBUG("[SCI] Window minimization (" & _INDEX_FENETRE_ & ") '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Titre & "' from minimize button, to the taskbar.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												End if
+											End if
+											' Si la fenetre est deja FOCUS et pas reduite
+											' Hop on reduit la fenetre dans la barre des taches
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reduit = true
+											ActualiserGUI(0, 0)
+											NoDeplacer = 1
+											this.CLIC_PRESS_TITLE = true
+											return 1
 										End if
 									End if
 								End if
-							End if
-						End if 'if sizeable
-						
-						' --------------------------------------------------------------------------------------------------
-						
-						if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reductable = true Then
-							' ==== On reduit la fenetre ====
-							IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 3 Then ' Droite
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X)) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
-										NoDeplacer = 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 2 Then ' Centre
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X/2) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
-										NoDeplacer = 1
-									End if
-								End if
-							ElseIf this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_POS = 1 Then ' Gauche
-							
-								' X
-								IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X) _
-								  AND Pos_X <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X) Then
-									' Y
-									IF Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) _
-									  AND Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_BT_REDUCT_Y) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_BT_REDUCT_X Then
-										
-										' on reduit la fenetre!
-										print "REDUIRE " & _INDEX_FENETRE_ & ".   "
-										NoDeplacer = 1
-									End if
-								End if
-							End if
-						End if ' if reductable
+							End if ' if reductable
+						End if ' Si l'objet est de type 0, 1, 2, 3
+					Else
+						CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_clic = false
 					End if
 
+					
+					if this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL = true Then
+						' L'utilisateur reste appuye sur la zone de resize
+						IF Pos_X >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_X AND Pos_X < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_X) Then
+							IF Pos_Y > ((this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y-this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_Y) Then
+								Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
+
+								
+								this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL_display = true
+								
+
+								' Si l'utilisateur a encore le bouton presse = deplacement
+								Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+								IF TypeClic = 1 Then ' Clic gauche
+									
+									ScreenLock
+									ENTRER_SectionCritique()
+
+									this.INST_INIT_GUI.REDIMENTIONNEMENT = _INDEX_FENETRE_
+									
+									
+									' Retrecir la fenetre si agrandie
+									if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.SizeUP = true Then
+										'Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
+										
+										'Fenetre_FOCUS(this.INST_INIT_GUI.DEPLACEMENT)
+									end if
+									
+									'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_X - Pos_X
+									'this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Siz_Y = Pos_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Pos_Y
+
+									' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
+									ActualiserGUI(2, this.INST_INIT_GUI.REDIMENTIONNEMENT)
+									
+									SORTIR_SectionCritique()
+									ScreenUnlock
+
+									Flip 1, 2
+
+									'this.INST_INIT_GUI.RELATIF_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_X
+									'this.INST_INIT_GUI.RELATIF_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).SIZ_Y
+									
+									
+								Else
+
+									' Flip 3, 1
+									' ActualiserGUI(0, 0)
+									this.INST_INIT_GUI.REDIMENTIONNEMENT = 0
+									this.INST_INIT_GUI.RELATIF_X = 0
+									this.INST_INIT_GUI.RELATIF_Y = 0
+								End if
+
+								exit for
+
+							End if
+						End if
+					End if
+
+
 					' Clic barre de titre
-					IF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND NoDeplacer = 0 AND Pos_Y >= this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y AND Pos_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) Then
+					If this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ <= 3 AND _
+						this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Deplacable = true AND _
+						NoDeplacer = 0 AND _
+						Pos_Y >= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y - this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE) AND _
+						Pos_Y <= (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y) Then
+
 						Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
 
-						ENTRER_SectionCritique()
+
 						' doevents(0)
 
 						' Si l'utilisateur a encore le bouton presse = deplacement
-						Presente = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
-						
-						IF (TypeClic AND 1) Then 
+						Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+						ScreenLock
+						ENTRER_SectionCritique()
+
+						IF TypeClic = 1 Then ' Clic gauche
 							this.INST_INIT_GUI.DEPLACEMENT = _INDEX_FENETRE_
 							
-							ScreenLock
+							
 							' Retrecir la fenetre si agrandie
 							if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).PROP_TYPE.SizeUP = true Then
 								Sizing_window_button(false, this.INST_INIT_GUI.DEPLACEMENT)
@@ -1613,13 +2077,30 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 							
 							' Actualiser l'affichage derriere la fentre puis capturer dans un buffer
 							ActualiserGUI(2, this.INST_INIT_GUI.DEPLACEMENT)
-							ScreenUnlock
+							
 							Flip 1, 2
 							
 							
 							this.INST_INIT_GUI.RELATIF_X = Pos_X - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X
 							this.INST_INIT_GUI.RELATIF_Y = Pos_Y - this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y
-						else 
+						elseif TypeClic = 2 Then
+
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								DEBUG("[SCI] Right clic on title bar on " & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).identification_objet.nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							End if
+
+							' Creer menu contextuel
+							CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.OBJ_context_menu)
+							
+							SORTIR_SectionCritique()
+							ScreenUnlock
+
+							this.CLIC_PRESS_TITLE = true
+
+							return 1
+
+						Else
+
 							' Flip 3, 1
 							' ActualiserGUI(0, 0)
 							this.INST_INIT_GUI.DEPLACEMENT = 0
@@ -1630,6 +2111,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						
 						
 						SORTIR_SectionCritique()
+						ScreenUnlock
 						
 						' CORRECTION BUG 25-JAN-2020 :
 						'	Fenetre arriere plan qui passait au dessus de la fenetre focus lors du clic 
@@ -1656,7 +2138,10 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 						' ** E V E N E M E N T S  O B J E T   G R A P H I Q U E S **
 						' **********************************************************
 						Dim _INDEX__ORDRE_OBJET as integer
+
+						if this.CLIC_PRESS_TITLE = true Then return 1
 						
+						Dim NoExitFor_Loop as boolean = false
 						
 						For _IN_ORDR_OBJ_ as integer = 0 to this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Nombre_OBJETS
 
@@ -1672,7 +2157,10 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								
 								DIM The_Objet 		as String = MID(NomOrdreObjet, 1, Instr(NomOrdreObjet, ":") - 1)
 								DIM The_Objet_index as integer  = VAL(MID(NomOrdreObjet, Instr(NomOrdreObjet, ":") + 1))
-								
+
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									DEBUG("[SCI] Search GUI element " & The_Objet & "(" & The_Objet_index & ") Type_Clic:" & Type_Clic & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+								end if
 								
 						
 								' locate 1, 1
@@ -1711,7 +2199,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
 
-												' On indique qu'on FOCUS un picturebox
+												' On indique qu'on FOCUS un bouton
 												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton
 												
 												' Avec son index
@@ -1722,8 +2210,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
-												
+												Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
+
 												IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
 														' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -1751,9 +2239,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													End if
-												End if				
-																
-																
+												End if	
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if			
+
 												' On quitte cette boucle
 												exit for
 											Else
@@ -1768,7 +2262,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 													
@@ -1785,6 +2279,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 																End if
 															End if
 														End if
+
+														
 														
 														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
 															IF CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
@@ -1833,7 +2329,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
 														' Actualiser graphiquement le bouton pour l'effet de "pression"
-														Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+														Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
 														exit for
@@ -1883,7 +2379,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__BOUTON(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -1945,7 +2441,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_Bouton(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Bouton(The_Objet_index, _INDEX_FENETRE_)
 											
 											' On quitte cette boucle
 											exit for
@@ -2029,6 +2525,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													end if
 												End if
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if
+
 												' On quitte cette boucle
 												exit for
 
@@ -2042,7 +2546,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Pression = False
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_PictureBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_PictureBox(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2082,6 +2586,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 	
 
 												IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+
 												
 													IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
 														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
@@ -2103,9 +2608,11 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.PictureBox
 													this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
-													
+
 													' On quitte cette boucle
-													exit for
+													'exit for
+													continue for
+
 													
 												End if
 												
@@ -2129,13 +2636,16 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													End if
 												End if
+
+
 												' L'objet est en cours de survole
 												this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
 												
 												
 												
 												' On quitte cette boucle
-												exit for
+												'exit for
+												continue for
 											End if
 										End if
 										
@@ -2147,7 +2657,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_PictureBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_PictureBox(The_Objet_index, _INDEX_FENETRE_)
 											IF this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
 												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
@@ -2220,16 +2730,17 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								' **  T E X T E B L O C     T E X T E B L O C   ** ----------------------------------------------------
 								' ************************************************	
 								
-								ElseIF The_Objet = "TEXTBLOC" Then 
+								ElseIF The_Objet = "TEXTBLOCK" Then 
 
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Fichier_evenement
-								
+
 									if NOT Fichier_evenement = "" Then
 									
 										' Infos du picturebox concerne
 										Index_Focus_OBJ 	= The_Objet_index
 										_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).Identification_Objet._CLE_
 										Nom_Objet 		 	= this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).Identification_Objet.Nom
+
 
 										IF Interaction_TOUCHE(Pos_X, Pos_Y, _INDEX_FENETRE_, _
 											this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).POS_X, _
@@ -2257,7 +2768,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -2286,7 +2797,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														end if
 													End if
-												End if			
+												End if	
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if		
 
 												' On quitte cette boucle
 												exit for
@@ -2302,7 +2820,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2409,7 +2927,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_TextBlock(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_TextBlock(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__TEXTBLOCK(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2472,8 +2990,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										End if
 									End if
 									
-									
-									
+
 									
 								' ********************************************
 								' **  T E X T E B O X     T E X T E B O X   ** ----------------------------------------------------
@@ -2523,7 +3040,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_Y = Pos_Y
 											
 											' Actualiser graphiquement le textebox pour l'effet de ""
-											Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 											
 											
 											' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
@@ -2557,6 +3074,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													end if
 												End if			
 											End if
+
+											if Type_Clic AND 2 Then
+												' Creer menu contextuel
+												CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+												
+												return 1
+											End if
 															
 															
 											' On quitte cette boucle
@@ -2571,9 +3095,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = False
 												
 												
-												
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
-												Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 												
 												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
 												if NOT Fichier_evenement = "" Then
@@ -2690,7 +3213,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = False
 										
 										' Actualiser graphiquement le bouton pour l'effet de "pression"
-										Creer_TextBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+										Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 								
 										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
 										if NOT Fichier_evenement = "" Then
@@ -2804,7 +3327,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le textebox pour l'effet de ""
-												Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -2833,7 +3356,14 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													end if
-												End if			
+												End if
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if
 
 												' On quitte cette boucle
 												exit for
@@ -2849,7 +3379,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -2957,7 +3487,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_PROGRESSBAR(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_PROGRESSBAR(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__PROGRESSBAR(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3066,7 +3596,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
 												' Actualiser graphiquement le checkbox pour l'effet de ""
-												Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 												
 												IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -3096,7 +3626,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														end if
 													End if
 												end if
-																
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if	
 																
 												' On quitte cette boucle
 												exit for
@@ -3116,7 +3652,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													End if
 													
 													' Actualiser graphiquement le checkbox pour l'effet de "pression"
-													Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 													
 													IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3177,7 +3713,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
 														
 														' Actualiser graphiquement le checkbox pour l'effet de "pression"
-														Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+														Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 														
 														' On quitte cette boucle
 														exit for
@@ -3229,7 +3765,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											
 											' Actualiser graphiquement le bouton pour l'effet de "pression"
-											Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__CHECKBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3288,7 +3824,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le checkbox pour l'effet de "pression"
-											Creer_CheckBox(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_CheckBox(The_Objet_index, _INDEX_FENETRE_)
 											
 											' On quitte cette boucle
 											exit for
@@ -3301,10 +3837,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								' ******************************************
 								
 								ElseIf The_Objet = "EXPLORER" Then 
-								
-									
-									
-									
+
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement
 								
 									if NOT Fichier_evenement = "" Then
@@ -3331,7 +3864,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
 
-												' On indique qu'on FOCUS un picturebox
+												' On indique qu'on FOCUS un explorer
 												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer
 												
 												' Avec son index
@@ -3341,8 +3874,17 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												
 												this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 												
+												
 												' Actualiser graphiquement l'explorer pour l'effet de "pression"
-												Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+												'if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+													' Actualiser graphiquement le bouton pour l'effet de "survole"
+													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press += 1
+															
+													if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press > 5 Then
+														this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press = 0
+														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+													End if
+												'End if
 												
 												IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
@@ -3371,7 +3913,15 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 															End if
 														End if
 													End if
-												End if				
+												End if		
+
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if		
 																
 																
 												' On quitte cette boucle
@@ -3388,7 +3938,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 													
 													
 													' Actualiser graphiquement le bouton pour l'effet de "pression"
-													Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 											
 													IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 													
@@ -3426,21 +3976,63 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' *** EVENEMENT : Si l'utilisateur ENTRE la souris dans l'objet pour la premiere fois (MouseEnter) ***
 												' *****************************************************************************************************
 												
-												IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
-													IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = FALSE Then
-													
-														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
-															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
-																if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
-																		":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
-																		= "ERR_050" Then
-																			
-																	' Black LIST EVENT !
-																	CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
-																	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-																		DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+												if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+													IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+														
+															IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
+																if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																		
 																	End if
-																	
+																End if
+															End if
+															
+															' L'objet est en cours de survole
+															this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
+															
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
+															
+															if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+																' Actualiser graphiquement le bouton pour l'effet de "survole"
+																Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+															End if
+
+															' On quitte cette boucle
+															exit for
+															
+														End if
+													End if
+													
+													
+													' *****************************************************************************
+													' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
+													' *****************************************************************************
+													
+													IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														
+														IF 0 Then ' Desactiver l'event mousemove de
+															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
+																IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																	End if
 																End if
 															End if
 														End if
@@ -3448,50 +4040,24 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														' L'objet est en cours de survole
 														this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
 														
-														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Explorer
-														this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
-														
-														' Actualiser graphiquement le bouton pour l'effet de "pression"
-														Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
-														
+														' Actualiser graphiquement le explorer pour l'effet de "pression"
+														if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+															' Actualiser graphiquement le bouton pour l'effet de "survole"
+															
+															this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole += 1
+															
+															if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole > 4 Then
+																this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole = 0
+																Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+															End if
+														End if
+
 														' On quitte cette boucle
 														exit for
 														
 													End if
-												End if
-												
-												
-												' *****************************************************************************
-												' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
-												' *****************************************************************************
-												
-												IF NOT this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
-													
-													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
-														IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
-															if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
-																":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
-																= "ERR_050" Then
-																		
-																' Black LIST EVENT !
-																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
-																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
-																End if
-															End if
-														End if
-													End if
-													
-													
-													' L'objet est en cours de survole
-													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Survole = TRUE
-													
-
-													' On quitte cette boucle
-													exit for
-													
-												End if
-											End if
+												End if ' IF FOCUS
+											End if 
 										End if
 										
 										' *******************************************************************
@@ -3502,7 +4068,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.Pression = False
 											
 											' Actualiser graphiquement le explorer pour l'effet de "pression"
-											Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
 									
 											IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3564,13 +4130,331 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
 											
 											' Actualiser graphiquement le explorer pour l'effet de "pression"
-											Creer_Explorer(this.INST_INIT_GUI, The_Objet_index, _INDEX_FENETRE_)
+											if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+												' Actualiser graphiquement le bouton pour l'effet de "survole"
+												Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+											End if
 											
 											' On quitte cette boucle
 											exit for
 										End if
 										
 									End if 
+								' ******************************************
+								' ** L I S T B O X          L I S T B O X ** ----------------------------------------------------
+								' ******************************************
+								
+								ElseIf The_Objet = "LISTBOX" Then 
+
+									Fichier_evenement  	= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement
+								
+									if NOT Fichier_evenement = "" Then
+									
+										' Infos du picturebox concerne
+										Index_Focus_OBJ 	= The_Objet_index
+										_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).Identification_Objet._CLE_
+										Nom_Objet 		 	= this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).Identification_Objet.Nom
+
+										IF Interaction_TOUCHE(Pos_X, Pos_Y, _INDEX_FENETRE_, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).POS_X, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).POS_Y, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SIZ_X, _
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SIZ_Y) = TRUE Then
+											
+											Dim Retour_STR as String = ""
+											
+											' Pour pas que la fenetre soit aussi comprise
+											Evenement_Sur_Objet = TRUE
+
+											' *****************************************************************************************
+											' *** EVENEMENT : Si l'utilisateur clique dans l'objet graphique avec sa souris (CLICK) ***
+											' *****************************************************************************************
+											
+											IF (Type_Clic AND 1) OR (Type_Clic AND 2) OR (Type_Clic AND 3) Then
+
+												' On indique qu'on FOCUS un Listbox
+												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+												
+												' Avec son index
+												this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = The_Objet_index
+												
+												this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE
+												
+												this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
+												
+												
+												' Actualiser graphiquement le listbox pour l'effet de "pression"
+												'if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+													' Actualiser graphiquement le bouton pour l'effet de "survole"
+													Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+												'End if
+
+												Dim SELECTIONNE_index as integer = this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SELECTIONNE_index
+												Dim SELECTIONNE_str as string = this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).SELECTIONNE_str
+
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Selected(2)") > 0 Then
+													' Si l'utilisateur selectionne (bouton enfonce) un element
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".Selected(" & SELECTIONNE_str & "," & SELECTIONNE_index & ")", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Selected(2);"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Selected(2)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												end if
+												
+												IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
+													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click(1)") > 0 Then
+														' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
+														if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".Click(" & Type_Clic & ")", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																			
+															' Black LIST EVENT !
+															CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Click(1);"
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Click(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+															End if
+														End if
+													end if
+													
+													if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":Click()") > 0 Then
+														if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".Click()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																			
+															' Black LIST EVENT !
+															CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":Click();"
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":Click()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+															End if
+														End if
+													End if
+												End if		
+
+
+												if Type_Clic AND 2 Then
+													' Creer menu contextuel
+													CPCDOS_INSTANCE.SCI_INSTANCE.creer_ContextMenu(Pos_X - 1, Pos_Y - 1, this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.OBJ_context_menu)
+													
+													return 1
+												End if		
+																
+																
+												' On quitte cette boucle
+												exit for
+											Else
+											
+												' *******************************************************************
+												' *** EVENEMENT : Si l'utilisateur a finit de cliquer sur l'objet ***
+												' *******************************************************************
+												
+												IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE Then
+													this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = False
+													
+													
+													
+													' Actualiser graphiquement le bouton pour l'effet de "pression"
+													Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+											
+													IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
+													
+														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
+															' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
+															if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseClick(" & this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression_Bouton & ")", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																			
+																' Black LIST EVENT !
+																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1);"
+																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																End if
+															End if
+														End if
+														
+														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
+															IF CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseClick()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																			
+																' Black LIST EVENT !
+																CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick();"
+																IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																	DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																End if
+																
+															End if
+														End if
+													End if
+												End if
+											
+												' *****************************************************************************************************
+												' *** EVENEMENT : Si l'utilisateur ENTRE la souris dans l'objet pour la premiere fois (MouseEnter) ***
+												' *****************************************************************************************************
+												
+												if CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = _INDEX_FENETRE_ Then 
+													IF NOT this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = FALSE Then
+														
+															IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
+																if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																			":=##/F:" & Nom_Objet & ".MouseEnter()", _CLE_OBJ_ , 2, 0, "") _
+																			= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseEnter();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																		
+																	End if
+																End if
+															End if
+															
+															' L'objet est en cours de survole
+															this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
+															
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Listbox
+															this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = The_Objet_index
+															
+															if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+																' Actualiser graphiquement le bouton pour l'effet de "survole"
+																Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+															End if
+
+															' On quitte cette boucle
+															exit for
+															
+														End if
+													End if
+													
+													
+													' *****************************************************************************
+													' *** EVENEMENT : Si l'utilisateur se deplace DANS le controle (MouseMove) ***
+													' *****************************************************************************
+													
+													IF NOT this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
+														
+														IF 0 Then ' Desactiver l'event mousemove de
+															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
+																IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
+																	if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																		":=##/F:" & Nom_Objet & ".MouseMove()", _CLE_OBJ_ , 2, 0, "") _
+																		= "ERR_050" Then
+																				
+																		' Black LIST EVENT !
+																		CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseMove();"
+																		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																			DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseMove()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+																		End if
+																	End if
+																End if
+															End if
+														End if
+														
+														' L'objet est en cours de survole
+														this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE
+														
+														' Actualiser graphiquement le listbox pour l'effet de "pression"
+														if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+															' Actualiser graphiquement le bouton pour l'effet de "survole"
+															Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+														End if
+
+														' On quitte cette boucle
+														exit for
+														
+													End if
+												End if ' IF FOCUS
+											End if 
+										End if
+										
+										' *******************************************************************
+										' *** EVENEMENT : Si l'utilisateur a finit de cliquer sur l'objet ***
+										' *******************************************************************
+										
+										IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE Then
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Pression = False
+											
+											' Actualiser graphiquement le listbox pour l'effet de "pression"
+											Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+									
+											IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
+												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)") > 0 Then
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseClick(" & Type_Clic & ")", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1);"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick(1)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+																
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseClick()") > 0 Then
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseClick()", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseClick();"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseClick()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+											End if
+										End if
+										
+										' *****************************************************************************
+										' *** EVENEMENT : Si l'utilisateur SORT/Ne survole plus l'objet (MouseLeave) ***
+										' *****************************************************************************
+										
+										IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE Then
+											this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.Survole = False
+											
+											IF this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.EV_MouseLeave = True Then
+												
+												if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseLeave()") > 0 Then
+													' Si la souris de l'utilisateur sort de l'objet (MouseLeave)
+													if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+																	":=##/F:" & Nom_Objet & ".MouseLeave()", _CLE_OBJ_ , 2, 0, "") _
+																	= "ERR_050" Then
+																		
+														' Black LIST EVENT !
+														CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":MouseLeave();"
+														IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+															DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":MouseLeave()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+														End if
+													End if
+												End if
+											End if
+
+											
+											' Efface toutes traces
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = 0
+											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
+											
+											' Actualiser graphiquement le listbox pour l'effet de "pression"
+											if this.INST_INIT_GUI.GUI__LISTBOX(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
+												' Actualiser graphiquement le bouton pour l'effet de "survole"
+												Creer_Listbox(The_Objet_index, _INDEX_FENETRE_)
+											End if
+											
+											' On quitte cette boucle
+											exit for
+										End if
+										
+									End if 
+								
 								End if ' Scope des differents objets
 							End if
 						
@@ -3644,6 +4528,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											End if
 										end if
 									End if
+
+			
 								Else
 								
 								
@@ -4034,6 +4920,47 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 								End if
 							End if
 						End if
+					ElseIF this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = this.GUI_TYPE.Listbox Then
+						if this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Survole = TRUE Then
+						
+							this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_INDEX = 0
+							this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_SURVOLE_TYPE = 0
+							
+							Fichier_evenement = this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Fichier_evenement
+						
+							' Si l'evenement existe
+							if NOT Fichier_evenement = "" Then
+							
+								_CLE_OBJ_ 	 		= this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).Identification_Objet._CLE_
+								Nom_Objet 		 	= this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).Identification_Objet.Nom
+					
+								this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.Survole = FALSE
+								
+								Evenement_A_Executer = "MouseLeave"
+								
+								IF this.INST_INIT_GUI.GUI__LISTBOX(OBJET_SURVOLE_INDEX__TMP).PROP_TYPE.EV_MouseLeave = True Then
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] Appel d'un evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] Calling graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+										
+									' Si la souris de l'utilisateur sort de l'objet (MouseLeave)
+									CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+														":=##/F:" & Nom_Objet & "." & Evenement_A_Executer & "()", _CLE_OBJ_ , 2, 0, "")
+														
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] FIN de l'evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] END graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> " & Evenement_A_Executer & "() Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+								End if
+							End if
+						End if
 					End if ' .OBJET_SURVOLE_TYPE
 				End if ' IF OBJET_SURVOLE_INDEX__TMP > 0 Then
 			End if
@@ -4090,7 +5017,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 		
 	Next _INDEX_
 	
-	Interaction_SOURIS_FENETRE = 1
+	return 1
 End Function
 
 Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souris_Y as integer, _INDEX_FENETRE_ as integer, POSITION_X as integer, POSITION_Y as integer, TAILLE_X as integer, TAILLE_Y as integer) as Boolean
@@ -4123,10 +5050,8 @@ Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souri
 		' ET
 		' Position Y < (Position Y de la fenetre (+taille titre) + Position Y de l'objet + Taille Y de l'objet )
 		' *********************************************************************************
-		if Pos_Souris_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-				+ this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE + POSITION_Y) _
-		   AND Pos_Souris_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y _
-					+ this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).SIZ_TITRE + POSITION_Y + TAILLE_Y) Then
+		if Pos_Souris_Y > (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + POSITION_Y) _
+		   AND Pos_Souris_Y < (this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_Y + POSITION_Y + TAILLE_Y) Then
 			' *********************************************************************************
 			' L'utilisateur a clique dans le conteneur de l'objet qui correspond a l'axe Y	
 			' *********************************************************************************
@@ -4139,8 +5064,26 @@ Function _SCI_Cpcdos_OSx__.Interaction_TOUCHE(Pos_Souris_X as integer, Pos_Souri
 End function
 
 Function _SCI_Cpcdos_OSx__.Fenetre_FOCUS(INDEX_FENETRE as integer) as integer
-	REM Cette fonction permet d'afficher au premier plan la fenetre choisie
+	' Cette fonction permet d'afficher au premier plan la fenetre choisie
+
 	ScreenLock
+
+	' Verifier s'il y a un fenetre prioritaire, si oui on la laisse focus
+	if INDEX_FENETRE > 0 Then
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.priority_window > 0 Then 
+			IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.OS_id Then
+				if NOT this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom = "" Then
+					INDEX_FENETRE = CPCDOS_INSTANCE.SCI_INSTANCE.priority_window
+				Else
+					CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+				End if
+			Else
+				' Si l'os ID n'est pas la bonne, on l'enleve
+				CPCDOS_INSTANCE.SCI_INSTANCE.priority_window = 0
+			End if
+		End if
+	End if
+
 	dim a_fenetre as integer = this.INST_INIT_GUI.POSITION(1)
 	
 	IF INDEX_FENETRE > 0 Then
@@ -4243,15 +5186,65 @@ Function _SCI_Cpcdos_OSx__.Sizing_window_button(SizeUP as boolean, INDEX_FENETRE
 		End if
 	End if
 	
-	
-	' Recharger les bitmap de la fenetre
-	
-	' reset memory  /  reset ID   /  Objets
-	' CPC__GUI_SUPPRIMER_bitmaps_fenetre(INDEX_FENETRE, false, true, false)
-	
-	' doevents(0)
+	' Executer l'evenement ResizeEnd
+	Sizing_window_ending(INDEX_FENETRE)
+
 	
 	Fenetre_FOCUS(INDEX_FENETRE)
+	
+	return true
+End Function
+
+Function _SCI_Cpcdos_OSx__.Sizing_window_ending(INDEX_FENETRE as integer) as boolean
+	' Cette fonction permet d'executer l'evenement du ResizeEnd()
+
+		
+	' Recuperer les dimensions
+	Dim Siz_X as integer = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Siz_X
+	Dim Siz_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Siz_Y
+	
+	
+	
+	Dim Fichier_evenement as String = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Fichier_evenement
+						
+	' Si l'evenement existe
+	if NOT Fichier_evenement = "" Then
+	
+		Dim _CLE_OBJ_ as double = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_
+		Dim Nom_Objet as String = this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom
+		
+		IF this.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.EV_Resize = True Then
+		
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Appel d'un evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALEUR,VALEUR) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Calling graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALUE,VALUE) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+
+			if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2)") > 0 Then
+				if CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("##FONCTION=:" & Fichier_evenement & _
+							":=##/F:" & Nom_Objet & ".ResizeEnd(" & Siz_X & "," & Siz_Y &")", _CLE_OBJ_ , 2, 0, "") _
+							= "ERR_050" Then
+										
+					' Black LIST EVENT !
+					CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire += Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2);"
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] BLACK LIST EVENT " & Fichier_evenement & "->" & Nom_Objet & ":ResizeEnd(2)", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+					End if
+				End if
+			end if
+								
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] FIN de l'evenement graphique (" & Nom_Objet & " CLE:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALEUR,VALEUR) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] END graphical event (" & Nom_Objet & " KEY:" & HEX(_CLE_OBJ_, 8) & ") --> ResizeEnd(VALUE,VALUE) Source '" & Fichier_evenement & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+	End if
 	
 	return true
 End Function
@@ -4260,15 +5253,71 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_POS(POS_X as integer, POS_Y as int
 	REM Cette fonction permet de deplacer la fenetre via la souris
 
 	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).Identification_Objet.OS_id Then
+
+		
+
+
 		' Modifier la position X et Y
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_X = POS_X
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.DEPLACEMENT).POS_Y = POS_Y
 
+		' Appliquer une correction
+		CPCDOS_INSTANCE.SCI_INSTANCE.Collision_correction(this.INST_INIT_GUI.DEPLACEMENT)
+
 		
 		' Redessiner la fenetre
-		Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.DEPLACEMENT)
+		Creer_Fenetre(this.INST_INIT_GUI.DEPLACEMENT)
 	End if
-	DeplacerFenetre_TO_POS = 1
+
+	return 1
+
+End function
+
+Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as integer) as integer
+	REM Cette fonction permet de resize la fenetre via la souris
+
+	IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).Identification_Objet.OS_id Then
+
+		if SIZE_X < 50 Then SIZE_X = 50
+		if SIZE_Y < 10 Then SIZE_Y = 10
+
+		' Modifier la position X et Y
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X + 5
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y + 5
+
+		' Corriger la taille selon les donnees utilisateur
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X > 0 Then
+			if SIZE_X < this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_X
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y > 0 Then
+			if SIZE_Y < this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Minimal_size_Y
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X > 0 Then
+			if SIZE_X > this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_X
+			End if
+		end if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y > 0 Then
+			if SIZE_Y > this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y Then
+				this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).PROP_TYPE.Maximal_size_Y
+			End if
+		end if
+
+		' Forcer a reloader les bitmaps
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).design_Image_LOADED = false
+
+		' Redessiner la fenetre
+		Creer_Fenetre(this.INST_INIT_GUI.REDIMENTIONNEMENT)
+	End if
+
+	return 1
 
 End function
 
@@ -4280,6 +5329,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 	' 2		: Actualise TOUT sauf la fenetre undique dans index
 	' 3		: Actualise uniquement via le buffer 2
 	
+
 	ENTRER_SectionCritique()
 	
 	
@@ -4291,18 +5341,25 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		
 		' Afficher les fenetre relatif a l'ordre fenetrale
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
+
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Ferme = true Then Continue for
+
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0 _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 				
 				IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.OS_id Then
-					Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+					Creer_Fenetre(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 				
 					' Si le handle correspond a la fenetre, alors on trace le PictureBox
 					For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PICTUREBOX
 						IF this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_PictureBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_PictureBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4311,7 +5368,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_Bouton(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_Bouton(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4321,7 +5378,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_TextBlock(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_TextBlock(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4329,8 +5386,8 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 					For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
 						IF this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__TEXTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
-								
-							Creer_TextBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							
+							Creer_TextBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4339,7 +5396,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_ProgressBar(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_ProgressBar(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4348,7 +5405,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 								AND this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_CheckBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_CheckBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 					
@@ -4357,10 +5414,24 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 						IF this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 								AND this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT > 0 Then
 								
-							Creer_Explorer(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							Creer_Explorer(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 						END IF
 					Next b
 
+					' Si le handle correspond a la fenetre, alors on trace le listbox
+					For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+						IF this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
+								AND this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
+								
+							Creer_Listbox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+						END IF
+					Next b
+
+					' Afficher la taskbar si disponible
+					if this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.TaskBar > 0 Then
+						Display_Taskbar(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+
+					End if
 					
 				End if
 			End if
@@ -4374,20 +5445,25 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 		
 		' Afficher les fenetre relatif a l'ordre fenetrale
 		For _INDEX_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+			if this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) = DESKTOPMODE_Index_Fenetre Then Continue For
+
+			If this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).PROP_TYPE.Reduit = true Then Continue for
+
 			IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> 0  _
 						AND this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle > 0 Then
 						
 				IF this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_) <> index Then ' Si c'est pas la fenetre
 					
 					IF get_OSid() = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.OS_id Then
-						Creer_Fenetre(this.INST_INIT_GUI, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+						Creer_Fenetre(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 
 						' Si le PID correspond a la fenetre, alors on trace le bouton
 						For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 							IF this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 									AND this.INST_INIT_GUI.GUI__BOUTON(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_Bouton(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_Bouton( b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4396,7 +5472,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__PICTUREBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_PictureBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_PictureBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4405,7 +5481,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__TEXTBLOCK(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_TextBlock(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_TextBlock(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4414,7 +5490,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__PROGRESSBAR(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_ProgressBar(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_ProgressBar(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4423,7 +5499,7 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.Handle _
 									AND this.INST_INIT_GUI.GUI__CHECKBOX(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_CheckBox(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_CheckBox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4432,7 +5508,16 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 							IF this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
 									AND this.INST_INIT_GUI.GUI__EXPLORER(b).Identification_Objet.Handle_PARENT > 0 Then
 									
-								Creer_Explorer(this.INST_INIT_GUI, b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+								Creer_Explorer(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
+							END IF
+						Next b
+
+						' Si le PID correspond a la fenetre, alors on trace le listbox
+						For b as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							IF this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT = this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_)).Identification_Objet.handle _
+									AND this.INST_INIT_GUI.GUI__LISTBOX(b).Identification_Objet.Handle_PARENT > 0 Then
+									
+								Creer_Listbox(b, this.INST_INIT_GUI.POSITION(CPCDOS_INSTANCE._MAX_GUI_FENETRE - _INDEX_))
 							END IF
 						Next b
 						
@@ -4450,8 +5535,256 @@ Function _SCI_Cpcdos_OSx__.ActualiserGUI(ModeActu as integer, index as integer) 
 	
 	SORTIR_SectionCritique()
 	
-	ActualiserGUI = 1
+	return 1
 End function
+
+Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
+	' Cette fonction permet d'afficher la barre de taches au dessus des objets d'une fenetre dediee
+
+	' Verifier si c'est autorise
+	if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar > 0 Then
+
+		' ------------ TASKBAR ------------
+
+		' Recuperer le nom de fichier du fond d'ecran du menu contextuel
+		dim Image_Normal as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.NORMAL", 3, this._CLE_)
+		dim Image_Focus as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.FOCUS", 3, this._CLE_)
+
+		Dim Espacement_X as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_X", 3, this._CLE_))
+		Dim Espacement_Y as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SPACING_Y", 3, this._CLE_))
+
+		' Position de la barre des taches
+		Dim Pos_X as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_X + Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_X", 3, this._CLE_))
+		Dim Pos_Y as integer = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).POS_Y + Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_Y", 3, this._CLE_))
+
+		' Taille de la barre des taches
+		Dim Size_X as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_X", 3, this._CLE_))
+		Dim Size_Y as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_Y", 3, this._CLE_))
+
+		if Size_X > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X Then Size_X = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_X
+		if Size_Y > this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y Then Size_Y = this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).SIZ_Y
+
+
+
+		' ------------ PAR ITEMS ------------
+
+		' Taille max du texte
+		Dim Size_text	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_TEXT", 3, this._CLE_))
+
+		' Position du texte
+		Dim Pos_Text_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_TEXT_X", 3, this._CLE_))
+		Dim Pos_Text_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_TEXT_Y", 3, this._CLE_))
+
+		' Position de l'icone
+		Dim Pos_Icon_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_ICON_X", 3, this._CLE_))
+		Dim Pos_Icon_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.POS_ICON_Y", 3, this._CLE_))
+
+		' Taille de l'icone
+		Dim Siz_Icon_X 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ICON_X", 3, this._CLE_))
+		Dim Siz_Icon_Y 	as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ICON_Y", 3, this._CLE_))
+
+		' Taille des elements de la barre des taches
+		Dim Size_X_item as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_X", 3, this._CLE_))
+		Dim Size_Y_item as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.SIZ_ITEM_Y", 3, this._CLE_))
+
+		' Couleur des elements textuels
+		dim Couleur_FNT_R as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_R", 3, this._CLE_))
+		dim Couleur_FNT_V as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_G", 3, this._CLE_))
+		dim Couleur_FNT_B as integer = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.TASKBAR.TEXT_B", 3, this._CLE_))
+
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID < 1 Then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() Chargement image taskbar normal de " & Image_Normal, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() Loading normal taskbar image from de " & Image_Normal, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+			
+			' Charger l'image et recuperer son ID
+			CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image_Normal, 123)
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.ReSize_BITMAP(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID, Size_X_item, Size_Y_item)
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() " & Image_Normal & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID & " charge en memoire a l'adresse [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() " & Image_Normal & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Standard_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		Else
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() image taskbar normal de " & Image_Normal & " deja chargee", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() normal taskbar image " & Image_Normal & " already loaded", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID < 1 Then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() Chargement image taskbar focus de" & Image_Focus, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() Loading focus taskbar image from de " & Image_Focus, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+
+			' Charger l'image et recuperer son ID
+			CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image_Focus, 123)
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.ReSize_BITMAP(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID, Size_X_item, Size_Y_item)
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() " & Image_Focus & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID & " charge en memoire a l'adresse [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() " & Image_Focus & " --> id:" & CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_Focus_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		Else
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SCI] Display_Taskbar() image taskbar normal de " & Image_Focus & " deja chargee", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				else
+					DEBUG("[SCI] Display_Taskbar() normal taskbar image " & Image_Focus & " already loaded", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+				End if
+			end if
+		End if
+
+		if this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 1 Then
+			' Horizontale
+
+			Dim indexage as integer = 0
+			Dim Positionnement_X as integer = 1
+			For boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+				' Pas la peine d'afficher plus si y'en a deja assez !
+				if indexage > CPCDOS_INSTANCE.SCI_INSTANCE._MAX_Taskbar_Elements Then exit for
+
+				' Si c'est pas une taskbar, ni un desktop
+				if this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.TaskBar = 0 AND this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.DESKTOPMODE = 0 Then
+					if this.INST_INIT_GUI.GUI__FENETRE(boucle).PROP_TYPE.NoTaskBar = false Then
+						if NOT this.INST_INIT_GUI.GUI__FENETRE(boucle).Identification_Objet.Nom = "" Then
+						
+							' Recuperer tous les elements pour creer un item
+
+							' ID de l'icone de fenetre deja charge
+							Dim Icone_Fenetre_ID as integer = 0
+
+							if this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar > 0 Then
+								' S'il y a deja un profil avec une icone traitee, on prend celle la !
+								Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar
+
+							Else
+								' Sinon on prend l'originale
+								Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_ID
+							
+								Dim tmp_sx as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(Icone_Fenetre_ID)
+								Dim tmp_sy as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(Icone_Fenetre_ID)
+
+								' Si sa taille est differente a ce que l'utilisateur souhaite
+								if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(Icone_Fenetre_ID) <> Siz_Icon_X OR CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(Icone_Fenetre_ID) <> Siz_Icon_Y Then
+
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Taille icone differente (" & tmp_sx & "x" & tmp_sy & ") resizing en (" & Siz_Icon_X & "x" & Siz_Icon_Y & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										else
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Size different icon (" & tmp_sx & "x" & tmp_sy & ") resizing to (" & Siz_Icon_X & "x" & Siz_Icon_Y & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+
+									' On la resize et on l'enregistre
+									this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(Icone_Fenetre_ID, Siz_Icon_X, Siz_Icon_Y)
+
+									' Et on le recupere
+									Icone_Fenetre_ID = this.INST_INIT_GUI.GUI__FENETRE(boucle).ICONE_IMG_Resized_TaskBar
+
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										if Icone_Fenetre_ID > 0 Then
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Ok ! ICONE_IMG_Resized_TaskBar : " & Icone_Fenetre_ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										Else
+											DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] [ERROR] ! ICONE_IMG_Resized_TaskBar : " & Icone_Fenetre_ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+										End if
+									end if
+
+								End if
+							End if
+
+							' Titre de la fenetre
+							Dim Titre_Fenetre as String = this.INST_INIT_GUI.GUI__FENETRE(boucle).TITRE
+							if Len(Titre_Fenetre) > 12 Then Titre_Fenetre = Mid(Titre_Fenetre, 1, 9) & "..."
+
+							' Si la fenetre est FOCUS ou non, l'apparence ne sera pas la meme
+							Dim Focus_Fenetre as boolean
+							if this.INST_INIT_GUI.POSITION(1) = boucle Then 
+								Focus_Fenetre = true
+							else
+								Focus_Fenetre = false
+							End if
+
+
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X + Positionnement_X & "," & Pos_Y & " " & Size_X_item & "," & Size_Y_item , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								else
+									DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR(), 8) & ") " & Pos_X + Positionnement_X & "," & Pos_Y & " " & Size_X_item & "," & Size_Y_item , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							end if
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_index_Position	(indexage) = boucle
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_px				(indexage) = Pos_X + Positionnement_X
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_py				(indexage) = Pos_Y
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sx				(indexage) = Size_X_item
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_sy				(indexage) = Size_Y_item
+
+							indexage += 1
+
+							if Focus_Fenetre = true Then
+								' Image de l'item selected
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(TaskBar_Focus_ID, Pos_X + Positionnement_X, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+							Else
+								' Image de l'item non selected
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(TaskBar_Standard_ID, Pos_X + Positionnement_X, Pos_Y, 0, 0, Size_X_item, Size_Y_item)
+							End if
+
+							' Ajouter l'icone de l'application
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Icone_Fenetre_ID, Pos_X + Positionnement_X + Pos_Icon_X, Pos_Y + Pos_Icon_Y, 0, 0, Size_X_item, Size_Y_item)
+
+							' Ajouter le nom de l'application
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, Pos_X + Positionnement_X + Pos_Text_X, Pos_Y + Pos_Text_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+
+							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] Fin du dessin" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								else
+									DEBUG("[SCI] Display_Taskbar() [0x" & hex(this._CLE_) & "] End drawing" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+								End if
+							end if
+
+
+							Positionnement_X += Size_X_item + 5
+						End if
+					End if
+				End if
+			Next boucle
+			
+			return true
+		Elseif this.INST_INIT_GUI.GUI__FENETRE(index_fenetre).PROP_TYPE.TaskBar = 2 Then
+			' Verticale
+
+
+			return true
+		End if
+
+	End if
+
+	' Pas de barre des taches dans l'OS !
+
+	return false
+End Function
 
 Function _SCI_Cpcdos_OSx__.Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) as integer
 	REM Cette fonction permet de mettre la fenetre indique au premier plan
@@ -4489,3 +5822,38 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_OBJ(Index_Fenetre as integer) as i
 	
 	Interaction_SOURIS_OBJ = 1
 End Function
+
+
+Sub _SCI_Cpcdos_OSx__.Collision_correction(Index_Fenetre as integer)
+	' Cette fonction permet de corriger la sortie d'ecran relatif a des coordonnees programmes dans WIN_SCR.CPC
+
+	if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).PROP_TYPE.Collision = true Then
+		' ===========================================
+		' ***** Collision aux abords de l'ecran *****
+		' ===========================================
+
+		Dim Taille_X_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+		Dim Taille_Y_ecran as integer 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y()
+
+		' Gauche
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_X <= -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_X = -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_left
+		End if
+
+		' Haut
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_Y <= -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_Y = -CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_top
+		End if
+
+		' Droite
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_X + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_X > Taille_X_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right  Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_X = (Taille_X_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_right) - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_X
+		End if
+
+		' Bas
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Pos_Y + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_Y > Taille_Y_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down  Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).POS_Y = (Taille_Y_ecran + CPCDOS_INSTANCE.SCI_INSTANCE.screen_collision_down) - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_Fenetre).Siz_Y
+		End if
+
+	end if ' Collision
+End sub

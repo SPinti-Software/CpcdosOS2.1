@@ -16,18 +16,18 @@
 ' 14-12-2017	: AJOUT des parametres SYS/ /OS:NomDeOS pour switcher sur un autre OS
 '						Demarrer/ NomDeOS pour demarrer un OS
 '						IUG/ /OS:NomDeOS Pour afficher le graphique d'un OS
-' 11-12-2017	: CORRECTION des arguments de fonctions qui étaient ressortait toujours en majuscule.
+' 11-12-2017	: CORRECTION des arguments de fonctions qui ï¿½taient ressortait toujours en majuscule.
 ' 06-12-2017	: CORRECTION IMPORTANTE de bugs d'allocation memoire a chaud
 '					Ajout des scopes pour separer les bloc de memoires prives
 ' 22-11-2017	: AJOUT de BarreProgression/ (ProgressBar/ en anglais) et de la propriete .VALEUR (.VALUE en anglais)
 ' 21-11-2017 	: AJOUT de la commande REP/ (DIR/ en anglais) pour lister le contenu des repertoires avec les filtres '.\*'
 ' 19-11-2017	: MODIFICATION/OPTIMISATION de la leture des commentaires completement jumpe
 '					+ CORRECTION de la lecture des fonctions en commentaires
-' 14-11-2017	: CORRECTION de la commande anglaise "TextBlock/" qui n'était pas reconnue par le SHELL
+' 14-11-2017	: CORRECTION de la commande anglaise "TextBlock/" qui n'ï¿½tait pas reconnue par le SHELL
 '					Modification des varariables des executables "_EXE_**"
 ' 11-11-2017	: AJOUT (fin) des commandes SUPPRIMER/ RENOMMER/ DOSSIER/ COPIER/
-' 07-11-2017	: CORRECTION d'un bug interne lors d'utilisation de variables après l'utilisation d'une commande graphique
-'					qui remplaçait le numéro de TID par celui de l'objet graphique en cours d'opération.
+' 07-11-2017	: CORRECTION d'un bug interne lors d'utilisation de variables aprï¿½s l'utilisation d'une commande graphique
+'					qui remplaï¿½ait le numï¿½ro de TID par celui de l'objet graphique en cours d'opï¿½ration.
 ' 19-10-2017	: AJOUT de la possibilite de recuperer le contenu des proprietes graphiques via @#
 '					+ Correction le 31-10-2017 en ajoutant le nom de variable apres le '#' et lancer un FIX/
 ' 19-09-2017	: AJOUT du parametre SYS/ /PROCESSUS pour creer un nouveau processus et donc nouveau PID
@@ -47,12 +47,12 @@
 ' 29-05-2017	: AJOUT des proprietes ICONE et environnement graphique personnalisables depuis EV_GUI.CPC
 ' 26-05-2017	: AJOUT du support evenementielle du CLIC sur picturebox
 ' 11-05-2017	: CORRECTIONS Sleeps + "SYS/ /DEBUG"
-' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crée" alors que non
+' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crï¿½e" alors que non
 ' 08-05-2017	: CORRECTION des problemes lie aux niveau de publicites
 ' 19-04-2017	: Correction du changement de resolution si /MENU = 1
 '					+ Le 'recherche en mode standard' encombrant pour le debugage
 ' 18-04-2017	: Ajout de \#NON-FN et \#NO-FN pour ne pas executer les fonctions /F:
-'					+ Correction de l'écran noir après un stopK/
+'					+ Correction de l'ï¿½cran noir aprï¿½s un stopK/
 ' 14-04-2017	: Correction de \#PAUSE
 ' 11-04-2017	: Serveur/ Renvoie '1' s'il a bien ete cree.
 ' 07-04-2017	: Ajout de la section critique CpcdosC+.
@@ -149,9 +149,10 @@ Sub _SHELL_Cpcdos_OSx__._INIT_CpcdosCP_CMD()
 	this.Liste_CMD_FR(48) = "DECOMPRESSER/"		: this.Liste_CMD_EN(48) = "DECOMPRESS/"
 	this.Liste_CMD_FR(49) = "COMPRESSER/"		: this.Liste_CMD_EN(49) = "COMPRESS/"
 	this.Liste_CMD_FR(50) = "EXPLORER/"			: this.Liste_CMD_EN(50) = "EXPLORER/"
-	' this.Liste_CMD_FR(51) = "fix/"			: this.Liste_CMD_EN(51) = "set/"
+	this.Liste_CMD_FR(51) = "LISTBOX/"			: this.Liste_CMD_EN(51) = "LISTBOX/"
 	' this.Liste_CMD_FR(52) = "fix/"			: this.Liste_CMD_EN(52) = "set/"
 	' this.Liste_CMD_FR(53) = "fix/"			: this.Liste_CMD_EN(53) = "set/"
+	' this.Liste_CMD_FR(54) = "fix/"			: this.Liste_CMD_EN(54) = "set/"
 
 	' Proprietes de la GUI toujours a partir de 128. Ce qui laisse 127 Commande cpcdosc+
 	this.Liste_CMD_FR(128) = ".COULEURTITRE"	: this.Liste_CMD_EN(128) = ".TITLECOLOR"
@@ -287,9 +288,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 	_scope
 		
 		Dim Slash_FN_Presend 		as boolean = FALSE
+		Dim SAME_ID					as boolean = false
 		Dim Non_Remplace 			as integer = 0
 		Dim Non_Fonction 			as integer = 0
 		Dim Position_CMD 			as integer = 0
+		
 		
 		Dim CommPosition			as integer
 		Dim TailleComm				as Integer
@@ -326,7 +329,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			testCMD = 1
 			CommTrouve = 1
 			exit _scope
-		ElseIF INSTR(Commande, "þÿ") > 0 Then ' UTF 16 Big Endian
+		ElseIF INSTR(Commande, "ï¿½ï¿½") > 0 Then ' UTF 16 Big Endian
 			Message_erreur = ERRAVT("AVT_079", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 				DEBUG("[CpcdosC+] " & Message_erreur & ". Des erreurs peuvent se produire.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
@@ -337,7 +340,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			testCMD = 1
 			CommTrouve = 1
 			exit _scope
-		ElseIF INSTR(Commande, "ÿþ") > 0 Then ' UTF 16 Little Endian
+		ElseIF INSTR(Commande, "ï¿½ï¿½") > 0 Then ' UTF 16 Little Endian
 			Message_erreur = ERRAVT("AVT_079", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 				DEBUG("[CpcdosC+] " & Message_erreur & ". Des erreurs peuvent se produire.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
@@ -381,6 +384,154 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Commande = MID(Commande, 1, Instr(ucase(Commande), "\#PAUSE")-1)
 		end if
 		
+		' Conserver l'identifiant
+		IF Instr(UCASE(Commande), "\#SAMEID") > 0 Then
+			' Enlever l'argument a la fin
+			Commande = Mid(Commande, 1, Instr(UCASE(Commande), "\#SAMEID") - 1)
+			
+			' Et signaler l'activation de SAME_ID
+			SAME_ID = true
+		End if
+		
+		' Contexte clic droit
+		if Instr(Ucase(Commande), "#CTX_TEXTBOX") > 0 Then
+
+			' Copier le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_COPY ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_COPY ") + Len("#CTX_TEXTBOX_COPY "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							DEBUG("[CPCDOS] CTX TEXT COPY : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
+							' EFFECTUER UNE COPIE
+							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+
+							
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+				
+			End if
+
+			' Couper le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_CUT ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_CUT ") + Len("#CTX_TEXTBOX_CUT "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							DEBUG("[CPCDOS] CTX TEXT CUT : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
+							' EFFECTUER UNE COPIE
+							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+
+							' Clean text
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+							
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+			End if
+
+			' Coller le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_PAST ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_PAST ") + Len("#CTX_TEXTBOX_PAST "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")							
+							
+							' EFFECTUER UN COLLER
+							Dim position_curseur as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos
+
+							' Placer le texte où est positionné le curseur
+							Dim Traitement as string = mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, 1, position_curseur) & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
+							
+							' Positionner apres le texte collé
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = len(Traitement)
+
+							' Completer la fin du texte
+							Traitement +=  mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, position_curseur)
+
+							'Mettre a jour
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Traitement
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			End if
+
+			' Supprimer le contenu d'un textebox
+			IF Instr(Ucase(Commande), "#CTX_TEXTBOX_DEL ") > 0 Then
+				Dim NomTextebox as String = Mid(Commande, Instr(Ucase(Commande), "#CTX_TEXTBOX_DEL ") + Len("#CTX_TEXTBOX_DEL "))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							
+							DEBUG("[CPCDOS] CTX TEXT DELETED", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
+							' EFFACER
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+
+							' Actualiser l'affichage du textebox
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
+							
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			End if
+			
+			Exit function
+		End if
 
 		' Executer une fonction d'un fichier (DIRECT)
 		IF Instr(UCASE(Commande), "##FONCTION=:") > 0 Then
@@ -388,6 +539,21 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Dim Position1 as integer = Instr(UCASE(Commande), "##FONCTION=:") + 12
 				Dim Position2 as integer = Instr(UCASE(Commande), ":=##")
 				EXEC_FONCTION_FICHIER = MID(Commande, Position1, (Position2) - Position1)
+
+				' Execution des actions des menu contextuels
+				if instr(ucase(EXEC_FONCTION_FICHIER), "#CTX_ACTION:") > 0 Then
+					Dim commande_action_index as integer = Val(Ltrim(Rtrim(Mid(ucase(EXEC_FONCTION_FICHIER), instr(ucase(EXEC_FONCTION_FICHIER), "#CTX_ACTION:") + 12))))
+
+					Commande = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE.item_list(commande_action_index).action
+					DEBUG("[CpcdosC+] Executing context menu action (" & commande_action_index & ") --> " & Commande, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+					EXEC_FONCTION_FICHIER = ""
+
+					' Fermer le menu contextuel si deja ouvert
+					CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+					
+					' Executer cmd du clic droit
+					return CpcdosCP_SHELL(Commande, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+				End if
 				Commande = Ltrim(Ltrim(MID(Commande, Position2 + 4), chr(09)))
 			End if
 		End if
@@ -398,7 +564,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Si c'est une commande qui veut JUSTEMENT creer un thread pour la fonction
 			if Instr(UCASE(Commande), "CMD/") > 0 Then
-				IF Instr(UCASE(Commande), "/THREAD") > 0 Then
+				IF Instr(UCASE(Commande), "/CMD") > 0 OR Instr(UCASE(Commande), "/THREAD") > 0Then
 					NePasExec = true
 				end if
 			end if
@@ -481,13 +647,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		' A partir d'ici, nous n'avions plus d'espaces au debut
 		'  On cherche donc le prochain espace et on a la CMD!
 		Position_CMD = 0
+
+		Dim Arrob as boolean = false
 		
 		' Capturer la cmd au la prochaine espace apres '/'
 		tst_Cap = MID(CMD_tst, 1, Instr(CMD_tst, CHR(32)) - 1)
 		IF NOT tst_Cap = "" then
 			IF MID(tst_Cap, 1, 1) = CHR(64) Then ' Caractere '@'
 				Position_CMD = Instr(CMD_tst, CHR(32))
-				
+				Arrob = true
+
 				' Chercher le prochain espace apres l'espace precedent
 				tst_Cap = MID(CMD_tst, 1, Instr(Position_CMD + 1, CMD_tst, CHR(32)) - 1)
 			End if
@@ -501,20 +670,53 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' DEV temporaire: Si commande vide alors on saute
 			'  directement aux commandes graphiques
 			IF this.Liste_CMD_FR(boucle) = "" AND boucle < 128 Then boucle = 128
-			
-			' Chercher la syntaxe Francophone
-			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
-				TailleComm = LEN(this.Liste_CMD_FR(Boucle))
-				CommPosition = Position_CMD
-				OnCherche = Lcase(this.Liste_CMD_FR(Boucle))
-				Exit for
-			End if
-			
+
 			' Chercher la syntaxe Anglophone
 			IF Instr(tst_Cap, this.Liste_CMD_EN(Boucle)) > 0 Then
+				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
+					dim cap_tmp as string = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(tst_Cap ), chr(10)), chr(13)), chr(09))), CHR(09))
+
+					if NOT Instr(cap_tmp, ".") > 0 Then
+						if Arrob = false Then
+							if Instr(cap_tmp, "./") > 0 OR Instr(cap_tmp, ".\") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, "/.") > 0 OR Instr(cap_tmp, "\.") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, " = ") > 0 Then
+								if Instr(cap_tmp, ".") > Instr(cap_tmp, " = ") Then
+									exit for
+								End if
+							End if
+						End if
+					End if
+				End if
+
 				TailleComm = LEN(this.Liste_CMD_EN(Boucle))
 				CommPosition = Position_CMD
 				OnCherche = Lcase(this.Liste_CMD_EN(Boucle))
+				Exit for
+			End if
+			
+			' Chercher la syntaxe Francophone
+			IF Instr(tst_Cap, this.Liste_CMD_FR(Boucle)) > 0 Then
+				if Mid(this.Liste_CMD_EN(Boucle), 1, 1) = "." Then 
+					dim cap_tmp as string = Rtrim(Ltrim(tst_Cap, chr(10)), chr(13))
+
+					if Instr(cap_tmp, ".") > 0 Then
+						if Arrob = false Then
+							if Instr(cap_tmp, "./") > 0 OR Instr(cap_tmp, ".\") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, "/.") > 0 OR Instr(cap_tmp, "\.") > 0 Then exit for ' il s'agit purement d'un path
+							if Instr(cap_tmp, " = ") > 0 Then
+								if Instr(cap_tmp, ".") > Instr(cap_tmp, " = ") Then
+									exit for
+								End if
+							End if
+						End if
+					End if
+				End if
+
+				Debug("/!\ French syntax is deprecated and will be removed in future major release ! You should use " & this.Liste_CMD_EN(Boucle) & " instead", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				TailleComm = LEN(this.Liste_CMD_FR(Boucle))
+				CommPosition = Position_CMD
+				OnCherche = Lcase(this.Liste_CMD_FR(Boucle))
 				Exit for
 			End if
 			
@@ -557,7 +759,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -640,7 +842,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'REMarque'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande n'a aucun effet, vous pouvez mettre autant de conneries"
 					Mess_Aide = Mess_Aide & CRLF & "   que vous-voulez!"
 					Mess_Aide = Mess_Aide & CRLF
@@ -701,7 +903,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		rem Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " cls/                       Effacer l'‚cran console LC"
+				CommandesAide = CommandesAide & CRLF & " cls/                       Effacer l'ï¿½cran console LC"
 			Else
 				CommandesAide = CommandesAide & CRLF & " cls/                       Clear LC console screen"
 			END IF
@@ -714,8 +916,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CLear Screen'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'‚ffacer l'‚cran de la console LC"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'ï¿½ffacer l'ï¿½cran de la console LC"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Ce texte va disparaitre"
@@ -752,7 +954,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -825,7 +1027,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Supprimer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de supprimer un fichier d'un support"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -863,7 +1065,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -955,7 +1157,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Copier'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de copier un fichier source dans un dossier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres disponibles :"
@@ -1032,7 +1234,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1290,7 +1492,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Renommer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de renommer un fichier source ou un dossier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -1332,7 +1534,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1445,7 +1647,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'dossier'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un repertoire de maniere complete"
 					Mess_Aide = Mess_Aide & CRLF & "    par exemple si vous voulez creer le dossier A, puis le dossier B"
 					Mess_Aide = Mess_Aide & CRLF & "    dans A puis le dossier C dans B, vous pouvez tout specifier en 1 ligne"
@@ -1494,7 +1696,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1588,14 +1790,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'rep'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de lister le contenu d'un repertoire"
 					Mess_Aide = Mess_Aide & CRLF & "    Vous pouvez lister les dossier et fichiers presents"
 					Mess_Aide = Mess_Aide & CRLF & "     ainsi que leur attributs."
 					Mess_Aide = Mess_Aide & CRLF & "    Vous pouvez utiliser les filtres . et *"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Lister le repertoire courant :"
-					Mess_Aide = Mess_Aide & CRLF & "     rep/    ou    rep/ .     ou    rep/ .\"
+					Mess_Aide = Mess_Aide & CRLF & "     rep/    ou    rep/ .     ou    rep/ .\" '"
 					Mess_Aide = Mess_Aide & CRLF & "   Lister le contenu d'un autre repertoire :"
 					Mess_Aide = Mess_Aide & CRLF & "     Rep/ MonDossier1/MonDossier2"
 					Mess_Aide = Mess_Aide & CRLF & "   Lister les fichier avec l'extension .CPC :"
@@ -1639,7 +1841,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "    You can also use filters . and *"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  List the current directory"
-					Mess_Aide = Mess_Aide & CRLF & "    dir/ .   or   dir/ .\"
+					Mess_Aide = Mess_Aide & CRLF & "    dir/ .   or   dir/ .\" '"
 					Mess_Aide = Mess_Aide & CRLF & "  List the content of another directory"
 					Mess_Aide = Mess_Aide & CRLF & "    dir/ MyFolder1/MyFolder2"
 					Mess_Aide = Mess_Aide & CRLF & "  List files with .CPC extention:"
@@ -1687,7 +1889,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -1748,17 +1950,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			
 			
-			IF Instr(CPY_Source, "\") > 0 Then
+			IF Instr(CPY_Source, "\") > 0 Then '"
 				' Ex: REP/ Dossier\    ou   REP/ Dossier\*.*
 				'  --> REP/ Dossier\*.*
-				SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1)
+				SourceRecherche = Mid(Source, InstrREV(CPY_Source, "\") +1) '"
 				
 				If SourceRecherche = "" Then SourceRecherche = "\*.*"
 				
 				IF NOT Instr(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(SourceRecherche, TRUE, TRUE, FALSE), "_") > 0 Then
 					SourceRecherche = "\*.*"
 				Else
-					Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1)
+					Source = Mid(Source, 1, InstrREV(CPY_Source, "\") -1) 
 					IF NOT Instr(SourceRecherche, "\") > 0 Then SourceRecherche = "\" & SourceRecherche
 				End if
 	
@@ -2047,9 +2249,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TeXTe'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher du texte sur la console LC"
-					Mess_Aide = Mess_Aide & CRLF & "   ou sur une sortie redirig‚e " & CHR(34) & "@#Ma_Variable" & CHR(34) & " ou " & CHR(34) & "@$Mon_Fichier.abc" & CHR(34) & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   ou sur une sortie redirigï¿½e " & CHR(34) & "@#Ma_Variable" & CHR(34) & " ou " & CHR(34) & "@$Mon_Fichier.abc" & CHR(34) & CRLF
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Hello world!"
@@ -2102,7 +2304,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -2182,7 +2384,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FIXer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou modifier une variable ou de(s) tableau(x)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
@@ -2251,7 +2453,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -2465,8 +2667,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				END IF
 			End if
 
-			' Si l'utilisateur rentre tard le soir d'une soirée bien arrosée et
-			' complètement torché entre une commande du type :
+			' Si l'utilisateur rentre tard le soir d'une soirï¿½e bien arrosï¿½e et
+			' complï¿½tement torchï¿½ entre une commande du type :
 			' fix/ /s mariable = contenu wtf
 			if PosEgale > PosSupprimer THEN
 				IF PosEgale > 0 then
@@ -2532,7 +2734,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							VariableCalc += 1
 							
-							CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
+							CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
 						Else
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
 								DEBUG("[CpcdosC+] Impossible d'additionner. " & CHR(34) & Commande & CHR(34) & ".", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -2551,7 +2753,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							VariableCalc -= 1
 							
-							CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
+							CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableCalc_STR & " = " & VariableCalc, _CLE_, Niveau_2, Param_1, Param_2)
 						Else
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
 								DEBUG("[CpcdosC+] Impossible de soustraire. " & CHR(34) & Commande & CHR(34) & ".", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -2588,7 +2790,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				
 				if KeyBuffer = "" then KeyBuffer = "\#NULL"
 				
-				CpcdosCP_SHELL = CpcdosCP_SHELL("FIX/ " & VariableQuestion & " = " & KeyBuffer, _CLE_, Niveau_2, Param_1, Param_2)
+				CpcdosCP_SHELL = CpcdosCP_SHELL("SET/ " & VariableQuestion & " = " & KeyBuffer, _CLE_, Niveau_2, Param_1, Param_2)
 			
 				exit _scope_CMD, _scope
 			End if
@@ -2735,7 +2937,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				
 				IF PremiereParenthese > 0 Then
 					DeuxiemeParenthese = INSTR(Nom_Variable_a_FIXER, "]")
-					' Si la première parenthese '[' est bien avant la deuxieme ']'
+					' Si la premiï¿½re parenthese '[' est bien avant la deuxieme ']'
 					if PremiereParenthese >= DeuxiemeParenthese Then 
 						Message_erreur = ERRAVT("AVT_073", 0)
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -3103,7 +3305,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'DEMARRER'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'entamer la premiere etape de demarrage d'un OS."
 					Mess_Aide = Mess_Aide & CRLF & "   Les procedures de demarrage se different entre les OS."
 					Mess_Aide = Mess_Aide & CRLF & "   Le loader execute en premier est le fichier 'OS/OS.CPC'"
@@ -3149,7 +3351,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3229,6 +3431,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DEBUG("[CpcdosC+] Starting operating system '" & NomOS & "' [OS:" & NumeroOS & " Parent ID 0x" & HEX(_CLE_, 8) & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					End if
 	
+					CpcdosCP_SHELL = "SWITCH:OS_ID=" & NomOS
 					
 					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ " & PathOS & "\OS.CPC", _CLE_, 5, 330, RetourVAR)
 					
@@ -3287,7 +3490,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Interface Utilisateur Graphique'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer l'interface graphique de Cpcdos"
 					Mess_Aide = Mess_Aide & CRLF & "    et d'arreter l'animation du boot screen"
 					Mess_Aide = Mess_Aide & CRLF
@@ -3364,7 +3567,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3609,9 +3812,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		rem Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " fenetre/                   Cree une nouvelle instance d'une fenetre graphique"
+				CommandesAide = CommandesAide & CRLF & " fenetre/                   Cree ou gere une nouvelle instance d'une fenetre graphique"
 			Else
-				CommandesAide = CommandesAide & CRLF & " window/                    Create new graphic"
+				CommandesAide = CommandesAide & CRLF & " window/                    Create or manage new graphic"
 			END IF
 		END IF
 		IF CommLANG(1) = OnCherche Then CommTrouve = 1
@@ -3622,8 +3825,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Fenetre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une fenetre graphique sur l'IUG"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Agrandir la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /sizeup Ma_Fenetre"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Retrecir la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /sizedown Ma_Fenetre"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Reduire la fenetre"
+					Mess_Aide = Mess_Aide & CRLF & "   fenetre/ /reduct Ma_Fenetre"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Fenetre/ Ma_Fenetre"
@@ -3649,6 +3861,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
 					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create new window instance"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Size up window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /sizeup My_window"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Sizedown window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /sizedown My_window"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Reduct window"
+					Mess_Aide = Mess_Aide & CRLF & "   window/ /reduct My_window"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Window/ My_window"
@@ -3682,7 +3903,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3698,7 +3919,96 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Enlever les espaces et mettre tout en majuscules
 			Dim NomFenetre as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
-			IF INSTR(UCASE(NomFenetre), "/MODIF") > 0 Then
+			' Agrandir la fenetre
+			IF INSTR(UCASE(NomFenetre), "/SIZEUP") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/SIZEUP") + 8))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_button(true, index_fenetre)	
+
+							exit for
+						end if
+					End if
+				Next INDEX_FENETRE
+
+			ElseIF INSTR(UCASE(NomFenetre), "/SIZEDOWN") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/SIZEDOWN") + 10))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_button(false, index_fenetre)	
+
+							exit for
+						end if
+					End if
+				Next INDEX_FENETRE
+			ElseIF INSTR(UCASE(NomFenetre), "/RESTAURE") > 0 Then
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/RESTAURE") + 10))
+
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[SCI] Restauration de la fenetre (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							else
+								DEBUG("[SCI] Window restauration (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							End if
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Reduit = true
+							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
+
+						end if
+					End if
+				next INDEX_FENETRE
+			ElseIF INSTR(UCASE(NomFenetre), "/REDUCT") > 0 Then
+
+				NomFenetre = ucase(MID(NomFenetre, INSTR(UCASE(NomFenetre), "/REDUCT") + 8))
+					
+				for INDEX_FENETRE as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom) = NomFenetre Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+					
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[SCI] Reduction de la fenetre (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							else
+								DEBUG("[SCI] Window minimization (" & INDEX_FENETRE & ") " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).Identification_Objet.Nom, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SCI_INSTANCE.RetourVAR)
+							End if
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_FENETRE).PROP_TYPE.Reduit = false
+							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
+						End if
+					End if
+				Next INDEX_FENETRE
+			
+			ElseIF INSTR(UCASE(NomFenetre), "/MODIF") > 0 Then
 				NomFenetre = MID(NomFenetre, INSTR(UCASE(NomFenetre), "/MODIF") + 7) & "~MODIF#"
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -3706,15 +4016,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Else
 					DEBUG("[CpcdosC+] Window edition mode '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 					DEBUG("[CpcdosC+] Creation d'une fenetre '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
 					DEBUG("[CpcdosC+] Creating window '" & NomFenetre & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
 			End if
 			
-			CpcdosCP_SHELL = "IUG:FENETRE_NOM=" & NomFenetre
+			
 			
 			' ====================================================================
 			END SCOPE
@@ -3757,7 +4069,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'ImageBox'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une imagebox dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -3830,7 +4142,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -3908,7 +4220,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Bouton'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un bouton graphique dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -3977,7 +4289,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4056,7 +4368,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TexteBloc'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer graphiquement un bloc de texte pour les applications"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec un pid de 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4128,7 +4440,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4207,9 +4519,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'TexteBloc'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer graphiquement un bloc de texte pour les applications"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec un handle de 12345"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir le texte du textebox"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Focus le textbox"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /focus My_Textbox"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   TexteBox/ Mon_TexteBox"
@@ -4240,6 +4558,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
 					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create new editable text area in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Getting textbox text"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /text My_Textbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Textbox focus"
+					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ /focus My_Textbox"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Example :"
 					Mess_Aide = Mess_Aide & CRLF & "   Textbox/ My_Textbox"
@@ -4278,7 +4602,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4294,7 +4618,62 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			' Enlever les espaces et mettre tout en majuscules
 			Dim NomTextebox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
 			
-			IF INSTR(UCASE(NomTextebox), "/MODIF") > 0 Then
+			' Afficher le texte du textbox
+			IF INSTR(UCASE(NomTextebox), "/FOCUS") > 0 Then
+				NomTextebox = ucase(MID(NomTextebox, INSTR(UCASE(NomTextebox), "/FOCUS") + 7))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							' Display !
+
+							DEBUG("[CpcdosC+] FOCUS Textbox(" & INDEX_Textbox & ") '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom & " KeyID " & _cle_win_Auth_Kernel, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							
+							dim _INDEX_FENETRE_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Index_FNT_PARENT
+							
+							' On indique qu'on FOCUS un Textbox
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox
+							
+							' Avec son index
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = INDEX_Textbox
+
+							' Dernière position
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte)
+						
+
+							
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+			' Afficher le texte du textbox
+			ElseIF INSTR(UCASE(NomTextebox), "/TEXT") > 0 Then
+				NomTextebox = ucase(MID(NomTextebox, INSTR(UCASE(NomTextebox), "/TEXT") + 6))
+				
+				for INDEX_Textbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Identification_Objet.Nom) = NomTextebox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_Textbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+							' Display !
+							DEBUG(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						
+							exit for
+						end if
+					End if
+				Next INDEX_Textbox
+
+			ElseIF INSTR(UCASE(NomTextebox), "/MODIF") > 0 Then
 				NomTextebox = MID(NomTextebox, INSTR(UCASE(NomTextebox), "/MODIF") + 7) & "~MODIF#"
 
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -4302,14 +4681,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Else
 					DEBUG("[CpcdosC+] TextBox edition mode '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 					DEBUG("[CpcdosC+] Creation d'un TexteBox '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
 					DEBUG("[CpcdosC+] Creating TextBox '" & NomTextebox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
+				CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
 			End if
-			CpcdosCP_SHELL = "IUG:TEXTEBOX_NOM=" & NomTextebox
+			
 			
 			' ====================================================================
 			END SCOPE
@@ -4353,7 +4734,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'BarreProgression'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une barre de progression dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4428,7 +4809,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4504,7 +4885,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CheckBox'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une boite cochable dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4578,7 +4959,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4598,15 +4979,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				NomCheckBox = MID(NomCheckBox, INSTR(UCASE(NomCheckBox), "/MODIF") + 7) & "~MODIF#"
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[CpcdosC+] Mode edition d'une barre de progression '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Mode edition d'un checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
-					DEBUG("[CpcdosC+] Progress bar edition mode '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Checkbox edition mode '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
 			Else
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[CpcdosC+] Creation d'une barre de progression '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Creation d'une checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				Else
-					DEBUG("[CpcdosC+] Creating progress bar '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					DEBUG("[CpcdosC+] Creating checkbox '" & NomCheckBox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
 			End if
 
@@ -4654,7 +5035,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Explorer'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un explorateur de fichiers dans un No de handle d'une fenetre existante"
 					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
 					Mess_Aide = Mess_Aide & CRLF
@@ -4711,7 +5092,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4753,6 +5134,194 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		End if ' **** EXPLORER/ ****
 	
 	_end_scope_CMD
+
+	_scope_CMD
+	
+		' ===============================================================
+		'  Commande pour creer un explorateur de fichiers
+		' ===============================================================
+		CommLANG(1) = "listbox/"
+		CommLANG(2) = "listbox/"
+		CommLANG(3) = "\\#//"
+		CommTrouve = 0 : NoCMD = 0
+		for boucle as integer = 1 to 2
+			IF OnCherche = CommLANG(boucle) Then
+				NoCMD = 0
+				exit for
+			Else
+				NoCMD = 1
+			End if
+		Next boucle
+		IF NoCMD = 1 then CommLANG(1) = "[F.#).|" : CommLANG(2) = "[F.#).|" : CommLANG(3) = "\\#//"
+		rem Afficher la liste des commandes avec anglais / francais
+		IF AfficherAide = 1 then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+				CommandesAide = CommandesAide & CRLF & " listbox/                  Creer une nouvelle instance d'une listbox"
+			Else
+				CommandesAide = CommandesAide & CRLF & " listbox/                  Create new listbox instance."
+			END IF
+		END IF
+		IF CommLANG(1) = OnCherche Then CommTrouve = 1
+		IF CommLANG(2) = OnCherche Then CommTrouve = 2
+		IF CommTrouve > 0 Then ' Afficher l'aide de la commande
+			IF AfficherAide = 2 then
+				Mess_Aide = ""
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Listbox'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer un listbox dans un No de handle d'une fenetre existante"
+					Mess_Aide = Mess_Aide & CRLF & "    exemple avec 12345"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir le nom de l'item selectionne"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_name my_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Obtenir l'index de l'item selectionne"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_index my_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Texte				= " & CHR(34) & "Item1;Item2" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parametres			= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurTexte	 	= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.CouleurFond		= " & CHR(34) & "255,255,255" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\dossier\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Creer/"
+					Mess_Aide = Mess_Aide & CRLF & "   Fin/ listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : Imagebox/ , fenetre/"
+					Mess_Aide = Mess_Aide & CRLF
+				ELSEIF CPCDOS_INSTANCE.Utilisateur_Langage = 1 THEN
+					Mess_Aide = Mess_Aide & CRLF & "  'Listbox'"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnality :"
+					Mess_Aide = Mess_Aide & CRLF & "   This command allow to create listbox instance in existing window handle (eg:12345)"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Getting selected item name"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_name My_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & " Getting selected item index"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ /selected_index My_listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
+					Mess_Aide = Mess_Aide & CRLF & "   listbox/ my_listbox"
+					Mess_Aide = Mess_Aide & CRLF & "   		.handle				= " & CHR(34) & "12345" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.text				= " & CHR(34) & "item 1;item2" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PX 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.PY 				= " & CHR(34) & "10" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SX 				= " & CHR(34) & "100" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.SY 				= " & CHR(34) & "80" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Parameters 		= " & CHR(34) & "" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.TextColor 			= " & CHR(34) & "000,000,000" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.BackColor			= " & CHR(34) & "220,220,220" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "   		.Image				= " & CHR(34) & "C:\folder\background.png" & CHR(34)
+					Mess_Aide = Mess_Aide & CRLF & "        Create/"
+					Mess_Aide = Mess_Aide & CRLF & "   End/ listbox"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "  See also : picturebox/ , window/ , textblock/"
+					Mess_Aide = Mess_Aide & CRLF
+				END IF
+
+				DEBUG(Mess_Aide, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				testCMD = 0
+				AfficherAide = 0
+				exit _scope_CMD, _scope
+			END IF
+			' Tester la syntaxe
+			testCMD	= CCP_Verifier_Syntaxe(Commande, CommPosition)
+			IF testCMD > 10 Then exit _scope_CMD, _scope
+			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
+				IF testCMD < 6 then
+					Affichage = 0
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
+				Else
+					Affichage = 1
+				END IF
+			Else
+				Affichage = 1
+			END IF
+			' Recuperer les Parametres
+			Param = MID(Commande, CommPosition + TailleComm + 2)
+			SCOPE
+			' ====================================================================
+			
+			' Enlever les espaces et mettre tout en majuscules
+			Dim NomListbox as string = Ucase(LTrim(Ltrim(RTrim(Param), CHR(09))))
+			
+			IF INSTR(UCASE(NomListbox), "/SELECTED_INDEX") > 0 Then
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_INDEX") + 16))
+				
+				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).Identification_Objet.Nom) = NomListbox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							' Afficher l'index de l'item
+							DEBUG(str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_index - 1), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							exit for
+
+						end if
+					End if
+				Next INDEX_listbox
+			Elseif INSTR(UCASE(NomListbox), "/SELECTED_NAME") > 0 Then
+				NomListbox = ucase(MID(NomListbox, INSTR(UCASE(NomListbox), "/SELECTED_NAME") + 15))
+				
+				for INDEX_listbox as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+
+					if ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).Identification_Objet.Nom) = NomListbox Then
+
+						Dim _cle_win_Auth_Kernel			as uinteger = CPCDOS_INSTANCE.get_id_kernel		(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_OS				as uinteger = CPCDOS_INSTANCE.get_id_OS			(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+						Dim _cle_win_Auth_Utilisateur		as uinteger = CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(INDEX_listbox).Identification_Objet._CLE_)
+
+						if _cle_win_Auth_Kernel = Auth_Kernel AND _cle_win_Auth_OS = Auth_OS AND _cle_win_Auth_Utilisateur = Auth_Utilisateur Then 
+
+							' Afficher le nom de l'item
+							DEBUG(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(INDEX_listbox).SELECTIONNE_str, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							exit for
+
+						end if
+					End if
+				Next INDEX_listbox
+
+			elseif INSTR(UCASE(NomListbox), "/MODIF") > 0 Then
+				NomListbox = MID(NomListbox, INSTR(UCASE(NomListbox), "/MODIF") + 7) & "~MODIF#"
+
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Mode edition d'un listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Listbox edition mode '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			Else
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Creation d'un listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] Creating listbox '" & NomListbox & "' ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+			End if
+		
+
+			CpcdosCP_SHELL = "IUG:LISTBOX_NOM=" & NomListbox
+			
+			' ====================================================================
+			END SCOPE
+			
+			exit _scope_CMD, _scope
+		End if ' **** Listbox/ ****
+	
+	_end_scope_CMD
 	
 	_scope_CMD
 	
@@ -4788,7 +5357,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'Actualiser'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'actualiser graphiquement un objet contenu dans une fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "    ou bien la fenetre elle meme avec tous ses objets, ou l'arriere plan de l'interface."
 					Mess_Aide = Mess_Aide & CRLF
@@ -4882,7 +5451,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -4939,6 +5508,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Numero_INDEX = 99999
 				TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TOUT
 
+
 			' ===== Numero Handle =====
 			ElseIF PosNumHandle > 0 Then ' Numero de handle
 				IF Instr(Ucase(Param), "0X") > 0 Then
@@ -4949,7 +5519,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Numero_Handle = Val(MID(Param, PosNumHandle + 8))
 				End if
 			End if
-				
+			
+
 			If Numero_Handle > 0 Then
 				' Supprimer l'objet correspondant au handle
 				
@@ -5093,12 +5664,31 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Next boucle
 				
 				End if
+
+				if TypeObjet = 0 Then
+				
+					' Chercher les listbox
+					For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_Listbox
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Handle = Numero_Handle Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							exit for
+						End if
+					Next boucle
+				
+				End if
 				
 			
 			Else
+
 				IF NOT Param = "" Then
-					
-					TypeObjet = 0
+					Dim Trouve as boolean = false
+	
 					' Si les parametres ont quelque chose on cherche par le nom
 					
 					' Nettoyer
@@ -5113,6 +5703,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							' Et son numero d'index
 							Numero_INDEX = boucle
+
+							Trouve = true
+
 							
 							exit for
 						End if
@@ -5120,7 +5713,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les boutons
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(boucle).Identification_Objet.Nom = Param Then
@@ -5137,7 +5730,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les picturebox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PICTUREBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5154,7 +5747,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les textbloc
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_TEXTBLOCK
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(boucle).Identification_Objet.Nom = Param Then
@@ -5171,7 +5764,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les TextBox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5188,7 +5781,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les checkbox
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_CHECKBOX
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(boucle).Identification_Objet.Nom = Param Then
@@ -5205,7 +5798,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				
 				
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les Progressbar
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_PROGRESSBAR
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(boucle).Identification_Objet.Nom = Param Then
@@ -5221,7 +5814,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Next boucle
 					End if
 					
-					if TypeObjet = 0 Then
+					if Trouve = false Then
 						' Chercher les explorer
 						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
 							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(boucle).Identification_Objet.Nom = Param Then
@@ -5236,6 +5829,23 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							End if
 						Next boucle
 					End if
+
+					if Trouve = false Then
+						' Chercher les listbox
+						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Nom = Param Then
+							
+								' Indiquer que c'est une fenetre qu'on veut supprimer
+								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+								
+								' Et son numero d'index
+								Numero_INDEX = boucle
+								
+								exit for
+							End if
+						Next boucle
+					End if
+
 				Else
 				
 					' L'utilisateur n'a rien indique
@@ -5251,12 +5861,18 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			' Si on a trouve quelque chose
 			if Numero_INDEX > 0 Then
+
+
 				IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then
+
 					If TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TOUT Then
 						' Si l'interface graphique est executee
-					
+
+
 						IF Numero_INDEX = 99999 Then
 							' Actualiser absolument TOUT !
+							Flip 3, 2 ' + Ajouter desktop background si possible
+
 							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
 							
 						Else
@@ -5286,8 +5902,6 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 								CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, Numero_INDEX)
 							Else
-
-								
 								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 										DEBUG("[CpcdosC+] Actualisation graphique de la fenetre '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
@@ -5311,7 +5925,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5323,7 +5937,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Picturebox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Picturebox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 						
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBlock Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5335,7 +5949,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5347,7 +5961,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ProgressBar Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5359,7 +5973,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.CheckBox Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5371,7 +5985,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 
 					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -5383,7 +5997,19 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
-						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
+
+					ElseIf TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox Then
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Actualisation graphique du listbox '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Refreshing listbox graphic '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Nom & "' [OSID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.OS_id & " PID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.PID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Proc_PARENT & "' TID:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.TID_PARENT & " '" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Thread_PARENT & " HANDLE:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Handle & " INDEX:" & Numero_INDEX & "]", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+						End if
+						
+						' Actualiser l'objet avec son index et la fenetre dont le numero d'index est dans ses proprietes
+						CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(Numero_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Numero_INDEX).Identification_Objet.Index_FNT_PARENT)
 					End if
 					
 				End if
@@ -5438,7 +6064,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'decompresser'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de decompresser un fichier ZIP, GZ .."
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -5478,7 +6104,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5592,7 +6218,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Titre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique t-elle qu'une fenetre, permet de nommer la barre de titre de la fenetre"
 					Mess_Aide = Mess_Aide & CRLF & ""
@@ -5626,7 +6252,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5696,7 +6322,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Nom'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de nommer le nom du processus si vous creez une fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "    ou bien le nom d'instance si c'est un objet"
@@ -5731,7 +6357,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5800,7 +6426,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Texte'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet d'inclure du texte dans une propriete le supportant."
 					Mess_Aide = Mess_Aide & CRLF
@@ -5834,7 +6460,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -5903,7 +6529,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.ProcessusIDentification'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de selectionner un processus parent. Ceci vous permet"
 					Mess_Aide = Mess_Aide & CRLF & "    d'heberger votre fenetre graphique."
@@ -5946,7 +6572,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6015,9 +6641,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Handle'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
-					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de préciser sous quel numero de handle l'objet devra"
+					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de prï¿½ciser sous quel numero de handle l'objet devra"
 					Mess_Aide = Mess_Aide & CRLF & "    etre heberge. Fonctionne uniquement si le numero handle correspond a une fenetre"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Si ce parametre est NUL :"
@@ -6058,7 +6684,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6127,9 +6753,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Valeur'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
-					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de préciser une valeur attendue"
+					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de prï¿½ciser une valeur attendue"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Si ce parametre est NULL ou non indiquee, par defaut elle sera a '0'"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6165,7 +6791,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6234,7 +6860,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Parametres'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet d'ajouter des parametres a la creation d'un objet ou fenetre."
 					Mess_Aide = Mess_Aide & CRLF
@@ -6300,7 +6926,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6369,7 +6995,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurFenetre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur de la fenetre de maniere general en RVB."
 					Mess_Aide = Mess_Aide & CRLF
@@ -6413,7 +7039,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6481,7 +7107,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurFond'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur du fond du conteneur de la fenetre."
 					Mess_Aide = Mess_Aide & CRLF & "    Le conteneur c'est la ou vont se trouver vos objets graphiques"
@@ -6526,7 +7152,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6594,7 +7220,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurTitre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur des caracteres du titre de la fenetre"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6638,7 +7264,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6706,7 +7332,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.CouleurTitre'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la couleur des caracteres du texte de l'objet"
 					Mess_Aide = Mess_Aide & CRLF
@@ -6745,7 +7371,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6813,7 +7439,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.ICONE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir une icone representative a la fenetre"
 					Mess_Aide = Mess_Aide & CRLF & "   Format PNG, BMP et JPG accepte! Les dimentions recommandes est de 16x16"
@@ -6858,7 +7484,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -6926,7 +7552,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.IMGTITRE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir votre image de la barre de titre de fond"
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -6968,7 +7594,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7036,7 +7662,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.IMAGE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir votre image du conteneur de votre objet ou "
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -7078,7 +7704,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7147,7 +7773,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.OPACITE'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la transparence de votre fenetre ou objet"
 					Mess_Aide = Mess_Aide & CRLF & "    de votre fenetre."
@@ -7189,7 +7815,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7257,7 +7883,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.PositionX'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la position horizontale de la fenetre sur la zone"
 					Mess_Aide = Mess_Aide & CRLF & "    horizontale de l'ecran, ou votre object sur la zone horizontale de la fenetre."
@@ -7297,7 +7923,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7364,7 +7990,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.PositionY'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la position verticale de la fenetre sur la zone"
 					Mess_Aide = Mess_Aide & CRLF & "    verticale de l'ecran, ou votre object sur la zone verticale de la fenetre."
@@ -7404,7 +8030,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7472,7 +8098,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.TailleX'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la taille horizontale de votre fenetre ou objet."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7510,7 +8136,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7578,7 +8204,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.TailleY'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de choisir la taille verticale de votre fenetre ou objet."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7616,7 +8242,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7684,7 +8310,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  '.Evenement'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement pendant l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de definir le fichier source contenant les fonctions evenementielles."
 					Mess_Aide = Mess_Aide & CRLF
@@ -7727,7 +8353,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7795,7 +8421,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CREER/'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande utilisable uniquement avant la fin de l'incription d'une propriete"
 					Mess_Aide = Mess_Aide & CRLF & "    graphique, permet de creer votre fenetre ou votre objet." 
 					Mess_Aide = Mess_Aide & CRLF
@@ -7834,7 +8460,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -7896,7 +8522,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'SI'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer du code sous une condition seulement"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & " Conditions disponible :"
@@ -8007,7 +8633,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -8164,7 +8790,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			SI_Expression_1 = MID(Param, 1, LA_Condition - 1)
 			SI_Expression_2 = MID(Param, LA_Condition + Taille_Condition, SI_PosAlors - (LA_Condition + Taille_Condition))
 
-			' On recupere la position du premier " et le deuxième " pour la PREMIERE expression
+			' On recupere la position du premier " et le deuxiï¿½me " pour la PREMIERE expression
 			SI_POSGuil_EXP_1 = Instr(SI_Expression_1, CHR(34)) ' guillemet de gauche
 			SI_POSGuil_EXP_2 = InstrRev(SI_Expression_1, CHR(34)) ' guillemet de droit
 
@@ -8184,7 +8810,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			SI_Expression_1 = MID(SI_Expression_1, SI_POSGuil_EXP_1 + 1, (SI_POSGuil_EXP_2 - SI_POSGuil_EXP_1) - 1)
 
 
-			' On recupere la position du premier " et le deuxième " pour la DEUXIEME expression
+			' On recupere la position du premier " et le deuxiï¿½me " pour la DEUXIEME expression
 			SI_POSGuil_EXP_1 =  Instr(SI_Expression_2, CHR(34)) ' guillemet de gauche
 			SI_POSGuil_EXP_2 =  Instrrev(SI_Expression_2, CHR(34)) ' guillemet de droit
 
@@ -8463,7 +9089,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FIN'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de delimiter la fin d'une fonction"
 					Mess_Aide = Mess_Aide & CRLF & "   ou d'une condition"
 					Mess_Aide = Mess_Aide & CRLF
@@ -8515,7 +9141,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF testCMD < 6 then
 					Affichage = 0
 					' 3 = On nettoie / Cree la variable avant de le definir comme sortie
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite (autorisation d'acces)?
 				Else
 					Affichage = 1
@@ -8609,6 +9235,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				CpcdosCP_SHELL = "IUG:EXPLORER_FIN"
 				exit _scope_CMD, _scope
 			End if
+
+			iF Instr(UCASE(Param), "LISTBOX") > 0 Then
+				CpcdosCP_SHELL = "IUG:LISTBOX_FIN"
+				exit _scope_CMD, _scope
+			End if
 			
 			
 			' ====================================================================
@@ -8653,7 +9284,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'STOP'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de mettre fin a la lecture d'un"
 					Mess_Aide = Mess_Aide & CRLF & "   fichier CpcdosC+."
 					Mess_Aide = Mess_Aide & CRLF
@@ -8688,7 +9319,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF testCMD < 6 then
 					Affichage = 0
 					' 3 = On nettoie / Cree la variable avant de le definir comme sortie
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, 0, "") : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite (autorisation d'acces)?
 				Else
 					Affichage = 1
@@ -8739,7 +9370,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'POSitionner'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher ou changer de place le curseur console en X / Y"
 					Mess_Aide = Mess_Aide & CRLF & "    ou votre curseur graphique quand elle est executee."
 					Mess_Aide = Mess_Aide & CRLF
@@ -8789,7 +9420,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -8815,7 +9446,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			if Param = "" Then
 				IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-					GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 					
 					DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				else
@@ -8849,7 +9480,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				if PosDEFINIR_X > 0 Then
 					
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_X), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8858,7 +9489,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				end if
 				if PosDEFINIR_Y > 0 Then
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG(str(Pos_Y), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8892,7 +9523,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				else
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-						GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
 						
 						DEBUG("X:" & Pos_X & " Y:" & Pos_Y, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					else
@@ -8947,7 +9578,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'stopKernel'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'arreter NET, le kernel ( en urgence )"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : "
@@ -8973,7 +9604,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9056,8 +9687,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'atteindre un label sp‚cifi‚ dans le code"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'atteindre un label spï¿½cifiï¿½ dans le code"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Coucou"
@@ -9101,7 +9732,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'Affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9167,7 +9798,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'RETOUR'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de retourner une valeur non type"
 					Mess_Aide = Mess_Aide & CRLF & "    depuis une fonction CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
@@ -9224,7 +9855,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9282,7 +9913,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'FONCTION'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer une fonction"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple:"
@@ -9319,7 +9950,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9374,7 +10005,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer une commande CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Elle est capable d'executer une commande dans un autre thread independant"
@@ -9382,11 +10013,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres disponibles :"
 					Mess_Aide = Mess_Aide & CRLF & "   /thread       : Execute la commande dans un nouveau thread independant"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MAX]  : Idem, mais avec une priorit‚e MAXimale"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[ST+]  : Idem, mais avec une priorit‚e superieur au STanDard"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[STD]  : Idem, mais avec une priorit‚e STanDard (Meme effet que /thread)"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MI+]  : Idem, mais avec une priorit‚e superieur au MINimale"
-					Mess_Aide = Mess_Aide & CRLF & "   /thread[MIN]  : Idem, mais avec une priorit‚e MINimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MAX]  : Idem, mais avec une prioritï¿½e MAXimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[ST+]  : Idem, mais avec une prioritï¿½e superieur au STanDard"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[STD]  : Idem, mais avec une prioritï¿½e STanDard (Meme effet que /thread)"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MI+]  : Idem, mais avec une prioritï¿½e superieur au MINimale"
+					Mess_Aide = Mess_Aide & CRLF & "   /thread[MIN]  : Idem, mais avec une prioritï¿½e MINimale"
 					Mess_Aide = Mess_Aide & CRLF & "   /pid:123		 : Execute l'instruction dans le PID numero '123'"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
@@ -9399,7 +10030,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread exe/ MonProgramme"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread Ping/ www.google.fr"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Meme exemple mais avec une priorit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Meme exemple mais avec une prioritï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[MIN] txt/ coucou!"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[STD] exe/ MonProgramme"
 					Mess_Aide = Mess_Aide & CRLF & "   cmd/ /thread[MAX] Ping/ www.google.fr"
@@ -9468,7 +10099,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -9487,6 +10118,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim PosParam5				as Integer
 			Dim PosParam6				as Integer
 			Dim Thread_MaxStdMin		as Integer
+
+			Dim KEY_ByPrevioudPID		as double = 0
 			
 			Dim NumeroPID_cmd 		as integer = 0
 			Dim NomProcessus_cmd 	as String = ""
@@ -9494,6 +10127,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				NumeroPID_cmd = VAL(Mid(Param, instr(Ucase(Param), "/PID") + 5))
 				Param = Mid(Param, 1, instr(Ucase(Param), "/PID") - 1) & Mid(Param, instr(Instr(ucase(Param), "/PID"), Param, " ") + 1)
 				
+				KEY_ByPrevioudPID = _CLE_
 				' Redonner et regenerer les nouvelle infos du nouveau processus
 				Auth_PID = NumeroPID_cmd
 				_CLE_ = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Auth_TID)
@@ -9546,7 +10180,17 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			'  Car si elle est executee dans un autre thread il ne trouvera jamais la fonction
 			'  Du coup il faut re-preciser le fichier source
 			IF Instr(UCASE(Param), "/F:") > 0 AND Instr(UCASE(Param), "(") > Instr(UCASE(Param), "/F:") AND Instr(UCASE(Param), ")") > Instr(UCASE(Param), "(") Then 
-				Dim NomFichier_correction as string = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_F_", 2, _CLE_))
+				Dim NomFichier_correction as string
+
+				
+				if KEY_ByPrevioudPID > 0 then
+					' Si on a utilise /PID /THREAD
+					NomFichier_correction = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_", 2, KEY_ByPrevioudPID))
+				Else
+					' Si on a utilise uniquement /THREAD
+					NomFichier_correction = UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("_EXE_PATH_", 2, _CLE_))
+				End if
+
 				Param = "EXE/ " & NomFichier_correction & " /FN:" & mid(Param, instr(Param, "/F:") + 3) & ") ->"
 				Param = MID(Param, 1, Instr(Param, ") ->") - 1) & "->" & _CLE_
 				
@@ -9614,7 +10258,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					If Thread_MaxStdMin = 1 Then ' Execution dans un thread de priorite minimale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e minimale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e minimale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Minimal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9628,7 +10272,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 2 Then ' Execution dans un thread de priorite minimale+
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9642,7 +10286,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 3 Then ' Execution dans un thread de priorite normale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9656,7 +10300,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 4 Then ' Execution dans un thread de priorite normale
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de priorit‚e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de prioritï¿½e normale de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Normal priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9670,7 +10314,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					ElseIf Thread_MaxStdMin = 5 Then ' Execution dans un thread de priorite normale+
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de haute priorit‚e de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+								DEBUG("[CpcdosC+] DEBUT Execution multi-thread de haute prioritï¿½e de la commande " & Param, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							Else
 								DEBUG("[CpcdosC+] BEGIN Hight priority multi-thread command execution ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 							End If
@@ -9739,7 +10383,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement de lire le contenu d'un fichier et transferer le flux"
 					Mess_Aide = Mess_Aide & CRLF & "    de donnees a l'ecran ou dans une autre direction '@#, @$..'"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande est aussi pratique puisse que cpcdos ouvre, lit et ferme le fichier"
@@ -9750,13 +10394,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ Dossier\Texte.txt"
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ C:\Temp\resultats.log"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  2eme exemple (R‚cuperation du texte -> Variable)"
+					Mess_Aide = Mess_Aide & CRLF & "  2eme exemple (Rï¿½cuperation du texte -> Variable)"
 					Mess_Aide = Mess_Aide & CRLF & "   @#MonTexte Ouvrir/ C:\Redaction.txt"
 					Mess_Aide = Mess_Aide & CRLF & "   txt/ Voici le contenu du fichier : %MonTexte%"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  3eme exemple (R‚cuperation du texte -> Autre fichier)"
+					Mess_Aide = Mess_Aide & CRLF & "  3eme exemple (Rï¿½cuperation du texte -> Autre fichier)"
 					Mess_Aide = Mess_Aide & CRLF & "   @$C:\Copie.txt Ouvrir/ C:\Redaction.txt"
-					Mess_Aide = Mess_Aide & CRLF & "   txt/ Redaction.txt a ete copi‚!"
+					Mess_Aide = Mess_Aide & CRLF & "   txt/ Redaction.txt a ete copiï¿½!"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  4eme exemple (Lire la 4eme ligne) :"
 					Mess_Aide = Mess_Aide & CRLF & "   Ouvrir/ texte.txt/ligne:4"
@@ -9805,7 +10449,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10026,7 +10670,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet simplement d'ecrire dans un fichier"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Parametres diponibles:"
@@ -10101,7 +10745,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10249,8 +10893,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'envoyer une requete ICMP sur une machine connect‚e"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'envoyer une requete ICMP sur une machine connectï¿½e"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Ping/ 192.168.1.1"
@@ -10282,7 +10926,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -10298,6 +10942,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim AdresseIP 	as String
 			Dim TestPing	as Integer
 			Dim TempsPris	as Integer
+
 ' --------------------- if 1 = 1 then ''if Demarrage_OK = 1 then ----------------------------------------
 			if 1 = 1 then
 				IF Param <> "" Then
@@ -10322,7 +10967,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DEBUG("[CPinti] Reseau Ping " & AdresseIP & " a repondu! (" & TestPing & " ms)", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					Else
 						DEBUG("[CPinti] Network Ping: Reponse from " & AdresseIP & "! (" & TestPing & " ms)" , Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					End If
+					End If					
 				elseif TestPing < -1 then
 					' Probleme reseau
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -10355,6 +11000,27 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				END IF
 			end if
+
+			if TestPing >= 0 Then 
+				' Si ca ping
+
+				' Carte dispo
+				CPCDOS_INSTANCE.NETWORK_DRIVERCARD 	= true
+				if NOT INSTR(AdresseIP, "127.0.0") > 0 Then 
+					CPCDOS_INSTANCE.NETWORK_LOCAL 	= true
+				End if
+
+			else
+				' Si adresse loopback
+				if INSTR(AdresseIP, "127.0.0") > 0 Then 
+					' Et ca ping pas LAISSE BET' ET CASSE TOI FDP NETWORK TU ES MAUUUUVAIS WILLY, TU EST MAUUUVAIS
+					CPCDOS_INSTANCE.NETWORK_DRIVERCARD 			= false
+					CPCDOS_INSTANCE.NETWORK_LOCAL 				= false
+					CPCDOS_INSTANCE.NETWORK_ROUTER				= false
+					CPCDOS_INSTANCE.NETWORK_INTERNET			= false
+					CPCDOS_INSTANCE.NETWORK_INTERNET_AND_DNS	= false
+				End if
+			End if
 			
 			' ===================================================================
 			END SCOPE
@@ -10396,8 +11062,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de t‚l‚charger un fichier sur un serveur HTTP"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de tï¿½lï¿½charger un fichier sur un serveur HTTP"
 					Mess_Aide = Mess_Aide & CRLF & "   Par defaut, les fichiers telecharges se trouve dans le dossier TEMP\NET"
 					Mess_Aide = Mess_Aide & CRLF & "    Variable utilisee pour cette operation %CPC_TEMP.NET%"
 					Mess_Aide = Mess_Aide & CRLF
@@ -10487,7 +11153,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -11056,21 +11722,21 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de modifier des Parametres du CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /fix.niveau"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de configurer le niveau de la variable (niveau de privacit‚)"
-					Mess_Aide = Mess_Aide & CRLF & "       Priv‚ procedure&fonction --> ccp/ /fix.niveau = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Priv‚ Application        --> ccp/ /fix.niveau = 2"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de configurer le niveau de la variable (niveau de privacitï¿½)"
+					Mess_Aide = Mess_Aide & CRLF & "       Privï¿½ procedure&fonction --> ccp/ /fix.niveau = 1"
+					Mess_Aide = Mess_Aide & CRLF & "       Privï¿½ Application        --> ccp/ /fix.niveau = 2"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique Utilisateur     --> ccp/ /fix.niveau = 3"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique OS              --> ccp/ /fix.niveau = 4"
 					Mess_Aide = Mess_Aide & CRLF & "       Publique Kernel          --> ccp/ /fix.niveau = 5"
-					Mess_Aide = Mess_Aide & CRLF & "      Et toutes les variables cr‚es seront affect‚s par le niveau indiqu‚"
-					Mess_Aide = Mess_Aide & CRLF & "      Penser donc a r‚tablir le niveau souhait‚ pour ne pas affecter le reste"
+					Mess_Aide = Mess_Aide & CRLF & "      Et toutes les variables crï¿½es seront affectï¿½s par le niveau indiquï¿½"
+					Mess_Aide = Mess_Aide & CRLF & "      Penser donc a rï¿½tablir le niveau souhaitï¿½ pour ne pas affecter le reste"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /lang"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de d‚finir la langue du systeme"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de dï¿½finir la langue du systeme"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "      Exemples :"
 					Mess_Aide = Mess_Aide & CRLF & "       Retourne la langue en cours [FR] ou [EN]"
@@ -11122,7 +11788,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "       jusqu'a la fin de la section critique. (Voir ci-dessous)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /FIN_SECTION_CRITIQUE"
-					Mess_Aide = Mess_Aide & CRLF & "      Permet de débloquer toutes les interruptions et les autres threads"
+					Mess_Aide = Mess_Aide & CRLF & "      Permet de dï¿½bloquer toutes les interruptions et les autres threads"
 					Mess_Aide = Mess_Aide & CRLF & "       afin de reprendre l'execution NORMALE du code CpcdosC+."
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    ccp/ /DISCRETION = 1"
@@ -11220,7 +11886,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -11367,7 +12033,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 			
 			IF Instr(UCASE(Param), "/DEBUT_SECTION_CRITIQUE") > 0 OR Instr(UCASE(Param), "/BEGIN_CRITICAL_SECTION") > 0 Then
-				' Permet de rendre l'exécution d'un morceau de code PRIORITAIRE sans autres interruptions
+				' Permet de rendre l'exï¿½cution d'un morceau de code PRIORITAIRE sans autres interruptions
 				this.SECTION_CRITIQUE = TRUE
 				
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -11455,7 +12121,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer un fichier de type CpcdosC+"
 					Mess_Aide = Mess_Aide & CRLF & "    ou un executable PE (Experimentale!!)"
 					Mess_Aide = Mess_Aide & CRLF
@@ -11470,7 +12136,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Mess_Aide = Mess_Aide & CRLF & "   exe/ /win32 Program.exe"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Executer un programme IR/LLVM (Format BC ou LL)"
-					Mess_Aide = Mess_Aide & CRLF & "   via du code g‚n‚r‚ par compilateur CLANG 3.8."
+					Mess_Aide = Mess_Aide & CRLF & "   via du code gï¿½nï¿½rï¿½ par compilateur CLANG 3.8."
 					Mess_Aide = Mess_Aide & CRLF & "   (LLVM:Low-Level-Virtual-Machine / Machine virtuel de bas niveau)"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   exe/ /llvm Programme.ll"
@@ -11512,7 +12178,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -11533,10 +12199,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim CCP_Fonction_DATA		(0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS) as String
 			Dim CCP_Fonction_CLE		(0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS) as double
 			
-			Dim Nom_Fichier 		as String
-			Dim NomLblAAtteindre	as String
-			Dim LabelAChercher 		as String
-			Dim CCP_Fonction_EXEC	as String
+			Dim Nom_Fichier 			as String
+			Dim NomLblAAtteindre		as String
+			Dim LabelAChercher 			as String
+			Dim CCP_Fonction_EXEC		as String
 			Dim NumeroDeLigneAChercher	as Integer = 0
 			Dim PosLabelLigneExec		as Integer = 0
 			
@@ -11770,7 +12436,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 
 			IF ExecMultiTHREAD = 1 Then
-				' Executer un fichier CpcdosC+ dans un autre thread avec celui cifi‚
+				' Executer un fichier CpcdosC+ dans un autre thread avec celui cifiï¿½
 				' de maniere "ascynchrome"
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -11962,7 +12628,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Si_Non_EXE_FONCT = 1
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Appelle de la fonction '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						DEBUG("[CpcdosC+] Appel de la fonction '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					Else
 						DEBUG("[CpcdosC+] Calling function '" & CCP_Fonction_EXEC & "()'...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					End If
@@ -12104,6 +12770,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim _INDEX_PROGRESSBAR_		as integer = 0
 						Dim _INDEX_CHECKBOX_		as integer = 0
 						Dim _INDEX_EXPLORER_		as integer = 0
+						Dim _INDEX_LISTBOX_		as integer = 0
 						
 						Dim IUG_CREATION_FENETRE 	as string
 						Dim IUG_CREATION_BOUTON 	as string
@@ -12113,6 +12780,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim IUG_CREATION_PROGRESSBAR as string
 						Dim IUG_CREATION_CHECKBOX 	as string
 						Dim IUG_CREATION_EXPLORER 	as string
+						Dim IUG_CREATION_LISTBOX 	as string
 						
 						
 						Dim Buffer_lecture 			as String
@@ -12152,17 +12820,33 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							' Nouvelle_Cle = _CLE_
 							
 						Else
-							' Si c'est pas une fonction, on regenere une nouvelle cle
-							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-									DEBUG("[CpcdosC+] Redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-								Else
-									DEBUG("[CpcdosC+] Redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-								End If
+						
+							' On doit conserver l'ID
+							if SAME_ID = true Then
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+										DEBUG("[CpcdosC+] (SAME_ID) Pas de redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									Else
+										DEBUG("[CpcdosC+] (SAME_ID) No redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									End If
+								End if
+								
+								Nouvelle_TID = Auth_TID
+								Nouvelle_Cle = _CLE_
+							Else
+						
+								' Si c'est pas une fonction, si Same_ID, on regenere une nouvelle cle
+								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+									IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+										DEBUG("[CpcdosC+] Redefinition de la cle d'identification d'executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									Else
+										DEBUG("[CpcdosC+] Redefinition key ID for executable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+									End If
+								End if
+				
+								Nouvelle_TID = int(Auth_TID + CPCDOS_INSTANCE.Generer_RND(50, 99))
+								Nouvelle_Cle = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Nouvelle_TID)
 							End if
-			
-							Nouvelle_TID = int(Auth_TID + CPCDOS_INSTANCE.Generer_RND(50, 99))
-							Nouvelle_Cle = CPCDOS_INSTANCE.Generer_cle(Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Nouvelle_TID)
 						End if
 						
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -12171,15 +12855,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Nouvelle_Cle_GUI = Nouvelle_Cle
 
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PATH_F_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PATH_DIR_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_TID_ = " & CPCDOS_INSTANCE.get_ThreadEnCours(), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_TID_ = " & CPCDOS_INSTANCE.get_ThreadEnCours(), Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("FIX/ _EXE_DATE_ = " & CPCDOS_INSTANCE.get_Date("AAAA-MM-JJ") & " " & CPCDOS_INSTANCE.get_Heure("HH:MM:SS"), Nouvelle_Cle, 2, Param_1, Param_2)
+						CpcdosCP_SHELL("SET/ _EXE_DATE_ = " & CPCDOS_INSTANCE.get_Date("AAAA-MM-JJ") & " " & CPCDOS_INSTANCE.get_Heure("HH:MM:SS"), Nouvelle_Cle, 2, Param_1, Param_2)
 						
 						IF ModeAnalyse = 1 then
 							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -12235,14 +12919,26 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_VALEUR			as Integer 	= 0
 						
 						DIM GUI__PROP_TYPE_OBJ			as integer 	= 0 ' Fenetre/Objet normal
+
+						Dim GUI__PROP_TYPE_DESKTOPMODE	as boolean = false ' Mode bureau
 						
 						DIM GUI__PROP_DEPLACABLE		as boolean 	= true
 						DIM GUI__PROP_SIZEABLE_ANGL 	as boolean 	= true
+						DIM GUI__PROP_PRIORITY			as integer 	= false
+
+						DIM GUI__PROP_MINIMAL_SIZE_X	as Integer 	= 0
+						DIM GUI__PROP_MINIMAL_SIZE_Y	as Integer 	= 0
+
+						DIM GUI__PROP_MAXIMAL_SIZE_X	as Integer 	= 0
+						DIM GUI__PROP_MAXIMAL_SIZE_Y	as Integer 	= 0
+
+						DIM GUI__PROP_COLLISION 		as boolean 	= true
 						DIM GUI__PROP_SIZEABLE 			as boolean 	= true
 						DIM GUI__PROP_REDUCTABLE 		as boolean 	= true
 						DIM GUI__PROP_FERMABLE 			as boolean 	= true
 
-						
+						Dim GUI__PROP_TASKBAR			as integer = 0
+						Dim GUI__PROP_No_TASKBAR		as boolean = false
 						
 						
 						DIM GUI__PROP_TYPE_BORDURE		as integer	= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
@@ -12250,6 +12946,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Dim GUI__PROP_TYPE_Editable		as boolean	= TRUE
 						Dim GUI__PROP_TYPE_MultiLignes	as boolean	= FALSE
 						Dim GUI__PROP_TYPE_Console		as boolean 	= FALSE
+						Dim GUI__PROP_TYPE_ContextMenu 	as integer	= 0
 						Dim GUI__PROP_TYPE_Ombre_RVB	as String	= CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_RGB", 3, _CLE_)
 						
 						Dim GUI__PROP_OMBRE_PX			as integer = Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW_PX", 3, _CLE_))
@@ -12356,6 +13053,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						Dim GUI__PROP_IMG_BUFFER_ID		as integer = 0	
 						Dim GUI__PROP_IMG_SELECTEUR_ID	as integer = 0
+						Dim GUI__PROP_IMG_SCROLL_ID		as integer = 0
+						Dim GUI__PROP_SCROLLING_Y		as integer = 0
+						Dim GUI__PROP_Mode_Affichage	as integer = 0	
+						
 						
 
 						Dim GUI__PROP_IMAGE_SURVOLE_ID	as Integer 	= 0
@@ -12372,8 +13073,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						DIM GUI__PROP_CONTENEUR_COMPLET as boolean 	= false
 						DIM GUI__PROP_ALPHA_MODE 		as integer	= 0
+						DIM GUI__PROP_BLURRY_MODE		as integer 	= 0
 						
 						DIM GUI__PROP_FOND_COULEUR		as boolean = TRUE
+
+						DIM GUI__PROP_CTX				as integer = -1
 						
 						DIM GUI__PROP_AUTOSIZE			as integer	= 0
 						
@@ -12382,6 +13086,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_TX 				as Integer 	= 150
 						DIM GUI__PROP_TY 				as Integer 	= 100
 						DIM GUI__PROP_TTITRE			as Integer 	= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.TITLE_SY", 3, _CLE_))
+
+						
 						
 						DIM GUI__PROP_EVENEMENT			as String 	= ""
 						DIM GUI__PROP_EVENEMENT_DISPO	as String 	= ""
@@ -13013,7 +13719,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										si_EXE_FIXE_VARIABLES = 0
 										For Boucle_FIXER as integer = 1 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
 											IF NOT CCP_Fonction_ARGS_2(Boucle_FIXER) = "" THEN
-												CpcdosCP_SHELL("FIX/ " & CCP_Fonction_ARGS_2(Boucle_FIXER) & " = " & CCP_Fonction_DATA(Boucle_FIXER), Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & CCP_Fonction_ARGS_2(Boucle_FIXER) & " = " & CCP_Fonction_DATA(Boucle_FIXER), Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 											End if
 										Next Boucle_FIXER
 									End if
@@ -13103,7 +13809,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										Dim Ancien_OS 		as String = CPCDOS_INSTANCE.get_OSPresent(NumeroOS)
 										
 										if Ancien_OS = "" then Ancien_OS = "<null>"
-								
+
 										IF NumeroOS_tmp > -1 Then
 
 											IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -13265,9 +13971,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition de la fenetre '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition de la fenetre(" & _INDEX_FENETRE_ & ") '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Window edition mode for '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Window(" & _INDEX_FENETRE_ & ") edition mode for '" & IUG_CREATION_FENETRE & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -13324,6 +14030,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_BUFFER_WIN_IMG_ID			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).BUFFER_WIN_IMG_ID 
 															GUI__PROP_BUFFER_OMBRE_WIN_IMG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).BUFFER_OMBRE_WIN_IMG_ID 
 															
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.ContextMenu
 															
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).POS_X 
@@ -13337,6 +14044,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_CONTENEUR_COMPLET = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).CONTENEUR_COMPLET
 															
 															GUI__PROP_ALPHA_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Alpha_Mode
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Blurry_Mode
 															
 															GUI__PROP_IMGTITRE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).IMG_TITRE
 															
@@ -13522,6 +14230,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TYPE_OBJ
 															
+															' Fond bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.DESKTOPMODE
+
 															' Bordure
 															GUI__PROP_TYPE_BORDURE 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Bordure
 															
@@ -13531,14 +14242,29 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_REDUCTABLE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Reductable
 															GUI__PROP_SIZEABLE		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable
 															GUI__PROP_SIZEABLE_ANGL	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Sizeable_ANGL
+															GUI__PROP_PRIORITY 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.IsPriority
+
+															GUI__PROP_MINIMAL_SIZE_X= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Minimal_size_X
+															GUI__PROP_MINIMAL_SIZE_Y= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Minimal_size_Y
+															GUI__PROP_MAXIMAL_SIZE_X= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Maximal_size_X
+															GUI__PROP_MAXIMAL_SIZE_Y= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Maximal_size_Y
+
+															GUI__PROP_COLLISION		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Collision
 															GUI__PROP_FERMABLE		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fermable
+
+															GUI__PROP_TASKBAR		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.TaskBar
+															GUI__PROP_No_TASKBAR	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.NoTaskBar
+															
 															
 															' Ombre sous la fenetre
 															GUI__PROP_TYPE_Ombre	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Ombre
 															
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Alpha)
-															
+
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO = Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Liste_Evenements)
@@ -13570,9 +14296,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du bouton '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du bouton(" & _INDEX_BOUTON_ & ") '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Button edition mode for '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Button(" & _INDEX_BOUTON_ & ") edition mode for '" & IUG_CREATION_BOUTON & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -13601,6 +14327,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															if GUI__PROP_TYPE_BORDURE >= 1 then GUI__PROP_TYPE_BORDURE = 1 else GUI__PROP_TYPE_BORDURE = 0
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 															
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
@@ -13636,6 +14366,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).POS_Y
@@ -13658,6 +14390,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).BIT_ORG
 															
 															GUI__PROP_TEXTE			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).TEXTE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Blurry_Mode
 															
 															
 															GUI__PROP_TYPE 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.LES_TYPES
@@ -13729,6 +14463,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.DESKTOPMODE
 															
 															' Bordure
 															if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Bordure >= 1 then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Bordure = 1 else CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Bordure = 0
@@ -13738,6 +14475,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Alpha)
 															
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_BOUTON_).PROP_TYPE.Liste_Evenements)
@@ -13770,9 +14509,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du picturebox '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du picturebox(" & _INDEX_PICTUREBOX_ & ") '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Picturebox edition mode for '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Picturebox(" & _INDEX_PICTUREBOX_ & ") edition mode for '" & IUG_CREATION_PICTUREBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -13799,6 +14538,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Bordure
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 															
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
@@ -13838,6 +14581,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).POS_Y
@@ -13864,6 +14609,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.AutoSizeIMG
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Blurry_Mode
 															
 															
 															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
@@ -13928,6 +14675,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.DESKTOPMODE
 															
 															' Bordure
 															GUI__PROP_TYPE_BORDURE 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Bordure
@@ -13935,6 +14685,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Liste_Evenements)
@@ -13969,9 +14722,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebloc '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebloc(" & _INDEX_TEXTBLOCK_ & ") '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Textblock edition mode for '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Textblock(" & _INDEX_TEXTBLOCK_ & ") edition mode for '" & IUG_CREATION_TEXTEBLOCK & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14002,6 +14755,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															'Fond couleur
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -14038,6 +14795,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_PICTUREBOX_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).POS_Y
@@ -14055,6 +14814,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.AutoSizeIMG
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.Blurry_Mode
 															
 															
 															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
@@ -14119,6 +14880,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.DESKTOPMODE
 															
 															' Couleur de fond OUI ou NON
 															GUI__PROP_FOND_COULEUR  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.Fond_Couleur
@@ -14129,6 +14893,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.MENU_CTX
+
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_TEXTBLOCK_).PROP_TYPE.Liste_Evenements)
@@ -14160,9 +14928,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebox '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du textebox(" & _INDEX_TEXTBOX_ & ") '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Textbox edition mode for '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Textbox(" & _INDEX_TEXTBOX_ & ") edition mode for '" & IUG_CREATION_TEXTEBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14193,6 +14961,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															'Fond couleur
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -14230,6 +15002,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).POS_Y
@@ -14252,6 +15026,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.AutoSizeIMG
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.Blurry_Mode
 															
 															
 															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
@@ -14316,6 +15092,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.DESKTOPMODE
 															
 															' Couleur de fond OUI ou NON
 															GUI__PROP_FOND_COULEUR  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.Fond_Couleur
@@ -14326,6 +15105,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_TEXTBOX_).PROP_TYPE.Liste_Evenements)
@@ -14360,9 +15142,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition de la barre de progression '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition de la barre de progression(" & _INDEX_PROGRESSBAR_ & ") '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Progress Bar edition mode for '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Progress Bar(" & _INDEX_PROGRESSBAR_ & ") edition mode for '" & IUG_CREATION_PROGRESSBAR & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14393,6 +15175,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															'Fond couleur
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -14428,6 +15214,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).POS_Y
@@ -14454,6 +15242,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															
 															GUI__PROP_VALEUR		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).VALEUR
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.Blurry_Mode
 															
 															' Pour la barre de progression, ne pas passer en dessous de 0% et pas depasser 100%
 															IF GUI__PROP_VALEUR > 100 Then 
@@ -14535,6 +15325,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.DESKTOPMODE
 															
 															' Couleur de fond OUI ou NON
 															GUI__PROP_FOND_COULEUR  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.Fond_Couleur
@@ -14545,6 +15338,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_PROGRESSBAR_).PROP_TYPE.Liste_Evenements)
@@ -14580,9 +15376,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition d'un check box'" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition d'un check box(" & _INDEX_CHECKBOX_ & ") '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Check box edition mode for '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Check box(" & _INDEX_CHECKBOX_ & ") edition mode for '" & IUG_CREATION_CHECKBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14613,6 +15409,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															'Fond couleur
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_FOND_COULEUR
 															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -14648,6 +15448,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).IUG_UPDATER 
 															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).THREAD_OK 
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.ContextMenu
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).POS_Y
@@ -14663,6 +15465,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Texte par defaut
 															GUI__PROP_TEXTE			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).TEXTE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Blurry_Mode
 															
 															
 															GUI__PROP_VALEUR		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).VALEUR
@@ -14745,6 +15549,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.DESKTOPMODE
 															
 															' Couleur de fond OUI ou NON
 															GUI__PROP_FOND_COULEUR  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Fond_Couleur
@@ -14755,6 +15562,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).PROP_TYPE.Liste_Evenements)
@@ -14767,7 +15578,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											End if
 											
 										ElseIF Instr(RetourCCP, ":EXPLORER_NOM=") > 0 Then
-											IUG_CREATION_EXPLORER = MID(RetourCCP, Instr(RetourCCP, ":EXPLORER_NOM=") + 12)
+											IUG_CREATION_EXPLORER = MID(RetourCCP, Instr(RetourCCP, ":EXPLORER_NOM=") + 14)
 											
 											
 											IF Modification_IUG = True Then
@@ -14788,9 +15599,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-																	DEBUG("[CpcdosC+] GUI --> Mode edition du explorer '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du explorer(" & _INDEX_EXPLORER_ & ") '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																Else
-																	DEBUG("[CpcdosC+] GUI --> Explorer edition mode for '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																	DEBUG("[CpcdosC+] GUI --> Explorer(" & _INDEX_EXPLORER_ & ") edition mode for '" & IUG_CREATION_EXPLORER & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 																End If
 															End if
 															
@@ -14820,6 +15631,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 															' Evenement
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -14853,7 +15668,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Proprietes uniques de l'objet concerne
 															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IUG_UPDATER 
-															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).THREAD_OK 
+															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).THREAD_OK
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.ContextMenu 
 															
 															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).POS_X 
 															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).POS_Y
@@ -14865,12 +15682,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_IMAGE_ANCIEN 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMAGE_ANCIEN
 															
 															
-															GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_CHECKBOX_).IMG_ORG_ID
+															' GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_ORG_ID
 															
 															
 															GUI__PROP_IMG_BUFFER_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_BUFFER_ID
 															GUI__PROP_IMG_SELECTEUR_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_SELECTEUR_ID
-	
+															GUI__PROP_IMG_SCROLL_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).IMG_SCROLL_ID
+															
+
+															GUI__PROP_SCROLLING_Y		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).SCROLLING_Y
+															GUI__PROP_Mode_Affichage	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).Mode_Affichage
 															
 															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).BIT_ORG
 															
@@ -14882,14 +15703,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.AutoSizeIMG
 															
 															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Blurry_Mode
 															
 															
 															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
 															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_R < 1 Then
 																ADD_NUM_R = "000"
-															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_R < 10 Then
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_R < 10 Then
 																ADD_NUM_R = "00"
-															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_R < 100 Then
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_R < 100 Then
 																ADD_NUM_R = "0"
 															End if
 
@@ -14908,7 +15731,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_B < 100 Then
 																ADD_NUM_B = "0"
 															End if
-															GUI__PROP_COULEURFENETRE = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_R & "," _
+															GUI__PROP_COULEURTEXTE = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_R & "," _
 																						& ADD_NUM_V & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_V & ","_
 																						& ADD_NUM_B & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Couleur_FNT_B
 															
@@ -14946,6 +15769,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															' Type
 															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.DESKTOPMODE
 															
 															' Bordure
 															if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Bordure >= 1 then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Bordure = 1 else CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Bordure = 0
@@ -14955,6 +15781,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															' Transparence generale  ===> GUI__PROP_COULEURALPHA
 															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Alpha)
 															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.MENU_CTX
+
 															' Fichier de fonction source pour les evenement des objets
 															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Fichier_evenement
 															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_EXPLORER_).PROP_TYPE.Liste_Evenements)
@@ -14965,7 +15794,224 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												Next _INDEX_EXPLORER_
 											
 											End if
+										
+										ElseIF Instr(RetourCCP, ":LISTBOX_NOM=") > 0 Then
+											IUG_CREATION_LISTBOX = MID(RetourCCP, Instr(RetourCCP, ":LISTBOX_NOM=") + 13)
 											
+											
+											IF Modification_IUG = True Then
+												For _INDEX_LISTBOX_ = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+												
+													IF IUG_CREATION_LISTBOX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Nom Then
+														
+														' Verifier si la cle d'identification KERNEL, OS, USER, et PID est identique
+														IF CPCDOS_INSTANCE.get_id_kernel(_CLE_) 		= CPCDOS_INSTANCE.get_id_kernel(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
+															CPCDOS_INSTANCE.get_id_OS(_CLE_) 			= CPCDOS_INSTANCE.get_id_OS(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) AND _
+															CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) 	= CPCDOS_INSTANCE.get_id_Utilisateur(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
+															' CPCDOS_INSTANCE.get_id_PID(_CLE_) 			= CPCDOS_INSTANCE.get_id_PID(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_) Then
+
+													
+															Dim ADD_NUM_R as String
+															Dim ADD_NUM_V as String
+															Dim ADD_NUM_B as String
+															
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+																	DEBUG("[CpcdosC+] GUI --> Mode edition du listbox(" & IUG_CREATION_LISTBOX & ") '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																Else
+																	DEBUG("[CpcdosC+] GUI --> Listbox(" & IUG_CREATION_LISTBOX & ") edition mode for '" & IUG_CREATION_LISTBOX & "' UID:" & CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_) & " PID:" & CPCDOS_INSTANCE.get_id_PID(_CLE_) & " TID:" & CPCDOS_INSTANCE.get_id_TID(_CLE_), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																End If
+															End if
+															
+															IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+																IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+																	DEBUG("[CpcdosC+] Recuperation des proprietes grahpiques en memoire...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																Else
+																	DEBUG("[CpcdosC+] Recovery graphical properties in memory...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+																End If
+															End if
+
+															' Couleur du picturebox ===> GUI__PROP_COULEURFOND
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_V = val(Mid(GUI__PROP_COULEURFOND, 5, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_B = val(Mid(GUI__PROP_COULEURFOND, 9, 3))
+															
+															' Couleur de la police d'ecriture ===> GUI__PROP_COULEURTEXTE
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_R = val(Mid(GUI__PROP_COULEURTEXTE, 1, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_V = val(Mid(GUI__PROP_COULEURTEXTE, 5, 3))
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_B = val(Mid(GUI__PROP_COULEURTEXTE, 9, 3))
+															
+															' Transparence generale  ===> GUI_PROP_COULEURALPHA
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+															
+															' Bordure
+															if GUI__PROP_TYPE_BORDURE >= 1 then GUI__PROP_TYPE_BORDURE = 1 else GUI__PROP_TYPE_BORDURE = 0
+															
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+															
+															' Menu context
+															if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
+															' Evenement
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
+															
+															GUI__DEJA_INITIALISE	= TRUE
+															
+															' Proprietes d'identification du Processus hebergeur
+															GUI__PROC_PARENT	 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Proc_PARENT
+															GUI__PID_PARENT			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.PID_PARENT 
+															
+															' Proprietes d'identification du Thread executif
+															GUI__THREAD_PARENT	 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.THREAD_PARENT
+															GUI__TID_PARENT			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.TID_PARENT
+															
+															' Proprietes d'identification d'Objet graphique hebergeur
+															GUI__Fenetre_PARENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Fenetre_PARENT
+															GUI__Index_FNT_PARENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Index_FNT_PARENT
+															GUI__Handle_PARENT 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Handle_PARENT
+															
+															' Proprietes d'identification de l'Objet concerne
+															GUI__Nom				= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Nom
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.Index_ENFANT = _INDEX_LISTBOX_
+															GUI__Index_ENFANT		= _INDEX_LISTBOX_
+															GUI__Handle				= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.handle
+															
+															IUG_CREATION_LISTBOX 	= GUI__Nom
+															
+															Nouvelle_Cle_GUI 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet._CLE_
+															
+															Nouvelle_OS_ID 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Identification_Objet.OS_id
+															
+															' Proprietes uniques de l'objet concerne
+															GUI__PROP_UPDATER 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IUG_UPDATER 
+															GUI__THREAD_OK	 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).THREAD_OK
+
+															GUI__PROP_TYPE_ContextMenu = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.ContextMenu 
+															
+															GUI__PROP_PX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).POS_X 
+															GUI__PROP_PY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).POS_Y
+															
+															GUI__PROP_TX 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SIZ_X
+															GUI__PROP_TY 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SIZ_Y
+															
+															GUI__PROP_IMAGE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMAGE
+															GUI__PROP_IMAGE_ANCIEN 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMAGE_ANCIEN
+															
+															
+															'GUI__PROP_IMAGE_ORG_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_ORG_ID
+															
+															
+															GUI__PROP_IMG_BUFFER_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_BUFFER_ID
+															GUI__PROP_IMG_SELECTEUR_ID	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_SELECTEUR_ID
+															GUI__PROP_IMG_SCROLL_ID		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).IMG_SCROLL_ID
+															
+
+															GUI__PROP_SCROLLING_Y		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).SCROLLING_Y
+															GUI__PROP_Mode_Affichage	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).Mode_Affichage
+															
+															GUI__PROP_BIT_ORG		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).BIT_ORG
+															
+															GUI__PROP_TEXTE			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).TEXTE
+															
+															
+															GUI__PROP_TYPE 			= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.LES_TYPES
+															
+															GUI__PROP_AUTOSIZE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.AutoSizeIMG
+															
+															CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).DejaSize = FALSE
+
+															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Blurry_Mode
+															
+															
+															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 1 Then
+																ADD_NUM_R = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 10 Then
+																ADD_NUM_R = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R < 100 Then
+																ADD_NUM_R = "0"
+															End if
+
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 1 Then
+																ADD_NUM_V = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 10 Then
+																ADD_NUM_V = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V < 100 Then
+																ADD_NUM_V = "0"
+															End if
+															
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 1 Then
+																ADD_NUM_B = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 10 Then
+																ADD_NUM_B = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B < 100 Then
+																ADD_NUM_B = "0"
+															End if
+															GUI__PROP_COULEURTEXTE = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_R & "," _
+																						& ADD_NUM_V & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_V & ","_
+																						& ADD_NUM_B & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_FNT_B
+															
+															ADD_NUM_R = "" : ADD_NUM_V = "" : ADD_NUM_B = ""
+															
+															' Couleur du conteneur  ===> GUI__PROP_COULEURFOND
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 1 Then
+																ADD_NUM_R = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 10 Then
+																ADD_NUM_R = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R < 100 Then
+																ADD_NUM_R = "0"
+															End if
+
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 1 Then
+																ADD_NUM_V = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 10 Then
+																ADD_NUM_V = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V < 100 Then
+																ADD_NUM_V = "0"
+															End if
+															
+															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 1 Then
+																ADD_NUM_B = "000"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 10 Then
+																ADD_NUM_B = "00"
+															ElseIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B < 100 Then
+																ADD_NUM_B = "0"
+															End if
+															GUI__PROP_COULEURFOND = ADD_NUM_R & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_R & "," _
+																						& ADD_NUM_V & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_V & ","_
+																						& ADD_NUM_B & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Couleur_CTN_B															
+															
+															ADD_NUM_R = "" : ADD_NUM_V = "" : ADD_NUM_B = ""
+															
+															' Type
+															GUI__PROP_TYPE_OBJ 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.TYPE_OBJ
+
+															' Mode bureau
+															GUI__PROP_TYPE_DESKTOPMODE = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.DESKTOPMODE
+															
+															' Bordure
+															if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure >= 1 then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure = 1 else CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure = 0
+															
+															GUI__PROP_TYPE_BORDURE 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Bordure
+
+															' Transparence generale  ===> GUI__PROP_COULEURALPHA
+															GUI__PROP_COULEURALPHA 	= str(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Alpha)
+															
+															' Menu contextuel
+															GUI__PROP_CTX = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.MENU_CTX
+
+															' Fichier de fonction source pour les evenement des objets
+															GUI__PROP_EVENEMENT 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Fichier_evenement
+															GUI__PROP_EVENEMENT_DISPO 	= Ucase(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_LISTBOX_).PROP_TYPE.Liste_Evenements)
+
+															Exit for
+														End if
+													End if
+												Next _INDEX_LISTBOX_
+											
+											End if
 										
 										' Les fins des declaration d'objets
 										ELSEIF Instr(RetourCCP, "IUG:FENETRE_FIN") > 0 Then
@@ -14984,47 +16030,57 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IUG_CREATION_CHECKBOX = ""
 										ELSEIF Instr(RetourCCP, "IUG:EXPLORER_FIN") > 0 Then
 											IUG_CREATION_EXPLORER = ""
+										ELSEIF Instr(RetourCCP, "IUG:LISTBOX_FIN") > 0 Then
+											IUG_CREATION_LISTBOX = ""
 										
 										
 										' **** Proprietes graphiques ****
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TITRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_TITRE=") + 12)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TEXTE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TEXTE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TEXTE = MID(RetourCCP, Instr(RetourCCP, ":PROP_TEXTE=") + 12)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_NOM=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Nom, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Nom, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__Nom, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__Nom = MID(RetourCCP, Instr(RetourCCP, ":PROP_NOM=") + 10)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PID=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PID_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PID_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PID_PARENT), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PID_PARENT = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PID=") + 10))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_HANDLE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Handle_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__Handle_PARENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__Handle_PARENT), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__Handle_PARENT = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_HANDLE=") + 13))
+												' Trouver les derniers elements pour optimiser et corriger certain bugs
+												for boucle as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+													if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).identification_objet.handle = GUI__Handle_PARENT Then
+														GUI__Index_FNT_PARENT = boucle
+														GUI__Fenetre_PARENT = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).identification_objet.nom
+														exit for
+													end if
+												next boucle
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TYPE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TYPE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TYPE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_TYPE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TYPE = ucase(MID(RetourCCP, Instr(RetourCCP, ":PROP_TYPE=") + 11))
@@ -15047,14 +16103,38 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "ALPHAMODE:0") > 0 Then GUI__PROP_ALPHA_MODE = 0
 												IF INSTR(GUI__PROP_TYPE, "ALPHAMODE:1") > 0 Then GUI__PROP_ALPHA_MODE = 1
 												IF INSTR(GUI__PROP_TYPE, "ALPHAMODE:2") > 0 Then GUI__PROP_ALPHA_MODE = 2
+
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:0") > 0 Then GUI__PROP_BLURRY_MODE = 0
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:1") > 0 Then GUI__PROP_BLURRY_MODE = 1
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:2") > 0 Then GUI__PROP_BLURRY_MODE = 2
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:3") > 0 Then GUI__PROP_BLURRY_MODE = 3
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:4") > 0 Then GUI__PROP_BLURRY_MODE = 4
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:5") > 0 Then GUI__PROP_BLURRY_MODE = 5
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:6") > 0 Then GUI__PROP_BLURRY_MODE = 6
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:7") > 0 Then GUI__PROP_BLURRY_MODE = 7
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:8") > 0 Then GUI__PROP_BLURRY_MODE = 8
+												IF INSTR(GUI__PROP_TYPE, "BLURRY:9") > 0 Then GUI__PROP_BLURRY_MODE = 9
 												
 												IF INSTR(GUI__PROP_TYPE, "COL:0") > 0 Then GUI__PROP_FOND_COULEUR = FALSE
 												IF INSTR(GUI__PROP_TYPE, "COL:1") > 0 Then GUI__PROP_FOND_COULEUR = TRUE
+
+												' Menu contextuel
+												IF INSTR(GUI__PROP_TYPE, "CTX:0") > 0 Then GUI__PROP_CTX = 0
+												IF INSTR(GUI__PROP_TYPE, "CTX:1") > 0 Then GUI__PROP_CTX = 1
+												IF INSTR(GUI__PROP_TYPE, "CTX:2") > 0 Then GUI__PROP_CTX = 2
 												
 												' Mode d'affichage image
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:0") > 0 Then GUI__PROP_AUTOSIZE = 0 ' Par defaut
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:1") > 0 Then GUI__PROP_AUTOSIZE = 1 ' Adapte a l'image
 												IF INSTR(GUI__PROP_TYPE, "IMGAUTO:2") > 0 Then GUI__PROP_AUTOSIZE = 2 ' Adapte au picturebox appel les fonctions de resize
+
+												' Mode affichage Explorer
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:0") > 0 Then GUI__PROP_Mode_Affichage = 0 ' Mode petite liste
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:1") > 0 Then GUI__PROP_Mode_Affichage = 1 ' Mode moyenne liste
+												IF INSTR(GUI__PROP_TYPE, "EXPLOREMODE:2") > 0 Then GUI__PROP_Mode_Affichage = 2 ' Mode icones
+
+												IF INSTR(GUI__PROP_TYPE, "DESKTOPMODE:1") > 0 Then GUI__PROP_TYPE_DESKTOPMODE = true
+												IF INSTR(GUI__PROP_TYPE, "DESKTOPMODE:0") > 0 Then GUI__PROP_TYPE_DESKTOPMODE = false
 												
 												' Type de fenetre
 												IF INSTR(GUI__PROP_TYPE, "TYPE:0") > 0 Then GUI__PROP_TYPE_OBJ = 0
@@ -15066,6 +16146,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "TYPE:6") > 0 Then GUI__PROP_TYPE_OBJ = 6
 												IF INSTR(GUI__PROP_TYPE, "TYPE:7") > 0 Then GUI__PROP_TYPE_OBJ = 7
 												IF INSTR(GUI__PROP_TYPE, "TYPE:8") > 0 Then GUI__PROP_TYPE_OBJ = 8
+
 												
 												IF INSTR(GUI__PROP_TYPE, "BORD:0") > 0 Then GUI__PROP_TYPE_BORDURE = 0
 												IF INSTR(GUI__PROP_TYPE, "BORD:1") > 0 Then GUI__PROP_TYPE_BORDURE = 1
@@ -15073,15 +16154,57 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "BORD:3") > 0 Then GUI__PROP_TYPE_BORDURE = 3
 												IF INSTR(GUI__PROP_TYPE, "BORD:4") > 0 Then GUI__PROP_TYPE_BORDURE = 4
 												IF INSTR(GUI__PROP_TYPE, "BORD:5") > 0 Then GUI__PROP_TYPE_BORDURE = 5
+
+												IF INSTR(GUI__PROP_TYPE, "BORDER:0") > 0 Then GUI__PROP_TYPE_BORDURE = 0
+												IF INSTR(GUI__PROP_TYPE, "BORDER:1") > 0 Then GUI__PROP_TYPE_BORDURE = 1
+												IF INSTR(GUI__PROP_TYPE, "BORDER:2") > 0 Then GUI__PROP_TYPE_BORDURE = 2
+												IF INSTR(GUI__PROP_TYPE, "BORDER:3") > 0 Then GUI__PROP_TYPE_BORDURE = 3
+												IF INSTR(GUI__PROP_TYPE, "BORDER:4") > 0 Then GUI__PROP_TYPE_BORDURE = 4
+												IF INSTR(GUI__PROP_TYPE, "BORDER:5") > 0 Then GUI__PROP_TYPE_BORDURE = 5
 												
 												IF INSTR(GUI__PROP_TYPE, "MOVE:0") > 0 Then GUI__PROP_DEPLACABLE = False
 												IF INSTR(GUI__PROP_TYPE, "MOVE:1") > 0 Then GUI__PROP_DEPLACABLE = True
 												
 												IF INSTR(GUI__PROP_TYPE, "SIZ:0") > 0 Then GUI__PROP_SIZEABLE_ANGL = False
 												IF INSTR(GUI__PROP_TYPE, "SIZ:1") > 0 Then GUI__PROP_SIZEABLE_ANGL = True
+
+												IF INSTR(GUI__PROP_TYPE, "PRIORITY:0") > 0 Then GUI__PROP_PRIORITY = false
+												IF INSTR(GUI__PROP_TYPE, "PRIORITY:1") > 0 Then GUI__PROP_PRIORITY = True
+
+												IF INSTR(GUI__PROP_TYPE, "MINSIZ_X:") > 0 Then 
+													Dim temp_var as String = MID(GUI__PROP_TYPE, INSTR(GUI__PROP_TYPE, "MINSIZ_X:") + 9)
+													GUI__PROP_MINIMAL_SIZE_X = VAL(Mid(temp_var, 1, INSTR(temp_var, "P") - 1))
+												End if
+
+												IF INSTR(GUI__PROP_TYPE, "MINSIZ_Y:") > 0 Then 
+													Dim temp_var as String = MID(GUI__PROP_TYPE, INSTR(GUI__PROP_TYPE, "MINSIZ_Y:") + 9)
+													GUI__PROP_MINIMAL_SIZE_Y = VAL(Mid(temp_var, 1, INSTR(temp_var, "P") - 1))
+												End if
+
+												IF INSTR(GUI__PROP_TYPE, "MAXSIZ_X:") > 0 Then 
+													Dim temp_var as String = MID(GUI__PROP_TYPE, INSTR(GUI__PROP_TYPE, "MAXSIZ_X:") + 9)
+													GUI__PROP_MAXIMAL_SIZE_X = VAL(Mid(temp_var, 1, INSTR(temp_var, "P") - 1))
+												End if
+
+												IF INSTR(GUI__PROP_TYPE, "MAXSIZ_Y:") > 0 Then 
+													Dim temp_var as String = MID(GUI__PROP_TYPE, INSTR(GUI__PROP_TYPE, "MAXSIZ_Y:") + 9)
+													GUI__PROP_MAXIMAL_SIZE_Y = VAL(Mid(temp_var, 1, INSTR(temp_var, "P") - 1))
+												End if
+
+												IF INSTR(GUI__PROP_TYPE, "COLLISION:0") > 0 Then GUI__PROP_COLLISION = false
+												IF INSTR(GUI__PROP_TYPE, "COLLISION:1") > 0 Then GUI__PROP_COLLISION = True
+
 												
 												IF INSTR(GUI__PROP_TYPE, "CLOSE:1") > 0 Then GUI__PROP_FERMABLE = True
 												IF INSTR(GUI__PROP_TYPE, "CLOSE:0") > 0 Then GUI__PROP_FERMABLE = false
+
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:0") > 0 Then GUI__PROP_TASKBAR = 0
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:1") > 0 Then GUI__PROP_TASKBAR = 1
+												IF INSTR(GUI__PROP_TYPE, "TASKBAR:2") > 0 Then GUI__PROP_TASKBAR = 2
+												
+												IF INSTR(GUI__PROP_TYPE, "TASKBARHIDE:0") > 0 Then GUI__PROP_No_TASKBAR = false
+												IF INSTR(GUI__PROP_TYPE, "TASKBARHIDE:1") > 0 Then GUI__PROP_No_TASKBAR = true
+
 												
 												IF INSTR(GUI__PROP_TYPE, "SIZBTN:0") > 0 Then GUI__PROP_SIZEABLE = False
 												IF INSTR(GUI__PROP_TYPE, "SIZBTN:1") > 0 Then GUI__PROP_SIZEABLE = True
@@ -15114,83 +16237,85 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:0") > 0 Then GUI__PROP_TYPE_Console = FALSE
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:1") > 0 Then GUI__PROP_TYPE_Console = TRUE
 
-												
-												
+												IF INSTR(GUI__PROP_TYPE, "MENUCONTEXT:0") > 0 Then GUI__PROP_TYPE_ContextMenu = 0
+												IF INSTR(GUI__PROP_TYPE, "MENUCONTEXT:1") > 0 Then GUI__PROP_TYPE_ContextMenu = 1
+												IF INSTR(GUI__PROP_TYPE, "MENUCONTEXT:2") > 0 Then GUI__PROP_TYPE_ContextMenu = 2
+
 											End if
 
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURFENETRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFENETRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFENETRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURFENETRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURFENETRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURFENETRE=") + 21)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURFOND=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFOND, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURFOND, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURFOND, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURFOND = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURFOND=") + 18)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURTITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURTITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURTITRE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURTITRE=") + 19)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_COULEURTEXTE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURTEXTE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURTEXTE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURTEXTE = MID(RetourCCP, Instr(RetourCCP, ":PROP_COULEURTEXTE=") + 19)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PX=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_PX), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_PX = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PX=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_PY=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_PY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_PY), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_PY = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_PY=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TX=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TX, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_TX), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TX = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_TX=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_TY=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_TY, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_TY), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_TY = Val(MID(RetourCCP, Instr(RetourCCP, ":PROP_TY=") + 9))
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:ICONE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_ICONE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_ICONE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_ICONE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_ICONE = MID(RetourCCP, Instr(RetourCCP, ":ICONE=") + 7)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:IMGTITRE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMGTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMGTITRE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_IMGTITRE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_IMGTITRE = MID(RetourCCP, Instr(RetourCCP, ":IMGTITRE=") + 10)
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:IMAGE=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMAGE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_IMAGE, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_IMAGE, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_IMAGE = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":IMAGE=") + 7))
@@ -15199,7 +16324,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
 
 												
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_VALEUR, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_VALEUR, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(str(GUI__PROP_VALEUR), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_VALEUR = val(LTRIM(MID(RetourCCP, Instr(RetourCCP, ":VALEUR=") + 8)))
@@ -15207,7 +16332,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											End if
 										ELSEIF Instr(RetourCCP, "IUG:PROP_ALPHA=") > 0 Then
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURALPHA, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_COULEURALPHA, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_COULEURALPHA, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_COULEURALPHA = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":PROP_ALPHA=") + 12))
@@ -15215,7 +16340,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 										ELSEIF Instr(RetourCCP, "IUG:PROP_EVENEMENT=") > 0 Then
 											
 											IF Instr(RetourCCP, "#@#RETOUR-VAL#") > 0 Then 
-												CpcdosCP_SHELL("FIX/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_EVENEMENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
+												CpcdosCP_SHELL("SET/ " & MID(RetourCCP, Instr(RetourCCP, "#@#RETOUR-VAL#") + 14) & " = " & GUI__PROP_EVENEMENT, Nouvelle_Cle, Niveau_2, Param_1, Param_2)
 												DEBUG(GUI__PROP_EVENEMENT, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 											else
 												GUI__PROP_EVENEMENT = LTRIM(MID(RetourCCP, Instr(RetourCCP, ":PROP_EVENEMENT=") + 16))
@@ -15276,6 +16401,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.Initialisation_OK 	= GUI__DEJA_INITIALISE
 												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.POS_X				= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.POS_Y				= GUI__PROP_PY
 												
@@ -15285,6 +16412,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.CONTENEUR_COMPLET 	= GUI__PROP_CONTENEUR_COMPLET
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.Alpha_Mode 		= GUI__PROP_ALPHA_MODE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.IMG_TITRE			= GUI__PROP_IMGTITRE
 												
@@ -15373,6 +16502,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Type
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
 												
 												' Bordure
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
@@ -15383,7 +16515,23 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Reductable 		= GUI__PROP_REDUCTABLE
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Sizeable 		= GUI__PROP_SIZEABLE
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Sizeable_ANGL 	= GUI__PROP_SIZEABLE_ANGL
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.IsPriority 		= GUI__PROP_PRIORITY
+
+												
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Minimal_size_X 	= GUI__PROP_MINIMAL_SIZE_X
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Minimal_size_Y 	= GUI__PROP_MINIMAL_SIZE_Y
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Maximal_size_X 	= GUI__PROP_MAXIMAL_SIZE_X
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Maximal_size_Y 	= GUI__PROP_MAXIMAL_SIZE_Y
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Collision	 	= GUI__PROP_COLLISION
+												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Fermable 		= GUI__PROP_FERMABLE
+
+												' Barre des taches (Toujours au premier plan)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.TaskBar			= GUI__PROP_TASKBAR
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.NoTaskBar		= GUI__PROP_No_TASKBAR
 												
 												' Ombre sous la fenetre
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Ombre = GUI__PROP_TYPE_Ombre
@@ -15391,6 +16539,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Transparence generale  ===> GUI__PROP_COULEURALPHA
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
 												
 												' Fichier de fonction source pour les evenement des objets
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
@@ -15416,6 +16568,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEMOVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_MouseMove 	= TRUE
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSECLICK") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_MouseClick 	= TRUE
 													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYPRESS") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_KeyPress 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYENTER") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__FENETRE.PROP_TYPE.EV_KeyEnter 	= TRUE
 									
 												End if
 												
@@ -15475,6 +16628,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.IMAGE_SURVOLE_OPACITE > 255 Then
 													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.IMAGE_SURVOLE_OPACITE = 255
 												End if
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.IMAGE			= GUI__PROP_IMAGE
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.IMAGE_ANCIEN 	= GUI__PROP_IMAGE_ANCIEN
@@ -15492,7 +16647,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_BOUTON += 1
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.TEXTE 		= GUI__PROP_TEXTE
-												
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+
+
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.POS_X		= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.POS_Y		= GUI__PROP_PY
 												
@@ -15516,10 +16674,20 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Transparence generale  ===> GUI_PROP_COULEURALPHA
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
 												
 												' Bordure
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__BOUTON.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -15610,6 +16778,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.IUG_UPDATER = GUI__PROP_UPDATER
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_PICTUREBOX += 1
 												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.POS_X		= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.POS_Y		= GUI__PROP_PY
 												
@@ -15619,6 +16789,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
 
 												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
@@ -15630,6 +16802,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Couleur_FNT_V = val(Mid(GUI__PROP_COULEURTEXTE, 5, 3))
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Couleur_FNT_B = val(Mid(GUI__PROP_COULEURTEXTE, 9, 3))
 												
+												
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+												
+												
 												' Transparence generale  ===> GUI_PROP_COULEURALPHA
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
 												
@@ -15639,6 +16819,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Bordure
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -15716,7 +16900,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.TEXTE 		= GUI__PROP_TEXTE
 												
-												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.POS_X		= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.POS_Y		= GUI__PROP_PY
 												
@@ -15724,8 +16909,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.SIZ_Y		= GUI__PROP_TY
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
+
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
 
 												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
@@ -15746,6 +16939,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Couleur de fond OUI ou NON
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fond_Couleur = GUI__PROP_Fond_Couleur
 												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBLOCK.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -15835,6 +17032,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Multi_Lignes = GUI__PROP_TYPE_MultiLignes
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Console = GUI__PROP_TYPE_Console
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_X				= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.POS_Y				= GUI__PROP_PY
@@ -15845,6 +17044,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+
 
 												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
@@ -15865,6 +17073,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Couleur de fond OUI ou NON
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fond_Couleur = GUI__PROP_Fond_Couleur
 												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -15960,6 +17172,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.BIT_ORG								= GUI__PROP_BIT_ORG
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Multi_Lignes 				= GUI__PROP_TYPE_MultiLignes
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.POS_X									= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.POS_Y									= GUI__PROP_PY
@@ -15970,6 +17184,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.LES_TYPES 					= GUI__PROP_TYPE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.AutoSizeIMG 					= GUI__PROP_AUTOSIZE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+
+
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+
 
 												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
@@ -15990,6 +17214,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Couleur de fond OUI ou NON
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fond_Couleur 				= GUI__PROP_Fond_Couleur
 												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Fichier_evenement 			= GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PROGRESSBAR.PROP_TYPE.Liste_Evenements				= GUI__PROP_EVENEMENT_DISPO
@@ -16077,7 +17305,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_fond_ID		 					= GUI__PROP_IMAGE_fond_ID
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_ORG_ID							= GUI__PROP_IMAGE_ORG_ID
 												
-												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
 												
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_PTR								= GUI__PROP_IMAGEPTR ' Obtenir le pointeur du context GZE
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_PTR_ORG							= GUI__PROP_IMAGEPTR_ORG ' Obtenir le pointeur du context GZE
@@ -16086,6 +17314,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.BIT_ORG								= GUI__PROP_BIT_ORG
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Multi_Lignes 				= GUI__PROP_TYPE_MultiLignes
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+												
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.POS_X									= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.POS_Y									= GUI__PROP_PY
@@ -16100,8 +17331,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_CHECKED_SURVOLE					= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CHECKBOX.IMG_SURVOLE_CHECKED", 3, _CLE_))	
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_NCHECKED							= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CHECKBOX.IMG_NOCHECKED", 3, _CLE_))	
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.IMG_NCHECKED_SURVOLE					= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CHECKBOX.IMG_SURVOLE_NOCHECKED", 3, _CLE_))	
-												
-												
+								
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+
+
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.LES_TYPES 					= GUI__PROP_TYPE
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.AutoSizeIMG 				= GUI__PROP_AUTOSIZE
@@ -16125,6 +17362,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Couleur de fond OUI ou NON
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fond_Couleur 				= GUI__PROP_Fond_Couleur
 												
+												
+												' Menu contextuel
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 0
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Fichier_evenement 			= GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__CHECKBOX.PROP_TYPE.Liste_Evenements				= GUI__PROP_EVENEMENT_DISPO
@@ -16214,6 +17456,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_BUFFER_ID				= GUI__PROP_IMG_BUFFER_ID
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SELECTEUR_ID 			= GUI__PROP_IMG_SELECTEUR_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SCROLL_ID 			= GUI__PROP_IMG_SCROLL_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.SCROLLING_Y 				= GUI__PROP_SCROLLING_Y
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.Mode_Affichage 			= GUI__PROP_Mode_Affichage
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+												
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
 												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
 
@@ -16225,12 +17474,20 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER += 1
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.TEXTE 		= GUI__PROP_TEXTE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.POS_X		= GUI__PROP_PX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.POS_Y		= GUI__PROP_PY
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.SIZ_X		= GUI__PROP_TX
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.SIZ_Y		= GUI__PROP_TY
+												
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
 												
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
@@ -16253,6 +17510,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												' Bordure
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
 												
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+												' Menu contextuel
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
 												' Evenement
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__EXPLORER.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
@@ -16285,9 +17546,157 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												
 												' Creer l'explorer
 												if Modification_IUG = True Then
-													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, GUI__Index_ENFANT))
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, _INDEX_EXPLORER_))
 												Else
 													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, 0))
+												End if
+
+												' On re-execute la commande mais uniquement pour faire un debug pour recuperer
+												'  le numero de PID et pouvoir le socker dans une variable
+												' Ca ne vas pas re-creer la fenetre mais ca va simplement renvoyer un texte garce a /#RENVOIDEBUG:
+												RetourCCP = CpcdosCP_SHELL(Buffer_lecture & " /#RENVOIDEBUG:" & Retour_Resultat, Nouvelle_Cle_GUI, Niveau_2, Param_1, Param_2)
+
+											ELSEIF NOT IUG_CREATION_LISTBOX = "" Then
+												Dim Retour_Resultat as string
+												
+												IF Modification_IUG = True Then
+													IF GUI__Handle_PARENT > 0  Then
+														CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT = GUI__Handle_PARENT
+														' GUI__Handle_PARENT = 0
+													End if
+												else
+													Nouvelle_Cle_GUI = Nouvelle_Cle
+												End if
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet._CLE_ 		= Nouvelle_Cle_GUI
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Identification_Objet.OS_id 		= Nouvelle_OS_ID
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Initialisation_OK = GUI__DEJA_INITIALISE
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PROC_PARENT		= GUI__PROC_PARENT 		' Nom du processus parent (Optionnel)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.PID_PARENT		= GUI__PID_PARENT 		' PID du parent 
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.THREAD_PARENT		= GUI__THREAD_PARENT 	' Nom du thread parent (Optionnel)
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.TID_PARENT		= GUI__TID_PARENT	 	' Nom du thread parent (Optionnel)
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Fenetre_PARENT 	= GUI__Fenetre_PARENT 	' Nom de la fenetre
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_FNT_PARENT 	= GUI__Index_FNT_PARENT ' Index de la fenetre
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle_PARENT 	= GUI__Handle_PARENT 	' Handle de la fenetre hebergeur
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.NOM				= IUG_CREATION_LISTBOX	' Nom de l'objet
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Index_ENFANT		= GUI__Index_ENFANT		' Index de l'objet
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.identification_objet.Handle			= GUI__Handle			' Handle de l'objet (Unique)
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE							= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE", 3, _CLE_))	
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE					= Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.BUTTON.SURVOLE_OPACITE", 3, _CLE_))	
+												
+												IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE < 0 Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE = 0
+												ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE > 255 Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_SURVOLE_OPACITE = 255
+												End if
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE			= GUI__PROP_IMAGE
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMAGE_ANCIEN 	= GUI__PROP_IMAGE_ANCIEN
+									
+															
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_BUFFER_ID				= GUI__PROP_IMG_BUFFER_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SELECTEUR_ID 			= GUI__PROP_IMG_SELECTEUR_ID
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SCROLL_ID 			= GUI__PROP_IMG_SCROLL_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SCROLLING_Y 				= GUI__PROP_SCROLLING_Y
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.Mode_Affichage 			= GUI__PROP_Mode_Affichage
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+												
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SURVOLE_ID 		= GUI__PROP_IMAGE_SURVOLE_ID
+												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IMG_SURVOLE_ORG_ID 	= GUI__PROP_IMAGE_SURVOLE_ORG_ID
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.BIT_ORG			= GUI__PROP_BIT_ORG ' Obtenir le pointeur du context GZE
+												
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.IUG_UPDATER = GUI__PROP_UPDATER
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX += 1
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.TEXTE 		= GUI__PROP_TEXTE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.POS_X		= GUI__PROP_PX
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.POS_Y		= GUI__PROP_PY
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SIZ_X		= GUI__PROP_TX
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.SIZ_Y		= GUI__PROP_TY
+												
+												' Type
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.TYPE_OBJ = GUI__PROP_TYPE_OBJ
+
+												' Mode bureau
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.DESKTOPMODE = GUI__PROP_TYPE_DESKTOPMODE
+												
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.LES_TYPES = GUI__PROP_TYPE
+												
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
+
+												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_V = val(Mid(GUI__PROP_COULEURFOND, 5, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_CTN_B = val(Mid(GUI__PROP_COULEURFOND, 9, 3))
+												
+												' Couleur de la police d'ecriture ===> GUI__PROP_COULEURTEXTE
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_R = val(Mid(GUI__PROP_COULEURTEXTE, 1, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_V = val(Mid(GUI__PROP_COULEURTEXTE, 5, 3))
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Couleur_FNT_B = val(Mid(GUI__PROP_COULEURTEXTE, 9, 3))
+												
+												' Transparence generale  ===> GUI_PROP_COULEURALPHA
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Alpha = val(GUI__PROP_COULEURALPHA)
+												
+												' Bordure
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Bordure = GUI__PROP_TYPE_BORDURE
+												
+												if GUI__PROP_CTX = -1 then GUI__PROP_CTX = 1
+												' Menu contextuel
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.MENU_CTX = GUI__PROP_CTX
+
+												' Evenement
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Fichier_evenement = GUI__PROP_EVENEMENT
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.Liste_Evenements = GUI__PROP_EVENEMENT_DISPO
+												
+												
+												' Cette partie permet de gagner des performances en autorisant seulement la recherche
+												'  de quelques evenements. Si rien n'est precise, il recherchera tout.
+												IF Len(GUI__PROP_EVENEMENT_DISPO) > 0 Then
+													
+													' Si le developpeur precise les evenements alors on interdit tout
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_Click		= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseEnter	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseMove	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseLeave	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseClick	= FALSE
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_KeyPress	= FALSE
+												
+													' Et on autorise certain evenements
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "CLICK") 		> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_Click		= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEENTER") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseEnter 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSELEAVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseLeave 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSEMOVE") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseMove 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "MOUSECLICK") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_MouseClick 	= TRUE
+													IF Instr(GUI__PROP_EVENEMENT_DISPO, "KEYPRESS") 	> 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__LISTBOX.PROP_TYPE.EV_KeyPress 	= TRUE
+
+									
+												End if
+												
+
+												
+												' Creer la listbox
+												if Modification_IUG = True Then
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, _INDEX_LISTBOX_))
+												Else
+													Retour_Resultat = str(CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_Init_obj(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, Nouvelle_Cle_GUI, Modification_IUG, 0))
 												End if
 
 												' On re-execute la commande mais uniquement pour faire un debug pour recuperer
@@ -16314,18 +17723,32 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IUG_CREATION_PROGRESSBAR 	= ""
 											IUG_CREATION_CHECKBOX 		= ""
 											IUG_CREATION_EXPLORER 		= ""
+											IUG_CREATION_LISTBOX 		= ""
 											
 											GUI__PROP_VALEUR = 0
 											
 											GUI__PROP_CONTENEUR_COMPLET = false
 											GUI__PROP_ALPHA_MODE = 0
+											GUI__PROP_BLURRY_MODE = 0
 											Modification_IUG = false
 											GUI__PROP_TYPE_OBJ = 0
+											GUI__PROP_TYPE_DESKTOPMODE = false
 											GUI__PROP_DEPLACABLE		= true
 											GUI__PROP_REDUCTABLE		= true
 											GUI__PROP_SIZEABLE			= true
 											GUI__PROP_SIZEABLE_ANGL	 	= true
+
+											GUI__PROP_PRIORITY			= false
+
+											GUI__PROP_MINIMAL_SIZE_X	= 0
+											GUI__PROP_MINIMAL_SIZE_Y	= 0
+											GUI__PROP_MAXIMAL_SIZE_X	= 0
+											GUI__PROP_MAXIMAL_SIZE_Y	= 0
+
+											GUI__PROP_COLLISION			= true
 											GUI__PROP_FERMABLE	 		= true
+											GUI__PROP_TASKBAR			= 0
+											GUI__PROP_No_TASKBAR		= false
 											GUI__PROP_TYPE_BORDURE 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.BORD", 3, _CLE_))
 											GUI__PROP_TYPE_Ombre 		= Val(CCP_Lire_Variable("CPC_GUI.WINDOW.SHADOW", 3, _CLE_))
 											GUI__PROP_COULEURALPHA 		= CCP_Lire_Variable("CPC_GUI.WINDOW.ALPHA", 3, _CLE_)
@@ -16341,6 +17764,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											
 											GUI__PROP_IMG_BUFFER_ID		= 0
 											GUI__PROP_IMG_SELECTEUR_ID	= 0
+											GUI__PROP_IMG_SCROLL_ID	= 0
+
+											GUI__PROP_SCROLLING_Y = 0
+											GUI__PROP_Mode_Affichage = 0
+											
+											' Menu contextuel
+											GUI__PROP_CTX = -1
 											
 											' Pour eviter la redondance.
 											GUI__PROP_EVENEMENT			= "" 
@@ -16468,7 +17898,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'MeSsaGe'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'afficher une boite de dialogue graphique"
 					Mess_Aide = Mess_Aide & CRLF & "    pour l'utilisateur. Il en existe 5 types avec 4 modes differents"
 					Mess_Aide = Mess_Aide & CRLF
@@ -16571,7 +18001,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -16750,46 +18180,33 @@ _FIN_EXE_CCP_EXE:
 				End if
 			End if
 			
-			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				DEBUG("[CpcdosC+] Creation d'un message box " & CRLF _
-						& "Texte  '" & STR_Message & "'" & CRLF _
-						& "Titre  '" & STR_Titre & "'" & CRLF _
-						& "Erreur '" & STR_Erreur & "'" & CRLF _
-						& "Type   '" & STR_Type & "'" & CRLF _
-						& "Ev     '" & STR_EV & "'" & CRLF _
-						& "Nom    '" & STR_Nom & "'" & CRLF, _
-						Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-			Else
-				DEBUG("[CpcdosC+] Creating msgbox " & CRLF _
-						& "Texte  '" & STR_Message & "'" & CRLF _
-						& "Titre  '" & STR_Titre & "'" & CRLF _
-						& "Erreur '" & STR_Erreur & "'" & CRLF _
-						& "Type   '" & STR_Type & "'" & CRLF _
-						& "Ev     '" & STR_EV & "'" & CRLF _
-						& "Nom    '" & STR_Nom & "'" & CRLF, _
-						Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-			End if
+			CPCDOS_INSTANCE.SCI_INSTANCE.creer_Msgbox(STR_Nom, STR_Message, STR_Titre, val(STR_Erreur), val(STR_Type), STR_EV, _CLE_)
+		
 			
-			Scope
-				Dim handle_num 	as Integer
-				Dim Arguments 	as String = STR_Message
+			'Scope
+				'Dim handle_num 	as Integer
+				'Dim Arguments 	as String = STR_Message
 				
 				' Concatener les arguments selon ce qui a ete ecrit
-				if NOT STR_Titre = "" Then 	Arguments += "," & STR_Titre
-				if NOT STR_Erreur = "" Then Arguments += "," & STR_Erreur
-				if NOT STR_Type = "" Then 	Arguments += "," & STR_Type
-				if NOT STR_EV = "" Then 	Arguments += "," & STR_EV
-				if NOT STR_Nom = "" Then 	Arguments += "," & STR_Nom
+				'if NOT STR_Titre = "" Then 	Arguments += "," & STR_Titre
+				'if NOT STR_Erreur = "" Then Arguments += "," & STR_Erreur
+				'if NOT STR_Type = "" Then 	Arguments += "," & STR_Type
+				'if NOT STR_EV = "" Then 	Arguments += "," & STR_EV
+				'if NOT STR_Nom = "" Then 	Arguments += "," & STR_Nom
 				
 				
+
+				
+
 				' Pour recuperer le numero de PID si le @# a ete definit
-				if NOT CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour = "" Then
-					CpcdosCP_SHELL("@#" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				Else
-					CpcdosCP_SHELL("txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				End if
-			
-			End Scope
+				'if NOT CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour = "" Then
+				'	CpcdosCP_SHELL("@#" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+				'Else
+				'	CpcdosCP_SHELL("txt/ /F:Gui.MsgBox(" & Arguments & ")", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+				'End if
+				
+				
+			'End Scope
 			
 			' ====================================================================
 			END SCOPE
@@ -16822,7 +18239,7 @@ _FIN_EXE_CCP_EXE:
 		'Afficher la liste des commandes avec anglais / francais
 		IF AfficherAide = 1 then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
-				CommandesAide = CommandesAide & CRLF & " Serveur/                   Demarre ou stoppe un serveur TCP avec un numero de port desir‚"
+				CommandesAide = CommandesAide & CRLF & " Serveur/                   Demarre ou stoppe un serveur TCP avec un numero de port desirï¿½"
 			Else
 				CommandesAide = CommandesAide & CRLF & " Server/                    Start or stop a TCP server with your port number"
 			END IF
@@ -16833,7 +18250,7 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou stopper un serveur TCP/UDP"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Mode CCP=Interpretation en ligne de commandes CpcdosC+"
@@ -16900,7 +18317,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -17079,7 +18496,7 @@ _FIN_EXE_CCP_EXE:
 			if PosSrvMode > 0 then
 				ModeDuServeurR = Ucase(MID(Param, PosSrvMode + 6, 3))
 				If ModeDuServeurR = "CCP" OR ModeDuServeurR = "TEL" OR ModeDuServeurR = "ECH" then
-					' Accès a la console d'administration en CpcdosC+
+					' Accï¿½s a la console d'administration en CpcdosC+
 					
 					if Type_Serveur = 3 then
 						' Serveur d'administrateur en UDP --> A eviter!
@@ -17300,7 +18717,7 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de creer ou stopper un client TCP ou UDP"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemples connexion a un serveur tant que client: (TCP par defaut)"
@@ -17359,7 +18776,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -17764,15 +19181,15 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de gerer les compte utilisateurs de Cpcdos"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   * Les droits administrateur vous permet d'acces total du systeme, des commande et des autres comptes"
 					Mess_Aide = Mess_Aide & CRLF & "   * Les droits standard vous permet l'acces assez etendu sur le systeme a l'exception de certains"
 					Mess_Aide = Mess_Aide & CRLF & "     parametres.."
-					Mess_Aide = Mess_Aide & CRLF & "   * Les droits limit‚s ne permet que d'executer les application et parametres, impos‚s par l'administrateur"
+					Mess_Aide = Mess_Aide & CRLF & "   * Les droits limitï¿½s ne permet que d'executer les application et parametres, imposï¿½s par l'administrateur"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Si une action requiert les droits Administrateur, vous serez invit‚ a entrer le mot de passe Admin"
+					Mess_Aide = Mess_Aide & CRLF & "   Si une action requiert les droits Administrateur, vous serez invitï¿½ a entrer le mot de passe Admin"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemples :"
 					Mess_Aide = Mess_Aide & CRLF & "   Se connecter tant que 'admin' (Sans mot de passe)"
@@ -17797,7 +19214,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur administrateur"
 					Mess_Aide = Mess_Aide & CRLF & "    Login/ /creer /admin Thomas"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur limit‚"
+					Mess_Aide = Mess_Aide & CRLF & "   Creer un compte utilisateur limitï¿½"
 					Mess_Aide = Mess_Aide & CRLF & "    Login/ /creer /lim Thomas"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Voir aussi : "
@@ -17855,7 +19272,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -17909,8 +19326,8 @@ _FIN_EXE_CCP_EXE:
 			IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
-					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de fermer un ou plusieurs processuss sp‚cifi‚s par son nom ou par son PID"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
+					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de fermer un ou plusieurs processuss spï¿½cifiï¿½s par son nom ou par son PID"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture basique. Ferme tous les processus ayant le meme nom"
@@ -17920,7 +19337,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture du processus par numero PID"
 					Mess_Aide = Mess_Aide & CRLF & "    Fermer/ /PID 1234"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Femeture par le handle²"
+					Mess_Aide = Mess_Aide & CRLF & "   Femeture par le handleï¿½"
 					Mess_Aide = Mess_Aide & CRLF & "    Fermer/ /handle 1234"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Fermeture du processus/handle par CleID"
@@ -17961,7 +19378,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -18048,7 +19465,17 @@ _FIN_EXE_CCP_EXE:
 					
 						' Indiquer que c'est une fenetre qu'on veut supprimer
 						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
-						
+
+						' Si cest un desktop
+						if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+						End if
+
+						' Si c'est une taskbar
+						if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+						end if
+	
 						' Et son numero d'index
 						Numero_INDEX = boucle
 						
@@ -18154,6 +19581,20 @@ _FIN_EXE_CCP_EXE:
 						exit for
 					End if
 				Next boucle
+
+				' Chercher les listbox
+				For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet._CLE_ = Numero_KeyID Then
+					
+						' Indiquer que c'est une fenetre qu'on veut supprimer
+						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox
+						
+						' Et son numero d'index
+						Numero_INDEX = boucle
+						
+						exit for
+					End if
+				Next boucle
 				
 			ElseIf Numero_PID > 0 Then
 				' Supprimer un processus (Et tout ses threads)
@@ -18179,6 +19620,16 @@ _FIN_EXE_CCP_EXE:
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
 							
+							' Si cest un desktop
+							if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+							End if
+
+							' Si c'est une taskbar
+							if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+							end if
+
 							' Et son numero d'index
 							Numero_INDEX = boucle
 							
@@ -18289,6 +19740,21 @@ _FIN_EXE_CCP_EXE:
 							CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_obj(TypeObjet, Numero_INDEX)
 
 						End if
+
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.PID_PARENT > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.PID_PARENT = Numero_PID Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ListBox
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							NombreObjetSuppreime = NombreObjetSuppreime + 1
+							
+							' Supprimer l'objet concerne
+							CPCDOS_INSTANCE.SCI_INSTANCE.CPC__GUI_SUPPRIMER_obj(TypeObjet, Numero_INDEX)
+
+						End if
 						
 					Next boucle
 					
@@ -18331,7 +19797,7 @@ _FIN_EXE_CCP_EXE:
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 						DEBUG("[CpcdosC+] Demande d'arret du processus " & NomPID & " (PID:" & Numero_PID & ") et de ses threads associes ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					Else
-						DEBUG("[CpcdosC+] Asking killing process " & NomPID & " (PID:" & Numero_PID & ") and his associed threads) ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						DEBUG("[CpcdosC+] Asking killing process " & NomPID & " (PID:" & Numero_PID & ") and his associed threads ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 					End if
 				End if
 				
@@ -18384,7 +19850,17 @@ _FIN_EXE_CCP_EXE:
 					
 						' Indiquer que c'est une fenetre qu'on veut supprimer
 						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
-						
+
+						' Si c'est une fenêtre desktop, on delete!
+						if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+						End if
+
+						' Si c'est une taskbar
+						if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+						end if
+					
 						' Et son numero d'index
 						Numero_INDEX = boucle
 						
@@ -18515,6 +19991,24 @@ _FIN_EXE_CCP_EXE:
 					Next boucle
 				
 				End if
+
+				if TypeObjet = 0 Then
+				
+					' Chercher les boutons
+					For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Handle = Numero_Handle Then
+						
+							' Indiquer que c'est une fenetre qu'on veut supprimer
+							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+							
+							' Et son numero d'index
+							Numero_INDEX = boucle
+							
+							exit for
+						End if
+					Next boucle
+				
+				End if
 				
 			
 			Else
@@ -18532,6 +20026,16 @@ _FIN_EXE_CCP_EXE:
 						
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
+
+							' Si c'est une fenêtre desktop, on delete!
+							if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
+							End if
+
+							' Si c'est une taskbar
+							if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = boucle Then
+							 	CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = 0
+							end if
 							
 							' Et son numero d'index
 							Numero_INDEX = boucle
@@ -18658,6 +20162,22 @@ _FIN_EXE_CCP_EXE:
 							End if
 						Next boucle
 					End if
+
+					if TypeObjet = 0 Then
+						' Chercher les listbox
+						For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(boucle).Identification_Objet.Nom = Param Then
+							
+								' Indiquer que c'est une fenetre qu'on veut supprimer
+								TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox
+								
+								' Et son numero d'index
+								Numero_INDEX = boucle
+								
+								exit for
+							End if
+						Next boucle
+					End if
 				Else
 				
 					' L'utilisateur n'a rien indique
@@ -18754,18 +20274,18 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'SYSteme'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de configurer des Parametres, ou bien afficher"
 					Mess_Aide = Mess_Aide & CRLF & "   des informations du systeme."
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Afficher la memoire libre restante / Utilis‚e en octets, Ko, Mo, Go"
+					Mess_Aide = Mess_Aide & CRLF & "   Afficher la memoire libre restante / Utilisï¿½e en octets, Ko, Mo, Go"
 					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire restante en octets"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /mem"
-					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilis‚e en octets"
+					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilisï¿½e en octets"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /memu"
 					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire restante en Mo"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /mem mo"
-					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilis‚e en Mo"
+					Mess_Aide = Mess_Aide & CRLF & "     Afficher la memoire Utilisï¿½e en Mo"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /memu mo"
 					Mess_Aide = Mess_Aide & CRLF & "     ... aussi avec Go pour Giga Octets, To pour Tera Octets"
 					Mess_Aide = Mess_Aide & CRLF
@@ -18774,18 +20294,18 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "      SYS/ /DEBUG {COMn} {/CPINTICORE} {/SERVEUR:TCP} = { 0, 1, 2, 3 }"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "      Exemples :"
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activit‚es detaill‚es du noyau"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activitï¿½es detaillï¿½es du noyau"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Enregistre les activit‚es detaill‚es du noyau dans un fichier DEBUG.LOG"
+					Mess_Aide = Mess_Aide & CRLF & "       Enregistre les activitï¿½es detaillï¿½es du noyau dans un fichier DEBUG.LOG"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 2"
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche et enregistre les activit‚es detaill‚es du noyau dans un fichier DEBUG.LOG"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche et enregistre les activitï¿½es detaillï¿½es du noyau dans un fichier DEBUG.LOG"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 3"
-					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des informatons detaill‚es"
+					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des informatons detaillï¿½es"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug = 0"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activit‚es detaill‚es de CPinti core"
+					Mess_Aide = Mess_Aide & CRLF & "       Affiche les activitï¿½es detaillï¿½es de CPinti core"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug /CPintiCore = 1"
-					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des activit‚es detaill‚es de CPinti core"
+					Mess_Aide = Mess_Aide & CRLF & "       Stoppe l'affichage des activitï¿½es detaillï¿½es de CPinti core"
 					Mess_Aide = Mess_Aide & CRLF & "        sys/ /debug /CPintiCore = 0"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "	   Affiche le menu d'informations systeme CPinti Core"
@@ -18843,11 +20363,17 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /ECRAN /LISTE 24"
 					Mess_Aide = Mess_Aide & CRLF & "      Et pour 32 bits"
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /ECRAN /LISTE 32"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "      Afficher pour le format Listbox"
+					Mess_Aide = Mess_Aide & CRLF & "       sys/ /ecran /listb 32"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Obtenir le pointeur de l'affichage video"
 					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /ecran /ptr"
 					Mess_Aide = Mess_Aide & CRLF & "    ou en hexadecimale"
 					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /ecran /hexaptr"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Afficher le gestionnaire de taches"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /taskmgr"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Utiliser une fonction wrapper (Experimentale)"
 					Mess_Aide = Mess_Aide & CRLF & "    Ceci est reserve aux developpeurs du SDK Cpcdos"
@@ -18879,8 +20405,22 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers"
 					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Mettre a jour la liste des formats de fichiers personnalisee"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-update /votreDossier/VotreConfig.ini"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger la liste des icones GUI"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Lister les variables en memoire depuis son numero de visibilite"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Creer un nouveau processus"
@@ -19023,10 +20563,17 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /SCREEN /LIST 24"
 					Mess_Aide = Mess_Aide & CRLF & "      And for 32 bits"
 					Mess_Aide = Mess_Aide & CRLF & "       SYS/ /SCREEN /LIST 32"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "      Display for Listbox format"
+					Mess_Aide = Mess_Aide & CRLF & "       sys/ /screen /listb 32"
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Getting video screen pointer"
 					Mess_Aide = Mess_Aide & CRLF & "    Sys/ /screen /ptr"
 					Mess_Aide = Mess_Aide & CRLF & "   or in hexadecimal"
 					Mess_Aide = Mess_Aide & CRLF & "    Sys/ /screen /hexaptr"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Display Task manager"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /taskmgr"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Using wrapper function (Experimental)"
 					Mess_Aide = Mess_Aide & CRLF & "    This is reserved to Cpcdos SDK devlopper"
@@ -19052,8 +20599,21 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "   Update file format list"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update"
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Update personalized file format list"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /fileformat-update /yourpath/yourconfig.ini"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Load GUI icon list"
+					Mess_Aide = Mess_Aide & CRLF & "    sys/ /fileformat-gui-load" 
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   List variables in memory with visibility level"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-gui"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Create a new process"
@@ -19116,7 +20676,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -19191,9 +20751,18 @@ _FIN_EXE_CCP_EXE:
 					Next b
 					DEBUG("[KERNEL SHELL] End" , Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				End if
-				
-				
-			
+			End if
+
+			' Charger les proprietes du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-PROPERTIES") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs_properties()
+				exit _scope_CMD, _scope
+			END IF
+
+			' Charger les icones du curseur graphique
+			IF Instr(UCASE(Param), "/LOAD-CURSOR-GUI") > 0 Then	
+				CPCDOS_INSTANCE.SCI_INSTANCE.charger_Curseurs(Auth_OS+1024)
+				exit _scope_CMD, _scope
 			End if
 			
 			IF Instr(UCASE(Param), "/DEBUG") > 0 Then			
@@ -19483,7 +21052,7 @@ _FIN_EXE_CCP_EXE:
 			
 				IF Instr(UCASE(Param), "/GC") > 0 OR Instr(UCASE(Param), "/GARBAGECOLLECTOR") > 0 Then
 					
-					' Rechercher les bitmaps non références en memoire
+					' Rechercher les bitmaps non rï¿½fï¿½rences en memoire
 					Dim Resultat as String = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.GarbageCollector()
 					
 					IF NOT Resultat = "" Then
@@ -19553,7 +21122,7 @@ _FIN_EXE_CCP_EXE:
 					' ' CPCDOS_INSTANCE.utf_actif = -1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices desactiv‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices desactivï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19563,7 +21132,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = -1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices deactiv‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices deactivï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19573,7 +21142,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = 1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices activï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19583,7 +21152,7 @@ _FIN_EXE_CCP_EXE:
 					' ' utf_actif = 1
 					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ‚", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
+							' DEBUG("[CpcdosC+] Gestionnaire de polices activï¿½", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
 						' Else
 							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
 						' End if
@@ -19601,7 +21170,7 @@ _FIN_EXE_CCP_EXE:
 
 				' IF ListerLesPolices = 1 Then
 					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG(" Liste des polices install‚es  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						' DEBUG(" Liste des polices installï¿½es  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					' else
 						' DEBUG(" List installed fonts  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					' End if
@@ -19805,6 +21374,16 @@ _FIN_EXE_CCP_EXE:
 					END IF
 				End if
 			end if
+
+			' Executer le gestionnaire de taches 
+			IF Instr(UCASE(Param), "/TASKMGR") > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+					DEBUG("[CpcdosC+] Execution du gestionnaire de taches.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				Else
+					DEBUG("[CpcdosC+] Launching task manager.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				END IF
+				CpcdosCP_SHELL("/F:display_taskmgr()", _CLE_, 3, Param_1, Param_2) 
+			End if
 			
 '------------------------------- ECRAN --------------------------------
 			' Gerer l'ecran
@@ -19821,6 +21400,13 @@ _FIN_EXE_CCP_EXE:
 					IF Instr(UCASE(Param), " 16") > 0 Then DEBUG(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(16), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					IF Instr(UCASE(Param), " 24") > 0 Then DEBUG(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(24), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					IF Instr(UCASE(Param), " 32") > 0 Then DEBUG(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(32), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					exit _scope_CMD, _scope
+				End if
+				' Lister les resolutions compatibles pour listbox (avec ; comme separateur)
+				IF Instr(UCASE(Param), "/LISTB ") > 0 Then
+					IF Instr(UCASE(Param), " 16") > 0 Then DEBUG(CPCDOS_INSTANCE.remplacer_Caractere(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(16), " ", ";"), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					IF Instr(UCASE(Param), " 24") > 0 Then DEBUG(CPCDOS_INSTANCE.remplacer_Caractere(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(24), " ", ";"), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					IF Instr(UCASE(Param), " 32") > 0 Then DEBUG(CPCDOS_INSTANCE.remplacer_Caractere(CPCDOS_INSTANCE.SYSTEME_INSTANCE.liste_Resolution(32), " ", ";"), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					exit _scope_CMD, _scope
 				End if
 				
@@ -19843,6 +21429,7 @@ _FIN_EXE_CCP_EXE:
 					DEBUG(str(CPCDOS_INSTANCE.SYSTEME_INSTANCE.test_Resolution(Resolution, val(Couleur))), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					exit _scope_CMD, _scope
 				End if
+				
 				
 
 				IF Instr(UCASE(Param), "/ECRAN") > 0 Then Param = MID(Param, Instr(UCASE(Param), "/ECRAN") + 6)
@@ -19916,7 +21503,7 @@ _FIN_EXE_CCP_EXE:
 					UtiliseParametre = true
 				End IF
 				
-				' Copter le nombre d'OS presents
+				' Compter le nombre d'OS presents
 				IF Instr(UCASE(Param), "/NB") > 0 Then
 					DEBUG(str(CPCDOS_INSTANCE.get_NombreOSPresent()), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					UtiliseParametre = true
@@ -20095,7 +21682,7 @@ _FIN_EXE_CCP_EXE:
 				if Instr(UCASE(Param), "/UPDATE-INSTALL") > 0 Then Install_flag = true
 				if Instr(UCASE(Param), "/UPDATE-GET-INSTALL") > 0 Then Download_AND_Install = true
 
-				DEBUG("[UPDATE] Current LOCAL version '" & _VER_NET_BUILD & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				DEBUG("[UPDATE] Current LOCAL version  '" & _VER_NET_BUILD & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				
 				
 				
@@ -20247,13 +21834,25 @@ _FIN_EXE_CCP_EXE:
 							End if
 							
 							Versions_Identiques = false
-						Else
-						
+						elseif Mid(NouvelleUpdate, 1, Instr(NouvelleUpdate, "_") - 1) = Mid(_VER_NET_BUILD, 1, Instr(_VER_NET_BUILD, "_") - 1) Then
 							Versions_Identiques = true
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[UPDATE] Vous avez la derniere version du noyau.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)	
+								DEBUG("[UPDATE] Vous avez la derniere version du noyau.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)	
 							Else
-								DEBUG("[UPDATE] You have the last kernel version.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+								DEBUG("[UPDATE] You have the last kernel version.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+						elseif Mid(NouvelleUpdate, 1, Instr(NouvelleUpdate, "_") - 1) < Mid(_VER_NET_BUILD, 1, Instr(_VER_NET_BUILD, "_") - 1) Then
+							Versions_Identiques = true
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[UPDATE] Vous avez une version plus recente du noyau que celle du serveur.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)	
+							Else
+								DEBUG("[UPDATE] You have a more recent version of the kernel than that of the server.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+						else
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[UPDATE] Nous n'avons pas pu comparer la version du noyau avec celle du serveur." & CRLF & "Il est possible qu'il s'agisse d'une version Cpcdos non-officielle.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)	
+							Else
+								DEBUG("[UPDATE] We could not compare the kernel version with server." & CRLF & "It is possible that this is an unofficial Cpcdos version.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 							End if
 						End if
 					else
@@ -20616,44 +22215,124 @@ _FIN_EXE_CCP_EXE:
 				Dim NomProcessus as String
 				Dim NumeroPID as integer
 				
-				IF Instr(UCASE(Param), "/PROCESSUS") > 0 Then
-					NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESSUS") + 11)
-				ElseIF Instr(UCASE(Param), "/PROCESS") > 0 Then
-					NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESS") + 9)
-				End if
-				
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Demande creation d'un nouveau processus '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] Asking creation new process  '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					End if
-				END IF
-				
-				Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
-				
-				' Remplir la structure
-				INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
-				INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
-				INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
-				INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
-				INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
-		
-				' Creer le processus
-				NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
+				' Lister la liste des processus & threads
+				IF Instr(UCASE(Param), "/LIST") > 0 Then
+					IF Instr(UCASE(Param), "/ARRAY") > 0 Then
+						Dim NomVariable as String = Mid(Param, Instr(UCASE(Param), "/ARRAY") + 7)
+						Dim ListeProcessus as String
+						
+						IF Instr(UCASE(Param), "/INDEX") > 0 Then
+							ListeProcessus = CPCDOS_INSTANCE.get_List_PID(4)
+						Else
+							ListeProcessus = CPCDOS_INSTANCE.get_List_Processus(4)
+						End if
 
-				
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						for index as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+							if instr(ListeProcessus, ";") > 0 Then
+								' Recuperer l'item
+								dim item as String = Mid(ListeProcessus, 1, Instr(ListeProcessus, ";") - 1)
+
+								' Cuter apres le ;
+								ListeProcessus = Mid(ListeProcessus, Instr(ListeProcessus, ";") + 1)
+
+								' Creer le tableau
+								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+							Else
+								dim item as String = ListeProcessus
+
+								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+
+								exit for
+							End if
+
+						Next index
+
+					
+
+					elseif Instr(UCASE(Param), "/LISTB") > 0 Then
+						' ListBox mode
+						if Instr(UCASE(Param), "/ICON") > 0 Then
+							' Get icon path
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus_icon(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						ElseIF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(4), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(6), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
 					Else
-						DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						' Liste en CRLF
+						IF Instr(UCASE(Param), "/NAMEONLY") > 0 Then
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(0), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG(CPCDOS_INSTANCE.get_List_Processus(2), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
 					End if
-				END IF
+
+				else
+
+
+					IF Instr(UCASE(Param), "/PROCESSUS") > 0 Then
+						NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESSUS") + 11)
+					ElseIF Instr(UCASE(Param), "/PROCESS") > 0 Then
+						NomProcessus = Mid(Param, Instr(UCASE(Param), "/PROCESS") + 9)
+					End if
+					
+					' Reformater le nom du processus
+					NomProcessus = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(NomProcessus, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Demande creation d'un nouveau processus '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] Asking creation new process  '" & NomProcessus & "' (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					END IF
+
+					' Verifier s'il existe deja
+					dim test_existing_pid as integer = CPCDOS_INSTANCE.get_pid_by_name_process(NomProcessus)
+
+					if test_existing_pid > 0 Then
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Le processus existe deja (" & test_existing_pid & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Le processus existe deja (" & test_existing_pid & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							End if
+						END IF
+
+						NumeroPID = test_existing_pid
+
+					Else
+					
+
+					
+						Dim INSTANCE_STRUCT_PROCES as _STRUCT_PROCESSUS_Cpcdos_OSx__
+						
+						' Remplir la structure
+						INSTANCE_STRUCT_PROCES.Nom 				= NomProcessus			' Nom du processus
+						INSTANCE_STRUCT_PROCES.PROC_ID_PARENT	= Auth_PID				' PID du processus parent (qui l'a cree)
+						INSTANCE_STRUCT_PROCES.THREAD_ID_PARENT	= Auth_TID				' TID du thread parent (qui l'a cree)
+						INSTANCE_STRUCT_PROCES.OS_ID			= Auth_OS				' ID de l'OS
+						INSTANCE_STRUCT_PROCES.USER_ID			= Auth_Utilisateur		' ID de l'user
 				
-				' Retourner le nouveau numero de PID
-				DEBUG("" & NumeroPID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-				
+						' Creer le processus
+						NumeroPID = CPCDOS_INSTANCE.Creer_processus(INSTANCE_STRUCT_PROCES)
+
+						
+						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Le nouveau processus '" & NomProcessus & "' est en execution avec 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] New process '" & NomProcessus & "' is in execution with 0 threads (KernelID:" & Auth_Kernel & " OSID:" & Auth_OS & " UserID:" & Auth_Utilisateur & " PID:" & NumeroPID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+							End if
+						END IF
+
+					End if
+					
+					' Retourner le nouveau numero de PID
+					DEBUG("" & NumeroPID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					
+				End if
 			End if
 
 			
@@ -20700,7 +22379,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CouleurCaracteres'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de changer la couleur des caracteres de la console LC2, LC3 et IUG"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple graphique :"
@@ -20779,7 +22458,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -20867,7 +22546,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'CouleurFond'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de changer la couleur de fond de la console LC"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple :"
@@ -20946,7 +22625,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'Affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21033,7 +22712,7 @@ _FIN_EXE_CCP_EXE:
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
 					Mess_Aide = Mess_Aide & CRLF & "  'DECLARER'"
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet de declarer une fonction CpcdosC+ avec un niveau de"
 					Mess_Aide = Mess_Aide & CRLF & "    visibilite (publicite) personnalisable."
 					Mess_Aide = Mess_Aide & CRLF
@@ -21128,7 +22807,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21149,19 +22828,56 @@ _FIN_EXE_CCP_EXE:
 			Dim NomFonction 			as string = Mid(Param, Position_Fonction, (Position_1erParenthese) - Position_Fonction)
 			
 			Dim Arguments 				as string = Mid(Param, Position_1erParenthese + 1, Position_2emParenthese - (Position_1erParenthese + 1))
-			
+			Dim Pos_Virgule_DEBUT 		as integer = 0
+			Dim Pos_Virgule_FIN 		as integer = 0
+
 			Dim Boucle as integer 
 			For Boucle = 1 to this.MEMOIRE_CCP._MAX_FONCTION_PUBLIC
+				
+				if len(NomFonction) > 0 Then
+					' Si le nom de fonction est deja declare
+					if ucase(this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle)) = Ucase(NomFonction) Then
+
+						Dim Boucle_ARGS as integer = 0
+
+						' Verifier le nombre d'arguments
+						For Boucle_ARGS = 0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
+							' Recuperer les positions
+							Pos_Virgule_DEBUT = Pos_Virgule_FIN + 1
+							Pos_Virgule_FIN = Instr(Pos_Virgule_DEBUT, Arguments, ",")
+
+							' Verifier la presence d'une vigule
+							IF Pos_Virgule_FIN = 0 Then
+								IF Boucle_ARGS = 0 Then exit for ' Aucun arguments
+								exit for
+							End if
+						Next Boucle_ARGS
+
+						' Si ca correspond au meme nombre d'arguments
+						if this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS Then
+							' ALORS C'EST LA MEME FONCTION, MAIS QU'ON REMPLACE !
+
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[CpcdosC+] Redefinition de fonction pour " & NomFonction & "() avec " & Boucle_ARGS & " arguments.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							Else
+								DEBUG("[CpcdosC+] Fonction redefinition for " & NomFonction & "() with " & Boucle_ARGS & " arguments.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+							exit for
+						End if
+					End if
+				End if
+
 				IF this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle) = "" Then
 					exit for
 				End if
 			Next Boucle
 
+			' Push le name
 			this.MEMOIRE_CCP.TAB_FONCTION_CCP_NOM(Boucle) = Ucase(NomFonction)
 			
 			' On recupere le nombre d'arguments
-			Dim Pos_Virgule_DEBUT 	as integer = 0
-			Dim Pos_Virgule_FIN 	as integer = 0
+			Pos_Virgule_DEBUT 	= 0
+			Pos_Virgule_FIN 	= 0
 			
 			For Boucle_ARGS 		as integer = 0 to this.MEMOIRE_CCP._MAX_FONCTION_ARGS
 				' Recuperer les positions
@@ -21172,20 +22888,22 @@ _FIN_EXE_CCP_EXE:
 				IF Pos_Virgule_FIN = 0 Then
 					IF Boucle_ARGS = 0 Then exit for ' Aucun arguments
 					' Ah .. C'est finis mon gros ;)
-					this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS
+					this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = Boucle_ARGS ' Nombre d'arguments
 					exit for
 				End if
 			Next Boucle_ARGS
 			
 			' Il y a 1 argument
 			IF NOT Arguments = "" Then this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) = this.MEMOIRE_CCP.TAB_FONCTION_CCP_ARG(Boucle) + 1
+
+
 			
 			' ON recupere le chemin d'acces de la fonction
 			this.MEMOIRE_CCP.TAB_FONCTION_CCP_SRC(Boucle) = Gest_variables_LIRE("_EXE_PATH_", 2, Auth_Kernel, Auth_OS, Auth_Utilisateur, Auth_PID, Auth_TID)
 
 			' On recherche le niveau de publicite.
 			'  REMARQUE: Niveau 2 et 1 ne peuvent etre definit puisse que par defaut
-			'				les fonctions sont déjà au niveau 2 et le 1 le voit.
+			'				les fonctions sont dï¿½jï¿½ au niveau 2 et le 1 le voit.
 			IF instr(Param, ":") < Instr(Ucase(Param), "NIVEAU(5)") OR instr(Param, ":") < Instr(Ucase(Param), "LEVEL(5)") Then
 				this.MEMOIRE_CCP.TAB_FONCTION_CCP_NIV(Boucle) = 5
 			ElseIF instr(Param, ":") < Instr(Ucase(Param), "NIVEAU(4)") OR instr(Param, ":") < Instr(Ucase(Param), "LEVEL(4)") Then
@@ -21253,7 +22971,7 @@ _FIN_EXE_CCP_EXE:
 		IF AfficherAide = 2 then
 				Mess_Aide = ""
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 THEN
-					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalit‚e :"
+					Mess_Aide = Mess_Aide & CRLF & "  Fonctionnalitï¿½e :"
 					Mess_Aide = Mess_Aide & CRLF & "   Cette commande permet d'executer un fichier ou une commande DOS"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "  Exemple simple :"
@@ -21286,7 +23004,7 @@ _FIN_EXE_CCP_EXE:
 			IF testCMD > 0 then  ' Entre 1-5 = Pas d'affichage via le @, @$ ou @#
 				IF testCMD < 6 then
 					Affichage = 0
-					IF testCMD = 3 Then CpcdosCP_SHELL("FIX/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
+					IF testCMD = 3 Then CpcdosCP_SHELL("SET/ " & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour & " = \#NULL", _CLE_, NIVEAU_CCP, Param_1, Param_2) : RetourVAR = _CLE_ & "N" & NIVEAU_CCP & "->" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour
 					if testCMD = 2 Then RetourVAR = "$>" & CPCDOS_INSTANCE.DEBUG_INSTANCE.LeRetour ' ajouter une securite ?
 				Else
 					Affichage = 1
@@ -21308,10 +23026,8 @@ _FIN_EXE_CCP_EXE:
 			exit _scope_CMD, _scope
 		End if ' **** DOS/ ****
 		
-			
 		
 	_end_scope_CMD
-		
 		
 	_end_scope
 	
@@ -21319,25 +23035,44 @@ _FIN_EXE_CCP_EXE:
 	' =========================================================
 	' ========================= F I N =========================
 	' =========================================================
-
 	
 	IF LEN(CommandesAide) > 1 then
 	REM IF CommandesAide <> "" then
-		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 		CommandesAide = ""
 	else
+
 		IF VerifierLabel = 0 then ' Si ce n'est pas non plus un label
 			IF CommTrouve = 0 then
-				Message_erreur = ERRAVT("ERR_009", 0)
-				IF Numero_de_Ligne > 0 Then Message_erreur = "(lgn:" & Numero_de_Ligne & ") " & Message_erreur
-				DEBUG("[CpcdosC+] " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+			
+				' Verifier si c'est pas un fichier a executer
+				dim ProbableFichier as String = _COMMANDE_
+				' Obtenir le path courant si le path n'est pas abolue mais relative
+				if NOT instr(ProbableFichier, ":") > 0 Then ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_ExeEnCours(2) & "\" & ProbableFichier
 				
-				' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-					' CpcdosCP_SHELL("Msgbox/ " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ". /TITLE:ERR_009 : " & Nom_Fichier_DBG & ":" & Numero_de_Ligne & " - CpcdosC+ Shell /ERROR:3", _CLE_, NIVEAU_CCP, Param_1, Param_2)
-				' End if
+
 				
-				CpcdosCP_SHELL = "ERR_009"
+				ProbableFichier = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(ProbableFichier, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE)
+
+				if CPCDOS_INSTANCE.Fichier_Existe(ProbableFichier) = true then
+					' C'est un fichier existant !
+					if CPCDOS_INSTANCE.Executer_Fichier(ProbableFichier, _CLE_) = false then
+						DEBUG("[CpcdosC+] Unknow file format '" & ProbableFichier & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						CpcdosCP_SHELL = "ERR_009"
+					End if
+					
+				else
+					Message_erreur = ERRAVT("ERR_009", 0)
+					IF Numero_de_Ligne > 0 Then Message_erreur = "(lgn:" & Numero_de_Ligne & ") " & Message_erreur
+					DEBUG("[CpcdosC+] " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					
+					' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
+						' CpcdosCP_SHELL("Msgbox/ " & Message_erreur & " " & CHR(34) & Commande & CHR(34) & ". /TITLE:ERR_009 : " & Nom_Fichier_DBG & ":" & Numero_de_Ligne & " - CpcdosC+ Shell /ERROR:3", _CLE_, NIVEAU_CCP, Param_1, Param_2)
+					' End if
+					
+					CpcdosCP_SHELL = "ERR_009"
+				End if
 			End if
 		End if
 	END IF

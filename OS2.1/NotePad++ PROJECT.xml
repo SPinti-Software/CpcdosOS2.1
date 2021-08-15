@@ -1,33 +1,22 @@
 <NotepadPlus>
     <Project name="Cpcdos OSx">
         <Folder name="Core">
-            <File name="Cpcdos\Core\bios_apm.asm" />
             <File name="Cpcdos\Core\bios_apm.bas" />
-            <File name="Cpcdos\Core\bitm_dec.asm" />
             <File name="Cpcdos\Core\bitm_dec.bas" />
-            <File name="Cpcdos\Core\console.asm" />
             <File name="Cpcdos\Core\console.bas" />
-            <File name="Cpcdos\Core\Cpcdos.asm" />
             <File name="Cpcdos\Core\cpcdos.bas" />
             <File name="Cpcdos\Core\cpu.asm" />
             <File name="Cpcdos\Core\cpu.bas" />
-            <File name="Cpcdos\Core\Loader.asm" />
             <File name="Cpcdos\Core\loader.bas" />
-            <File name="Cpcdos\Core\loadscr.asm" />
             <File name="Cpcdos\Core\loadscr.bas" />
             <File name="Cpcdos\Core\Memory.asm" />
             <File name="Cpcdos\Core\memory.bas" />
-            <File name="Cpcdos\Core\System.asm" />
             <File name="Cpcdos\Core\system.bas" />
-            <File name="Cpcdos\Core\wrapper.asm" />
             <File name="Cpcdos\Core\wrapper.bas" />
         </Folder>
         <Folder name="CpcdosCP">
-            <File name="Cpcdos\CpcdosCP\CCP_Thrd.asm" />
             <File name="Cpcdos\CpcdosCP\CCP_Thrd.bas" />
-            <File name="Cpcdos\CpcdosCP\CpcdosCP.asm" />
             <File name="Cpcdos\CpcdosCP\CpcdosCP.bas" />
-            <File name="Cpcdos\CpcdosCP\Services.asm" />
             <File name="Cpcdos\CpcdosCP\Services.bas" />
         </Folder>
         <Folder name="Debug">
@@ -37,9 +26,7 @@
             <File name="Cpcdos\Debug\ErrAvt.bas" />
         </Folder>
         <Folder name="GUI">
-            <File name="Cpcdos\GUI\GUI.asm" />
             <File name="Cpcdos\GUI\GUI.BAS" />
-            <File name="Cpcdos\GUI\OBJ.asm" />
             <File name="Cpcdos\GUI\OBJ.BAS" />
             <File name="Cpcdos\GUI\OBJ_Bouton.BAS" />
             <File name="Cpcdos\GUI\OBJ_CheckBox.BAS" />
@@ -49,9 +36,7 @@
             <File name="Cpcdos\GUI\OBJ_ProgressBar.BAS" />
             <File name="Cpcdos\GUI\OBJ_TextBox.BAS" />
             <File name="Cpcdos\GUI\OBJ_TexteBloc.BAS" />
-            <File name="Cpcdos\GUI\SCI.asm" />
             <File name="Cpcdos\GUI\SCI.bas" />
-            <File name="Cpcdos\GUI\UTF8.asm" />
             <File name="Cpcdos\GUI\UTF8.BAS" />
         </Folder>
         <Folder name="Include">
@@ -69,9 +54,7 @@
             <File name="Cpcdos\Include\utf8.bi" />
         </Folder>
         <Folder name="Network">
-            <File name="Cpcdos\Network\Reseau.asm" />
             <File name="Cpcdos\Network\Reseau.bas" />
-            <File name="Cpcdos\Network\RES_Thrd.asm" />
             <File name="Cpcdos\Network\RES_Thrd.bas" />
         </Folder>
         <File name="Cpcdos\ARGS.CFG" />
@@ -7760,5 +7743,303 @@
         </Folder>
         <File name="C:\CPCDOS\CpcdosOS2.1\CONTRIB\Make_Contrib.cwMake" />
         <File name="C:\CPCDOS\CpcdosOS2.1\CONTRIB\_CPC_WPR.cpp" />
+    </Project>
+    <Project name="Operating System">
+        <Folder name="DRIVERS">
+            <Folder name="NETWORK">
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\DRIVERS\NETWORK\SCRIPT2.BAT" />
+            </Folder>
+        </Folder>
+        <Folder name="KRNL">
+            <Folder name="CONFIG">
+                <Folder name="ENV_GUI">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\BUTTON.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\CHECKBOX.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\CONSOLE.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\CURSOR.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\ENV_GUI.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\EXPLORER.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\GUI_STD.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\MSGBOX.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\TXTBOX.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\WINDOW.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\WIN_ICO.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\WIN_SCR.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\WIN_SHDW.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_GUI\WIN_TITL.CPC" />
+                </Folder>
+                <Folder name="ENV_NET">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_NET\ENV_NET.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_NET\HTTP.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_NET\ICMP.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_NET\NET_ID.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_NET\UPDATE.CPC" />
+                </Folder>
+                <Folder name="ENV_SYS">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_SYS\ENV_SYS.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_SYS\IO.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_SYS\KEYMAP.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_SYS\SERIAL.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV_SYS\TIME.CPC" />
+                </Folder>
+                <Folder name="EXT">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\BAT.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\CPC.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\EXE.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\LOG.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\PNG.CPC" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\EXT\TXT.CPC" />
+                </Folder>
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\ENV.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\FORMATS.INI" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\INTRO_EN.SRV" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\CONFIG\INTRO_FR.SRV" />
+            </Folder>
+            <Folder name="INIT">
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\INIT\DOS.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\INIT\INIT_CRT.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\INIT\TELNET.CPC" />
+            </Folder>
+            <Folder name="NET">
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\NET\HTTP_GET.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\NET\NET.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\NET\UPDATE.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\NET\UPDATE.OLD" />
+            </Folder>
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\DECLARE.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\KRNL.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\LOADER.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\KRNL\NULL.CPC" />
+        </Folder>
+        <Folder name="OS">
+            <Folder name="MEDIA">
+                <Folder name="GUI">
+                    <Folder name="BUTTONS">
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_BLCK.JPG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_BLCK.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_BLUE.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_CYAN.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GRA2.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GRA3.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GRAY.JPG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GRAY.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GRBL.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_GREN.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_PPOR.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_PRPL.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_RDYW.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_RED.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_WT.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_WTCY.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\BTN_YELW.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BUTTONS\Thumbs.db" />
+                    </Folder>
+                    <Folder name="CHECKBOX">
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CHECKBOX\CHECK.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CHECKBOX\NCHECK.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CHECKBOX\SCHECK.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CHECKBOX\SNCHECK.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CHECKBOX\Thumbs.db" />
+                    </Folder>
+                    <Folder name="CURSOR">
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CURSOR\LOAD.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CURSOR\Thumbs.db" />
+                    </Folder>
+                    <Folder name="FORMATS">
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\BAT.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\BMP.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\CPC.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\DLL.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\DRIVE.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\EXE.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\FILE.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\FOLDER.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\GIF.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\INCO.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\JPG.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MBAT.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MBMP.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MCPC.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MDLL.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MDOSSRNV.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MDRIVE.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MEXE.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MFICHRNV.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MFILE.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MFOLDER.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MGIF.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MINCO.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MJAVA.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MJPG.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MPNG.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\MTXT.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\PNG.png" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\FORMATS\TXT.png" />
+                    </Folder>
+                    <Folder name="MSGBOX">
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_AVT.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_DEF.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_ERR.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_INF.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_OKY.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICOM_QTN.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICO_AVT.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICO_ERR.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICO_INF.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICO_OKY.PNG" />
+                        <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MSGBOX\ICO_QTN.PNG" />
+                    </Folder>
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ABOUT.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ABOUTAPP.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BACKUP.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BARGRIS.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BAR_MENU.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BOLITARE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BOOM.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BTN.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BTN_ABT.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BTN_CFT.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BTN_CFTL.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BT_CLOSE.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BT_RED.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BT_SIZDN.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\BT_SIZUP.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CALC.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CFT_FD.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CONSOLE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\CPU.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\DATE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\DEV.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\DISKUTIL.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\EFU.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ELIENOTE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ENREGIST.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\EXP_BCK.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\GAMECENT.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\HEADERUP.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ICO_CFT.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ICO_DEF.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\IMG_WIN.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\INVADERS.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MENUELIE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MINES.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MUSIC.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\MXDOS.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\NEW.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\NOUVEAU.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\OPEN.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\OUVRIR.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\PAKU.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\PONG.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\RESET.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\RESTART.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\SAVE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\SETTING.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\SHUT.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\Thumbs.db" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\TXTB.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\TXTW.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\ULTIMA.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\VITETRIS.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\WALLPAPE.JPG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\GUI\WING.JPG" />
+                </Folder>
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\ABSTRAIT.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\ABS_BLUE.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\ABS_BLUE.PNG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\BLUELIGH.PNG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\CFT.PNG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\CPCDOS.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\CUTY.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\EARTH.PNG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\EARTH2.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\ELIE.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\IMPRESSU.JPG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\SMILE.PNG" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MEDIA\TERRE2.JPG" />
+            </Folder>
+            <Folder name="MyOS">
+                <Folder name="boot">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\config.cpc" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_0.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_1.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_10.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_11.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_12.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_13.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_14.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_15.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_16.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_17.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_18.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_19.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_2.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_20.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_21.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_3.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_4.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_5.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_6.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_7.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_8.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\img_9.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\boot\Thumbs.db" />
+                </Folder>
+                <Folder name="Media">
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BAR_MENU.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\Bouton.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\Bouton2.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BTN_CFT.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BTN_CFTL.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BT_CLOSE.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BT_red.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BT_sizDN.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\BT_sizUP.png" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\ICO_CFT.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\ICO_DEF.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\IMG_WIN.PNG" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\THUMBS.DB" />
+                    <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\Media\Ultima.png" />
+                </Folder>
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\App.cpc" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\barre.cpc" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\CFT_EV.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\modif.cpc" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\OS.CPC" />
+                <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\MyOS\test.cpc" />
+            </Folder>
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\OS.LST" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\OS\ReadMe.txt" />
+        </Folder>
+        <Folder name="Tests">
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\BITMAP.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\BLEND3.EXE" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\boucle.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\Calcul.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\console.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\CRASH.png" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\CUBE.EXE" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\DLL.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\EXPLORER.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\Info.txt" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\MESA.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\MonEvenement.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\Name.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\OPENGL.CPC" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\OPENGL32.DLL" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\ping_mt.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\Progbar.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\sample02.bas" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\scr.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\tchat.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\test.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\Test.ll" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\test1.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\test2.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\test3.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\txt.cpc" />
+            <File name="C:\CPCDOS\CpcdosOS2.1\bin\Tests\WinClose.cpc" />
+        </Folder>
+        <File name="C:\CPCDOS\CpcdosOS2.1\bin\WATTCP.CFG" />
     </Project>
 </NotepadPlus>

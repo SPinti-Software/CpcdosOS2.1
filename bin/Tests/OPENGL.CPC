@@ -3,7 +3,7 @@ rem/ bitmap render test
 
 Window/ bitmap_test
 
-        .title          = "OpenGL - Bitmap CPU render test"
+        .title          = "OpenGL 1.2 - Simple CPU render test"
         .parameters     = ""
         .px             = "50"
         .py             = "50"

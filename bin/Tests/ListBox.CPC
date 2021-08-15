@@ -1,0 +1,62 @@
+// listbox GUI program test
+
+
+set/ actual_path = C:\CPCDOS\OS
+
+
+
+// ===== Build window =====
+Window/ listbox_window
+
+        .title          = "listbox testing"
+        .parameters     = "TYPE:0 SIZ:1 SIZBTN:1"
+        .px             = "140"
+        .py             = "100"
+        .sx             = "250"
+        .sy             = "200"
+        .opacity        = "255"
+        .WindowColor    = "100,100,100"
+        .TitleColor     = "200,200,200"
+        .backcolor      = "100,100,100"
+        .events         = "%_exe_path_%"
+
+        @#window_handle create/
+End/ Window
+
+ 
+listbox/ listbox_gui
+        .handle         = "%window_handle%"
+        .parameters     = "EXPLOREMODE:0"
+        .px             = "1"
+        .py             = "1"
+        .sx             = "250"
+        .sy             = "200"
+        .opacity        = "255"
+        .textcolor      = "028,028,028"
+        .backcolor      = "255,255,255"
+        .text           = "Element 1;element 2;ELEMENT 3;Et mon 4eme elemeeeent!"
+        .Image          = ""
+        .events         = "%_exe_path_%"
+        create/
+End/ listbox
+
+// ===== GUI events =====
+
+Function/ listbox_gui.selected(item_str,item_index)
+        ccp/ /set.level = 1
+
+        msgbox/ Elements selectionne : %item_str% index:%item_index%
+
+end/ Function
+
+
+
+
+
+
+
+
+
+
+
+

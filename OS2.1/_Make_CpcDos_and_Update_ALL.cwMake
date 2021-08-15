@@ -1,0 +1,12 @@
+;Register Cwc before using a .cwmake
+>
+-#Lauch Cpcdos/Make_FB_CpcDos.cwMake
+>
+-#Lauch CPinti/Make_CPinti.cwMake
+>
+-#Lauch ../CONTRIB/Make_Contrib.cwMake
+>
+-#Lauch ../build/Make_FB.cwMake
+>
+-#Run _Update_ALL_to_VM.bat
+>

@@ -1,0 +1,50 @@
+JemmEx v5.78 [07/15/12]
+JemmEx. Parts (c) tom ehlert 2001-2006 c't/H. Albrecht 1990
+usage: either add a line to CONFIG.SYS: DEVICE=JEMMEX.EXE [ options ]
+ or run it from the command line: C:\>JEMMEX [ options ]
+available options are:
++A20/NOA20     A20-disable emulation on/off (default on)
+ A20METHOD:m   set A20 switch method. Possible values for <m> are
+               KBC, PS2, BIOS, FAST, PORT92 and ALWAYSON.
+ ALTBOOT       use alternate reboot strategy
+ B=segm        specify lowest segment address for EMS banking (default=4000)
+ D=n           set DMA buffer size in kB (default=64, max is 128)
+ EMX           increased EMX DOS extender compatibility
+ FASTBOOT      fast reboot. Requires JemmEx to be loaded in CONFIG.SYS.
+ FRAME=E000    set EMS page frame (FRAME=NONE disables frame). Any value
+               between 8000 and E000 is accepted, but not all will work.
+ HMAMIN=n      set minimum amount in Kb to allocate the HMA.
+ I=start-end   force a region to be used for UMBs. Without this option
+               range C000-EFFF is scanned for unused pages. May also be used
+               to add (parts of) regions A000-BFFF or F000-F7FF as UMBs. Don't
+               use this option if you don't know what you are doing!
+ I=TEST        scan ROMs for unused pages, include found regions as UMBs
+ [MAX=]n       limit for VCPI (and EMS if < 32M) memory in kB (default 120 MB)
+ MAXEXT=n      limit extended memory usage to <n> kB
+ MIN=n         reserve up to <n> kB for EMS/VCPI memory on init (default=0)
+ NOCHECK       disallow access to address space without RAM (MMIO)
+ NOE801        don't use Int 15h, E801h to get amount of ext. memory
+ NOE820        don't use Int 15h, E820h to get amount of ext. memory
+ NOEMS         disable EMS handling
+ NODYN         no dynamic XMS memory allocation (use MIN= to set fix amount)
+ NOHI          don't move resident part into first UMB
+ NOINVLPG      don't use INVLPG opcode
++PGE/NOPGE     Page Global Enable feature usage on/off (default off)
+ RAM/NORAM     try to supply UMBs on/off (default on)
+ S=start-end   assume Shadow-RAM activated by UMBPCI, include it as UMB
+ SB            SoundBlaster driver compatibility mode
+ SPLIT         regain partially used EPROM 4k pages for UMBs
++VCPI/NOVCPI   VCPI Support on/off (default on)
+ VDS/NOVDS     Virtual DMA Services on/off (default on)
++VME/NOVME     V86-Mode Extensions on/off (default on)
+ VERBOSE       display additional details during start (abbr: /V)
+ X=start-end   exclude region from being touched or used by JemmEx
+ X=TEST        scan memory region C000-EFFF for UMB exclusion
+ X2MAX=n       max. value in Kb for XMS V2 free memory report (default=65535)
+ XMSHANDLES=n  number of available XMS handles (8<=n<=128, default=32)
+
+ '+': option can be set dynamically by running JemmEx from the command line
+
+When invoked from the command line JemmEx additionally will understand:
+ LOAD          install
+ UNLOAD        uninstall

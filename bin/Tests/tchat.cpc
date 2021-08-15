@@ -29,7 +29,7 @@ ccp/ /set.niveau = 2
 window/ Tchat_GUI
 	.title				= "T'chat GUI"
 	.px					= "240"
-	.py					= "300"
+	.py					= "260"*
 	.sx					= "%Win_Size_X%"
 	.sy					= "%Win_Size_Y%"
 	.Opacity			= "255"

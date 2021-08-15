@@ -1,14 +1,12 @@
 #print * Bouton
 #include once "Cpcdos.bi"
 
-Function _SCI_Cpcdos_OSx__.Creer_Bouton(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 	dim Message_erreur as String
-	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-		' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[SCI] Creer_Bouton() IND:" & _index_ & " [0x" & hex(this._CLE_) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-	end if
-	
+
+	DEBUG("[SCI] Creer_Bouton() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__BOUTON(_index_).identification_objet.Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).identification_objet.Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+
 	IF this.GUI_Mode = TRUE Then
 	
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -64,10 +62,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_Proprietes as CPCDOS_GUI_INIT__, _index
 			End if
 		end if
 	
+		
 		Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-		Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+		Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y' + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
 		Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
 		Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
+
 		
 		Dim Texte 			as string = CPCDOS_INSTANCE.remplacer_Variable_DYN(this.INST_INIT_GUI.GUI__BOUTON(_index_).TEXTE, this._CLE_, this.RetourVAR)
 
@@ -99,6 +99,9 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_Proprietes as CPCDOS_GUI_INIT__, _index
 		
 		Dim Bordure as integer = this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Bordure
 		
+		' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+		this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Bouton, _index_)
+
 		' TYPE_OBJ 
 		' 0 : Bouton normal
 		' 1 : Flat style
@@ -171,7 +174,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_Proprietes as CPCDOS_GUI_INIT__, _index
 					end if
 					
 					this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ORG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Bouton(" & _index_ & ")_DYN_PTR", IMG_ORIGINE, this.INST_INIT_GUI.GUI__BOUTON(_index_).Identification_Objet.Handle)
-				
+
 				Else
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -460,14 +463,22 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_Proprietes as CPCDOS_GUI_INIT__, _index
 			
 			'''' GUILLAUME : Crash trouve 21-05-2019 22:40
 			
+			' appliquer du flou
+			if this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode = 1 Then
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ID, this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode * 2)
+			End if
+
 			' Hop on dessine dans le buffer video
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
-			' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
 			
 			IF this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Survole = True Then
 				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID) <> 0 Then
+
+					if this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode = 1 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID, this.INST_INIT_GUI.GUI__BOUTON(_index_).PROP_TYPE.Blurry_Mode * 2)
+					End if
+
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, this.INST_INIT_GUI.GUI__BOUTON(_index_).IMAGE_SURVOLE_OPACITE)
-					' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__BOUTON(_index_).IMG_SURVOLE_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, this.INST_INIT_GUI.GUI__BOUTON(_index_).IMAGE_SURVOLE_OPACITE
 				Else
 					Message_erreur = ERRAVT("AVT_082", 0)
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

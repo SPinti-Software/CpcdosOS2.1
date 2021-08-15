@@ -9,11 +9,11 @@ window/ Console_text
         .py             = "130"
         .sx             = "600"
         .sy             = "400"
-        .Opacity        = "255"
+        .Opacity        = "200"
         .Parameters     = "TYPE:0 ALPHAMODE:0"
 	.WindowColor	= "050,050,100"
         .TitleColor     = "255,255,255"
-        .BackColor      = "150,200,255"
+        .BackColor      = "019,019,019"
         .Icon           = "%OS_GUI%/ICO_DEF.png"
         .events         = "%_EXE_PATH_%"
 	@#Handle_Fenetre creer/
@@ -26,11 +26,14 @@ Textbox/ txt_console
         .py             = "1"
         .tx             = "595"
         .ty             = "395"
-        .BackColor      = "150,200,250"
-        .TextColor      = "255,255,255"
+        .BackColor      = "019,019,019"
+        .TextColor      = "220,220,220"
         .text           = ""
 	Creer/
 end/ Textbox
+
+
+textbox/ /focus txt_console
 
 Function/ Console_text.Resize(up)
 

@@ -1,13 +1,11 @@
 #print * TexteBloc
 #include once "Cpcdos.bi"
 
-Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
-	
-	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-		' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[SCI] Creer_TextBlock() IND:" & _index_ & " [0x" & hex(this._CLE_) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-	end if
+
+	DEBUG("[SCI] Creer_TextBlock() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__TEXTBLOCK(_index_).identification_objet.Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).identification_objet.Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+
 
 	
 	IF this.GUI_Mode = TRUE Then
@@ -64,7 +62,7 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_Proprietes as CPCDOS_GUI_INIT__, _in
 		end if
 	
 		Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-		Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+		Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y' + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
 		Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
 		Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
 		
@@ -95,7 +93,8 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBlock(_Proprietes as CPCDOS_GUI_INIT__, _in
 		Dim NombreCR as integer = CPCDOS_INSTANCE.Compter_Caractere(TEXTE, CR)
 		Dim NombreLF as integer = CPCDOS_INSTANCE.Compter_Caractere(TEXTE, LF)
 
-		
+		' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+		this.INST_INIT_GUI.GUI__TEXTBLOCK(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.Textblock, _index_)
 	
 		Dim TypeRetour as String
 		Dim TypeRetourOct as integer

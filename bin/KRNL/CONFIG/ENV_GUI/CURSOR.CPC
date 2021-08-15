@@ -3,9 +3,38 @@ CCP/ /SET.LEVEL = 3
 
 // ---- Cursor ----
 
+// [FR] Le curseur graphique
+// [EN] Graphic cursor
+SET/ CPC_GUI.CURSOR_IMG = %OS_GUI%\CURSOR\CURSOR.PNG
+
 // [FR] Le curseur graphique de chargement
 // [EN] Graphic loading cursor
-SET/ CPC_GUI.LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
+SET/ CPC_GUI.CURSOR_LOAD_IMG = %OS_GUI%\CURSOR\LOAD.PNG
+
+// [FR] Le curseur graphique de resize manuel des fenetres
+// [EN] Windows manual resizing cursor
+SET/ CPC_GUI.CURSOR_RESIZE_IMG = %OS_GUI%\CURSOR\WinszRDW.PNG
+SET/ CPC_GUI.CURSOR_RESIZE_Size_X = 19
+SET/ CPC_GUI.CURSOR_RESIZE_Size_Y = 19
+
+SET/ CPC_GUI.CURSOR_RESIZE_zone_X = 40
+SET/ CPC_GUI.CURSOR_RESIZE_zone_Y = 30
+
+
+// [FR] Vitesse MAX / MIN
+// [EN] MAX / MIN speed
+SET/ CPC_GUI.CURSOR_MAX_SPEED = 0.5
+SET/ CPC_GUI.CURSOR_MIN_SPEED = 10.0
+
+// [FR] Vitesse inertielle
+// [EN] Inertia speed
+SET/ CPC_GUI.CURSOR_INERTIA_SPEED = 300.0
+SET/ CPC_GUI.CURSOR_CONSTANT_SPEED = 0.5
+
+// [FR] Espacement entre le curseur et sablier
+// [EN] Space between cursor and load cursor
+SET/ CPC_GUI.LOAD_PX = 14
+SET/ CPC_GUI.LOAD_PY = 0
 
 
 

@@ -1,6 +1,8 @@
 // USER
 CCP/ /SET.LEVEL = 3
 
+declare/ gui.create_window(name, title, pos_x, pos_y, siz_x, siz_y, parameters, win_rgb, title_rgb, opacity) : LEVEL(5)
+
 // [FR] Bordure de la fenetre
 // [EN] Window border
 FIX/ CPC_GUI.WINDOW.BORDER = 1
@@ -21,10 +23,43 @@ FIX/ CPC_GUI.WINDOW.BACKGROUND_RGB = 190,190,190
 
 
 // GUI Config files
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_dgn.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_scr.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_ico.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_titl.cpc
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/win_shdw.cpc
+
+
+
+Function/ gui.create_window(name, title, pos_x, pos_y, siz_x, siz_y, parameters, win_rgb, title_rgb, opacity)
+    // This allow to create window from cpcdoscp function
+
+    // Stay in level 1
+    CCP/ /set.level = 1
+
+
+    // create window
+    Window/ %name%
+
+        .title          = "%title%"
+        .parameters     = "%parameters%"
+        .px             = "%Pos_X%"
+        .py             = "%Pos_Y%"
+        .sx             = "%siz_x%"
+        .sy             = "%siz_y%"
+        .opacity        = "%opacity%"
+        .WindowColor    = "%win_rgb%"
+        .TitleColor     = "%title_rgb%"
+        .backcolor      = "%win_rgb%"
+        .events         = "%_exe_path_%"
+
+        @#window_handle create/
+    End/ Window
+
+    return/ %window_handle%
+
+end/ function
+
 
 
 

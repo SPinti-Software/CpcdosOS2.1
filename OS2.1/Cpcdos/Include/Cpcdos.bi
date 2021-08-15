@@ -66,7 +66,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Support deboggage COM  [OK]
 '	- GUI : Ajouter .icone, .imgtitre et .image dans les commandes CCP [OK]
 '	- Ajouter modification des proprietes graphiques  [OK]
-'	- CORRIGER: quand la GUI est chargé avec 16 bits et qu'on refait IUG/ mais 
+'	- CORRIGER: quand la GUI est chargï¿½ avec 16 bits et qu'on refait IUG/ mais 
 '		avec 32 bits, le rechargement n'est pas pris en compte. (ou 24 et vis versa) [OK]
 '	- #Recherche en mode standard un peut encombrant avec le debug [OK]
 '	- exec_wrp.cpp lgn 580 ajouter USERid et OSid pour l'ajouter dans le thread
@@ -109,7 +109,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Serveur TCP par defaut est echo, il doit etre en passif [OK]
 '	- Corriger le client TCP (non HTTP) [OK]
 '	- Corriger crash si Open/ file sans nom de fichier [OK]
-'	- Corriger Dernier caractere liste OS OS.LST mange (Bug trouvé par Caillou15) [Pas trouve de bug..]
+'	- Corriger Dernier caractere liste OS OS.LST mange (Bug trouvï¿½ par Caillou15) [Pas trouve de bug..]
 '	- Actualisation Date, CPU etc... [OK] --> UPD:1 et ${}
 '	- Lecture Ligne par Ligne [OK] -> Demande par Meaxy
 '	- Corrgier bugs UPD:1 et GUI refresh (Chrapati + Meaxy) [OK]
@@ -121,7 +121,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '   - Pression touches F1, F2, F3... [OK]
 '   - Ajouter le set/ variable++ [OK]
 ' 	- Bouton flat style [OK]
-'	- Bootscreen ajouter parametre degradé [OK]
+'	- Bootscreen ajouter parametre degradï¿½ [OK]
 ' 	- Corriger ccp/ /optimisation = 1 [OK]
 '	- Ajouter positionnement + get curseur GUI [OK]
 '	- Ajouter SIZ:0 SIZBTN:0 REDUC:0 [OK]
@@ -130,17 +130,25 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Corriger -1 textbox [OK]
 ' 	- Download progress (comme copy/) [OK]
 ' 	- Crash cpcdosCP.bas:17510 lors de l'arret sur ElieOS (boucle fenetre) [OK]
-' 	- Voir capture et debug Meaxy plantage ligne 660 memoire source = 0 PNG non chargé mais continue [OK]
+' 	- Voir capture et debug Meaxy plantage ligne 660 memoire source = 0 PNG non chargï¿½ mais continue [OK]
 '	- Plantage system.bas:729 Creer repertoire() [OK]
 '	- Lenteur + retard de l'input au clavier textbox [OK]
 '	- Ajouter objet CONSOLE	 [OK]
 '	- Event agrandissement/retrecissement fenetre! [OK]
 ' 	- Fonction replication caractere (Meaxy) [OK]
 '	- Crach Meaxy + KeyMap manuel [OK]
-'	- Textbox evenement ENTRER
+'	- Textbox evenement ENTRER [OK]
+' 	- Rendre dechargeable les icones & background de l'explorateur [OK]
+'	- Explorer : Ajouter event clic (pour mettre a jour un txtbox par exemple) [OK]
+'	- Explorer : Ajouter mouse selection par clavier aussi [OK]
+'   - Corriger commande Actualiser/ [OK]
+'	- Gerer : Content-Type: application/octet-stream  [OK]
+'	- Enlever le texte en trop quand l'update ne marche pas [OK]
+' 	- Explorateur Fichier [OK]
+'	- Integrer toutes les variables STD::STRING --> Directement en argument. Gagne +memoire [OK]
 
 ' =-=-=-=-=-=-= A FAIRE =-=-=-=-=-=
-'	- CRASH telechargement fichier avec un à ou bug avec les % %
+'	- CRASH telechargement fichier avec un ï¿½ ou bug avec les % %
 '	- OPTIMISATION : Re-indexer le nombre maximum des variables 1, 2, 3, 4 et 5 (INDEX_Max[])
 '	- 				Suppression tableaux
 '	- Supprimer variable correspondant au thread ferme
@@ -152,7 +160,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 '	- Evenement a la volee
 '	- Rendre possible la copie de dossiers
 '	- Modifier le timing de la barre clignotante du textebox
-' 	- Ajouter le systeme du On ERROR sur les handelers qui ferme le thread qui a planté au lieu de planter le noyau completement.
+' 	- Ajouter le systeme du On ERROR sur les handelers qui ferme le thread qui a plantï¿½ au lieu de planter le noyau completement.
 '	- Commande suppression en securite fichier
 '		+ IDEM mais pour DOSSIERS
 '	- Bouton Agrandissement, et reduction des fenetres
@@ -173,36 +181,26 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 
 '	- Optimiser 'CCP_Function' en cherchant les CPC.xxx en avance pour la prochaine Update.
 '	- Faire sorte a ce que les fonctions ont chacun un pointeur memoire
-' 	- Finir pré-compilateur CpcdosC+ (Label:OK, Fonction:ATTENTE)
+' 	- Finir prï¿½-compilateur CpcdosC+ (Label:OK, Fonction:ATTENTE)
 '	- Ajouter le style de case / switch en cpcdosc+
 '   - corriger PNG bit couleurs
-'   - Textbox - Ameliorer le curseur et son positionnement modifiable et le deplacement du texte hors zone
-'   - SDK + Manuel
 '	- Perfectionner l'activite reseau pour stabiliser le systeme SERVEUR et CLIENT
-'	- Quota meme libre?
 
 ' BETA 1.3
 '	- ECHEC - REPORTE Refonte module memoire 
-
 ' 	- ajouter multidimentions
-'   - Corriger commande Actualiser/
 '	- Ajouter boucle for
 '   - Ajouter Warning goto hors scope
-'	- Integrer toutes les variables STD::STRING --> Directement en argument. Gagne +memoire
-' 	To Test Serveur.cpp lgn 80 - New int correction warning
+' 	- To Test Serveur.cpp lgn 80 - New int correction warning
 '	- Runtime free par page --> Si caractere autre que '0' alors FUITE DE MEMOIRE MOTHER FUCKER
 '	- CHR et CARACTERE marche 1 fois sur 2
-
 '	- Corriger crash if/ "a = b" == "b" then: (Oncle Jojo)
-
 ' 	- Ajouter niveau de la stack pour debuggage
 '	- Ajouter centrage, position defaut, agrandi et plein ecran fenetre
-' 	- Explorateur Fichier
-'	- Gerer : Content-Type: application/octet-stream
-'	- Enlever le texte en trop quand l'update ne marche pas
 ' 	- Bug barre progression quand a 0% (Meaxy  19-OCT)
 '	- Revoir le MONO-CLIC
-' 	- Rendre dechargeable les icones & background de l'explorateur
+'	- Problï¿½me actualisation horloge (doublure en Y)
+
 
 '
 ' =-=-=-=-=-=-==-=-=-=-=-=-==-=-=-=
@@ -224,8 +222,8 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "08" 
-CONST _VMOIS as string 	= "01"
+CONST _VJOUR as string 	= "15" 
+CONST _VMOIS as string 	= "08"
 CONST _VANNEE as string = "2021"
 
 CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/EN]"
@@ -233,8 +231,11 @@ CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/E
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
-CONST _VERSION_MINEUR 	as string = "beta 1.4"
-CONST _VER_NET_MINEUR 	as string = "BETA1.4"
+'CONST _VERSION_ETAT		as string = "HotRelease"
+CONST _VERSION_ETAT		as string = "PUBLIC"
+
+CONST _VERSION_MINEUR 	as string = "beta 1.5"
+CONST _VER_NET_MINEUR 	as string = "BETA1.5"
 CONST _VERSION_CCP 		as string = "3.0"
 CONST _VERSION_SCI 		as string = "3.0"
 CONST _VERSION_CONSOLE	as string = "3.0"
@@ -290,7 +291,7 @@ Type _TYPES_Cpcdos_OSx__
 	As String _RTC_Nom_Jour_EN		(0 To 7) 	= {"Sunday","Monday","Thesday","Wednesday","Thursday","Friday","Saturday","Sunday"}
 	As String _RTC_Nom_Jour_EN_min	(0 To 7) 	= {"Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"}
 	
-	As String _RTC_Separateur		(0 to 4) 	= {"/", "\", ".", "-", ":"}
+	As String _RTC_Separateur		(0 to 4) 	= {"/", "\", ".", "-", ":"} '"
 	As String _RTC_Secondes					 	= "SS"
 	As String _RTC_Minutes					 	= "MM"
 	As String _RTC_Heure					 	= "HH"
@@ -329,6 +330,7 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _MAX_GUI_PROGRESSBAR 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_CHECKBOX 	as integer = _MAX_GUI___OBJS
 		CONST _MAX_GUI_EXPLORER 	as integer = _MAX_GUI___OBJS
+		CONST _MAX_GUI_LISTBOX 		as integer = _MAX_GUI___OBJS
 		
 		CONST _MAX_NOMBRE_OS		as integer = 8
 		
@@ -336,6 +338,7 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _PAGE_VIDEO_WORK		as integer = 1 ' La page invisible ou tout traitements est rassemble
 		CONST _PAGE_VIDEO_FOND_WRK	as integer = 2 ' Image de fond prepare avec les fenetre arriere plan (Deplacement fenetre...)
 		CONST _PAGE_VIDEO_FOND_IMG	as integer = 3 ' Image fond d'ecran NEUTRE
+		CONST _PAGE_VIDEO_DESKTOPMODE as integer = 4 ' Page pour fenetre en mode DESKTOP
 		
 		' *** CpcdosC+ ***
 		CONST _MAX_FONCTION_ARGS	as integer = 24 ' 16 arguments etant temporaire
@@ -386,6 +389,12 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _CLIENT_UDP				as integer = 2
 		CONST _DOSBOX					as integer = -23
 		CONST _SANS_Reseau				as integer = -24
+
+		NETWORK_DRIVERCARD				as boolean = false
+		NETWORK_LOCAL					as boolean = false
+		NETWORK_ROUTER					as boolean = false
+		NETWORK_INTERNET				as boolean = false
+		NETWORK_INTERNET_AND_DNS		as boolean = false
 		
 		CONST _STACK_STOCKER_POUR_CPCDOS	as integer = 1 ' Serveur --> STACK Cpcdos
 		CONST _STACK_STOCKER_POUR_SERVEUR 	as integer = 2 ' Cpcdos  --> STACK Serveur
@@ -403,6 +412,9 @@ Type __Noyau_Cpcdos_OSx__
 		CONST _MEGA_OCTETS	as double = 1024^2
 		CONST _GIGA_OCTETS	as double = 1024^3
 		CONST _TERA_OCTETS	as double = 1024^4
+
+		' COPIER COLLER COUPER Textuel
+		__PRESSE_PAPIER_TEXTE__ as String
 		
 		' *** Tableau de la liste des OS present et son dossier ***
 		_LISTE__OS_BOOTSCREEN					as String
@@ -430,8 +442,7 @@ Type __Noyau_Cpcdos_OSx__
 		Thread_BootScreen as uinteger
 		
 		' *** Curseur graphique ***
-		CURSEUR_LOAD_ID			as integer
-		CURSEUR_LOAD_AFFICHER 	as integer = 0
+
 		
 		
 		' *** Si ISR doit etre execute ou non ***
@@ -468,11 +479,16 @@ Type __Noyau_Cpcdos_OSx__
 		LOGGER_AU_DEMARRAGE		as boolean = FALSE ' Logger dans tous les cas dans le fichier debug.log
 		LOGGER_TOUT_AU_DEMARRAGE as boolean = FALSE ' Logger TOUT dans tous les cas dans le fichier debug.log
 		
-		' *** Explorer GUI object ***
-		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 64 	' Nombre d'elements par pages
+		' *** List GUI object ***
+		CONST _MAX_GUI_EXPLORER_ELEMENTS as integer = 128 	' Nombre d'elements par pages
+		CONST _MAX_GUI_LISTBOX_ELEMENTS as integer = 128 	' Nombre d'elements par pages
 		
 		' *** Liste des formats programmes et icones associes **
 		const FORMAT_MAX					as integer = 24
+		const FORMAT_INDEX_DIR				as integer = 0
+		const FORMAT_INDEX_DRIVE			as integer = 24
+		const FORMAT_INDEX_UNKNOW			as integer = 23
+		
 		FORMAT_nombre						as integer = 0
 		
 		FORMAT_Extention	(FORMAT_MAX)	as String
@@ -480,6 +496,8 @@ Type __Noyau_Cpcdos_OSx__
 		FORMAT_Icones_min	(FORMAT_MAX)	as String
 		FORMAT_Icones_max	(FORMAT_MAX)	as String
 		FORMAT_Programme	(FORMAT_MAX)	as String
+
+
 		
 		
 		' *** Instanciation des classes du systeme ***
@@ -535,27 +553,31 @@ Type __Noyau_Cpcdos_OSx__
 		Declare Function 	Initialiser_BootScreen	(Type_rsc as boolean, source as string, PID_system as uinteger) as uinteger
 		Declare Function 	Load_Ressources			(Type_rsc as boolean, source as String, Res_X as integer, Res_Y as integer) as integer
 		
-		Declare Function 	Generer_RND			(Debut as double, Fin as double) 						as double
-		Declare Function 	get_En_Charge		() 														as boolean
-		Declare Sub 		En_Charge			(oui as boolean)
-		Declare Function 	Creer_processus		(ByRef _STRUCT_PROCESSUS as _STRUCT_PROCESSUS_Cpcdos_OSx__) 	as uinteger
-		Declare Function 	Fermer_processus	(PID as uinteger) 										as boolean
-		Declare Function 	Gerer_processus		(PID as uinteger, Action as integer) 					as integer
-		Declare Function 	get_Nom_Processus	(PID as uinteger) 										as String
+		Declare Function 	Generer_RND				(Debut as double, Fin as double) 								as double
+		Declare Function 	get_En_Charge			() 																as boolean
+		Declare Sub 		En_Charge				(oui as boolean)
+		Declare Function 	Creer_processus			(ByRef _STRUCT_PROCESSUS as _STRUCT_PROCESSUS_Cpcdos_OSx__) 	as uinteger
+		Declare Function 	Fermer_processus		(PID as uinteger) 												as boolean
+		Declare Function 	Gerer_processus			(PID as uinteger, Action as integer) 							as integer
+		Declare Function 	get_Nom_Processus		(PID as uinteger) 												as String
+		Declare Function 	get_List_Processus		(display as integer)											as String
+		declare Function	get_pid_by_name_process	(process_name as string) 										as integer
+		declare Function	get_List_PID			(display as integer) 											as String
+		declare Function	get_List_Processus_icon (display as integer) 											as String
 		
-		Declare Function 	Creer_thread		(byref _STRUCT_THREAD as _STRUCT_THREAD_Cpcdos_OSx__) 	as uinteger
+		Declare Function 	Creer_thread		(byref _STRUCT_THREAD as _STRUCT_THREAD_Cpcdos_OSx__) 				as uinteger
 		
-		Declare Function 	Fermer_thread		(PID as uinteger, TID as uinteger, force as boolean) 	as integer
+		Declare Function 	Fermer_thread		(PID as uinteger, TID as uinteger, force as boolean) 				as integer
 		Declare Function 	Fin_thread			(PID as uinteger, TID as uinteger) as integer
-		Declare Function 	Gerer_thread		(PID as uinteger, TID as uinteger, Action as integer) 	as integer
-		Declare Function 	get_Nom_Thread		(TID as uinteger) 										as String
-		Declare Function 	get_ThreadEnCours	() 														as uinteger
-		Declare Function 	get_NombreThreads	() 														as uinteger
+		Declare Function 	Gerer_thread		(PID as uinteger, TID as uinteger, Action as integer) 				as integer
+		Declare Function 	get_Nom_Thread		(TID as uinteger) 													as String
+		Declare Function 	get_ThreadEnCours	() 																	as uinteger
+		Declare Function 	get_NombreThreads	() 																	as uinteger
 		
-		Declare Function 	Fichier_decompress	(ByVal Source as String, ByVal Destination as String) 	as integer
-		Declare Function 	Creer_repertoires_Parents(ByVal file As ZString Ptr) 						as boolean
+		Declare Function 	Fichier_decompress	(ByVal Source as String, ByVal Destination as String) 				as integer
+		Declare Function 	Creer_repertoires_Parents(ByVal file As ZString Ptr) 									as boolean
 		Declare Function	decompress_fichier	(ByVal zip_instance As zip_t Ptr, ByVal i As Integer, Destination as String) as boolean
-		Declare Function 	Fichier_compress	(ByVal Source as String, ByVal Destination as String) 	as integer
+		Declare Function 	Fichier_compress	(ByVal Source as String, ByVal Destination as String) 				as integer
 		
 		Declare Function	Lire_fichier_complet(ByVal Chemin as String) as String
 		Declare Function 	Fichier_Existe		(ByVal Chemin as String) as boolean
@@ -589,13 +611,19 @@ Type __Noyau_Cpcdos_OSx__
 		
 		' Charger une image PNG, JPG, JPEG, JTIF et MJPG
 		Declare Function 	Charger_Image		(ByVal ImageSource as String) as Any PTR
-		Declare Function 	Charger_Image		(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) as Any PTR
+		Declare Function 	Charger_Image		(ByVal ImageSource as String, byref Hauteur as integer, byref Largeur as integer) 	as Any PTR
 		
 		' Charger un fichier INI
-		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) as string
+		Declare function	Read_INI_value 		(Fichier_source as string, Section as string, Cle as string) 						as string
 
 		' Charger la liste des formats de fichiers
-		Declare Function 	Load_list_format	(source as string) as boolean
+		Declare Function 	Load_list_format	(source as string) 																	as boolean
+		
+		' Executer un fichier (Image, programme etc...)
+		Declare Function 	Executer_Fichier	(source as String, _CLE_ as double) 												as boolean
+
+		' Capture d'ecran
+		Declare function 	Screenshot(_cle_ as double)																				as boolean
 		
 		
 		Declare sub tester_erreur_memoire()
@@ -614,7 +642,7 @@ CONST _ABOUT as String = "co-kernel " & (CHR(65+var_) & CHR(110+var_) & CHR(97+v
 							" et ses contributeurs d'Ultima Test." & CHR(13) & _
 							"Un grand remerciement a Mickael BANVILLE pour sa contribution SDK des modules WIN32, 3D OpenGL/GZE Engine, LLVM." & CHR(13) & _
 							"Ainsi qu'a Timothee LUSSIAUD, Esteban CADIC, Leo ENDOR, Leo VACHET et Johann GRAF. Et a la communaute" & CHR(13) & _
-							"  Copyright©" & CHR(65+var_) & CHR(78+var_) & "inti Software"
+							"  Copyrightï¿½" & CHR(65+var_) & CHR(78+var_) & "inti Software"
 Declare Sub intro()
 Declare function	__CPCDOS_INIT_2 cdecl 	Alias "__CPCDOS_INIT_2"		(a as integer) as integer
 Declare Function 	THREAD__GetTouche 		Alias "THREAD__GetTouche"	(ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer

@@ -1,0 +1,111 @@
+UNDIS3C  P 10/100 Universal PXE Driver   3COM's Generic PXE     Driver for use when    remote booting the disk.
+ELNK3    I 10     3Com 5x9 Etherlink III
+3CELCM   C 10?    3Com 562 Ether3 PCMCIA Etherlink III LAN+ModemPCMCIA Card
+EL59x    P 10     3Com 59x Etherlink PCI
+EL556    C 10/100 3Com EL556 LAN/V.90    Mini-PCI Combo Card
+ELPC656  C 10/100 3Com ELPC656 LAN+56K   Megahertz Global 10/100Network & 56K Modem    CardBus PC Card
+EL90X    P 10/100 3com 90x (inc 905)
+EL94X    P 1000   3com 94x Gigabit       aka 3Com 3C2000        Or try Marvell Yuken   driver
+EL99X    P 10/100 3Com 99x Etherlink 3XP 3XP Technology
+ELPC3    C 10     3Com Megahertz 589E    and 3C589D-TP(?)
+EL3c574  C 10/100 3Com Megahertz 574B
+ELPC575  C ?      3Com Megahertz 575     CardBus, IRQ set to 9. Not PnP.
+PCIND   *P 10     Acer ALN-201           Uses RTL8029(AS) Driver
+RTSND   *P 10/100 Acer ALN-325           Uses RTL8139x Driver
+ACCND    P 10/100 Accton EN1207D/EN2242A 
+ETHNE    I 10     Accton EN166x MPX2     EtherCombo/Coax/Pair,  PnP
+ETHPCM   C 10     Accton EN22xx?         Genius (KYE) ME3000II
+EN5251   P 10/100 Accton EN5251
+FASTNIC  P 10/100 ADMtek Fast Ethernet
+EMPCI    P 10/100 Adaptec 69xx
+AG1310B  P 1000   Agere ET1310B
+AT2400   P 10/100 Allied Telesyn AT2400
+PCNTND   P 10/100 AMD PCNet Adapter
+ATNDS2   P 1000   Atheros AR813x/AR815x
+ATL1C    P 1000   Atheros AR8132
+ATL1E    P 1000   Atheros AR8121/AR8113  AR8121/AR8113/AR8114
+L1       P 1000   Atheros L1 Gigabit
+L2       P 1000   Atheros L2 Gigabit
+F5D5020  C 10/100 Belkin F5D5020 PCMCIA
+B44      P 10/100 Broadcom 44x
+B57      P 1000   Broadcom 57x NetXtreme
+BXND20X  P 1000   Broadcom NetXtreme II  5706, 5708 chipsets
+BNX2EV   P 10GBIT Broadcom NetXtreme 10G
+CB100    C 10/100 Cardbus 32Bit          Based on a DEC Chipset?
+FETHCB   C 10/100 CNet CNF-401
+E200P    ? ?      CNet E200P
+N100     P 10/100 Compaq NC31xx
+NETFLX3  P 10/100 Compaq NetFlex         Including Netelligent  Cards
+DE22X    I 10     D-Link DE-220
+DLKPCI   P 10/100 D-Link 500
+DE528    P 10     D-Link DE-528CT        RJ45/BNC Combo Card
+DFE528   P 10/100 D-Link DFE-528
+DLKFET   P 10/100 D-Link DFE-530         Try the VIA driver     instead if you're      getting errors
+DLKRTS   P 10/100 D-Link DFE-530+        530+ = low profile card530 = Full height card ???
+DLH5X    P 10/100 D-Link DFE-550
+DFE650   C 10/100 D-Link DFE-650
+DFE670   C 10/100 D-Link DFE-670TXD
+DLKRCB   C 10/100 D-Link DFE-690
+DM9PCI   P 10/100 Davicom DM9
+DC21X4   P 10/100 Digital 2104x/2114x
+HPFEND   P 10/100 HP DeskDirect
+IBMFE    P 10/100 IBM EtherJet PCI
+EXP16    I 10     Intel EtherExpress 16
+E10P     P 10     Intel Pro10
+E100B    P 10/100 Intel Pro100
+E1000    P 1000   Intel Pro1000          8254x Chipsets
+JMND     P 10/100 JMicron                JMC2xx NIC
+PCMDM    C 10     Kingston KNE-PCM/M     PCMCIA Card
+NGRPCI  *P 10/100 Linksys LNE100TX       Uses the Netgear FA310 Driver.                PNIC Chipset
+LNE100v4 P 10/100 Linksys LNE100TX Ver2  Version 2 Cards
+LNE100v4 P 10/100 Linksys LNE100TX Ver4  Version 4 Cards
+LNE100v5 P 10/100 Linksys LNE100TX Ver5  Version 5 Cards
+EG1064   P 1000   Linksys EG1032/EG1064  Version 2 Cards        Instant Gigabit
+NGRPCI  *P 10/100 LiteOn PNIC100         Uses the Netgear FA310 Driver
+MXNICF   P 10/100 Macronix MX987xx       MX987xx Chipsets
+yuknd    P 1000   Marvell Yukon Gigabit  Or try 3COM 94x driver if you have problems.
+LPC4XAT  C 10/100 Melco/Buffalo LPC4-TX
+NE2000   I 10     NE2000 ISA             Non PnP Settings...    IRQ=10  I/O=300
+NGRPCI   P 10/100 Netgear FA310          Works with Linksys     LNE100TX
+DP83815  P 10/100 Netgear FA311/FA312    Uses National Semi.    DP8381x chip
+FA410    C ?      Netgear FA410TX
+FA411    C 10/100 Netgear FA411TX
+FA511    C 10/100 Netgear FA511TX        Same as ADMTek driver?
+NDIS     P 10/100 Nvidia nForce MCP      This driver only seems to work on some boards,and not others???
+OCE4X    ? ?      Olicom OC-2326
+RL100A   P 10/100 ReadyLink RL100ATX/PCI
+AREDP    I 10     Realtek 8012
+PNPND    I 10     Realtek 8019(AS)       RJ45/BNC Combo Card
+PCIND    P 10     Realtek 8029(AS)       RJ45/BNC Combo Card
+RTFND    P 10/100 Realtek 8129
+RTSND    P 10/100 Realtek 8139x
+RTEND    P 1000   Realtek 8168 Gigabit
+RTGND    P 10/100 Realtek RTL8168/8111 Gigabit
+RTGBND   P 1000   Realtek 8169 Gigabit
+SIS190   P 1000   SiS 190/191 Gigabit
+SIS900   P 10/100 SiS 900/7016           Autodetected Speed ModeOften found onboard    some motherboards.
+SIS900_1 P 10/100 SiS 900 100Mbit FD     Speed forced to 100 FD
+SIS900_2 P 10/100 SiS 900 100Mbit HD     Speed forced to 100 HD
+SIS900_3 P 10/100 SiS 900 10Mbit FD      Speed forced to 10 FD
+SIS900_4 P 10/100 SiS 900 10Mbit HD      Speed forced to 10 HD
+SMC1211  P 10/100 SMC 1211 EZ Card
+SMC1255  P 10/100 SMC 1255 EZ Card
+LE100    C 10/100 SMC 8040 PCMCIA card   Also known as          ZEUS PC Card 10/100.
+SMC80412 C ?      SMC 80412 PCMCIA card
+SMC9432  P 10/100 SMC 9432 EtherPower II
+SMC8000  I 10     SMC EtherCard 8xxx     PnP based ISA Card
+EP312    I 10?    Surecom EP-312V
+sk98nd   P 1000   SysKonnect Gigabit     No Longer Required?    Replaced by Marvell    Yuken driver?
+TDKCARD2 C ?      TDK ProDigital PCMCIA
+VIAAMA   P 10/100 VIA Amazon
+FETND    P 10/100 VIA Technologies       Also works for some    D-Link 530 cards.
+GETND2   P 1000   VIA Velocity Gigabit   VT6120, VT6122 
+W940ND   P 10     Winbond W89C940F
+CE3NDIS  C 10/100 Xircom Realport RE100  16bit 5V PCMCIA        (CE3)
+REM56G10 C 10     Xircom Realport+Modem  Ethernet & 56K Modem   (REM56G-10)
+XCEMNDIS C 10/100 Xircom 10/100+Modem    10/100 Ethernet & 56K  (XEM)
+XIRCOM   C ?      Xircom Pocket III
+cbendis  C ?      Xircom Realport RBE100 32bit 3.3V Cardbus
+CUSTOM1  ? ?????? CUSTOM1.DOS Driver     Put your driver file inA:\FileCopy\CUSTOM1.DOS & CUSTOM1.INI
+CUSTOM2  ? ?????? CUSTOM2.DOS Driver     Rename your driver and place it in FILECOPY   folder
+

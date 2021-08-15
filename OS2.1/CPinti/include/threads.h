@@ -11,6 +11,9 @@ namespace cpinti
 		
 		unsigned long cpinti_creer_thread(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char* NomThread, 
 																		long Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned long ARG_TH);
+
+		unsigned long cpinti_creer_thread(unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char* NomThread, 
+																		long Priorite, void* (* Fonction) (void * arg), void* ARG_CP, unsigned long ARG_TH, bool ExecuteThreadNow);
 													
 		long				cpinti_arreter_thread	(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID);
 		long 			cpinti_arreter_thread	(unsigned long ID_KERNEL, unsigned long PID, unsigned long TID, bool force);

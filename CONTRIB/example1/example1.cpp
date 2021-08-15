@@ -11,6 +11,8 @@ namespace example1
 {	
 	/* Inclure le wrapper (TOUJOURS DANS UN NAMESPACE!) */
 	#include "../INCLUDE/cpcdos.h" // Inutile pour cette exemple
+
+	
 	
 	/* Declarer les fonctions */
 	void initialiser();
@@ -21,6 +23,8 @@ namespace example1
 	{
 		/* Adapter le mode debug (NON OBLIGATOIRE) */
 		initialiser();
+
+
 		
 		/* Afficher un message a l'ecran a l'aide de COUT */
 		std::cout << "Hello world! " << std::endl;

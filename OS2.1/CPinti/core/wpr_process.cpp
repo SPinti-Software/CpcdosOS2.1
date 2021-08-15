@@ -33,6 +33,17 @@
 
 // #include "leakchk.h"
 
+
+extern "C" unsigned long xe_cpinti_get_pid_from_tid()
+{
+	return cpinti::gestionnaire_tache::cpinti_get_pid_from_tid();
+}
+
+extern "C" unsigned long xe_cpinti_get_pid_from_tid_val(unsigned long time_ms)
+{
+	return cpinti::gestionnaire_tache::cpinti_get_pid_from_tid(time_ms);
+}
+
 namespace cpinti
 {
 	
@@ -75,8 +86,8 @@ namespace cpinti
 				/** Identifiant Thread parent (Celui qui le cree) **/
 				gestionnaire_tache::Liste_Processus[Resultat].TID_Parent = gestionnaire_tache::Thread_en_cours;
 				
-				/** Nom du processus **/
-				// strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, NomProcessus, 16);
+				/** Nom du processus **/				
+				strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, NomProcessus, strlen(NomProcessus));
 			}
 			else
 			{
@@ -142,9 +153,21 @@ namespace cpinti
 			// 	ID_KERNEL		: Identificateur unique de l'instance du noyau
 			//  PID				: Numero de processus
 			//  NomProcessus	: Variable NULL ou sera stocke le nom de variable
-			
-			return (const char*) gestionnaire_tache::Liste_Processus[PID].Nom_Processus;
-			
+
+
+			int etat_processus = cpinti_get_etat_processus(0, PID);
+
+
+			if ((etat_processus != _ARRETE) && (etat_processus != _EN_ARRET) && (etat_processus != _ZOMBIE))
+				return (const char*) gestionnaire_tache::Liste_Processus[PID].Nom_Processus;
+			else
+			{
+				cpinti_dbg::CPINTI_DEBUG("[AVERTISSEMENT] Le processus [PID:" + std::to_string(PID) + "] n'existe pas (" + std::to_string(etat_processus) + ")", 
+										"[WARNING] Process [PID:" + std::to_string(PID) + "] not exist (" + std::to_string(etat_processus) + ")",
+										"core::gestionnaire_tache", "cpinti_get_nom_processus()",
+							Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
+				return "";
+			}
 		}
 		
 		
@@ -158,6 +181,29 @@ namespace cpinti
 				NombreProcess = MAX_PROCESSUS;
 			
 			return NombreProcess;
+		}
+
+		unsigned long cpinti_get_nombre_thread_in_processus(unsigned long PID)
+		{
+			// Cette fonction permet d'obtenir le nombre de thread dans un processus
+			
+			return gestionnaire_tache::Liste_Processus[PID].NB_Thread;
+		}
+
+		unsigned long cpinti_get_pid_from_tid()
+		{
+			// Cette fonction permet d'obtenir le numero du PID du thread
+
+			return gestionnaire_tache::Liste_Threads[get_ThreadEnCours()].PID;
+
+		}
+
+		unsigned long cpinti_get_pid_from_tid(unsigned tid)
+		{
+			// Cette fonction permet d'obtenir le numero du PID du thread
+
+			return gestionnaire_tache::Liste_Threads[tid].PID;
+
 		}
 		
 	}

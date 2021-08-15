@@ -3,14 +3,12 @@
 
 ' Reflechir qu'aussi en cas de changement d'image a chaud l'image ne vas pas changer puisse ce qu'il est deja en memoire
 '  il faudra(si changement) desallouer et recharger l'image
-Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 	Dim CreerBuffer as boolean
 	
-	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-		' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[SCI] Creer_CheckBox() IND:" & _index_ & " [0x" & hex(this._CLE_) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-	end if
+	DEBUG("[SCI] Creer_CheckBox() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__CHECKBOX(_index_).identification_objet.Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).identification_objet.Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+
 
 	
 	IF this.GUI_Mode = TRUE Then
@@ -68,7 +66,7 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_Proprietes as CPCDOS_GUI_INIT__, _ind
 	
 		Scope
 			Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-			Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+			Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y' + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
 			Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
 			Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
 
@@ -114,6 +112,9 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			Dim Image_Ancien	as String = this.INST_INIT_GUI.GUI__CHECKBOX(_index_).Image_Ancien
 			' Dim Pointeur_IMG_FOND 	as any PTR
 			' Dim Pointeur_IMG 		as any PTR
+
+			' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+			this.INST_INIT_GUI.GUI__CHECKBOX(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.CheckBox, _index_)
 
 			' Choisir la bonne image selon le valeur
 			IF Valeur = 1 Then
@@ -356,7 +357,12 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_Proprietes as CPCDOS_GUI_INIT__, _ind
 			
 			
 			' Le pointeur final !! :)
-
+			' appliquer du flou
+			if this.INST_INIT_GUI.GUI__CHECKBOX(_index_).PROP_TYPE.Blurry_Mode > 0 Then
+				
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__CHECKBOX(_index_).PROP_TYPE.Blurry_Mode * 2)
+			End if
+			
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID, 0, 0, 0, 0, IMG_Taille_X, IMG_Taille_Y, this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID, true, false)
 			' put CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID), (0, 0), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_ID), (0, 0)- step(IMG_Taille_X, IMG_Taille_Y), alpha, 255
 	

@@ -41,13 +41,17 @@
 
 extern "C" long 		cpc_clean	();
 
+
+extern "C" unsigned long xe_cpinti_get_ThreadEnCours()
+{
+	return cpinti::gestionnaire_tache::get_ThreadEnCours();
+}
+
 namespace cpinti 
 { 
 	namespace gestionnaire_tache
 	{ 
 	
-		
-		
 		void IamInLive()
 		{
 			// Ne pas calculer si le CPU est en evaluation
@@ -362,7 +366,7 @@ namespace cpinti
 			Nombre_Processus++;
 			
 			// Nom du processus
-			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, NomProcessus, 32);
+			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, NomProcessus, strlen(NomProcessus));
 
 			// Son numero de TID (Thread IDentifiant)
 			Liste_Processus[Nouveau_PID].PID 				= Nouveau_PID;
@@ -441,8 +445,18 @@ namespace cpinti
 					Liste_Processus[pid].Threads_Enfant[tid] = false;
 				}
 				
+				cpinti_dbg::CPINTI_DEBUG("P4", 
+										"P4", 
+										"", "",
+										Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
+
 				// Attendre 10ms pour etre SAFE
-				usleep(1000);
+				// usleep(1000);
+
+				cpinti_dbg::CPINTI_DEBUG("P5", 
+										"P5", 
+										"", "",
+										Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 				
 				if(compteur_thread > 0)
 				{
@@ -596,7 +610,7 @@ namespace cpinti
 			Nombre_Threads++;
 			
 			// Nom du thread
-			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, NomThread, 30);
+			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, NomThread, strlen(NomThread));
 			
 			// Corriger les priorites
 			if(Liste_Threads[Thread_en_cours].Priorite < 2) 
@@ -624,6 +638,9 @@ namespace cpinti
 			
 			// Incrire le thread dans le processsus
 			Liste_Processus[pid].Threads_Enfant[Nouveau_TID]	= true;
+
+			// incrementer le nombre de thread dans le processus
+			Liste_Processus[pid].NB_Thread						+= 1;
 			
 			// Mettre a jour le TID dans l'adresse memoire
 			ptr_Update_TID(Arguments, Nouveau_TID);
@@ -635,8 +652,8 @@ namespace cpinti
 			
 			// std::string offset_fonction_STR = std::to_string((unsigned long) Fonction);
 			// std::string tid_STR = std::to_string((unsigned long) Nouveau_TID);
-			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Fonction offset 0x" + std::to_string((unsigned long) Fonction), 
-									 " [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Offset function 0x" + std::to_string((unsigned long) Fonction),
+			cpinti_dbg::CPINTI_DEBUG(" [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Fonction offset " + std::to_string((unsigned long) Fonction), 
+									 " [OK] TID:" + std::to_string((unsigned long) Nouveau_TID) + ". Offset function " + std::to_string((unsigned long) Fonction),
 									 "", "",
 						Ligne_saute, Alerte_validation, Date_sans, Ligne_r_normal);
 			
@@ -645,7 +662,7 @@ namespace cpinti
 		
 			Thread_en_cours = Nouveau_TID;
 			
-			Interruption_Timer(0);
+			// Interruption_Timer(0);
 
 
 			// Retourner l'ID
@@ -712,8 +729,11 @@ namespace cpinti
 				Liste_Threads[tid].Etat_Thread 				= _ARRETE;
 				// Liste_Threads[tid].DM_arret					= false;
 				Liste_Threads[tid]._eip						= NULL;
-				
-				
+
+				// Decrementer le nombre de threads dans le processus
+				Liste_Processus[Liste_Threads[tid].PID].NB_Thread				-= 1;
+				if(Liste_Processus[Liste_Threads[tid].PID].NB_Thread <= 0)
+					Liste_Processus[Liste_Threads[tid].PID].NB_Thread = 0;
 				
 				// Quitter le thread
 				pthread_exit(&Liste_Threads[tid].thread);

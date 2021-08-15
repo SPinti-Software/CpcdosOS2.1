@@ -1,0 +1,75 @@
+
+UMBCHK
+------
+
+
+UMBCHK was made for UMBPCI 2.xx. It checks each 16KB block beween
+C000 and EFFF if it contains either 00 only or FF only. If so, it
+lists a block as 'OK', if not as 'used'. Then it caclulates a suitable
+commandline for UMBPCI.
+
+
+UMBPCI V3.xx has integrated this function, so UMBCHK is for information
+purposes only.
+
+
+Start it in pure DOS. Neither EMM386 nor UMBPCI shold be loaded. It
+needs a 'clean' system.
+
+
+Example:
+
+On a Intel 440BX chipset without any extra BIOS blocks (USB, SCSI or whatever)
+and with VGA card using a 32KB VGA-BIOS it looks so:
+
+
+UMB-Checker for UMBPCI, (c)1999 by Uwe Sieber (uwe.sieber@gmx.de)
+http://www.uwe-sieber.de
+
+C000-C3FF : Used
+C400-C7FF : Used
+C800-CBFF : OK
+CC00-CFFF : OK
+D000-D3FF : OK
+D400-D7FF : OK
+D800-DBFF : OK
+DC00-DFFF : OK
+E000-E3FF : OK
+E400-E7FF : OK
+E800-EBFF : OK
+EC00-EFFF : OK
+
+If you want to use the paramter /I= then the
+suggested parameter for UMBPCI is /i=C800-EFFF
+
+
+
+Conclusion: 
+
+With UMBPCI 3.xx the following lines have the same result:
+
+device=c:\umbpci\umbpci.sys /i=c800-efff
+
+device=c:\umbpci\umbpci.sys
+
+
+Both would cause UMBPCI to use C800-EFFF. 
+
+
+
+
+--------------------------------- end ---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+

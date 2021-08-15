@@ -1,5 +1,28 @@
 rem/ ...
 
+
+
+function/ APP1.ResizeEnd(SizX,SizY)
+	ccp/ /set.level = 1
+
+	msgbox/ New window size : %SizX%x%SizY%. 
+
+end/ function
+
+
+FUNCTION/ Bouton_OpenGL1.Click(bouton)
+	
+        Exe/ & tests/OpenGL.CPC
+
+End/ Function
+
+FUNCTION/ Bouton_OpenGL3.Click(bouton)
+	
+        // exe/ & GZE.CPC
+        exe/ & tests/mesa.cpc
+
+End/ Function
+
 FONCTION/ MonTexteBox.KeyPress(touche_pressee)
 
 	
@@ -28,19 +51,7 @@ FUNCTION/ Mon_Bouton3.Click(bouton)
 End/ Function
 
 
-FUNCTION/ Mon_Bouton2.Click(bouton)
-	
-        // exe/ & GZE.CPC
-        exe/ & mesa.cpc
 
-End/ Function
-
-
-FUNCTION/ Mon_Bouton.Click(bouton)
-	
-        Exe/ & OpenGL.CPC
-
-End/ Function
 
 
 FONCTION/ APP1.MouseMove()
@@ -69,4 +80,9 @@ FONCTION/ Image1.Clic()
 	txt/ CLIC sur Image1 de la terre !!
 	
 Fin/ fonction 
+
+
+
+
+
 

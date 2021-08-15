@@ -3,7 +3,7 @@
 
 // By SPinti Software
 // Created 01/02/2017
-// Update : 24/JUIL/2019
+// Update : 20-FEV-2021
 
 
 
@@ -68,14 +68,23 @@ GUI/ /CONSOLE
 // [EN] Your username for deposit server (Statistics & Error reports)
 exe/ & KRNL\CONFIG\ENV_NET\NET_ID.CPC
 
-
+txt/ 
+txt/ 
+txt/ 
 TXT/ * Updating OS list...
 SYS/ /OS /UPDATE /LISTE
 
 txt/ -> BUILD:%CPC.VER.BUILD%
+txt/ -> DATE :%CPC.VER.DATE%
+txt/
+txt/ Your update authenticator from '%CPC_SYS.NET.UPDATE.SERVER%' servers :
+sys/ /netid
+txt/
+txt/ You can change your NetID with 'sys/ /netid {Your Pseudo}'
+txt/   
 txt/ 
 txt/ Hello ADMIN :-)
-txt/
+txt/ 
 
 
 // [FR] Demarrer l'OS numéro 0. Ne pas oublier de supprimer la ligne 'GUI/ /CONSOLE'

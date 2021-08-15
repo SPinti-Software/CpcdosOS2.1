@@ -289,15 +289,22 @@ public sub DUMP_PG()
 	' next b
 End sub
 
+
+
+
 #print * ENTRY POINT - __CPCDOS_INIT_1
 public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as integer
-	
-
-		
 		On local Error Goto Intercept_Error
 
 		DEBUG("[0x" & HEX(@__CPCDOS_INIT_1, 8) & "] Starting cpcdos osx kernel ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")	
-		
+
+
+		' Mettre a jour les disques presents
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.update_drives()
+
+		' Afficher les disques presents
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Display_all_drives()
+
 		ZERO_FILL = String(128, 0)
 		
 		' Definir repertoires
@@ -384,11 +391,11 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		
 		' Mettre a jour les informations de CPU
 		Maj_CPUINFO()
-		Sleep 1500 ' Laisser l'utilisateur visualiser
+		Sleep 1000 ' Laisser l'utilisateur visualiser
 		
 		' Mettre a jours les informations BIOS APM
 		Maj_APM_info()
-		Sleep 1500 ' Laisser l'utilisateur visualiser
+		Sleep 1000 ' Laisser l'utilisateur visualiser
 	
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 			DEBUG("* Le systeme s'est initialise correctement. ID_KERNEL:" & CPCDOS_INSTANCE.get_id_kernel() & " [0x" & HEX(CPCDOS_INSTANCE.get_id_kernel(), 4) & "] - BUILD:" & _VERSION_BUILD, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")	
@@ -397,9 +404,6 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		end if
 		
 		intro()
-		
-		
-		
 		
 		
 		
@@ -416,9 +420,7 @@ public function __CPCDOS_INIT_1 cdecl Alias "__CPCDOS_INIT_1"(a as integer) as i
 		DEBUG("[OK] ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		DEBUG(" --> " & cpinti.gestionnaire_tache.get_cycle_MAX_cpu() & " cycles", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		
-		
-		
-		
+
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 			DEBUG("[__CPCDOS_INIT_1] Noyau en execution.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		else
@@ -1031,11 +1033,11 @@ Sub intro()
 	Print "	       |_|    						             "
 	Print "								                     "
 	Print "    CPCDOS OSx                                    "
-	Print "                       Cree Pour Concevoir Des OS "
-	Print "                           Created for develop OS "
+	Print "                       Cree pour concevoir des OS "
+	Print "                            Created to develop OS "
 	Print " Version :                                        "
 	Print "  - Date        : " 		&   _VERSION_DATEV                  
-	Print "  - Kernel base : OS" 	& 	_VERSION_MAJEUR & " " & _VERSION_MINEUR
+	Print "  - Kernel base : OS" 	& 	_VERSION_MAJEUR & " " & _VERSION_MINEUR & " " & _VERSION_ETAT
 	print "  - CPinti core : " 		& 	_VERSION_CPINTI
 	Print "  - CpcdosC+    : " 		&   _VERSION_CCP                    
 	Print "  - Console     : " 		&   _VERSION_CONSOLE                

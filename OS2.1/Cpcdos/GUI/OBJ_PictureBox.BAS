@@ -1,11 +1,9 @@
 #include once "Cpcdos.bi"
 
-Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer) as integer
+Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as integer) as integer
 	
 
-	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-		DEBUG("[SCI] Creer_PictureBox() IND:" & _index_ & " [0x" & hex(this._CLE_) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-	end if
+	DEBUG("[SCI] Creer_PictureBox() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] '" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).identification_objet.Nom & "' --> window '" & this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).identification_objet.Nom & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 
 	
 	IF this.GUI_Mode = TRUE Then
@@ -52,6 +50,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 				End if
 			end if
 		End if
+
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -63,7 +62,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 	
 		scope
 			Dim Pos_Fenetre_X 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_X
-			Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
+			Dim Pos_Fenetre_Y 	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).POS_Y' + this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).SIZ_TITRE
 			Dim Siz_Fenetre_X	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_X
 			Dim Siz_Fenetre_Y	as integer = this.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Siz_Y
 
@@ -95,6 +94,8 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 			Dim Image_Ancien	as String = this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Image_Ancien
 			' Dim Pointeur_IMG 	as any PTR
 			
+			' Generer les proprietes par defaut d'un menu contextuel d'un objet graphique
+			this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.OBJ_context_menu = CPCDOS_INSTANCE.SCI_INSTANCE.generer_ContextMenu_properties(GUI_TYPE.PictureBox, _index_)
 			
 			IF Len(Image) > 0 Then
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -193,6 +194,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(Image, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.Handle)
 						
 						
+						
 						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).DejaSize = false 
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -201,8 +203,6 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 								DEBUG("[SCI] Creer_PictureBox() [0x" & hex(this._CLE_) & "] " & Image & " --> id:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID & " loaded in memory at address [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID)) & "] ORIGINAL(" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID & ") from instance index number " & _index_ & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							End if
 						end if
-						
-						
 					End if
 					
 					' Creer ce nouveau buffer uniquement en autosize 0 ou 1 car le 2 recreer un nouveau dans tous les cas
@@ -227,7 +227,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 								' DEBUG("[SCI] Creer_PictureBox() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID)) & ") 0,0-" & Siz_X & "," & Siz_Y & " : Background color RGB " & Couleur_R & ", " & Couleur_V & ", " & Couleur_B, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							' End if
 						' end if
-						
+
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 								DEBUG("[SCI] Creer_PictureBox() [0x" & hex(this._CLE_) & "] Copie du bitmap ORIGINAL id:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID & " PTR[0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID)) & "] --> Vers le nouveau bitmap id:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID & " PTR[0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID)) & "] ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
@@ -250,11 +250,10 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 					End if
 					
 				End if
-				
-				
 			' S'il y a PAS d'images ni rien, ca sera simplement un carre de couleurs :)
 			END IF
-			
+
+
 			IF this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID < 1 Then 
 			
 				this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("PictureBox(" & _index_ & ") ORG", Siz_X, Siz_Y, Couleur_R, Couleur_V, Couleur_B, 255, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.Handle)
@@ -262,7 +261,7 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 
 				this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).DejaSize = True
 				
-				
+
 			Else
 				' Nous avons l'image chargee!
 			
@@ -331,7 +330,8 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 								DEBUG("[SCI] Creer_PictureBox() [0x" & hex(this._CLE_) & "] AutoSizeIMG:2 --> IMG_Changer_taille() source id:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID & " PTR [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID)) & "] --> " & Siz_X & "x" & Siz_Y & " (Writing on id:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID & " PTR [0x" & HEX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID)) & "])", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 							End if
 						end if
-						
+
+		
 						' Redimentionner l'image aux dimensions du picturebox
 						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.ReSize_BITMAP_NewID(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ORG_ID, Siz_X, Siz_Y)
 
@@ -393,11 +393,39 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_Proprietes as CPCDOS_GUI_INIT__, _i
 						DEBUG("[SCI] Creer_PictureBox() [0x" & hex(this._CLE_) & "] Buffer_drawing(0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & ") " & Pos_X & "," & Pos_Y & "-" & Siz_X & "," & Siz_Y & " : Buffer video [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID)) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 					End if
 				end if
+
+				' appliquer du flou
+				if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode > 0 Then
+					if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode > 5 then
+						this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("PictureBox_BACKGROUND(" & _index_ & ")", Siz_X, Siz_Y, 0, 0, 0, 0, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.Handle)
+
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, Siz_X, Siz_Y)
+
+						' Flou avec le background flou aussi
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode \2)
+
+						' Placer le fond flou en premier
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID, Pos_X, Pos_Y, 0, 0, Siz_X, Siz_Y, true)', Couleur_ALPHA)
+
+						' Supprimer buffer
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_Bitmap(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_BackGround_ID)
+						
+					Else
+
+						' Juste flouter
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.apply_blurry(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Blurry_Mode)
+					End if
+				End if
 				
 				' Et... Hop! on dessine dans le buffer video
-				CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
-				' put (Pos_X, Pos_Y), CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID), (0, 0)- step(Siz_X - En_trop_X, Siz_Y - En_trop_Y), ALPHA, Couleur_ALPHA
-				
+				if Couleur_ALPHA = 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, false)
+				elseif Couleur_ALPHA = 255 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true)
+				Else
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
+				End if
+
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 						DEBUG("[SCI] Creer_PictureBox() Operations terminees. Retourne handle:" & this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).Identification_Objet.handle, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)

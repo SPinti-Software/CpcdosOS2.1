@@ -7,6 +7,36 @@
 
 #include once "UTF8.bi"	' Gestion UTF-8
 
+
+type _Context_menu_properties
+	public:
+	text 		as string
+	enabled 	as boolean = true
+
+	action 		as string = "NULL"
+End type
+
+
+type _Context_menu_
+	public:
+
+	' Values
+	const _MAX_context_menu_items 				as integer = 16 ' TEMPORAIRE
+	_Space_items 								as integer = 12
+
+	' Colors
+	red											as integer = 210
+	green										as integer = 210
+	blue										as integer = 210
+
+	' nb items
+	item_number 								as integer
+
+	' Array list struct
+	item_list (0 to _MAX_context_menu_items) 	as _Context_menu_properties
+
+End type
+
 ' ==== Type de GUI a creer ====
 Type Cpcdos_GUI_TYPE
 	private:
@@ -21,6 +51,7 @@ Type Cpcdos_GUI_TYPE
 		CONST ProgressBar		as integer = 6
 		CONST Checkbox			as integer = 7
 		CONST Explorer			as integer = 8
+		CONST Listbox			as integer = 9
 		
 		CONST Wallpaper			as integer = 101
 		CONST TOUT				as integer = 102
@@ -46,15 +77,25 @@ Type Proprietes_Objet
 	EV_MouseLeave		as boolean = true
 	EV_MouseClick		as boolean = true
 	EV_KeyPress			as boolean = true
+	EV_KeyEnter			as boolean = true
 	EV_Resize			as boolean = true
 	
-	
+	' Si l'objet peut avoir un menu contextuel
+	ContextMenu		as integer ' 0:Disable  1:Default  2:personalised
+
+	TaskBar			as integer ' 0:disable  1:Horizontale 2:verticale
+	NoTaskBar		as boolean ' 0:Display	1:No displayed
+
 	Pression_Bouton as integer
 	Pression		as boolean ' Clic enfonce
 	Pressable		as boolean
 	
 	Press			as boolean
 	Release			as boolean
+
+	IsPriority		as boolean
+	Prio_effet_count as integer
+	
 	
 	Active			as boolean
 	Activable		as boolean
@@ -69,6 +110,15 @@ Type Proprietes_Objet
 	SizeUP			as boolean = false' Etat de la fenetre TRUE:Agrandie
 	Sizeable		as boolean = true
 	Sizeable_ANGL 	as boolean = true
+	Sizeable_ANGL_display as boolean = false
+
+	Minimal_size_X	as integer
+	Minimal_size_Y	as integer
+	Maximal_size_X	as integer
+	Maximal_size_Y	as integer
+
+	' Enable collision correction
+	Collision		as boolean
 	
 	Reduit			as boolean
 	Reductable		as boolean = true
@@ -81,7 +131,8 @@ Type Proprietes_Objet
 	
 	Editable		as boolean
 	
-	
+	' Mode bureau
+	DESKTOPMODE		as boolean
 	
 	UserEdit_Pos	as uinteger
 	
@@ -103,6 +154,9 @@ Type Proprietes_Objet
 	Couleur_R		as integer
 	Couleur_V		as integer
 	Couleur_B		as integer
+
+	' Floutage
+	Blurry_Mode		as integer
 	
 	' Bordure
 	Bordure			as integer
@@ -147,7 +201,10 @@ Type Proprietes_Objet
 	' Fichier contenant les fonctions evenementielles.
 	Fichier_evenement as String
 	
-	
+	OBJ_context_menu as _Context_menu_
+
+	' Mode d'affichage du menu contextuel 0:disable  1:oui  2:oui+perso
+	MENU_CTX		as integer
 	
 End Type
 
@@ -163,6 +220,8 @@ Type _identification_objet_
 	_CLE_				as double 	' Emprunte numerique (CleID) pour son identification publique
 
 	OS_id				as integer
+
+	context_id			as integer 	' Pour les programmes externe (Win32)
 	
 	' ********************************
 	' *** Identification parentale ***
@@ -224,11 +283,44 @@ Type Cpcdos_GUI__FENETRE
 	CONTENEUR_COMPLET			as boolean	' Afficher le conteneur au complet (SANS la barre de titre))
 	
 	IMG_TITRE					AS String	' Image de la barre de titre
+
+	const array_design_MAX 							as integer = 24
+
+	design_Image_LOADED								as boolean = false
+	' Path image
+	design_Image		(0 to array_design_MAX) 	as string
+
+	' BitmapID
+	design_Image_ID		(0 to array_design_MAX) 	as integer
+
+	' Exemples : 
+	' "SX:WIN" : Size X relatif a la Size X de la fenetre
+	' "SY:WIN" : Size Y relatif a la Size Y de la fenetre
+	' "SXCALC:-14" : Size X Calculation de -14 pixels
+	' "SYCALC:14" : Size Y Calculation de +14 pixels
+	design_Image_param(0 to array_design_MAX)	as string
+	
+	' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
+	design_Image_pos_relative(0 to array_design_MAX) as integer ' Position relative
+	
+	' Positionnement relative
+	design_Image_px(0 to array_design_MAX) 		as integer
+	design_Image_py(0 to array_design_MAX) 		as integer
+	design_Image_sx(0 to array_design_MAX)		as integer
+	design_Image_sy(0 to array_design_MAX) 		as integer
+	
+	' Colorisation
+	design_Image_alpha(0 to array_design_MAX) 	as integer
+	
 	
 	
 	TITRE_IMG_ID				as Integer
 	BUFFER_TITRE_IMG_ID			as Integer
 	BUFFER_TITRE_2_IMG_ID		as Integer
+
+	IMG_BackGround_ID			as integer
+
+	BUFFER_WINDOW_IMG_ID		as Integer
 	
 	BUFFER_WIN_IMG_ID			as Integer
 	BUFFER_OMBRE_WIN_IMG_ID		as Integer
@@ -243,6 +335,8 @@ Type Cpcdos_GUI__FENETRE
 	
 	ICONE_IMG_ID				as integer
 	ICONE_ORG_IMG_ID			as integer
+
+	ICONE_IMG_Resized_TaskBar	as integer ' ID icone taskbar resized
 
 	
 	POS_ICONE_X					as integer 	' Position horizontale de l'icone
@@ -398,6 +492,7 @@ Type Cpcdos_GUI__PICTUREBOX
 	AdresseMemoire			as boolean 	' si c'est une adresse memoire, eviter sa suppression
 	
 	IMG_ID					as integer 	' ID de la ressource BITMAP
+	IMG_BackGround_ID		as integer 	' ID de la ressource arriere plan
 	IMG_ORG_ID				as integer 	' ID de la ressource origine BITMAP
 	
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
@@ -588,6 +683,10 @@ Type Cpcdos_GUI__EXPLORER
 	
 	IMG_BUFFER_ID			as integer	' Buffer de l'explorer
 	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
+	IMG_SCROLL_ID			as integer	' Image du selecteur quand la souris survole un element
+	SCROLLING_Y				as integer 	' Position du scroller bar
+
+	Mode_Affichage			as integer 	' 0:Petite Liste,  1:Moyenne liste,  2:Icones
 
 	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
 	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
@@ -600,14 +699,68 @@ Type Cpcdos_GUI__EXPLORER
 	
 	SIZ_X					as Integer 	' Taille horizontale
 	SIZ_Y					as Integer 	' Taille verticale
+
+	obj_doevent_survole		as integer
+	obj_doevent_press		as integer
+End Type
+
+' ==== Pour la creation d'une ListBox ====
+Type Cpcdos_GUI__LISTBOX
+	public:
+	
+	' ** Identifications uniques de l'objet graphique **
+	Identification_Objet 	as _identification_objet_
+	
+	' ** Proprietes relationnelles et graphiques en commun **
+	PROP_TYPE 				as Proprietes_Objet
+	
+	
+	' ** Proprietes unique **
+	Initialisation_OK 		as boolean = FALSE ' Si l'objet a ete cree!
+	
+	IUG_UPDATER				as integer 	' Actualisation graphique en ms
+	THREAD_OK				as integer 	' Si le thread est execute ou non
+
+	DejaSize				as boolean 	' Si l'image a deja ete resize
+	IMAGE					as String 	' Chemin d'acces a la ressource
+	IMAGE_SURVOLE			as String 	' Chemin d'acces a la ressource
+	
+	IMAGE_ANCIEN 			as String 	' Ancien chemin d'acces a la ressource
+	IMAGE_SURVOLE_ANCIEN 	as String 	' Ancien chemin d'acces a la ressource
+	
+	NB_ICONE				as integer	' Nombre d'icones differents
+	IMG_ICONE_ID(24)		as integer	' Icones des formats de fichiers
+	
+	IMG_BUFFER_ID			as integer	' Buffer de l'explorer
+	IMG_SELECTEUR_ID		as integer	' Image du selecteur quand la souris survole un element
+	IMG_SCROLL_ID			as integer	' Image du selecteur quand la souris survole un element
+	SCROLLING_Y				as integer 	' Position du scroller bar
+
+	Mode_Affichage			as integer 	' 0:Petite Liste,  1:Moyenne liste,  2:Icones
+
+	IMAGE_SURVOLE_OPACITE	as integer 	' Opacite de l'image de survole
+	BIT_ORG					as integer 	' Nombre de bits utilises pour afficher l'image (16, 24, 32)
+										'  Ce qui permet en cas de changeent de resolutin d'ecran, de recharger l'image
+	
+	TEXTE					as String 	' Afficher du texte a l'interieur
+
+	SELECTIONNE_index		as integer
+	SELECTIONNE_str			as string
+
+	POS_X					as Integer 	' Position horizontale
+	POS_Y					as Integer 	' Position verticale
+	
+	SIZ_X					as Integer 	' Taille horizontale
+	SIZ_Y					as Integer 	' Taille verticale
 End Type
 
 
 Type CPCDOS_GUI_INIT__
 	public:
 	' *** Graphique ***
-	CONST _MAX_GUI___OBJS		as integer = 128 ' TEMPORAIRE
-	CONST _MAX_GUI_FENETRE	 	as integer = 64 ' TEMPORAIRE
+	CONST _MAX_GUI___OBJS			as integer = 128 ' TEMPORAIRE
+	CONST _MAX_GUI_FENETRE	 		as integer = 64 ' TEMPORAIRE
+	
 	
 	CONST _MAX_GUI_BOUTON	 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_PICTUREBOX 	as integer = _MAX_GUI___OBJS
@@ -616,11 +769,13 @@ Type CPCDOS_GUI_INIT__
 	CONST _MAX_GUI_PROGRESSBAR 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_CHECKBOX 	as integer = _MAX_GUI___OBJS
 	CONST _MAX_GUI_EXPLORER 	as integer = _MAX_GUI___OBJS
+	CONST _MAX_GUI_LISTBOX	 	as integer = _MAX_GUI___OBJS
 	
 	RELATIF_X					as integer ' Position origine relatif ORG<->CURSEUR horizontale
 	RELATIF_Y					as integer ' Position origine relatif ORG<->CURSEUR verticale
 	
 	DEPLACEMENT 				as integer ' Si la fenetre se deplace
+	REDIMENTIONNEMENT			as integer ' Si la fenetre se resize
 	POSITION(0 to _MAX_GUI_FENETRE+1) 	as Integer ' Ordre fenetrale
 	
 	' Instancier les Type
@@ -632,6 +787,7 @@ Type CPCDOS_GUI_INIT__
 	TEMP_GUI__PROGRESSBAR 		as Cpcdos_GUI__PROGRESSBAR
 	TEMP_GUI__CHECKBOX 			as Cpcdos_GUI__CHECKBOX
 	TEMP_GUI__EXPLORER 			as Cpcdos_GUI__EXPLORER
+	TEMP_GUI__LISTBOX 			as Cpcdos_GUI__LISTBOX
 	
 	RefreshGUI_Elements_FENETRE			as integer
 	RefreshGUI_Elements_BOUTON			as integer
@@ -641,6 +797,7 @@ Type CPCDOS_GUI_INIT__
 	RefreshGUI_Elements_PROGRESSBAR		as integer
 	RefreshGUI_Elements_CHECKBOX		as integer
 	RefreshGUI_Elements_EXPLORER		as integer
+	RefreshGUI_Elements_LISTBOX			as integer
 	
 	GUI__FENETRE	(0 to _MAX_GUI_FENETRE 		+ 1) 	as Cpcdos_GUI__FENETRE
 	GUI__BOUTON		(0 to _MAX_GUI_BOUTON 		+ 1) 	as Cpcdos_GUI__BOUTON
@@ -650,6 +807,7 @@ Type CPCDOS_GUI_INIT__
 	GUI__PROGRESSBAR(0 to _MAX_GUI_PROGRESSBAR 	+ 1) 	as Cpcdos_GUI__PROGRESSBAR
 	GUI__CHECKBOX	(0 to _MAX_GUI_CHECKBOX 	+ 1) 	as Cpcdos_GUI__CHECKBOX
 	GUI__EXPLORER	(0 to _MAX_GUI_EXPLORER 	+ 1) 	as Cpcdos_GUI__EXPLORER
+	GUI__LISTBOX	(0 to _MAX_GUI_LISTBOX 		+ 1) 	as Cpcdos_GUI__LISTBOX
 	
 End Type
 
@@ -658,7 +816,7 @@ Type _SCI_Cpcdos_OSx__
 	private:
 		
 
-		_CLE_					as double ' Emprunte numerique
+		
 		OS_id					as integer
 		NombreOSEnCours			as integer
 		
@@ -676,10 +834,14 @@ Type _SCI_Cpcdos_OSx__
 		NULL_GUI__PROGRESSBAR 	as Cpcdos_GUI__PROGRESSBAR
 		NULL_GUI__CHECKBOX 		as Cpcdos_GUI__CHECKBOX
 		NULL_GUI__EXPLORER		as Cpcdos_GUI__EXPLORER
+		NULL_GUI__LISTBOX		as Cpcdos_GUI__LISTBOX
 	
 	public:
 	
 		CONST _MAX_NOMBRE_OS		as integer = 8
+		CONST _MAX_Taskbar_Elements as integer = 24
+
+		_CLE_						as double ' Empreinte numerique
 	
 		RetourVAR as String
 	
@@ -692,10 +854,14 @@ Type _SCI_Cpcdos_OSx__
 		
 		PID_SCI as uinteger
 		TID_SCI as uinteger
+
+		' Relacher clic apres interaction barre de titre
+		CLIC_PRESS_TITLE as boolean = false
 		
 		
 		MULTI_PICTUREBOX					as boolean ' Permet de synchoniser les picturesbox animes n'ayant pas le focus
 		
+		' ---- EXPLOREUR DE FICHIERS -----
 		' Liste des icones de taille MAX et MIN pour l'explorateur de fichiers
 		const icon_ID						as integer = 11111
 		const FORMAT_MAX					as integer = 24 ' a display identique a celui de cpcdos.bi
@@ -703,7 +869,117 @@ Type _SCI_Cpcdos_OSx__
 		FORMAT_file_icon_MAX_ID(FORMAT_MAX)	as integer
 		FORMAT_file_icon_MIN_ID(FORMAT_MAX)	as integer
 		EXP_BACKGROUND_ID					as integer
+		LST_BACKGROUND_ID					as integer ' Listbox !
+		EXP_SCROLL_ID						as integer
+
+		EXP_Survole_LEFT_BORDER_ID			as integer
+		EXP_Survole_ID						as integer
+		EXP_Survole_ICO_ID					as integer
+		EXP_Survole_RIGHT_BORDER_ID			as integer
+
+		' Mode desktop
+		DESKTOPMODE_Index_Fenetre			as integer
+
+		' TaskBar
+		TaskBar_clic						as boolean
+		TaskBar_List_win					as integer ' Fenetre taskbar
+
+		' Positionnement sur la barre
+		TaskBar_PosX						as integer
+		TaskBar_PosY						as integer
+
+		' Taille
+		TaskBar_SizX						as integer
+		TaskBar_SizY						as integer
+
+		' ID des images
+		TaskBar_Standard_ID					as integer
+		TaskBar_Focus_ID					as integer
+
+		TaskBar_index_Position	(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_px				(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_py				(0 to _MAX_Taskbar_Elements)	as integer
+
+		TaskBar_sx				(0 to _MAX_Taskbar_Elements)	as integer
+		TaskBar_sy				(0 to _MAX_Taskbar_Elements)	as integer
+
+
+		' ------------ WINDOWS ---------------
+
+		priority_window									as integer
+
+		const array_design_MAX 							as integer = 24
+
+		design_Image_LOADED								as boolean = false
+		' Path image
+		design_Image		(0 to array_design_MAX) 	as string
+
+		' BitmapID
+		design_Image_ID_org	(0 to array_design_MAX) 	as integer
+		design_Image_ID		(0 to array_design_MAX) 	as integer
+
+		' Exemples : 
+		' "SX:WIN" : Size X relatif a la Size X de la fenetre
+		' "SY:WIN" : Size Y relatif a la Size Y de la fenetre
+		' "SXCALC:-14" : Size X Calculation de -14 pixels
+		' "SYCALC:14" : Size Y Calculation de +14 pixels
+		design_Image_param(0 to array_design_MAX)	as string
 		
+		' 0 : Top Left  1 : Top Right  2 : Down left  3 : Down right
+		design_Image_pos_relative(0 to array_design_MAX) as integer ' Position relative
+		
+		' Positionnement relative
+		design_Image_px(0 to array_design_MAX) 		as integer
+		design_Image_py(0 to array_design_MAX) 		as integer
+		design_Image_sx(0 to array_design_MAX)		as integer
+		design_Image_sy(0 to array_design_MAX) 		as integer
+		
+		' Colorisation
+		design_Image_alpha(0 to array_design_MAX) 	as integer
+
+
+		screen_collision_left				as integer
+		screen_collision_right				as integer
+		screen_collision_top				as integer
+		screen_collision_down				as integer
+
+		
+		BT_CLOSE_IMG_ID						as integer
+		BT_CLOSE_ORG_IMG_ID					as integer
+
+		BT_SIZEUP_IMG_ID					as integer
+		BT_SIZEUP_IMG_ORG_ID				as integer
+
+		BT_SIZEDOWN_IMG_ID					as integer
+		BT_SIZEDOWN_IMG_ORG_ID				as integer
+
+		BT_REDUCT_IMG_ID					as integer
+		BT_REDUCT_IMG_ORG_ID				as integer
+
+		ICONE_IMG_ID						as integer
+		ICONE_ORG_IMG_ID					as integer
+
+		TITRE_ORG_IMG_ID					as integer
+		
+
+		ContextMenu_INSTANCE 				as _Context_menu_
+
+		' ID de l'mage de fond du menu contextuel
+		ContextMenu_Img_ID					as integer
+
+		' Si le menu contextuel est ouvert ou non
+		ContextMenu_IsOpen					as boolean
+		ContextMenu_Background_ID			as integer
+		ContextMenu_Ancien_PX				as integer
+		ContextMenu_Ancien_PY				as integer
+		ContextMenu_Ancien_SX				as integer
+		ContextMenu_Ancien_SY				as integer
+		ContextMenu_Background_blur_ID		as integer
+		ContextMenu_handle					as integer
+		ContextMenu_WinIndex				as integer
+
+		
+		BACKGROUND_IMAGE					as integer
 		
 		INST_INIT_GUI 		as CPCDOS_GUI_INIT__
 		
@@ -737,17 +1013,25 @@ Type _SCI_Cpcdos_OSx__
 		Declare Function Interaction_TOUCHE			(Pos_Souris_X as integer, Pos_Souris_Y as integer, INDEX_Fenetre as integer, POS_X as integer, POS_Y as integer, SIZ_X as integer, SIZ_Y as integer) as boolean
 		Declare Function Fenetre_FOCUS				(INDEX_FENETRE as integer) 									as integer
 		Declare Function Sizing_window_button		(SizeUP as boolean, index as integer) 						as boolean
+		Declare Function Sizing_window_ending		(INDEX_FENETRE as integer) 									as boolean
 		Declare Function DeplacerFenetre_TO_POS		(POS_X as integer, POS_Y as integer) 						as integer
+		Declare Function DeplacerFenetre_TO_SIZE	(SIZE_X as integer, SIZE_Y as integer) 						as integer
 		Declare Function ActualiserGUI				(ModeActu as integer, index as integer) 					as integer
+		Declare Function Display_Taskbar			(index_fenetre as integer) 									as boolean
 		Declare Function Changer_PremierPlan_OrdreFenetrale(NouvelleFenetre as integer) 						as integer
 		Declare Function Interaction_SOURIS_OBJ		(Index_Fenetre as integer) 									as integer
+		Declare Sub 	 Collision_correction		(Index_Fenetre as integer)
 		
 		' *** SCI ***
 		Declare Function Initialiser_ECRAN			(Resolution as String, Bits as integer) 					as integer
 		Declare Function Initialiser_ECRAN			(Res_X as integer, Res_Y as integer, Bits as integer) 		as integer
-		Declare Function charger_Curseurs			(Handle as integer) as integer
-		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 											as integer
-		Declare Function creer_Msgbox				(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
+		Declare Function charger_Curseurs_properties() 															as boolean
+		Declare Function charger_Curseurs			(Handle as integer) 										as integer
+		Declare Function charger_Fond				(CHEMIN as String, Handle as integer) 						as integer
+		declare Function generer_ContextMenu_properties(Type_Objet as integer, index as integer) 				as _Context_menu_
+		Declare Function fermer_ContextMenu			() 															as boolean
+		Declare Function creer_ContextMenu			(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
+		Declare Function creer_Msgbox				(nom_propriete as string, Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, ev as String, CleID as Double) as integer
 		Declare Function IMG_Recuperer_Taille_XY	(byref Source as any ptr) 									as string
 		Declare Function IMG_Recuperer_Taille_X		(byref Source as any ptr) 									as integer
 		Declare Function IMG_Recuperer_Taille_Y		(byref Source as any ptr) 									as integer
@@ -759,14 +1043,15 @@ Type _SCI_Cpcdos_OSx__
 		
 		
 		' *** OBJ ***
-		Declare Function Creer_Fenetre				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer) 							as integer
-		Declare Function Creer_Bouton				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_PictureBox			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_TextBlock			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_TextBox				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_ProgressBar			(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_CheckBox				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
-		Declare Function Creer_Explorer				(_Proprietes as CPCDOS_GUI_INIT__, _index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_Fenetre				(_index_ as integer) 							as integer
+		Declare Function Creer_Bouton				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_PictureBox			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_TextBlock			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_TextBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_ProgressBar			(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_CheckBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_Explorer				(_index_ as integer, _INDEX_PID_ as integer)	as integer
+		Declare Function Creer_ListBox				(_index_ as integer, _INDEX_PID_ as integer)	as integer
 		
 		Declare Constructor()
 		Declare Destructor()

@@ -164,7 +164,7 @@ End function
 
 #print * Indicateur de charge
 Function __Noyau_Cpcdos_OSx__.get_En_Charge() as boolean
-	if CURSEUR_LOAD_AFFICHER > 0 Then 
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK > 0 Then 
 		Function = true
 	else
 		Function = false
@@ -177,20 +177,21 @@ Sub __Noyau_Cpcdos_OSx__.En_Charge(oui as boolean)
 
 	
 	if oui = true Then 
-		CURSEUR_LOAD_AFFICHER += 1
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK += 1
 		
 	else
-		CURSEUR_LOAD_AFFICHER -= 1
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK -= 1
 		
 	End if
 
-	
-	' Forcer le blittage uniquement s'il y a 1 ou 0 en load
-	if CURSEUR_LOAD_AFFICHER = 0 OR CURSEUR_LOAD_AFFICHER = 1 Then
-		CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
+	if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode Then
+		' Forcer le blittage uniquement s'il y a 1 ou 0 en load
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK = 0 OR CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK = 1 Then
+			CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
+		End if
 	End if
 	
-	if CURSEUR_LOAD_AFFICHER < 0 Then CURSEUR_LOAD_AFFICHER = 0
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK < 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK = 0
 End sub
 
 #print * Processus
@@ -200,7 +201,8 @@ Function __Noyau_Cpcdos_OSx__.Creer_processus(ByRef _STRUCT_PROCESSUS as _STRUCT
 	' Retourne le numero de PID du processus (Genere par CPinti Core)
 
 	ENTRER_SectionCritique()
-	_STRUCT_PROCESSUS.Nom = ucase(MID(_STRUCT_PROCESSUS.Nom, 1, 30))
+
+	_STRUCT_PROCESSUS.Nom = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(_STRUCT_PROCESSUS.Nom, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16) & chr(0) 
 	
 	' Dim NomProcessus_CHAR as CONST ZString PTR = 
 
@@ -360,8 +362,7 @@ Function __Noyau_Cpcdos_OSx__.Creer_thread(byref _STRUCT_THREAD as _STRUCT_THREA
 	' _ARG_1,2,3,4	: Arguments pour le thread
 	
 	' Renvoie le numero TID du thread corrrespondant au processus
-
-	_STRUCT_THREAD.Nom = ucase(MID(_STRUCT_THREAD.Nom, 1, 29)) & chr(0)
+	_STRUCT_THREAD.Nom = Mid(CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(_STRUCT_THREAD.Nom, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE), 1, 16) & chr(0) 
 
 	_STRUCT_THREAD.THREAD_ID  = cpinti.gestionnaire_tache.cpinti_creer_thread(get_id_kernel(), _STRUCT_THREAD.OS_ID, _STRUCT_THREAD.USER_ID, _STRUCT_THREAD.PROC_ID, strptr(_STRUCT_THREAD.Nom), _STRUCT_THREAD.Priorite, _
 				ProcPtr(EXEC_THREAD), _STRUCT_THREAD.ARG_CP, cuint(VarPtr(_STRUCT_THREAD)))
@@ -451,6 +452,194 @@ Function __Noyau_Cpcdos_OSx__.get_Nom_Processus(PID as uinteger) as String
 	
 End Function
 
+Function __Noyau_Cpcdos_OSx__.get_List_Processus(display as integer) as String
+	' Cette fonction permet d'obtenir la liste de processus
+
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	
+	Dim Liste_Processus as String = ""
+	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+		' Checker si le PID existe
+		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
+
+		' S'il existe
+		if len(processus_name) > 1 Then
+
+			' Recuperer le nombre de threads du processus
+			Dim nb_thread as integer = cpinti.gestionnaire_tache.cpinti_get_nombre_thread_in_processus(boucle)
+
+			if display = 0 Then
+				Liste_Processus += processus_name & CRLF
+			Elseif display = 1 Then
+				Liste_Processus += "[" & nb_thread & " threads] " & processus_name & CRLF
+			Elseif display = 2 Then
+				Liste_Processus += "[PID " & boucle & "] [" & nb_thread & " threads] '" & processus_name & "'"  & CRLF
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += processus_name & ";"
+			Elseif display = 5 Then
+				Liste_Processus += "[" & nb_thread & " threads] " & processus_name & ";"
+			Elseif display = 6 Then
+				Liste_Processus +="[PID " & boucle & "] [" & nb_thread & " threads] '" & processus_name & "';"
+			Elseif display = 7 Then
+
+			End if
+		end if
+	Next boucle
+	
+	return Liste_Processus
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_List_PID(display as integer) as String
+	' Cette fonction permet d'obtenir la liste de PID
+
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	
+	Dim Liste_Processus as String = ""
+	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+		' Checker si le PID existe
+		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
+		' S'il existe
+		if len(processus_name) > 1 Then
+
+			if display = 0 Then
+				Liste_Processus += boucle & CRLF
+			Elseif display = 1 Then
+				
+			Elseif display = 2 Then
+				
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += boucle & ";"
+			Elseif display = 5 Then
+			
+			Elseif display = 6 Then
+
+			Elseif display = 7 Then
+
+			End if
+		end if
+	Next boucle
+	
+	return Liste_Processus
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_pid_by_name_process(process_name as string) as integer
+	' Cette fonction permet d'obtenir le nom d'un thread
+	'	PID		: Numero PID du processus
+	'   Retourne le nom du processus
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	if len(process_name) > 1 Then
+		Dim Liste_Processus as String = ""
+		for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+			' Checker si le PID existe
+			Dim processus_name_check as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+			
+
+			' S'il existe
+			if len(processus_name_check) > 1 Then
+				if Ucase(processus_name_check) =  ucase(process_name) Then
+					return boucle
+				End if
+			end if
+
+		next boucle
+	End if
+
+	return 0
+End Function
+
+Function __Noyau_Cpcdos_OSx__.get_List_Processus_icon(display as integer) as String
+	' Cette fonction permet d'obtenir la liste des icones des processus
+
+	' display :
+	'	0 : Nom%CRLF%Nom%CRLF%Nom%CRLF%
+	'	1 : Nom [threads]%CRLF%Nom [threads]%CRLF%Nom [threads]%CRLF%
+	'	2 : 
+	'	3 : 
+	'	4 : Nom;nom;nom;
+	'	5 : Nom [threads];Nom [threads];Nom [threads];
+	'	6 : 
+	'	7 :
+
+	
+	Dim Liste_Processus as String = ""
+	for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAX_PROCESSUS
+		' Checker si le PID existe
+		Dim processus_name as String = *cast(ZString ptr, cpinti.gestionnaire_tache.cpinti_get_nom_processus(boucle))
+		
+		' S'il existe
+		if len(processus_name) > 1 Then
+			dim Icone_Window as integer
+
+			' Chercher une icone dans les fenetres
+			For _INDEX_FENETRE_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+				
+				' Chercher une fenetre qui correspond au PID
+				IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Identification_Objet.PID_PARENT = boucle Then
+					Icone_Window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).ICONE_IMG_ID
+				End if
+			Next _INDEX_FENETRE_
+
+			' S'il y a pas le nom de l'image minimum 5 lettres ex:".PNG"
+			if NOT Icone_Window > 1 Then
+				Icone_Window = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.WINDOW.ICO", 3,  CPCDOS_INSTANCE.SCI_INSTANCE._CLE_), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+			End if
+
+			if display = 0 Then
+				Liste_Processus += Icone_Window & CRLF
+			Elseif display = 1 Then
+				
+			Elseif display = 2 Then
+				
+			Elseif display = 3 Then
+
+			Elseif display = 4 Then
+				Liste_Processus += Icone_Window & ";"
+			Elseif display = 5 Then
+			
+			Elseif display = 6 Then
+
+			Elseif display = 7 Then
+
+			End if
+		end if
+	Next boucle
+	
+	return Liste_Processus
+End Function
+
 #print * Compression et decompression ZIP, GZ
 
 
@@ -493,9 +682,6 @@ Function __Noyau_Cpcdos_OSx__.Fichier_decompress(ByVal Source as String, ByVal D
 	' Fermer l'instance de l'archive
 	zip_close(zip_instance)
 
-	' Dim Resultats as integer = cpinti.gestionnaire_fichier.cpinti_decompress_file(strptr(Source), strptr(Destination))
-	
-	
 	return 1
 End Function
 
@@ -656,7 +842,7 @@ Function __Noyau_Cpcdos_OSx__.Fichier_compress(ByVal Source as String, ByVal Des
 	Destination = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Rtrim(Rtrim(Ltrim(Rtrim(Rtrim(Ltrim(Destination, CHR(09)), CR), LF)), CHR(09))), TRUE, TRUE, FALSE)
 
 	
-	Dim Resultats as integer = cpinti.gestionnaire_fichier.cpinti_compress_file(strptr(Source), strptr(Destination))
+	Dim Resultats as integer = -1
 	
 	return resultats
 End Function
@@ -861,7 +1047,7 @@ Function __Noyau_Cpcdos_OSx__.Supprimer_Fichier(ByVal Source as String, ByVal se
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		DEBUG("[KERNEL] Suppression du fichier '" & Source & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 	Else
-		DEBUG("[UPDATE] Deleting file '" & Source & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+		DEBUG("[KERNEL] Deleting file '" & Source & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 	End if
 	
 	
@@ -1638,11 +1824,16 @@ Function __Noyau_Cpcdos_OSx__.Load_list_format(source as String) as boolean
 		FORMAT_Icones_max	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "ICON_MAX")
 		FORMAT_Programme	(boucle)	= Read_INI_value(source, "EXT_" & boucle, "PROGRAM")
 		
-		FORMAT_nombre = FORMAT_nombre+1
-		
+		FORMAT_nombre = FORMAT_nombre + 1
 	Next boucle
 	
 	
+	FORMAT_Extention	(23) = Read_INI_value(source, "DRIVE", "FORMAT")
+	FORMAT_Programme	(23) = Read_INI_value(source, "DRIVE", "PROGRAM")
+	FORMAT_Description	(23) = Read_INI_value(source, "DRIVE", "DESCRIPTION")
+	FORMAT_Icones_min	(23) = Read_INI_value(source, "DRIVE", "ICON_MIN")
+	FORMAT_Icones_max	(23) = Read_INI_value(source, "DRIVE", "ICON_MAX")
+
 	FORMAT_Extention	(24) = Read_INI_value(source, "EXT_DEF", "FORMAT")
 	FORMAT_Programme	(24) = Read_INI_value(source, "EXT_DEF", "PROGRAM")
 	FORMAT_Description	(24) = Read_INI_value(source, "EXT_DEF", "DESCRIPTION")
@@ -1656,6 +1847,118 @@ Function __Noyau_Cpcdos_OSx__.Load_list_format(source as String) as boolean
 	return true
 End Function
 
+Function __Noyau_Cpcdos_OSx__.Executer_Fichier(source as String, _cle_ as double) as boolean
+	' Cette fonction permet d'executer un fichier avec un format attribué (Image, programme etc...)
+	
+	Dim Extension as string = Ucase(MID(source, InstrREV(source, ".") + 1))
+	
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[CPCDOS] Executer_Fichier() Recherche du format pour '" & source & "' (" & Extension & ") ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	Else
+		DEBUG("[CPCDOS] Executer_Fichier() Checking format for '" & source & "' (" & Extension & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	End if
+	
+	' Rechercher l'index de l'extension enregistre
+	
+	
+	Dim Index_extension as integer = FORMAT_MAX
+	For boucle as integer = 1 to FORMAT_MAX
+	
+		' Si extension correspond
+		if Extension = Ucase(CPCDOS_INSTANCE.FORMAT_Extention(boucle)) Then
+			Index_extension = boucle
+			exit for
+		End if
+	Next boucle
+	
+	if Index_extension = FORMAT_MAX then
+		' Extension inconnue
+		DEBUG("[ERROR]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		
+		return false
+	else
+		DEBUG("[OK] (" & Index_extension & ") --> '" & FORMAT_Programme(Index_extension) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		
+		' Extenxion connue, on lance le programme associe
+		if Len(FORMAT_Programme(Index_extension)) > 1 then
+			if FORMAT_Programme(Index_extension) = "NULL" Then
+				' Pas de programmes associes
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CPCDOS] Executer_Fichier() Extension connue, mais pas de programmes associe", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				Else
+					DEBUG("[CPCDOS] Executer_Fichier() Known extension, but no associated programs", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				End if
+			else
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ _ARG_1 = " & source, _cle_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("EXE/ " & FORMAT_Programme(Index_extension) & "\#SAMEID", _cle_, 3, 0, "")
+			End if
+		End if
+	End if
+	
+
+End function
+
+public function __Noyau_Cpcdos_OSx__.Screenshot(_cle_ as double) as boolean
+	' Cette fonction permet d'effectuer une capture d'ecran
+
+
+	Dim Size_X as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X()
+	Dim Size_Y as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y()
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[Instagrammeur] Screenshot !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	else
+		DEBUG("[Instagrammer] Screenshot !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+	End if
+
+	' Creer un buffer
+	dim screenshot_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP("screenshot", Size_X, Size_Y, 0, 0, 0, 0, 123)
+	
+	' Capturer l'ecran
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Capture_ecran(screenshot_ID, 1, 1, Size_X, Size_Y)
+
+	' Recuperer le nom de l'OS
+	Dim NomOS as String = CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.get_id_OS(_cle_))
+				
+	' Recuperer le nom de l'OS
+	NomOS = MID(NomOS, 1, instr(NomOS, "PATH:") - 2)
+
+	' Recuperer le path
+	Dim Path_screen as string = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("SCR_SAVE", 3, _cle_)
+	Dim File_name as string = NomOS & "_" & CPCDOS_INSTANCE.get_Date(CPCDOS_INSTANCE.get_Date_format()) & "_" & CPCDOS_INSTANCE.get_Heure(CPCDOS_INSTANCE.get_Time_format()) & "_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Secondes() & "_" & ".png"
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, "/"		, "-")
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, "\"		, "-")
+	file_name = CPCDOS_INSTANCE.remplacer_Caractere(File_name, ":"		, "-")
+
+	Dim path_final as String = CPCDOS_INSTANCE.SYSTEME_INSTANCE.check_NomAutorise(Path_screen & "\" & File_name, TRUE, TRUE, FALSE)
+
+	Dim Resultat as boolean = CPCDOS_INSTANCE.SYSTEME_INSTANCE.creer_Repertoire(Path_screen, "")
+			
+	If Resultat = true Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[Screenshot] Repertoire introuvable, creation ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Action, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+		Else
+			DEBUG("[Screenshot] No exist folder, creating ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Action, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+		End if
+		DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	' Enregistrer la capture
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Save_png(screenshot_ID, path_final)
+
+	' Supprimer le buffer
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Supprimer_BITMAP(screenshot_ID)
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[Instagrameur] Screenshot enregistre sous '" & path_final & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		else
+			DEBUG("[Instagramer] Saved screenshot under '" & path_final & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+	end if
+
+	return true
+End function
 
 public sub __Noyau_Cpcdos_OSx__.tester_erreur_memoire()
 	SCOPE

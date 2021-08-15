@@ -24,6 +24,10 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/window.cpc
 // [EN] Button configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/button.cpc
 
+// [FR] Configuration du picturebox
+// [EN] Picturebox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/IMGBOX.cpc
+
 // [FR] Configuration du textebox
 // [EN] Textbox configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/txtbox.cpc
@@ -36,11 +40,34 @@ EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/checkbox.cpc
 // [EN] Explorer configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/explorer.cpc
 
+// [FR] Configuration de la listbox
+// [EN] Listbox configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/listbox.cpc
 
 
 // [FR] Configuration du msgbox
 // [EN] Msgbox configuration
 EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/msgbox.cpc
+
+
+// [FR] Configuration du menu contextuel
+// [EN] Contextual configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/CONTEXT.cpc
+
+
+// [FR] Configuration du desktop
+// [EN] Desktop configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/DESKTOP.cpc
+
+
+// [FR] Configuration du TaskBar
+// [EN] TaskBar configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/TASKBAR.cpc
+
+
+// [FR] Configuration du gestionnaire de taches
+// [EN] Task manager configuration
+EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/taskmgr.cpc
 
 
 

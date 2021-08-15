@@ -1,0 +1,17 @@
+List of FASTVID Files
+=====================
+
+
+
+FASTVID files (can be used only in native/real/true/pure DOS mode):
+http://www.mdgx.com/umb.htm#FAS
+- DOS4GW.EXE = DPMI (DOS Protected Mode Interface) host (DOS extender)
+necessary for FASTVID.EXE, FINDLFB.EXE + VSPEED.EXE proper operation:
+http://www.mdgx.com/dos.htm#DPMI
+- FASTVID.EXE = Main executable. Read FASTVID.TXT.
+- FINDLFB.EXE = Finds and displays the LFB (if any) RAM address.
+- VSPEED.EXE = Benchmark tool used to test FASTVID.
+- FAQ.TXT = Please see the FASTVID FAQ, it may help.
+- FASTVID.TXT = FASTVID manual: MUST READ it to learn how to use FASTVID.EXE.
+- INSTALL.TXT = FASTVID installation guidelines.
+- VSPEED.TXT = VSPEED.EXE brief manual.

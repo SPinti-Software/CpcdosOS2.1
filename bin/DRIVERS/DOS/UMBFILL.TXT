@@ -1,0 +1,32 @@
+
+UMBFILL
+-------
+
+
+UMBFILL grabs all free UMBs. That's all. 
+
+Windows 9x/ME grabs all remaining UMBs and use it as normal RAM.
+
+This may slow down your machine if the UMBs are not cacheable or
+crash it if ISA DMA does't work within the UMBs.
+
+
+
+Thanks to Christian Masloch for this new version.
+
+
+--------------------------------- end ---------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+

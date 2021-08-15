@@ -1,0 +1,4 @@
+@echo off
+SHOWMENU Loading CD/DVD Driver
+DEVLOAD /H UIDEJR.SYS /N1 /D:CD
+SHCDX33E /D:CD,%CDdrive%

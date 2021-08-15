@@ -1,0 +1,119 @@
+*********************************
+Date   : Tue May 25 13:22:03 1999
+Error Number: (13050)
+Message: NetBiosSend: error: 10
+Version: 5.1c (Jan 30 1999, Build=71) License: BC1000 [Commercial license]
+ProgMode            : PROG_NB_MASTER
+PathName            : 
+DumpPos             : 0
+FlagImplode         : 0
+FlagExplode         : 0
+
+Keyboard IRQ Status : Not in IRQ
+Mouse IRQ Status    : Not in IRQ(0)
+Traceback:
+( 0) [main]
+( 1) [AttemptOperation]
+( 2) [CopyMainline]
+( 3) [CopyFileToDisk]
+( 4) [WinGetDumpFile]
+( 5) [FileReq]
+( 6) [GetDosDrives]
+( 7) [Xsend]
+( 8) [Abort]
+
+Start heap available: 30965760
+Cur   heap available: 30535680
+Total Memory:         32468992
+
+Maximum conventional allocated: 72192
+Current conventional allocated: 72124
+
+Memory system dump
+__________________
+  length:   580 [ghost.cpp], line = 1623
+  length:    16 [sectors.cpp], line = 1369
+  length: 33000 [sectors.cpp], line = 1380
+  length: 33000 [sectors.cpp], line = 1381
+  length:   508 [aspi.cpp], line = 69
+  length:  4096 [aspi.cpp], line = 79
+  length:    64 [dcnb.cpp], line = 122
+  length:    64 [dcnb.cpp], line = 123
+  length:    64 [dcnb.cpp], line = 124
+  length:    64 [dcnb.cpp], line = 125
+  length:    64 [dcnb.cpp], line = 126
+  length:    64 [dcnb.cpp], line = 127
+  length:    64 [dcnb.cpp], line = 128
+  length:   192 [dcnb.cpp], line = 129
+  length:    64 [dcnb.cpp], line = 130
+  length:    96 [dcnb.cpp], line = 131
+  length:    32 [dcnb.cpp], line = 132
+  length:     8 [dcnb.cpp], line = 133
+  length:     8 [dcnb.cpp], line = 134
+Fat details:
+
+NTFS details:
+----------------
+
+NTFS Global Flags:
+----------------
+	 contiguousWrite=1 forceDiskClusterMapping=0 
+	 inhibitCHKDSK=0 ignoreBadLog=0 ignoreCHKDSKBit=0
+	 enable_cache=0 xfrbuflen=0 
+----------------
+
+Disk Info :
+  remote.............0
+  drive..............80
+  sectors_used.......0
+  estimated_used.....0
+  pemax..............0
+  Version............0
+
+ # Ord Boot Id Ext First    Num      Last     Used     NTFS
+
+Disk Info :
+  remote.............0
+  drive..............0
+  sectors_used.......0
+  estimated_used.....0
+  pemax..............0
+  Version............0
+
+ # Ord Boot Id Ext First    Num      Last     Used     NTFS
+
+All Disk Info :
+Remote Drives
+
+Local Drives
+
+Drive 0
+Int13h
+Available
+Cylinders         781
+Heads             128
+Sectors per Track 63
+Total Sectors     6297984
+MB                3075
+
+Extended Int13h (Active)
+Available
+Cylinders         0
+Heads             0
+Sectors per Track 0
+Total Sectors     6306048
+MB                3079
+
+ASPI
+Unavailable
+
+IDE
+Available
+Cylinders         6256
+Heads             16
+Sectors per Track 63
+Total Sectors     6306048
+MB                3079
+
+
+*********************************

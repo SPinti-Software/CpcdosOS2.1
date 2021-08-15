@@ -1,0 +1,471 @@
+FastVid v1.10 - Freeware - FASTVID.TXT
+
+
+
+Hosted by MDGx:
+http://www.mdgx.com/
+at "Speed-Up + BenchMark Tools":
+http://www.mdgx.com/speed.htm
+Direct download [520 KB, freeware, ZIPped]:
+http://www.mdgx.com/files/FASTV110.ZIP
+... And vanished from original location [404 = File not found... :-(]:
+http://www.fastgraphics.com/editorials.php?id=4
+respectively:
+FastVid [27 KB, freeware, ZIPped]:
+http://www.fastgraphics.com/zip/fastv110.zip
+Found here (archived):
+http://web.archive.org/web/20020408044840/http://www.fastgraphics.com/editorials.php?id=4
+respectively:
+FastVid [27 KB, freeware, ZIPped] (archived):
+http://web.archive.org/web/19981203144900/http://www.fastgraphics.com/zip/fastv110.zip
+More similar tools:
+http://www.tomshardware.com/1997/01/23/enhancing_performance/
+
+This file was written by John Hinkley.
+
+NOTES:
+- References to Pentium Pro CPUs include also all Pentium II, III + IV CPUs.
+- References to Windows 95 include also all Windows 98 + ME editions.
+- References to Windows NT4 include also all Windows 2000, XP + 2003 editions.
+
+--------------------------------------------------------------------------
+                        CPU Warnings
+--------------------------------------------------------------------------
+
+FASTVID WILL WORK ONLY ON PENTIUM PRO, II, III + IV CPUs.
+FASTVID WILL NOT WORK AND IS NOT NEEDED ON PENTIUM AND EARLIER CPUs.
+
+--------------------------------------------------------------------------
+                        82450 (Orion) Warnings
+--------------------------------------------------------------------------
+
+According to Intel, enabling Write Posting (see below) on 82450 steppings
+before B0 could result in "rare" problems on the PCI bus. If the program
+indicates that Write Posting is enabled when you first run this program (the
+"Before" message) then you have a B0 or later stepping of the 82450 and don't
+need to worry about the bugs. The problem will manifest itself when there are
+high levels of traffic on the PCI bus -- multiple devices reading and writing
+at the same time. A typical example where you might have problems is when
+playing multimedia files like AVI and MPEG animations. The write combining
+options of this program can be used without problems on any version of the
+82450.
+
+If you have a pre-B0 motherboard you may want to play around with write
+posting to see the difference it makes but you shouldn't enable it all the
+time -- it WILL occasionally lock up your computer. If you really want or need
+write posting you should consider getting a new motherboard.
+
+If you have a pre-B0 motherboard you can still benefit from write combining
+(without fear of encountering the 82450 bugs) in the above DOS and Windows 95
+situations. Just don't enable write posting.
+
+Be forewarned: USE THIS PROGRAM AT YOUR OWN RISK.
+
+--------------------------------------------------------------------------
+                        82440 (Natoma) Warnings
+--------------------------------------------------------------------------
+
+The Write Posting feature of FASTVID doesn't work on 82440 based motherboards
+-- FASTVID cannot turn it on or off, or detect it's state. Earlier releases of
+FASTVID would always show the setting as ENABLED. Later releases more properly
+indicated UNKNOWN. This shouldn't be a problem since I've found that Write
+Posting is enabled by default (or via a BIOS setting) on 84440 motherboards.
+
+There is a BIOS setting that conflicts with FASTVID's write combining
+features. The symptom is a system lockup when mixed video and audio. If you
+experience such lockups turn off "USWC write posting" (Uncached Speculative
+Write Combining Write Posting) using the BIOS setup procedure.
+
+Many 82440 based motherboards have settings that control the same functions as
+FASTVID but use different terminology. "VGA Frame Buffer USWC" is the same as
+"Banked VGA Write Combining". "PCI Frame Buffer USWC" is the same as "Linear
+Framebuffer Write Combining". USWC stands for "Uncacheable Speculative Write
+Combining".
+
+These BIOS's use a "failsafe" version of VGA Frame Buffer USWC that only
+enables write combining for half the banked VGA mechanism. FASTVID enables
+write combining for the entire banked VGA area resulting in better
+performance. You may find that programs that use the 16 color EGA modes don't
+work properly -- but few programs use those modes anymore so you can usually
+use FASTVID's less conservative setting.
+
+FASTVID is also more flexible than the BIOS settings. If the BIOS makes a
+mistake about the size of the LFB you may not be able to use the LFB USWC
+setting. FASTVID lets you specify the amount of memory and LFB address so you
+can avoid that sort of problem.
+
+--------------------------------------------------------------------------
+                        Operating System Warnings
+--------------------------------------------------------------------------
+
+FASTVID must execute privileged, ring 0, instructions so it must be run from
+REAL MODE DOS. You canNOT run it from a DOS box/window or a full screen DOS
+session from Windows 3.x, Windows 95, Windows NT4 or OS/2. For use with DOS,
+Windows 3.x and Windows 95, you can include the program into your
+AUTOEXEC.BAT file (DOS4GW.EXE must be in your search path!). If you try to
+run FASTVID from a protected mode OS you will get a DOS4GW error message and
+register dump.
+
+--------------------------------------------------------------------------
+                        Memory Manager Warnings
+--------------------------------------------------------------------------
+
+I have found that EMM386 (and other memory managers like QEMM and 386MAX)
+interferes with LFBWC: the system will run normally but you will not get
+improved performance from the Linear Frame Buffer. When running DOS you must
+remove EMM386 from your CONFIG.SYS file for LFBWC to work (VGAWC is not
+affected).
+
+If you use a memory manager, running Windows 95 will re-enable LFBWC. Windows
+95 takes control of memory management away from EMM386 and handles memory
+properly. You will find that most programs that require EMM386 (or that
+require lots of memory forcing the use of EMM386 to load device drivers
+"high") don't use the Linear Frame Buffer. So the best solution is to leave
+EMM386 in your CONFIG.SYS and run your programs from within Windows 95
+whenever possible.
+
+--------------------------------------------------------------------------
+                        General
+--------------------------------------------------------------------------
+
+FASTVID enables Write Posting, banked VGA Write Combining and SVGA linear
+frame buffer Write Combining on Pentium Pro motherboards based on the 82450
+and 82440 chipsets. This will significantly improve graphic performance from
+DOS and Windows 95.
+
+--------------------------------------------------------------------------
+                        History
+--------------------------------------------------------------------------
+
+Steppings of the 82450 chipset before B0 have bugs which forced Intel to
+disable Write Posting -- in essence cache writes have been disabled for the
+PCI bus. The B0 stepping has been fixed and Write Posting is enabled by
+default by the BIOS. The difference is easily visible in writing to video
+memory. An A2 motherboard can only write about 8 MB/sec to the graphics card,
+a B0 motherboard gets about 18 MB/sec. The 82440 chipset does not have this
+problem and virtually all 82440 BIOSes enable write posting by default.
+
+But this is not the entire story. With the Pentium Pro, Intel also decided
+that the enabling of Write Combining (the combining of several writes into a
+cache line that can be bursted out the PCI bus) should be the responsibility
+of the O/S, not the BIOS. By enabling Write Combining the throughput to video
+RAM can be further increased to 88 MB/sec or more.
+
+There are two mechanisms for which Write Combining needs to be enabled: the
+banked VGA mechanism (the 128 KB from A0000 to BFFFF) and the unbanked, linear
+frame buffer that most of the newer graphic cards support. I will henceforth
+refer to linear frame buffer write combining as LFBWC and banked VGA write
+combining as VGAWC.
+
+Most low resolution DOS graphics applications and games use the banked
+mechanism. Since the VESA committee has defined a standard, and UNIVBE and a
+few of the graphic card manufacturers have provided the VESA 2.0 services,
+some of the latest games use the linear frame buffer (Duke Nuke'm 3D and Quake
+are for example). The linear frame buffer usually gives better performance
+since it alleviates the reqirement to switch banks in hires modes.
+
+I have only personally tested this program with 2MB and 4MB Matrox MGA
+Millennium cards. It has been run by others with other cards (S3 964 based, S3
+968 based, Tseng 6000 based) and most benefit to some extent.
+The Number Nine Imagine 128 card does not seem to benefit under most
+circumstance and turns in dismal DOS video scores. Some users have reported
+that starting Windows 95 after running VSPEED increases the LFB performance to
+the same range as most other hi performance cards.
+
+With a 2MB Millennium there were problems with VGAWC -- most hires VESA modes
+would result in vertical stripes over the entire screen. This appears to be
+either a hardware or software bug on the part of Matrox. I found a workaround
+which eliminates the stripes but reduces VGA performance a bit. The LFB will
+still run at full speed. Using a negative value for the number of megabytes
+(for example "FASTVID x11 -2") will enable this workaround.
+
+On many graphic cards, enabling the VGAWC results in problems with some
+programs that use VGA mode 0x12 (640x480x16colors). This appears to be either
+a hardware or software problem on the part of manufacturers. The problem is
+only aparent with VGAWC so you can run with that disabled if necessary. For
+example use "FASTVID x01". Note that this is not the same as the "vertical
+stripe" problem mentioned above.
+
+LFB write combining requires that FASTVID know where the linear frame buffer
+is located. The location can vary depending on the hardware setup and the
+BIOS. The LFBWC code in FASTVID currently queries any installed VESA BIOS
+Extension driver for the LFB address so you should install your VESA driver
+before FASTVID. If you don't have a VESA driver loaded (keep in mind that many
+cards have the driver in BIOS so you don't need to explicitly load one) or
+your VESA driver doesn't support the LFB, FASTVID will examine the PCI
+configuration registers for the LFB address. This isn't always successful --
+there are several registers and different cards use different ones. If none of
+these methods works you will have to supply an LFB address. If you supply an
+incorrect LFB address you will not see any increase in speed of the LFBWC.
+Or, even worse, the system may not function properly.
+
+If FASTVID can't automatically detect the LFB address, you can determine its
+location from Windows 95's Device Manager. Select Start, Settings, Control
+Panel, (or My Computer, Control Panel), System, Device Manager, Display
+Adapters, Your graphics card, Resources. Scroll to the bottom of the Resource
+Settings box and you will see a line (or a few lines) that reads:
+"Memory Range XXXXXXXX - YYYYYYYY". The first value should be the location of
+the linear frame buffer. Take note of the address and input it into FASTVID
+when asked. If there are several address try each of them. Ignore the
+following memory regions: A0000-AFFFF, B0000-BFFFF, C0000-CFFFF.
+
+--------------------------------------------------------------------------
+                        Installing and testing FASTVID
+--------------------------------------------------------------------------
+
+To eliminate possible software conflicts and prevent possible problems with
+getting your system into an un-bootable state, I recommend testing FASTVID
+with a bootable floppy diskette before installing it into the AUTOEXEC.BAT
+file on your hard disk:
+
+1) Create a bootable floppy by using the DOS command line "FORMAT A: /S" or
+use the Windows 95 Format function with "Copy system files" checked.
+
+2) Copy FASTVID.EXE, DOS4GW.EXE and VSPEED.EXE onto the diskette. If you use a
+TSR type VESA BIOS extension driver copy that onto the floppy diskette.
+
+3) Boot the floppy diskette. Run the VESA TSR if necessary.
+
+4) Run VSPEED and note the results. This will give you the performance of your
+graphic subsystem before using FASTVID.
+
+5) Run FASTVID with or without any arguments (see the FASTVID Command Line
+section below).
+
+6) Run VSPEED again and note the results.
+
+7) If you get no improvement repeat steps 5-6, or 3-6, until you find the
+correct settings for your system. Note the command line settings you used or
+as reported by FASTVID.
+
+You are now ready to install FASTVID to your hard disk. Here's what I suggest:
+
+8) Copy FASTVID.EXE and DOS4GW.EXE to the %windir% directory [%windir% =
+usually C:\WINDOWS].
+
+9) If you have an AUOTEXEC.BAT file add FASTVID with the appropriate command
+line arguments to it. If you use a TSR type VESA driver, add FASTVID
+immediately after the driver is loaded, otherwise add it near the top (start)
+of the AUTOEXEC. If you don't have an AUTOEXEC.BAT file create one with the
+appropriate FASTVID command line.
+
+10) You should be able to boot your computer with FASTVID active all the time.
+
+--------------------------------------------------------------------------
+                        FASTVID Command Line
+--------------------------------------------------------------------------
+
+Usage: FASTVID XYZ N ADDRESS
+
+        X controls Write Posting (0, 1, or X).
+        Y controls VGA (banked) Write Combining (0, 1, or X).
+        Z controls SVGA (linear frame buffer) Write Combining (0, 1, X).
+                For all three, 0 disables, 1 enables, any other value
+                results in no change from the current setting.
+        N indicates the amount of video memory in MegaBytes.
+                Valid values are 1, 2, 4, and 8. Also valid are -1, -2,
+                -4, and -8 to apply the special "vertical stripe" patch.
+        ADDRESS is the address of the linear frame buffer in hex.
+                This address will vary depending on your system.
+
+Example 1: FASTVID
+
+        If no arguments are supplied you run through a question and answer
+        dialogue and the program sets up the hardware as instruted. It will
+        also tell you what the equivalent command line is for the options you
+        chose.
+
+Example 2: FASTVID 111 4
+
+        Write posting is enabled (82450 only).
+        VGA Write Combining is enabled.
+        SVGA Write Combining is enabled, FASTVID will attempt to locate the
+        LFB on it's own.
+
+Example 3: FASTVID x01 4 FF000000
+
+        The write posting setting is not changed by FASTVID.
+        VGA Write Combining is disabled.
+        SVGA Write Combining is enabled for 4MB video memory at FF000000.
+
+Example 4: FASTVID 111 -2 FE000000
+
+        Write posting is enabled (82450 only).
+        VGA Write Combining is enabled. "Vertical stripe" patch applied.
+        SVGA Write Combining is enabled for 2MB video memory at FE000000.
+
+--------------------------------------------------------------------------
+
+Included is a test program called VSPEED.EXE that reports the video throughput
+for bit blit operations from DRAM to VRAM for both the banked VGA and linear
+frame buffer mechanisms. This type of operation is common in real-time 3D
+games and multimedia applications.
+
+If you experience difficulties with VSPEED (the program locks up or crashes)
+try using -L on the command line to eliminate the linear frame buffer test.
+For example:
+
+VSPEED -L
+
+will test only the banked VGA mechanism.
+
+VSPEED
+
+will test both the banked VGA and the linear frame buffer (assuming the card
+and VESA driver support it).
+
+VSPEED tests each mechanism (VGA and LFB) for 5 seconds. You should see
+changing "video noise" for the full 10 seconds of the test. If you don't see
+the noise during the second half of the test the LFB address may be incorrect,
+the LFB may not be enabled, or your card simply may not have an LFB.
+If VSPEED does not detect the LFB addres correctly you can supply an LFB
+address on the command line. For example:
+
+VSPEED F8000000
+
+will cause VSPEED to assume the LFB is at F8000000.
+
+--------------------------------------------------------------------------
+
+Sample VSPEED results from an Intel Aurora motherboard with the B0 stepping of
+the 82450 and a 4 MB Matrox MGA Millennium:
+
+FASTVID 000
+Copy DRAM to banked VGA:           8.07 million bytes per second
+Copy DRAM to linear framebuffer:   8.14 million bytes per second
+
+FASTVID 100
+Copy DRAM to banked VGA:          18.72 million bytes per second
+Copy DRAM to linear framebuffer:  18.91 million bytes per second
+
+FASTVID 011
+Copy DRAM to banked VGA:          37.95 million bytes per second
+Copy DRAM to linear framebuffer:  39.60 million bytes per second
+
+FASTVID 111
+Copy DRAM to banked VGA:          87.72 million bytes per second
+Copy DRAM to linear framebuffer:  93.46 million bytes per second
+
+FASTVID 111 -2
+Copy DRAM to banked VGA:          49.20 million bytes per second
+Copy DRAM to linear framebuffer:  93.46 million bytes per second
+
+--------------------------------------------------------------------------
+
+The following tests were run on an Intel Aurora motherboard with the B0
+stepping of the 82450, 64 MB DRAM (all four SIMM sockets populated), and a 4
+MB Matrox MGA Millennium. The "000" setting simulates an A2 motherboard where
+Write Posting is disabled.
+
+--------------------------------------------------------------------------
+program:               fastvid setting: 000     100     011     111
+--------------------------------------------------------------------------
+
+VSPEED (LFB, million bytes/sec)           8      19      40      93
+Duke Nuke'm 3D (640x480, fps)            14      25      18      31
+Doom Benchmark (fps)                     38      70      48      74
+640x480 FLC animation (fps)              25      48      88     121
+Chris's 3D benchmark (SVGA)              21      38      66      77
+
+Note that differences in motherboard and graphic card design may lead to
+different results. Most notably, some cards cannot sustain 93 MB/sec in the
+VSPEED test. 82440 based motherboards usually perform a bit worse with VSPEED
+but a bit better in real world applications.
+
+The above are all DOS applications. If you have an 82450 motherboard with the
+A2 stepping, turning on write posting will increase the WinBench96 Graphic
+Winmark score by about 25 percent. The write combining features don't make
+much difference to the Graphic Winmark score but there *are* circumstances
+where write combining can make a big difference. One example is using the
+Media Player to play an animation to a high resolution, highcolor or
+truecolor window. For example:
+
+Run Windows 95 in a high resolution, direct color mode; say 1024x768, 24 bits
+per pixel. Start the Media Player. Open \FUNSTUFF\VIDEOS\WEEZER.AVI from the
+Windows 95 CD-ROM. Enlarge the playback window to nearly full screen (do not
+use the Media Player's "full screen" option -- if you do it will change the
+screen to a lower resolution 8 bit mode for playback). Press the Play button.
+With write posting and write combining turned off you will get very poor
+results, about 2 frames per second. With write posting on and write combining
+off that will improve to about 4 frames per second.
+With both write posting and write combining on you will get very smooth
+playback with the frame rate too fast to count.
+
+You can see similar affects with the Hover! game on the Windows 95 CD-ROM.
+Again, with Windows 95 in a hires direct color mode, enlarge the game window
+as large as it will let you (about 640x480). With write posting and write
+combinging turned off you will get poor performance. With write posting turned
+on the game will be playable. With write posting and write combining turned on
+the action will be very smooth.
+
+--------------------------------------------------------------------------
+                        Further descriptions
+--------------------------------------------------------------------------
+
+1) Write Posting:
+
+Write Posting is where the processor "posts" data to the PCI bus and then goes
+on its way without waiting for the write operation to complete.
+Because of bugs in the pre-B0 stepping of the 82450 chipset Write Posting is
+disabled on early Pentium Pro motherboards. This severly limits the PCI
+throughput to about 8 MB/sec. Most Pentium motherboards these days can get
+over 80 MB/sec, 10 times faster. FASTVID can enable Write Posting on these
+motherboards, increasing PCI throughput to about 18 MB/sec. You don't want to
+do this routinely because the bugs in the chipset will eventualy cause the PCI
+bus to hang, forcing a reboot of the machine. Motherboards with the B0
+stepping have this bug fixed and Write Posting enabled by default.
+
+2) Banked VGA Write Combining (VGAWC):
+
+This function allows seperate writes to the banked VGA mechanism to be
+combined into a cacheline that can be bursted out to video memory via the PCI
+bus. I believe this used to be handled in hardware but Intel decided to make
+it a programable function with the Pentium Pro to make the motherboard
+architecture more general. If you enable VGAWC with FASTVID PCI throughput
+will increase from 18 MB/sec (B0 motherboard) to 90 MB/sec for programs that
+use the banked VGA mechanism (most DOS games). If you enable only VGAWC on an
+early motherboard (Write Posting remains off) the bus bandwidth increases from
+8 MB/sec to about 40 MB/sec. Some of the newer motherboards (ASUS for
+instance) have this as a BIOS setup option.
+
+3) Linear Frame Buffer Write Combining:
+
+Many newer graphics cards have their graphics memory mapped linearly at very
+high physical addresses (in addition to the banked VGA mechanism at A000:0000
+and B000:0000) beyond the 2 GB mark. The reason for doing this is to make
+access to video memory simpler and faster -- programs (and Windows drivers)
+don't have to switch banks all the time to access all of video memory. I
+believe Pentium motherboards enable Write Combining for all high addresses
+but the Pentium Pro design requires the use of the processors MSR registers
+to enable Write Combining. Again, this was done to generalize the motherboard
+design. You can theoretically have multiple devices mapped in high address
+space with different cachability options. Intel believes that proper place for
+this to be handled is within a PNP operating system.
+Unfortunately, no operating system yet supports this. As with VGAWC, LFBWC
+will increase PCI throughput from 18 MB/sec to 90 MB/sec (or 8 MB/sec to 45
+MB/sec with Write Posting off) for programs that use the linear frame buffer
+(some of the new hi res DOS games, Windows drivers).
+
+Exactly how much a difference any of these functions makes depends on the
+applications being run and the graphics card you're using. If you are using a
+very slow graphics card you won't see much difference. Programs that do very
+little graphic output will show little or no difference. Programs that do lots
+of graphic output (realtime 3D games, multimedia animations) can show a large
+difference. There are even circumstances under Windows 95, OS/2 and NT4 where
+the difference can be huge.
+
+Here are some results with my Matrox MGA Millennium:
+
+                                        A2      B0     FASTVID
+--------------------------------------------------------------
+Duke Nuke'm 3D (640x480, fps)           14      25       31
+Doom Benchmark (fps)                    38      70       74
+640x480 FLC animation (fps)             25      48      121
+Chris's 3D benchmark (SVGA)             21      38       77
+Win95 Media Player * (fps)              2       5        15 **
+
+*) WEEZER.AVI from the Windows 95 CD-ROM enlarged to _nearly_ full screen at
+1152x864, 32 bits-per-pixel.
+
+**) The frame rate was too fast to count, 15 fps is an estimate -- the
+animation played fairly smooth. :)

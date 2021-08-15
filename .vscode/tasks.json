@@ -1,0 +1,46 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "COMPILATION and COPY [Command Line]",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/C OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "COMPILATION and COPY [GUI]",
+            "type": "shell",
+            "command": "explorer",
+            "args": [
+                "OS2.1\\_Make_CpcDos_and_Update_ALL.cwMake"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "COPY files ONLY BIN to VM",
+            "type": "shell",
+            "command": "cmd",
+            "args": [
+                "/C OS2.1\\_Update_ALL_to_VM.bat"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

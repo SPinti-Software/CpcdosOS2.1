@@ -10,7 +10,7 @@
 -I ../djgpp/include/
 -std=c++11 -m32 
 -O0 -march=i386
--g3
+
 -Wreturn-type -fexceptions -Werror=return-type 
 -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-declarations -Wnoexcept -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-conversion -Wsign-promo -Wstrict-null-sentinel -Wstrict-overflow=5 -Wswitch-default -Wundef -Wno-unused
 -s -DNDEBUG
@@ -22,6 +22,7 @@
 ;Build Lib
 -o  obj/{_sOpt}/ -#To LIBwrp.a
 >
+-#Copy XE-Loader/Lib/DJ_Debug/libXE.a ../build/FB/lib/DOS/libXE.a
 -#Copy LIBwrp.a ../build/FB/lib/DOS/LIBwrp.a
 -#Copy LIBwrp.a ../build/djgpp/lib/LIBwrp.a
 >

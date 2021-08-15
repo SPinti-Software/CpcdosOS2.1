@@ -1,0 +1,55 @@
+rem/ bitmap render test
+
+// sys/ /debug = 2
+// sys/ /debug /cpinticore = 1
+
+Window/ bitmap_test
+
+        .title          = "OpenGL 3.3 Mesa - LLVMpipe experimentations"
+        .parameters     = ""
+        .px             = "200"
+        .py             = "200"
+        .sx             = "800"
+        .sy             = "600"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .TitleColor     = "255,200,100"
+        .BackColor      = "255,255,255"
+        .events         = ""
+
+        @#window_handle create/
+
+End/ Window
+
+
+// Executer OpenGL Win32 dans un nouveau thread
+@#NumeroThread cmd/ /thread[MAX] exe/ /Win32 tests/cube.exe
+
+// Convertir en handle
+Fix/ Handle = /C(%NumeroThread% * 1024)
+
+CCP/ /PAUSE 5000
+
+@#ImgID SYS/ /BITMAP /Get /IDbyHandle %Handle%
+
+
+Picturebox/ render
+
+
+        .handle         = "%window_handle%"
+        .parameters     = "UPD:1"
+        .px             = "0"
+        .py             = "0"
+        .sx             = "800"
+        .sy             = "600"
+        .image          = "#%ImgID%"
+
+        create/
+
+End/ Picturebox
+
+
+
+
+
+

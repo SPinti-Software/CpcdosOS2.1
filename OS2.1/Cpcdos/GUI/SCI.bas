@@ -3,8 +3,10 @@
 
 ' Par Sebastien FAVIER
 ' Reecriture le 13/10/2016
-' Mise a jour le 15/10/2018
+' Mise a jour le 03/02/2021
 
+' 03-JAN-2021	: Ajout du clic droit
+' 20-JAN-2021	: Ajout de l'explorateur
 ' 15-10-2018	: Adaptation 2.1 beta 1.1
 ' 17-01-2018	: AJOUT du numero de handle temporaire pour le fond d'ecran
 ' 31-10-2017	: CORRECTION du support d'interaction graphique du textebox
@@ -181,19 +183,116 @@ Function _SCI_Cpcdos_OSx__.Initialiser_ECRAN(Res_X as integer, Res_Y as integer,
 	END IF
 End Function
 
+Function _SCI_Cpcdos_OSx__.charger_Curseurs_properties() as boolean
+	' Cette fonction permet de charger les valeur de propriete du curseur
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SCI] Chargement des proprietes des curseurs graphiques", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+	Else
+		DEBUG("[SCI] Loading gui cursor properties", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+	End if
+
+	' Vitesses max
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Mouse_max_Speed = cdbl(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_MAX_SPEED", 3, _CLE_))
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Mouse_min_Speed = cdbl(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_MIN_SPEED", 3, _CLE_))
+
+	' Innercie
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Mouse_max_Speed = cdbl(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_INERTIA_SPEED", 3, _CLE_))
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.Mouse_min_Speed = cdbl(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_CONSTANT_SPEED", 3, _CLE_))
+
+	' Espacement du curseur de chargement
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_POS_X = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LOAD_PX", 3, _CLE_))
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_POS_Y = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LOAD_PY", 3, _CLE_))
+
+	' Taille du curseur de resize
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_X = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_RESIZE_Size_X", 3, _CLE_))
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_Y = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_RESIZE_Size_X", 3, _CLE_))
+
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_X = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_RESIZE_zone_X", 3, _CLE_))
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_zone_Y = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_RESIZE_zone_Y", 3, _CLE_))
+
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SCI] Proprietes du curseurs graphiques chargés !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+	Else
+		DEBUG("[SCI] Gui cursors properties loaded !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+	End if
+
+	return true
+End function
+
 Function _SCI_Cpcdos_OSx__.charger_Curseurs(Handle as integer) as integer
 	' Cette fonction permet de charger les icones, et curseurs graphiques
 	
-	Dim var_LOAD_IMG as String 		= CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.LOAD_IMG", 3, _CLE_)
-	
-	if CPCDOS_INSTANCE.Fichier_Existe(var_LOAD_IMG) = true then
-		CPCDOS_INSTANCE.CURSEUR_LOAD_ID	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Creer_BITMAP_depuis_FILE(var_LOAD_IMG, Handle)
-		function = CPCDOS_INSTANCE.CURSEUR_LOAD_ID
+	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] Chargement des curseurs graphiques", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		Else
+			DEBUG("[SCI] Loading gui  cursor", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		End if
+
+		Dim var_LOAD_IMG as String 			= CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_LOAD_IMG", 3, _CLE_)
+		Dim var_CURSOR_IMG as String 		= CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_IMG", 3, _CLE_)
+		Dim var_CURSOR_REsize_IMG as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CURSOR_RESIZE_IMG", 3, _CLE_)
+		
+
+		if CPCDOS_INSTANCE.Fichier_Existe(var_CURSOR_IMG) = true then
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Creer_BITMAP_depuis_FILE(var_CURSOR_IMG, Handle)
+		Else
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] Impossible de charger le curseur", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			Else
+				DEBUG("[SCI] Unable to load gui cursor", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			End if
+			return 0
+		End if
+
+
+
+		if CPCDOS_INSTANCE.Fichier_Existe(var_LOAD_IMG) = true then
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Creer_BITMAP_depuis_FILE(var_LOAD_IMG, Handle)
+		Else
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] Impossible de charger le curseur de 'chargement'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			Else
+				DEBUG("[SCI] Unable to load 'loading' gui cursor", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			End if
+			return 0
+		End if
+
+
+		if CPCDOS_INSTANCE.Fichier_Existe(var_CURSOR_REsize_IMG) = true then
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Creer_BITMAP_depuis_FILE(var_CURSOR_REsize_IMG, Handle)
+		Else
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] Impossible de charger le curseur de 'resize'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			Else
+				DEBUG("[SCI] Unable to load 'resize' gui cursor", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			End if
+			return 0
+		End if
+
+
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] Curseurs graphiques chargés !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		Else
+			DEBUG("[SCI] Loaded gui cursors !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		End if
+		return 2
+
 	Else
-		Function = 0
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SCI] Veuillez executer cette commande en mode GUI", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		Else
+			DEBUG("[SCI] Please to execute thie comand in GUI mode", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		End if
 	End if
-	
+
+	return 0
+
 End Function
+
+
 
 Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as integer
 	' Cette fonction permet de charger le fond d'ecran en memoire dans la video page 3
@@ -357,6 +456,8 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(ImageID) <> 0 Then
 			' Placer l'image 
 			put (PosX, PosY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(ImageID), Alpha
+
+			CPCDOS_INSTANCE.SCI_INSTANCE.BACKGROUND_IMAGE = ImageID
 		else
 			Message_erreur = ERRAVT("AVT_082", 0)
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -367,7 +468,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 		End if
 		
 		' Detruire l'ancienne adresse memoire
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Supprimer_BITMAP(ImageID)
+		' CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Supprimer_BITMAP(ImageID)
 	
 	END IF
 
@@ -377,8 +478,752 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 	Function = 1
 End Function
 
-Function _SCI_Cpcdos_OSx__.creer_Msgbox(Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, CleID as Double) as integer
+Function _SCI_Cpcdos_OSx__.generer_ContextMenu_properties(TypeObjet as integer, index as integer) as _Context_menu_
+	' Cette fonction permet de generer un profil de menu contextuel pour chaque objets par defaut
 	
+	dim Proprietes_defaut 	as _Context_menu_
+	Dim obj_name 			as string
+	
+	if TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Window " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Agrandir"
+			Proprietes_defaut.item_list(0).action = "window/ /sizeup " & obj_name
+
+			Proprietes_defaut.item_list(1).text = "Retrecir"
+			Proprietes_defaut.item_list(1).action = "window/ /sizedown " & obj_name
+
+			Proprietes_defaut.item_list(2).text = "Reduire"
+			Proprietes_defaut.item_list(2).action = "window/ /reduct " & obj_name
+
+			Proprietes_defaut.item_list(3).text = "Fermer"
+			Proprietes_defaut.item_list(3).action = "close/ " & obj_name
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+		End if
+
+		
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Bouton Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Button " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Picturebox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+		End if
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBlock Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Textblock " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			end if
+			
+		End if
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).Identification_Objet.nom
+		
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Textbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Selectionner tout"
+			Proprietes_defaut.item_list(0).action = ""
+
+			Proprietes_defaut.item_list(1).text = "Copier"
+			Proprietes_defaut.item_list(1).action = "#CTX_TEXTBOX_COPY " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
+
+			Proprietes_defaut.item_list(2).text = "Couper"
+			Proprietes_defaut.item_list(2).action = "#CTX_TEXTBOX_CUT " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
+
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = "#CTX_TEXTBOX_PAST " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
+
+			Proprietes_defaut.item_list(4).text = "-----"
+			Proprietes_defaut.item_list(4).action = ""
+
+			Proprietes_defaut.item_list(5).text = "Supprimer"
+			Proprietes_defaut.item_list(5).action = "#CTX_TEXTBOX_DEL " & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).identification_objet.nom
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+
+		' IMPORTANT : Indiquer le nombre d'elements
+		Proprietes_defaut.item_number = 6
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.ProgressBar Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Progressbar " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Checkbox Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Checkbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = ""
+			Proprietes_defaut.item_list(0).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 0
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Explorer " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Rafraichir"
+			Proprietes_defaut.item_list(0).action = ""
+
+			Proprietes_defaut.item_list(1).text = "-----"
+			Proprietes_defaut.item_list(1).action = ""
+
+			Proprietes_defaut.item_list(2).text = "Selectionner tout"
+			Proprietes_defaut.item_list(2).action = ""
+
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+	Elseif TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox Then
+
+		' Recuperer le nom de l'objet
+		obj_name = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).Identification_Objet.nom
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("[SCI] generer_ContextMenu_properties() Listbox " & obj_name & "(" & index & ") CTX:" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+		end if
+
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX = 1 Then
+			' Remplir les elements du clic droit
+			Proprietes_defaut.item_list(0).text = "Rafraichir"
+			Proprietes_defaut.item_list(0).action = ""
+
+			Proprietes_defaut.item_list(1).text = "-----"
+			Proprietes_defaut.item_list(1).action = ""
+
+			Proprietes_defaut.item_list(2).text = "Selectionner tout"
+			Proprietes_defaut.item_list(2).action = ""
+
+			Proprietes_defaut.item_list(3).text = "Coller"
+			Proprietes_defaut.item_list(3).action = ""
+
+			' IMPORTANT : Indiquer le nombre d'elements
+			Proprietes_defaut.item_number = 4
+		ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(index).PROP_TYPE.MENU_CTX = 2 Then
+
+			' Personnalises!
+			Proprietes_defaut.item_number = Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 2, _CLE_))
+
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				DEBUG("[SCI] Proprietes_defaut.item_number:" & CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_number", 3, _CLE_) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			end if
+
+
+			if Proprietes_defaut.item_number > 0 Then
+				For boucle_item as integer = 0 to Proprietes_defaut.item_number - 1
+					' Remplir les elements du clic droit
+					
+					Proprietes_defaut.item_list(boucle_item).text = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_text[" & boucle_item & "]", 2, _CLE_)
+					Proprietes_defaut.item_list(boucle_item).action = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(obj_name & ".ctx_action[" & boucle_item & "]", 2, _CLE_)
+
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").text  :" & Proprietes_defaut.item_list(boucle_item).text & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+						DEBUG("[SCI] Proprietes_defaut.item_list(" & boucle_item & ").action:" & Proprietes_defaut.item_list(boucle_item).action & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+					end if
+				Next boucle_item
+			End if
+			
+		End if
+	End if
+
+	return Proprietes_defaut
+	
+End function
+
+Function _SCI_Cpcdos_OSx__.fermer_ContextMenu() as boolean
+	' Cette fonction permet de fermer un menu contextuel
+
+
+	' Si le menu contextuel est donc deja ouvert
+	if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
+
+		' On le ferme		
+		if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle > 0 Then 
+			CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ /handle " & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle, This._CLE_, 3, 0, "")
+			' CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("close/ Win_context_menu", This._CLE_, 3, 0, "")
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = 0
+			CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex = 0
+		End if
+
+		' Vider les proprietes, BOOOMM ! POULOULOUUUUUUUUUUUU
+		dim prop_null as _Context_menu_
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = prop_null
+
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
+		return true
+		
+
+	End if
+
+	return false
+End function
+
+Function _SCI_Cpcdos_OSx__.creer_ContextMenu(Pos_X as integer, Pos_Y as integer, items as _Context_menu_) as boolean
+	' Cette fonction permet d'afficher un menu contextuel a un emplacement
+	
+	if items.item_number > 0 Then
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SCI] creer_ContextMenu() Creation du menu contextuel.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			else
+				DEBUG("[SCI] creer_ContextMenu() Creating context menu.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+			End if
+		end if
+
+		' Transferer le contenu des proprietes
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_INSTANCE = items
+		
+
+		Dim Pagging_top 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.TOP", 3, _CLE_))
+		Dim Pagging_left 	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.LEFT", 3, _CLE_))
+		Dim Pagging_right	as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.PAGGING.RIGHT", 3, _CLE_))
+		Dim Size_X 			as integer = 0
+		Dim Size_Y 			as integer = (items.item_number * (8 + items._Space_items)) + 10
+
+		' Chercher l'element le plus gros en taille X
+		For index_siz as integer = 0 to items.item_number
+			if len(items.item_list(index_siz).text) > Size_X Then Size_X = (1+len(items.item_list(index_siz).text)) * 8
+		Next index_siz
+
+		Size_X += Pagging_left*2 + Pagging_right
+
+		' Fermer le menu contextuel si deja ouvert
+		CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ Context_Menu_Handle = /F:gui.create_context_menu(" & Pos_X & "," & Pos_Y & "," & Size_X & "," & Size_Y & ")", This._CLE_, 3, 0, "")
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("Context_Menu_Handle", 3, _CLE_))
+
+		For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).Identification_Objet.Handle = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle Then
+			
+				CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex = boucle
+				
+				exit for
+			End if
+		Next boucle
+
+		CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true
+
+		scope
+			Dim ctx_red 		as integer
+			Dim ctx_green 		as integer
+			Dim ctx_blue 		as integer
+
+			dim txt_Pos_X 		as integer = Pagging_left
+			dim txt_Pos_Y 		as integer = Pagging_top
+			dim txt_Siz_x		as integer = (Size_X-Pagging_right) - Pagging_left
+			dim txt_Siz_y		as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_GUI.CONTEXT.Text_Size_Y", 3, _CLE_))
+			dim ctx_name 		as string
+			dim ctx_text		as string
+
+
+			' Display textbloc items with events
+			for index as integer = 0 to items.item_number - 1
+
+				ctx_name	= "" & index
+
+				ctx_text	= items.item_list(index).text
+
+				ctx_red 	= items.red
+				ctx_green 	= items.green
+				ctx_blue 	= items.blue
+
+
+				' Create textbloc
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.textbloc_context_menu(" & CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_handle & "," & ctx_name & "," & ctx_text & "," & txt_Pos_X & "," & txt_Pos_Y & "," & txt_Siz_x & "," & txt_siz_y & "," & ctx_red & "," & ctx_green & "," & ctx_blue & ")", This._CLE_, 3, 0, "")
+
+				' Space items in pixels
+				txt_Pos_Y 	+= items._Space_items
+
+			Next index
+		End scope
+	End if
+
+	return true
+
+End Function
+
+
+Function _SCI_Cpcdos_OSx__.creer_Msgbox(nom_propriete as string, Texte as String, Titre as String, Type_Avertissement as Integer, Type_message as Integer, ev as String, CleID as Double) as integer
+	' Cette fonction cree un messagebox
+
+	Dim Win_Position_X 	as integer = 200
+	Dim Win_Position_Y 	as integer = 200
+	Dim Win_Size_X 		as integer = 400
+	Dim Win_Size_Y 		as integer = 100
+
+	
+
+	' Choice language
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		If Texte 			= "" then Texte = ""
+		If Titre 			= "" then Titre = "Message de " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
+		if ev 				= "" Then ev	= ""
+		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
+	Else
+		If Texte 			= "" then Texte = ""
+		If Titre 			= "" then Titre = "Message from " & CPCDOS_INSTANCE.get_OSPresent(CPCDOS_INSTANCE.SCI_INSTANCE.get_OSid())
+		if ev 				= "" Then ev 	= ""
+		if nom_propriete 	= "" Then nom_propriete = "msgbox_no_name"
+	End if
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
+		DEBUG("[SCI] creer_Msgbox() Creation d'un message box " & CRLF _
+				& "Texte  '" & Texte 				& "'" & CRLF _
+				& "Titre  '" & Titre 				& "'" & CRLF _
+				& "Erreur '" & Type_Avertissement 	& "'" & CRLF _
+				& "Type   '" & Type_message 		& "'" & CRLF _
+				& "Ev     '" & ev 					& "'" & CRLF _
+				& "Nom    '" & nom_propriete 		& "'" & CRLF, _
+				CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+	Else
+		DEBUG("[SCI] creer_Msgbox() Creating msgbox " & CRLF _
+				& "Text  '" & Texte 				& "'" & CRLF _
+				& "Title '" & Titre 				& "'" & CRLF _
+				& "Error '" & Type_Avertissement 	& "'" & CRLF _
+				& "Type  '" & Type_message 			& "'" & CRLF _
+				& "Ev    '" & ev					& "'" & CRLF _
+				& "Name  '" & nom_propriete & "'" 	& CRLF, _
+				CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+	End if
+
+	' 0 = (par defaut) Sans icone particulier, simple message
+	' 1 = Information
+	' 2 = Question
+	' 3 = Avertissement
+	' 4 = Erreur
+
+	
+	Dim Txt_Position_X 	as integer = 20
+	Dim Txt_Position_Y 	as integer = 20
+	Dim Txt_Size_X 		as integer = 370
+	Dim Txt_Size_Y 		as integer = 50
+
+	Dim ico_Position_X 	as integer = 20
+	Dim ico_Position_Y 	as integer = 10
+	Dim ico_Size_X 		as integer = 48
+	Dim ico_Size_Y 		as integer = 48
+
+	Dim btn_Text		as String = "Ok"
+	Dim btn_image		as String = "BTN_GRA3.PNG"
+	Dim btn_Position_X 	as integer = Win_Size_X / 2
+	Dim btn_Position_Y 	as integer = Win_Size_Y - 40
+	Dim btn_Size_X 		as integer = 80
+	Dim btn_Size_Y 		as integer = 24
+	
+
+	' Normal
+	Dim msg_back_color 	as string = "200,200,200"
+	Dim msg_win_icom	as string = "ICOM_DEF.PNG"
+	Dim msg_win_ico		as string = ""
+	
+
+
+	if Type_Avertissement = 1 Then ' INFORMATION
+		msg_back_color  = "090,200,200"
+		msg_win_icom	= "ICOM_INF.PNG"
+		msg_win_ico		= "ICO_INF.PNG"
+		
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
+
+	Elseif Type_Avertissement = 2 Then ' QUESTION
+		msg_back_color 	= "090,090,200"
+		msg_win_icom	= "ICOM_QTN.PNG"
+		msg_win_ico		= "ICO_QTN.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
+
+	Elseif Type_Avertissement = 3 Then ' AVERTISSEMENT
+		msg_back_color 	= "200,170,090"
+		msg_win_icom	= "ICOM_AVT.PNG"
+		msg_win_ico		= "ICO_AVT.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
+
+	Elseif Type_Avertissement = 4 Then ' ERREUR
+		msg_back_color 	= "200,090,090"
+		msg_win_icom	= "ICOM_ERR.PNG"
+		msg_win_ico		= "ICO_ERR.PNG"
+
+		Txt_Position_X 	= 80
+		Txt_Position_Y  = 20
+		Txt_Size_X 		= 300
+		Txt_Size_Y 		= 50
+
+	End if
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ win_msg_Handle = /F:gui.msgbox.window(" & nom_propriete & "," & Titre & "," & Win_Position_X & "," & Win_Position_Y & "," & Win_Size_X & "," & Win_Size_Y & "," & msg_back_color & "," & msg_win_icom & ")", _CLE_, 3, 0, "")
+	Dim win_msg_Handle as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("win_msg_Handle", 3, _CLE_))
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.text(" & nom_propriete & "," & win_msg_Handle & "," & Texte & "," & txt_Position_X & "," & txt_Position_Y & "," & Txt_Size_X & "," & Txt_Size_Y & ")", _CLE_, 3, 0, "")
+
+	if NOT msg_win_ico = "" Then
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.icon(" & nom_propriete & "," & win_msg_Handle & "," & ico_Position_X & "," & ico_Position_Y & "," & msg_win_ico & ")", _CLE_, 3, 0, "")
+	End if
+
+	if Type_Avertissement = 0 Then ' Normal (OK)
+		btn_Text 	= "Ok"
+		btn_image	= "BTN_GRA2.png"
+
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 1 Then ' INFORMATION
+		btn_Text 	= "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 2 Then ' QUESTION
+		If CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			btn_Text = "Oui"
+		Else
+			btn_Text = "Yes"
+		End if
+		btn_image	= "BTN_GREN.PNG"
+		
+		btn_Position_X = btn_Position_X - btn_Size_X - 30
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "yes" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+		If CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			btn_Text = "Non"
+		Else
+			btn_Text = "No"
+		End if
+		btn_image	= "BTN_RED.PNG"
+		
+		btn_Position_X = btn_Position_X + btn_Size_X + 30
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "no" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 3 Then ' AVERTISSEMENT
+		btn_Text = "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	Elseif Type_Avertissement = 4 Then ' ERREUR
+		btn_Text = "Ok"
+		btn_image	= "BTN_GRA2.png"
+		
+		btn_Position_X = btn_Position_X - (btn_Size_X / 2)
+
+		' Creer le bouton
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.msgbox.button(" & nom_propriete & "," & win_msg_Handle & "," & "ok" & "," & btn_Text & "," & btn_Position_X & "," & btn_Position_Y & "," & btn_Size_X & "," & btn_Size_Y & "," & btn_image & "," & ev & ")", _CLE_, 3, 0, "")
+
+	End if
+
+'	DEBUG(" ****** MSGBOX FINIT !", CPCDOS_INSTANCE.DEBUG_INSTANCE.ECRAN, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+	
+	' Declare/ gui.msgbox.icon(window_handle, pos_x, pos_y, path) : LEVEL(4)
+	' Declare/ gui.msgbox.text(window_name, window_handle, Message, pos_x, pos_y) : LEVEL(4)
+	' Declare/ gui.msgbox.icon(window_name, window_handle, pos_x, pos_y, img_path) : LEVEL(4)
+	' Declare/ gui.msgbox.button(window_name, window_handle, name, text, pos_x, pos_y, size_x, size_y, img_path, exe_event) : LEVEL(4)
+
+
 	return 1
 End Function
 
@@ -403,8 +1248,8 @@ Function THREAD_Screen_Video Alias "THREAD_Screen_Video" (ByVal thread_struct as
 		SCOPE
 			' ********* D E B U T  *********
 
-			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
-				Presente = GetMouse(Pos_X, Pos_Y)	
+			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
+				Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y)	
 				CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
 			End if
 
@@ -426,31 +1271,58 @@ End Function
 
 Sub _SCI_Cpcdos_OSx__.Blitter_Video()
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
-		ENTRER_SectionCritique()
+		
 		
 		Dim as integer Pos_X, Pos_Y, Presente
 	
-		Presente = GetMouse(Pos_X, Pos_Y)
+		Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y)
 		CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
 		
-		SORTIR_SectionCritique()
+		
 	END IF
 End sub
 
 Sub _SCI_Cpcdos_OSx__.Blitter_Video(byval Pos_X as integer, Pos_Y as integer, SourisPresente as integer)
 
+	
+	ENTRER_SectionCritique()
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE then 
 		' Afficher copier la page video WORK a la page principal pour l'ecran
 		Flip (CPCDOS_INSTANCE._PAGE_VIDEO_WORK, CPCDOS_INSTANCE._PAGE_VIDEO_MAIN)
-					
-		' *** CURSEUR DE CHARGEMENT ***
-		if CPCDOS_INSTANCE.CURSEUR_LOAD_AFFICHER > 0 Then
-			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.CURSEUR_LOAD_ID) <> 0 Then
-				if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.CURSEUR_LOAD_ID, Pos_X + 14, Pos_Y, True)
+		
+		ScreenLock
+
+		Dim display_resize_only as boolean = false
+
+		' ** CURSEUR de resize en bas a droite de la fenetre **
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID) <> 0 Then
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Fenetre_FOCUS(0)).PROP_TYPE.Sizeable_ANGL_display = true Then
+				display_resize_only = true
+				if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_ID, (Pos_X+6) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_X, (Pos_Y+4) - CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_Resize_Siz_Y, true)
 			End if
-			
 		End if
+
+		if display_resize_only = false Then
+			' *** CURSEUR CUSTOM ***
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = false Then
+				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_ID) <> 0 Then
+					if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_ID, Pos_X, Pos_Y, true)
+				End if
+			End if
+
+		
+			' *** CURSEUR DE CHARGEMENT ***
+			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_AFFICHER_STACK > 0 Then
+				if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_ID) <> 0 Then
+					if SourisPresente = 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Dessiner_ecran(CPCDOS_INSTANCE._PAGE_VIDEO_MAIN, CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_ID, Pos_X + CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_POS_X, Pos_Y + CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_LOAD_POS_Y, True)
+				End if
+			End if
+		End if
+		
+		ScreenUnLock
 	End if
+	SORTIR_SectionCritique()
+	
 End Sub
 
 Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer : On local Error Goto Intercept_Error
@@ -491,7 +1363,7 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 				CPCDOS_INSTANCE.Fermer_processus(thread_struct.PROC_ID)
 			End if
 			
-			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then 
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then 
 				' Presente = GetMouse(Pos_X, Pos_Y)
 				
 				CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
@@ -893,7 +1765,7 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' Go !
 						Pret_Pour_Evenement = TRUE
 					End if
-						' On est deja focus sur un bouton
+						' On est deja focus sur un explorer
 				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Explorer Then
 					
 					' Recuperer l'index et le fichier evenement
@@ -907,6 +1779,23 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						Nom_Objet = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet.Nom
 						_CLE_OBJ_ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Identification_Objet._CLE_
 						Texte_obj  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(Index_Focus_OBJ).Texte
+						
+						' Go !
+						Pret_Pour_Evenement = TRUE
+					End if
+				ELSEIF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Listbox Then
+					
+					' Recuperer l'index et le fichier evenement
+					Index_Focus_OBJ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX
+					Fichier_evenement = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).PROP_TYPE.Fichier_evenement
+					
+					' Verifier s'il y a un ficheir evenement
+					IF NOT Fichier_evenement = "" Then
+					
+						' Si oui on recupere le nom de l'objet et sa cle numerique
+						Nom_Objet = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Identification_Objet.Nom
+						_CLE_OBJ_ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Identification_Objet._CLE_
+						Texte_obj  = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(Index_Focus_OBJ).Texte
 						
 						' Go !
 						Pret_Pour_Evenement = TRUE
@@ -1030,19 +1919,46 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 			
 			End if
 			
-			Presente = GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+			Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+			' Si le clic est a zero on l'annule
+			if CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = true Then
+				if TypeClic = 0 Then CPCDOS_INSTANCE.SCI_INSTANCE.CLIC_PRESS_TITLE = false
+			End if
+
+			
 			
 			if Presente <> 0 Then
 				Dim Message_erreur as string = ERRAVT("ERR_060", 0)
 				DEBUG("[SCI] " & Message_erreur, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			else
 				' Si un bouton de la souris est bien presse!
-				IF (TypeClic AND 1) OR (TypeClic AND 2) OR (TypeClic AND 4) Then
+				IF (TypeClic = 1) OR (TypeClic = 2) OR (TypeClic = 4) Then
 				
 					' Si la fenetre n'est pas en etat de deplacement
-					IF NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
+					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT = 0 AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT = 0 Then
 						
-						CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+						If(TypeClic = 2) Then ' DESACTIVATED
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+
+						else
+
+							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
+
+							' Si la fenetre clic droit n'est pas focus on ferme!
+							if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex > 0 Then
+								If Not CPCDOS_INSTANCE.SCI_INSTANCE.Fenetre_FOCUS(0) = CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_WinIndex Then
+									if CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = true Then
+										CPCDOS_INSTANCE.SCI_INSTANCE.fermer_ContextMenu()
+									End if
+
+									CPCDOS_INSTANCE.SCI_INSTANCE.ContextMenu_IsOpen = false
+								End if
+							End if
+							
+		
+						End if
 					else
 
 						' Si la souris a bouge
@@ -1053,11 +1969,21 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 							CPCDOS_INSTANCE.SCI_INSTANCE.A_POS_X = Pos_X
 							CPCDOS_INSTANCE.SCI_INSTANCE.A_POS_Y = Pos_Y
 							
-							' Actualiser le fond
-							CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(3, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT)
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT = 0 Then
+								' Actualiser le fond
+								CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(3, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT)
+							Else
+								' Actualiser le fond
+								CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(3, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT)
+							End if
 							
-							' Deplacer la fenetre relatif a la position d'origine et de la souris
-							CPCDOS_INSTANCE.SCI_INSTANCE.DeplacerFenetre_TO_POS(Pos_X - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_X, Pos_Y - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_Y)
+							' Ne pas deplacer !
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT = 0 Then
+								' Deplacer la fenetre relatif a la position d'origine et de la souris
+								CPCDOS_INSTANCE.SCI_INSTANCE.DeplacerFenetre_TO_POS(Pos_X - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_X, Pos_Y - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_Y)
+							else
+								CPCDOS_INSTANCE.SCI_INSTANCE.DeplacerFenetre_TO_SIZE(Pos_X - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT).POS_X, Pos_Y - CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT).POS_Y)
+							End if
 							
 							ScreenUnlock
 							' doevents(0) ' 1 millisecondes
@@ -1066,28 +1992,55 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 					End if ' Autrement on fait rien
 				else
 					' Si le bouton est relache
-					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
+					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 OR CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
 						ScreenLock
 						' Si la fenetre etait en deplacement
 						Flip 3, 2
+
+						Dim var_redimentionnement as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT
 						
-						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT = 0
+						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT 			= 0
+						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT 	= 0
 						CPCDOS_INSTANCE.SCI_INSTANCE.ActualiserGUI(0, 0)
 					
-						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_X = 0
-						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_Y = 0
+						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_X 			= 0
+						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RELATIF_Y 			= 0
 						
 						ScreenUnlock
+
+						' Executer l'evenement du ResizeEnd
+						if var_redimentionnement > 0 Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.Sizing_window_ending(var_redimentionnement)
+						End if
+
 						' doevents(0) ' 1 millisecondes
 						
 						' Si la fenetre est pas en deplacement mais les positions changes
-					ElseIF NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 Then
+					ElseIF NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
 					
 						' Ici ou les principales interactions utilisateur graphiques se font !
 						IF Ancien_X <> Pos_X OR Ancien_Y <> Pos_Y OR Ancien_Clic <> TypeClic OR Ancien_Scroll <> Scroll_Weel Then
 							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
 						End if
 					End if
+
+					Dim _index_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)
+					' Si le curseur est en bas a droite
+					CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Sizeable_ANGL_display = false
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Sizeable_ANGL = true Then
+						Dim As integer Cur_Pos_X, Cur_Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
+
+						Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Cur_Pos_X, Cur_Pos_Y, Scroll_Weel, TypeClic, Clip)
+
+						IF Cur_Pos_X >= (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).POS_X + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_X) - 40 AND Cur_Pos_X < (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).POS_X + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_X) Then
+							IF Cur_Pos_Y > (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).POS_Y + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_Y) - 40 AND Cur_Pos_Y < (CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).POS_Y + CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).SIZ_Y) Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_index_).PROP_TYPE.Sizeable_ANGL_display = true
+							End if
+						End if
+
+						
+					End if
+
 				End if
 			end if
 			
@@ -1130,17 +2083,24 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 		SCOPE
 			' ********* D E B U T  *********
 			Dim Elements_Trouves as integer = 0
-			
+			Dim Index_window as integer = 0
 			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK > 0 Then
 				' Actualiser toutes les TextBlock
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBLOCK
 					
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+							
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBlock(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBLOCK(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBLOCK Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1153,10 +2113,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_PROGRESSBAR
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_PROGRESSBAR Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT
+						
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+							
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_ProgressBar(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PROGRESSBAR(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_PROGRESSBAR Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1170,10 +2138,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_BOUTON
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_BOUTON Then exit for
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT
+						
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Bouton(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_BOUTON Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1185,11 +2161,18 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				' Actualiser tous checkbox
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_CHECKBOX
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
+						
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_CHECKBOX Then exit for
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__BOUTON(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_CheckBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__CHECKBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_CHECKBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1202,10 +2185,17 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBOX Then exit for
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).THREAD_OK = 1
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_TEXTBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1218,10 +2208,36 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.OS_id = _OSID Then
 						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).IUG_UPDATER > 0 then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).THREAD_OK = 1
-							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI, _INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
-							Elements_Trouves += 1
-							if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
+							
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Explorer(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_EXPLORER Then exit for
+							End if
+						End if
+					End if
+				Next _INDEX_
+			End if
+
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX > 0 Then
+			' Actualiser tous les LISTBOX
+				For _INDEX_ as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_LISTBOX
+					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.OS_id = _OSID Then
+						IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).IUG_UPDATER > 0 then 
+							' Recuperer l'index de la fenetre
+							Index_window = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT
+							if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Ferme		= false AND _
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(Index_window).PROP_TYPE.Reduit 	= false Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).THREAD_OK = 1
+								CPCDOS_INSTANCE.SCI_INSTANCE.Creer_Listbox(_INDEX_, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__LISTBOX(_INDEX_).Identification_Objet.Index_FNT_PARENT)
+								Elements_Trouves += 1
+								if Elements_Trouves >= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.RefreshGUI_Elements_LISTBOX Then exit for
+							End if
 						End if
 					End if
 				Next _INDEX_
@@ -1271,22 +2287,23 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 				' On sait que le thread n'a pas ete lance, donc on cherche le PID de la fenetre parent
 				For _INDEX_PID_ as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 					IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).Identification_Objet.Handle_PARENT = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).Identification_Objet.handle Then
-						
-						
-						Dim LibererTemps 	as integer = 0
-						Dim ACU 			as integer = 0
-						Dim temps_precedent as double = timer
-						DIM ID_Bitmap 		as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID
-						' On indique dans l'instance que le thread est bien en cours!
-						CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).THREAD_OK = 1
+						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).PROP_TYPE.Ferme		= false AND _
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_PID_).PROP_TYPE.Reduit 	= false Then
 
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE	(ID_Bitmap) = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID	(ID_Bitmap) = _INDEX_PID_
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index	(ID_Bitmap) = Boucle_Picturebox
-						
+							Dim LibererTemps 	as integer = 0
+							Dim ACU 			as integer = 0
+							Dim temps_precedent as double = timer
+							DIM ID_Bitmap 		as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID
+							' On indique dans l'instance que le thread est bien en cours!
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).THREAD_OK = 1
+
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_TYPE	(ID_Bitmap) = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_PID	(ID_Bitmap) = _INDEX_PID_
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index	(ID_Bitmap) = Boucle_Picturebox
+						End if
+
 						SORTIR_SectionCritique()
 						return CPCDOS_INSTANCE.__THREAD_OK
-						
 					end if
 				Next _INDEX_PID_
 			End if
@@ -1294,73 +2311,6 @@ Function THREAD_IUG_PICTUREBOX  cdecl alias "THREAD_IUG_PICTUREBOX" (ByVal threa
 	Next Boucle_Picturebox
 	
 	SORTIR_SectionCritique()
-	
-						' while(EN_VIE)
-							' EN_VIE = false
-
-						
-							''Liberer le CPU
-							' doevents(0)
-							' Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
-
-							' if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
-							' if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
-							
-							' SCOPE
-							''********* D E B U T  *********
-							
-								' ENTRER_SectionCritique()
-								
-								''Si le bitmap s'est actualise
-								' if CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actualise(ID_Bitmap) = true Then
-									
-									' IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE Then 
-									
-										''L'index de l'objet + index TID parent trouve, on execute!
-										' IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).Identification_Objet.Handle_PARENT > 0 Then
-											'' Tant que son TID est en vie, on continue d'actualiser!
-											
-											' if CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_FPS(temps_precedent, ACU) > 0 Then
-												''Afficher le nombre de FPS
-												' CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).TEXTE = "OpenGL 3D engine - SOFTWARE RENDERING - VIDEO_PTR:0x" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(Boucle_Picturebox).IMG_ID) & " FPS:" & ACU & ".  "
-
-												' ACU = 0
-												' temps_precedent = timer
-											' else
-												' ACU = ACU + 1
-											' End if
-											
-											
-											' CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.PictureBox, Boucle_Picturebox , _INDEX_PID_ )
-											' CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video()
-											
-										' else
-											''Si son TID est null, on quitte!
-											
-											' EN_VIE = FALSE
-										' End if
-									' End if ' GUI_Mode
-								' End if
-								' SORTIR_SectionCritique()
-								
-
-								
-							'' ********* F I N  *********
-			
-							' END SCOPE
-							' end if
-						' Wend ' while(EN_VIE)
-						
-					' End if
-					
-					' if EN_VIE = FALSE Then Return CPCDOS_INSTANCE.__THREAD_OK
-				' Next _INDEX_PID_
-			' End if
-		' End if
-	' Next Boucle_Picturebox
 
 
 	return CPCDOS_INSTANCE.__THREAD_OK
@@ -1656,7 +2606,7 @@ Function _SCI_Cpcdos_OSx__.IMG_Changer_taille(byref Source as any ptr, byref Des
 	
 	Function = Destination
 
-	ENTRER_SectionCritique()
+	SORTIR_SectionCritique()
 End function
 
 
@@ -1690,6 +2640,7 @@ Function _SCI_Cpcdos_OSx__.FILE_FORMAT_load_icons() as boolean ' ID : 11111
 			' Charger les grosses icones
 			if NOT CPCDOS_INSTANCE.FORMAT_Icones_max(boucle) = "NULL" Then
 				CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(boucle) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.FORMAT_Icones_max(boucle), CPCDOS_INSTANCE.SCI_INSTANCE.icon_ID)
+				
 			End if
 			
 			' Charger les petites icones
@@ -1718,6 +2669,8 @@ Function _SCI_Cpcdos_OSx__.FILE_FORMAT_load_icons() as boolean ' ID : 11111
 	
 		
 End function
+
+
 
 
 

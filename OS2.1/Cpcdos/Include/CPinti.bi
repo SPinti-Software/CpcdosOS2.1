@@ -37,9 +37,6 @@ Extern "C++" lib "cpnti"
 		' == FICHIERS ==
 		namespace gestionnaire_fichier
 		
-			declare function cpinti_decompress_file			(Source as CONST ZString ptr, Destination as CONST ZString ptr) as integer
-			declare function cpinti_compress_file			(Source as CONST ZString ptr, Destination as CONST ZString ptr) as integer
-			
 			declare function cpinti_Fichier_Existe			(Source as CONST ZString ptr) as boolean
 			Declare function cpinti_Taille_Fichier			(Source as CONST ZString ptr) as double
 			declare function cpinti_Lire_Fichier_complet	(Source as CONST ZString ptr, Mode as CONST ZString ptr, Retour_ptr as ZString ptr, TailleFichier as uinteger) as boolean
@@ -80,13 +77,14 @@ Extern "C++" lib "cpnti"
 		
 		
 			' === P R O C E S S U S ===
-			declare function 	cpinti_creer_processus			cdecl(ID_KERNEL as uinteger, ID_OS as uinteger, ID_USER as uinteger, _
-																	PID_PARENT as uinteger, NomProcessus as CONST ZString PTR) as uinteger
-			declare function 	cpinti_arreter_processus		cdecl(ID_KERNEL as uinteger, PID as uinteger) as boolean
-			declare sub		 	cpinti_set_etat_processus		cdecl(ID_KERNEL as uinteger, PID as uinteger, ACTION as uinteger)
-			declare function 	cpinti_get_etat_processus		cdecl(ID_KERNEL as uinteger, PID as uinteger) as uinteger
-			declare function 	cpinti_get_nom_processus		cdecl(PID as uinteger) as CONST ZString PTR
-			declare function	cpinti_get_nombre_processus		cdecl() as uinteger
+			declare function 	cpinti_creer_processus					cdecl(ID_KERNEL as uinteger, ID_OS as uinteger, ID_USER as uinteger, _
+																			PID_PARENT as uinteger, NomProcessus as CONST ZString PTR) as uinteger
+			declare function 	cpinti_arreter_processus				cdecl(ID_KERNEL as uinteger, PID as uinteger) as boolean
+			declare sub		 	cpinti_set_etat_processus				cdecl(ID_KERNEL as uinteger, PID as uinteger, ACTION as uinteger)
+			declare function 	cpinti_get_etat_processus				cdecl(ID_KERNEL as uinteger, PID as uinteger) as uinteger
+			declare function 	cpinti_get_nom_processus				cdecl(PID as uinteger) as CONST ZString PTR
+			declare function	cpinti_get_nombre_processus				cdecl() as uinteger
+			declare function 	cpinti_get_nombre_thread_in_processus 	cdecl(PID as uinteger) as uinteger
 			
 			
 			' === T H R E A D S ===

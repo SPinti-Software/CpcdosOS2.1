@@ -52,14 +52,147 @@ function _SYSTEME_Cpcdos_OSx__.bit_converter(byref source as any ptr) as any ptr
 	
 End function
 
+#print Blurry effect
+
+public function _SYSTEME_Cpcdos_OSx__.buffer_to_blurry(byref image_src as any ptr, intensite as integer) as Any Ptr
+	' Appliquer du flou dans le meme buffer, et retourne le temps en ms
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Application de l'effet de flou x" & intensite & "% (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		Else
+			DEBUG("[SYSTEM] Applying blurry  x" & intensite & "% (Image source 0x" & hex(image_src) & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		End If
+	End if
+
+	Dim img_info As tImage
+	Imageinfo(image_src, img_info.Width, img_info.height, , img_info.pitch, img_info.pixels)
+
+	Dim As Double fEnd, fStart = Timer
+	Dim Imgfloute As Any Ptr = FastBlur(img_info, intensite)
+	fEnd = Timer - fStart
+
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		DEBUG("[OK] " & fEnd & " ms (New source 0x" & hex(Imgfloute) & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+	End if
+
+	return Imgfloute
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.FastBlur(img As tImage, iRadius As Ubyte) As Any Ptr
+	' Cette fonction permet d'appliquer une passe de flou horizontaux et verticaux
+
+   iRadius = Iif(iRadius < 1, 1, iRadius)
+
+   Dim Horizontale As Any Ptr = BlurPass(img, iRadius, img.width, img.height)
+   
+   Dim As tImage img2
+   Imageinfo(Horizontale, img2.Width, img2.height, , img2.pitch, img2.pixels)
+     
+   Dim Verticale As Any Ptr = BlurPass(img2, iRadius, img.height, img.Width)
+   ImageDestroy(Horizontale)
+   
+   Return Verticale
+End Function
+
+' Thank to Romain Guy
+Function _SYSTEME_Cpcdos_OSx__.BlurPass(img As tImage, iRadius As Ubyte, iW as UShort, iH as UShort) As Any Ptr
+
+   dIM AS UShort iW1 = iW - 1, iH1 = iH - 1
+   
+   Dim As Ulong Ptr srcPixels = img.pixels
+   
+   Dim pImage_blurred As Any Ptr = Imagecreate(img.height, img.width, RGBA(0, 0, 0, 0), 32)
+   
+   Dim As tImage img_b
+   Imageinfo(pImage_blurred, img_b.Width, img_b.height, , img_b.pitch, img_b.pixels)
+   Dim As Ulong Ptr dstPixels = img_b.pixels
+
+   Dim As Long previousPixelIndex, sumAlpha, sumRed, sumGreen, sumBlue, i
+   Dim As Ulong pixel, windowSize = iRadius * 2 + 1, radiusPlusOne = iRadius + 1, _
+                srcIndex = 0, sumLookupTable(256 * windowSize), indexLookupTable(radiusPlusOne), _
+                dstIndex, x, y, nextPixelIndex, nextPixel, previousPixel
+               
+   Dim as Integer pitch_img = img.pitch Shr 2, pitch_b = img_b.pitch Shr 2
+
+   For i = 0 To Ubound(sumLookupTable) - 1
+      sumLookupTable(i) = i \ windowSize
+   Next
+   
+   If iRadius < iW Then
+      For i = 0 To Ubound(indexLookupTable) - 1
+         indexLookupTable(i) = i
+      Next
+   Else
+      For i = 0 To iW - 1
+         indexLookupTable(i) = i
+      Next
+      For i = iW To Ubound(indexLookupTable) - 1
+         indexLookupTable(i) = iW1
+      Next
+   Endif
+   
+   For y = 0 To iH1
+      sumAlpha = 0: sumRed = 0: sumGreen = 0: sumBlue = 0
+      dstIndex = y
+      
+      pixel = srcPixels[srcIndex]
+      sumAlpha += radiusPlusOne * ((pixel Shr 24) And &hFF)
+      sumRed   += radiusPlusOne * ((pixel Shr 16) And &hFF)
+      sumGreen += radiusPlusOne * ((pixel Shr  8) And &hFF)
+      sumBlue  += radiusPlusOne * ( pixel         And &hFF)
+      
+      For i = 1 To iRadius
+         pixel = srcPixels[srcIndex + indexLookupTable(i)]
+         sumAlpha += ((pixel Shr 24) And &hFF)         
+         sumRed   += ((pixel Shr 16) And &hFF)         
+         sumGreen += ((pixel Shr  8) And &hFF)         
+         sumBlue  += ( pixel         And &hFF)            
+      Next
+      
+      For x = 0 To iW1
+         dstPixels[dstIndex] = sumLookupTable(sumAlpha) Shl 24 Or _
+                               sumLookupTable(sumRed)   Shl 16 Or _
+                               sumLookupTable(sumGreen) Shl  8 Or _
+                               sumLookupTable(sumBlue)
+         
+         dstIndex += pitch_b
+         
+         nextPixelIndex = x + radiusPlusOne
+         If nextPixelIndex >= iW Then nextPixelIndex = iW1
+         
+         previousPixelIndex = x - iRadius
+         If previousPixelIndex < 0 Then previousPixelIndex = 0
+         
+         nextPixel =    srcPixels[srcIndex + nextPixelIndex]
+         previousPixel = srcPixels[srcIndex + previousPixelIndex]
+         
+         sumAlpha += (nextPixel      Shr 24) And &hFF
+         sumAlpha -= (previousPixel   Shr 24) And &hFF
+         
+         sumRed += (nextPixel         Shr 16) And &hFF
+         sumRed -= (previousPixel   Shr 16) And &hFF
+         
+         sumGreen += (nextPixel      Shr  8) And &hFF
+         sumGreen -= (previousPixel   Shr  8) And &hFF
+         
+         sumBlue += (nextPixel            ) And &hFF
+         sumBlue -= (previousPixel         ) And &hFF
+      Next
+   
+      srcIndex += pitch_img
+   Next
+   
+   Return pImage_Blurred
+End Function
+
+
 #print * Lecteur PNG
-
-
 ' Fonction statique n'ayant pas de retour sur le reseau ou fichier DEBUG
 Sub libpng_error_callback cdecl( byval png as png_structp,  byval  p as png_const_charp)
 	Dim Message_erreur as string = ERRAVT("ERR_046", 0)
 	DEBUG("[SYSTEME] " & Message_erreur & " (" & *p & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
-	screen 0 : Print "[SYSTEME] " & Message_erreur & " (" & *p & ")"
+	screen 0 : Print "[SYSTEME] " & Message_erreur & " (" & *p & ") check for not use interlaced PNG"
 end sub
 
 function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  as integer, prio as integer) as any ptr
@@ -94,7 +227,6 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	
 	Dim PNG_Largeur as integer
 	Dim PNG_Hauteur as integer
-	Dim CanalAlphaPresent as integer = 0
 	Dim TestR as integer
 	Dim TestV as integer
 	Dim TestB as integer
@@ -167,7 +299,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 
 	png_read_info( png, info )
 
-	
+	Dim debbug as boolean
 	
 	largeur = png_get_image_width( png, info )
 	hauteur = png_get_image_height( png, info )
@@ -182,7 +314,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_RGB
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ RVB r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG charge RVB resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. RGB Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -190,7 +322,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_RGB_ALPHA
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ RVBA r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG charge RVBA resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. RGBA Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -198,7 +330,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case PNG_COLOR_TYPE_GRAY
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Information du PNG charg‚ Nuances de gris r‚solution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Information du PNG chargee Nuances de gris resolution:" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " profondeur:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] PNG info. Grade of grey Size" & largeur & "x" & hauteur & "x" & profondeurPixelleuumeuhmeuuuh & " depth:" & profondeurbits  & " canal:" & canaux, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 				End If
@@ -206,7 +338,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		case else
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Format de couleurs non support‚s", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+					DEBUG("[SYSTEME] Format de couleurs non supportes", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 				Else
 					DEBUG("[SYSTEM] Color format not supported", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 				End If
@@ -215,25 +347,26 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 			return null
 	end select
 
+	
+
 	SCOPE
 
-		imgPNG = imagecreate( largeur, hauteur, RGBA(255, 0, 255, 255))
+		imgPNG = imagecreate( largeur, hauteur, RGBA(0, 0, 0, 0))
 
 		dim as ubyte ptr dst = cptr( ubyte ptr, imgPNG + 1 )
-
 
 		png_read_update_info( png, info )
 
 		rowbytes = png_get_rowbytes( png, info )
+	
+
 		dim as ubyte ptr src = callocate( rowbytes )
 
-		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG(" PTR source 0x" & hex(src, 8) & " " & rowbytes & " rowbytes" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
-		Else
-			DEBUG(" Source PTR 0x" & hex(src, 8) & " " & rowbytes & " rowbytes" , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
-		End if
+		DEBUG(" Source PTR 0x" & hex(src, 8) & " " & rowbytes & " rowbytes. Pitch " & imgPNG->pitch , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+		
 		
 		SORTIR_SectionCritique()
+
 
 		for y as integer = 0 to hauteur-1
 		
@@ -246,107 +379,63 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		
 			png_read_row( png, src, NULL )
 
-			select case( typecouleur )
+			select case(typecouleur)
+
 			case PNG_COLOR_TYPE_RGB
 				imageconvertrow( src, 24, dst, Bits, largeur )
 				dst += imgPNG->pitch
 				
 			case PNG_COLOR_TYPE_RGB_ALPHA
-				select case( Bits )
+				select case(Bits)
+
 				case 32
 
 					for i as integer = 0 to rowbytes-1 step 4
-
-						dst[0] = src[i+2]
-						dst[1] = src[i+1]
-						dst[2] = src[i+0]
-						dst[3] = src[i+3]
-
-						
-						''' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						''' R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						''' s'occupe d'enlever le rose pour remplacer le role du png
-						If dst[0] = 255 THEN
-							If dst[1] = 255 THEN
-								If dst[2] = 255 THEN
-									If dst[3] = 0 THEN
-										dst[0] = 255	' Rouge
-										dst[1] = 0		' Vert
-										dst[2] = 255	' Bleu
-										dst[3] = 0		' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
-						
-						dst += 4
-					next
-					
-					' for i as integer = 0 to rowbytes-1 step 4
-						' dst -= 4
-					' next i
-
-					' dst += imgPNG->pitch
-					
-				case 24
-					for i as integer = 0 to rowbytes-1 step 4
-
 						dst[0] = src[i+2]
 						dst[1] = src[i+1]
 						dst[2] = src[i+0]
 						dst[3] = src[i+3]
 						
-						
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						'  s'occupe d'enlever le rose pour remplacer le role du png
-						If dst[0] = 255 THEN
-							If dst[1] = 255 THEN
-								If dst[2] = 255 THEN
-									If dst[3] = 0 THEN
-										dst[0] = 255	' Rouge
-										dst[1] = 0		' Vert
-										dst[2] = 255	' Bleu
-										dst[3] = 0		' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
-						
 						dst += 4
 					next
-					
+
+					' Rewind pointer to begin
 					for i as integer = 0 to rowbytes-1 step 4
 						dst -= 4
 					next i
 
+					' Jump to next pointer line
+					dst += imgPNG->pitch
+
+				case 24
+					for i as integer = 0 to rowbytes-1 step 4
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+	
+						dst += 4
+					next
+					
+					' rewind pointer to begin
+					for i as integer = 0 to rowbytes-1 step 4
+						dst -= 4
+					next i
+
+					' Jump to next pointer line
 					dst += imgPNG->pitch
 				case 15, 16
 					For i as integer = 0 to rowbytes-1 step 4
-						TestR = src[i+2]
-						TestV = src[i+1]
-						TestB = src[i+0]
-						TestA = src[i+3]
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						'  R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						'  s'occupe d'enlever le rose pour remplacer le role du png
-						If TestR = 255 THEN
-							If TestV = 255 THEN
-								If TestB = 255 THEN
-									If TestA = 0 THEN
-										src[i+2] = 255 	' Rouge
-										src[i+1] = 0	' Vert
-										src[i+0] = 255	' Bleu
-										src[i+3] = 255	' Alpha
-										CanalAlphaPresent = 1
-									END IF
-								END IF
-							END IF
-						END IF
+
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+
 					next
 					imageconvertrow( src, 32, dst, Bits, largeur )
+
+					' Jump to next pointer line
 					dst += imgPNG->pitch
 				end select
 
@@ -359,25 +448,12 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 					next
 				case 15, 16
 					For i as integer = 0 to rowbytes-1 step 4
-						TestR = src[i+2]
-						TestV = src[i+1]
-						TestB = src[i+0]
-						TestA = src[i+3]
-						' Si le canal alpha et le rvb indique que c'est un fond purement transparent
-						' 	R:255 V:255 B:255 A:0 alors on remplace par le rose Magenta pour que le kernel
-						' 	s'occupe d'enlever le rose pour remplacer le role du png
-						If TestR = 255 THEN
-							If TestV = 255 THEN
-								If TestB = 255 THEN
-									If TestA = 0 THEN
-										src[i+2] = 255 	' Rouge
-										src[i+1] = 0	' Vert
-										src[i+0] = 255	' Bleu
-										src[i+3] = 255	' Alpha
-									END IF
-								END IF
-							END IF
-						END IF
+						dst[0] = src[i+2]
+						dst[1] = src[i+1]
+						dst[2] = src[i+0]
+						dst[3] = src[i+3]
+
+						
 						dst += 4
 					next
 					for i as integer = 0 to rowbytes-1
@@ -402,13 +478,103 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[SYSTEME] Chargement du PNG termine!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+			DEBUG("[SYSTEME] Chargement du PNG termine!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 		Else
-			DEBUG("[SYSTEM] PNG Loaded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+			DEBUG("[SYSTEM] PNG Loaded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
 		End If
 	End if
+
 		
 end function
+
+#print * Save PNG
+function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string) as boolean
+	' Cette fonction permet d'enregistrer une image en PNG
+	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Enregistrement d'une image PNG(v" & PNG_LIBPNG_VER_STRING & ") '" & Fichier & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Writing PNG(v" & PNG_LIBPNG_VER_STRING & ") image '" & Fichier & "' ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+	End if
+	
+	dim fp as FILE ptr
+	fp = fopen(strptr(Fichier), @"wb")
+
+	if( fp = NULL ) then
+		' Fichier introuvable !	
+		dim Message_erreur as string = ERRAVT("ERR_033", 0)
+		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		return false
+	end if
+
+	dim as png_structp png_ptr 	= png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)
+	dim as png_infop info_ptr 	= png_create_info_struct(png_ptr)
+
+	if (setjmp(png_jmpbuf(png_ptr))) then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Impossible d'ecrire le fichier PNG", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Unable to write PNG file", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Return false
+	End If
+
+	dim source as tImage
+	source.width 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(source_id)
+	source.height 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(source_id)
+	source.bpp 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_bits(source_id)
+	source.pixels 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(source_id)
+
+	png_init_io(png_ptr, fp)
+
+	png_set_IHDR(png_ptr, info_ptr, source.width, source.height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT)
+	png_write_info(png_ptr, info_ptr)
+
+	dim as png_bytep row = Allocate(3 * source.width * sizeof(png_byte))
+	dim as ubyte ptr pp = cptr(ubyte ptr, source.pixels+1)
+	dim as integer bypp = source.bpp
+
+	Dim As Integer Taille_X, Taille_Y, bitPerPixel_SOURCE, bitPerPixel_DESTINATION, pitch_SOURCE, pitch_DESTINATION
+	Dim as byte ptr PointeurDestination
+	
+	ImageInfo( source.pixels,  Taille_X,  Taille_Y, bitPerPixel_SOURCE, pitch_SOURCE,  pp  )
+
+	
+	source.pitch = pitch_SOURCE
+
+	if bitPerPixel_SOURCE <> 4 then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Seulement le format 4bpp est supporte", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error 4bpp is supported", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Return false
+	End If
+	for y as integer = 0 to source.height-1
+		for x as integer = 0 to source.width-1
+			row[x*3  ] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE+2)
+			row[x*3+1] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE+1)
+			row[x*3+2] = *(pp+y*source.pitch+x*bitPerPixel_SOURCE)
+		Next
+		png_write_row(png_ptr, row)
+	Next
+
+	png_write_end(png_ptr, NULL)
+
+	if (fp <> NULL) then fclose(fp)
+	if (info_ptr <> NULL) then png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1)
+	if (png_ptr <> NULL) then png_destroy_write_struct(@png_ptr, NULL)
+	if (row <> NULL) then DeAllocate(row)
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] Fichier PNG enregistre !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEM] PNG file recorded!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End If
+
+	return true
+End Function
 
 
 #print * Lecteur JPEG

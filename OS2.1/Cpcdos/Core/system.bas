@@ -5,6 +5,7 @@
 ' Reecriture le 13/10/2016
 ' Mise a jour le 11-MAR-2020
 
+' 18-JAN-2021	: Ajout de Lister_Drives()
 ' 10-MAR-2020	: Correction de AllouerString() - Viol memoire, depassement 1 octet
 ' 15-10-2018	: Refonte 2.1 beta 1.1
 ' 22-11-2017	: AJOUT des attributs de fichier, d'independances de DOS
@@ -403,8 +404,12 @@ Function _SYSTEME_Cpcdos_OSx__.set_Resolution(ModeSCR as integer) as boolean
 			DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution)
 		End if
 		
-		' Masquer le curseur
+		' Masquer le curseur FB
 		Setmouse(0, 0, 0)
+
+		' Et le curseur Custom
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_AFFICHER = false
+		
 		
 		this.ModeResolution = ModeSCR
 		
@@ -493,7 +498,12 @@ Function _SYSTEME_Cpcdos_OSx__.set_Resolution(Res_X as integer, Res_Y as integer
 			End if
 			
 			' Afficher le curseur au centre de l'ecran
-			Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 1)
+			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = true Then
+				Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 1)
+			Else
+				Setmouse(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X / 2, CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y / 2, 0)
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.CURSEUR_AFFICHER = true
+			End if
 			
 		else
 			' La resolution ne s'est pas bien appliquee
@@ -672,6 +682,92 @@ Function _SYSTEME_Cpcdos_OSx__.get_FPS(temps_precedent as double, ACU as integer
 	end if
 End function
 
+#print * Gestion souris
+Function _SYSTEME_Cpcdos_OSx__.cpc_GetMouse(byref Pos_X as integer, byref Pos_Y as integer) as integer
+	return cpc_GetMouse(Pos_X, Pos_Y, 0, 0, 0)
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.cpc_GetMouse(byref Pos_X as integer, byref Pos_Y as integer, byref Scroll_Weel as integer, byref TypeClic as integer, byref clip as integer) as integer
+	' Cette fonction permet d'obtenir les informations sur la souris
+
+	If CPCDOS_INSTANCE.SYSTEME_INSTANCE.UseFB_Mouse = false Then
+		' Custom FB mouse function   -  by Maeiky 10-MAR-2021
+		Dim tmp_Pos_X as integer
+		Dim tmp_Pos_Y as integer
+
+		if GetMouse(tmp_Pos_X, tmp_Pos_Y, Scroll_Weel, TypeClic, clip) = 0 Then
+			' Getting X, Y screen resolution
+			Dim scr_res_X as integer = get_Resolution_X()
+			Dim scr_res_Y as integer = get_Resolution_Y()
+			
+			' Initial mouse position
+			static last_X As double = 400
+			static last_Y As double = 400
+
+			' static speed As double = 10.0
+
+			static diffX As double = 0
+			static diffY As double = 0
+
+			' Speed mouse calc
+			static speed_calcX As double = 0
+			static speed_calcY As double = 0
+			
+			diffX = (tmp_Pos_X - last_X)
+			diffY = (tmp_Pos_Y - last_Y)
+			
+			speed_calcX = Abs(diffX)
+			speed_calcY = Abs(diffY)
+			
+			' Calc X speed
+			speed_calcX = Mouse_inertia_Speed/speed_calcX
+			if speed_calcX < Mouse_max_Speed Then speed_calcX = Mouse_max_Speed
+			if speed_calcX > Mouse_min_Speed Then speed_calcX = Mouse_min_Speed
+			
+			' Calc Y speed
+			speed_calcY = Mouse_inertia_Speed/speed_calcY
+			if speed_calcY < Mouse_max_Speed Then speed_calcY = Mouse_max_Speed
+			if speed_calcY > Mouse_min_Speed Then speed_calcY = Mouse_min_Speed
+			
+			' Calc X position
+			Static pos_mouseX As double = 400
+			pos_mouseX += diffX/(speed_calcX + Mouse_constant_Speed)
+
+			' Calc Y position
+			Static pos_mouseY As double = 400
+			pos_mouseY += diffY/(speed_calcY + Mouse_constant_Speed)
+
+			' Some corrections
+			if pos_mouseX < 0 Then pos_mouseX = 0
+			if pos_mouseY < 0 Then pos_mouseY = 0
+			if pos_mouseX > scr_res_X Then pos_mouseX = scr_res_X
+			if pos_mouseY > scr_res_Y Then pos_mouseY = scr_res_Y
+
+			' Send this!
+			Pos_X = pos_mouseX
+			Pos_Y = pos_mouseY
+
+			' Update mouse position
+			Setmouse(last_X, last_Y, 0)
+
+			return 0 ' ok
+		else
+			return 1 ' nok
+		End if
+
+	Else
+		' Full Freebasic mouse function
+		if GetMouse(Pos_X, Pos_Y, Scroll_Weel, TypeClic, clip) = 0 Then
+			return 0 ' ok
+		Else
+			return 1 ' nok
+		End if
+	End if
+End function
+
+	
+
+
 
 #print * Gestion repertoires et fichiers
 Function _SYSTEME_Cpcdos_OSx__.creer_Repertoire(ByVal NomDossier as String, Attributs as String) as integer
@@ -773,7 +869,14 @@ Function _SYSTEME_Cpcdos_OSx__.creer_Repertoire__fbcrt(NomDossier as String, Att
 	End if
 End Function
 
+
 Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) as Boolean
+	return lister_Repertoire(RepertoireSource, Filtre, instance_FICHIER_DOSSIER, 0)
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Filtre as String, ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_, jump as integer) as Boolean
+
+
 	' Cette fonction permet de lister le contenu d'un repertoire 
 
 	Dim retour_attributs 			as UInteger
@@ -787,94 +890,98 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Normal Or _
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Hidden Or _
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_System Or _
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Directory, retour_attributs) '' Get first file name/attributes, according to supplied file spec and attribute mask
-	
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Attributs_IO_INSTANCE.attrib_Directory, retour_attributs)
+
 	If NomElement = "" Then 
 		instance_FICHIER_DOSSIER.Est_OK = FALSE
 	Else
 		instance_FICHIER_DOSSIER.Est_OK = TRUE
 	End if
 
-	
+	Dim Sauts_ as integer = 0
 	ENTRER_SectionCritique()
 	Do Until Len(NomElement) = 0 ' Boucle jsuqu'a qu'il n'y a plus d'elements
 		' If (NomElement <> ".") And (NomElement <> "..") Then ' Ignorer les "." et ".."
-		If (NomElement <> ".") Then ' Ignorer le "." uniquement
-	
-	
-			' Si le nombre d'elements a memoriser sort de la limite, on arrete
-			if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
-				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-					DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
-				Else
-					DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
-				End if
-				exit do
-			End if
-			
-			' Incrementer le nombre d'elements
-			instance_FICHIER_DOSSIER.nb_elements += 1
 
-			
-			' Stocker le nom d'element actuel
-			instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
+		Sauts_ += 1
+
+		if Sauts_ >= jump Then 
+			If (NomElement <> ".") Then ' Ignorer le "." uniquement
 		
 
-			If (retour_attributs And fbDirectory) <> 0 Then
-				' S'il s'agit d'un dossier
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
-				instance_FICHIER_DOSSIER.nb_dossiers += 1
-				
-			Else
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = False
-				' Autrement il s'agit d'un fichier
-				instance_FICHIER_DOSSIER.nb_fichiers += 1
-
-				' Combler le probleme d'affichage des tailles a cause du chemin relatif qui se tranforme comme ceci "\Fichier.cpc"
-				Dim FichierACalculer as String = instance_FICHIER_DOSSIER.path & "\" & NomElement
-				IF instance_FICHIER_DOSSIER.path = "" Then
-					FichierACalculer = NomElement
+				' Si le nombre d'elements a memoriser sort de la limite, on arrete
+				if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+					Else
+						DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+					End if
+					exit do
 				End if
 				
-				' Recuperer la taille du fichier actuel avec son chemin "absolue" mais relatif au repertoire courant
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).taille = CPCDOS_INSTANCE.Taille_Fichier(FichierACalculer)
+				' Incrementer le nombre d'elements
+				instance_FICHIER_DOSSIER.nb_elements += 1
 
+				
+				' Stocker le nom d'element actuel
+				instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement
+
+				If (retour_attributs And fbDirectory) <> 0 Then
+					' S'il s'agit d'un dossier
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
+					instance_FICHIER_DOSSIER.nb_dossiers += 1
+					
+				Else
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = False
+					' Autrement il s'agit d'un fichier
+					instance_FICHIER_DOSSIER.nb_fichiers += 1
+
+					' Combler le probleme d'affichage des tailles a cause du chemin relatif qui se tranforme comme ceci "\Fichier.cpc"
+					Dim FichierACalculer as String = instance_FICHIER_DOSSIER.path & "\" & NomElement
+					IF instance_FICHIER_DOSSIER.path = "" Then
+						FichierACalculer = NomElement
+					End if
+					
+					' Recuperer la taille du fichier actuel avec son chemin "absolue" mais relatif au repertoire courant
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).taille = CPCDOS_INSTANCE.Taille_Fichier(FichierACalculer)
+
+				End If
+				
+				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre = 0
+				
+				' Normal
+				If (retour_attributs And fbNormal ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Normal 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Lecture seule
+				If (retour_attributs And fbReadOnly) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_ReadOnly 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Cache
+				If (retour_attributs And fbHidden  ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Hidden 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Systeme
+				If (retour_attributs And fbSystem  ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_System 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+				' Archive
+				If (retour_attributs And fbArchive ) <> 0 Then 
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Archive 	= True
+					instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
+				End if
+				
+		
 			End If
-			
-			instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre = 0
-			
-			' Normal
-			If (retour_attributs And fbNormal ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Normal 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Lecture seule
-			If (retour_attributs And fbReadOnly) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_ReadOnly 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Cache
-			If (retour_attributs And fbHidden  ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Hidden 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Systeme
-			If (retour_attributs And fbSystem  ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_System 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-			' Archive
-			If (retour_attributs And fbArchive ) <> 0 Then 
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Archive 	= True
-				instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).attrib_Nombre 	+= 1
-			End if
-			
-	
-		End If
+		End if
 
 		' Chercher le prochain nom d'element
 		NomElement = Dir(retour_attributs)
@@ -883,6 +990,487 @@ Function _SYSTEME_Cpcdos_OSx__.lister_Repertoire(RepertoireSource as String, Fil
 
 	Function = instance_FICHIER_DOSSIER.Est_OK
 End Function
+
+Function _SYSTEME_Cpcdos_OSx__.Display_all_drives() as boolean
+	' Cette fonction permet d'afficher les proprietes de TOUS les lecteurs
+
+	' Afficher tous les lecteurs
+	for index as integer = 0 to drives_list.nb_drives
+
+		If Ignore_FLOPPY_A = true Then
+			if drives_list.Drives_LETTER(index) = "A" Then continue for
+		End if
+
+		If Ignore_FLOPPY_B = true Then
+			if drives_list.Drives_LETTER(index) = "B" Then continue for
+		End if
+
+		Display_drive(index)
+
+	Next index
+
+
+	return true
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.Display_drive(index as integer) as boolean
+	' Cette fonction permet d'afficher les proprietes d'un lecteur
+
+	if index <= drives_list.nb_drives Then
+
+		' Recuperer les informations
+		Dim _LETTER 	as string 	= drives_list.Drives_LETTER(index)
+		Dim _LABEL 		as string 	= drives_list.Drives_LABEL(index)
+		Dim _SYSFILE 	as string 	= drives_list.Drives_SYSFILE(index)
+		Dim _SERIAL_No 	as string 	= drives_list.Drives_SERIAL_No(index)
+		Dim _SIZE 		as integer	= drives_list.Drives_SIZE(index)
+		Dim _FREE_SIZE 	as integer	= drives_list.Drives_FREE_SIZE(index)
+
+		if NOT _LETTER = "" Then
+			' Et les afficher
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG(" --> LECTEUR " & _LETTER & ": '" & _LABEL & "' " & _SYSFILE & " Libre " & cint(_FREE_SIZE/CPCDOS_INSTANCE._GIGA_OCTETS) & "/" & cint(_SIZE/CPCDOS_INSTANCE._MEGA_OCTETS) & " mo - 0x" & lcase(_SERIAL_No), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			Else
+				DEBUG(" --> DRIVE " & _LETTER & ": '" & _LABEL & "' " & _SYSFILE & " Free " & cint(_FREE_SIZE/CPCDOS_INSTANCE._GIGA_OCTETS) & "/" & cint(_SIZE/CPCDOS_INSTANCE._MEGA_OCTETS) & " mb - 0x" & lcase(_SERIAL_No), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_SURBRILLE, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			End if
+			return true
+		Else
+			return false
+		End if
+
+
+		
+	Else
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Display_drive() index introuvable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEME] Display_drive() Not found index", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+
+		return false
+	End if
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.Drive_list_to_dir_instance(ByRef instance_FICHIER_DOSSIER as _FICHER_DOSSIER_) as boolean
+	' Cette fonction permet de placer la liste des lecteurs dans l'instance d'affichage de dossier/fichier compatible pour l'explorer
+
+	Dim NomElement 	as String
+	dim index		as integer = 0
+
+	' if Ignore_FLOPPY_A = true Then index += 1
+	' if Ignore_FLOPPY_B = true Then index += 1
+
+	instance_FICHIER_DOSSIER.path = ""
+	instance_FICHIER_DOSSIER.Est_OK = true
+
+	' Remettre a zero la liste des elements
+	instance_FICHIER_DOSSIER.nb_dossiers = 0
+	instance_FICHIER_DOSSIER.nb_elements = 0
+
+	NomElement = "NULL"
+
+	ENTRER_SectionCritique()
+	for boucle as integer = 0 to drives_list.nb_drives
+
+		' Recuperer la lettre du lecteur
+		NomElement = drives_list.Drives_LETTER(index)
+
+
+		' S'il n'y a plus d'elements
+		if NOT NomElement = "" Then
+
+			' Incrementer le nombre d'elements
+			instance_FICHIER_DOSSIER.nb_dossiers += 1
+			instance_FICHIER_DOSSIER.nb_elements += 1
+
+			' Ajouter a la liste
+			instance_FICHIER_DOSSIER.liste_Elements(instance_FICHIER_DOSSIER.nb_elements) = NomElement & ":\"
+			
+			' Considerer comme un dossier
+			instance_FICHIER_DOSSIER.attributs_Elements(instance_FICHIER_DOSSIER.nb_elements).EstUnDossier = True
+
+			index += 1
+			
+
+			' Si le nombre d'elements a memoriser sort de la limite, on arrete
+			if instance_FICHIER_DOSSIER.nb_elements >= instance_FICHIER_DOSSIER.nb_MAX_elements then 
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SYSTEME] Trop d'elements, veuillez filtrer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				Else
+					DEBUG("[SYSTEM] Too much elements, please to filter", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				End if
+				exit for
+			End if
+		End if
+
+	Next boucle
+	SORTIR_SectionCritique()
+
+	Function = instance_FICHIER_DOSSIER.Est_OK
+
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.update_drives() as boolean
+	' Cette fonction permet de mettre a jour la liste des lecteurs
+	' disponibles dans une structure
+	
+	ENTRER_SectionCritique()
+
+	' Mettre a jour la lettre des lecteurs dispo
+	get_Drives()
+
+	' Afficher si les disquettes sont ignores
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		if Ignore_FLOPPY_A = true then
+			DEBUG("[SYSTEME] update_drives() Lecteur disquette A: ignore", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+
+		if Ignore_FLOPPY_B = true then
+			DEBUG("[SYSTEME] update_drives() Lecteur disquette B: ignore", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+	Else
+		if Ignore_FLOPPY_A = true then
+			DEBUG("[SYSTEME] update_drives() Floppy drive A: ignored", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+
+		if Ignore_FLOPPY_B = true then
+			DEBUG("[SYSTEME] update_drives() Floppy drive B: ignored", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+	End if
+
+	' Mettre a jour les infos va leur MID
+	for index as integer = 0 to drives_list.nb_drives
+		If Ignore_FLOPPY_A = true Then
+			if drives_list.Drives_LETTER(index) = "A" Then continue for
+		End if
+
+		If Ignore_FLOPPY_B = true Then
+			if drives_list.Drives_LETTER(index) = "B" Then continue for
+		End if
+
+		if NOT drives_list.Drives_LETTER(index) = "" Then
+		
+			' Update drive size in the cpcdos structure
+			get_Size_drive(drives_list.Drives_LETTER(index), index)
+
+			' Update drive MID in the cpcdos structure
+			get_MID_drive(drives_list.Drives_LETTER(index), index)
+		End if
+
+	Next index
+
+	SORTIR_SectionCritique()
+
+	return true
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.get_Drives() as boolean
+	' Cette fonction permet de retourner la liste des lecteurs
+
+	' Utilisation du IOCTL (AH:0x44 & AL:0x09)
+    ' Si AX = 0Fh, lecteur non valide
+
+	ENTRER_SectionCritique()
+
+    DIM Reg 		as __dpmi_regs
+	Dim Lecteur 	as String
+	
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] get_Drives() Mise a jour de la liste des lecteurs ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEME] get_Drives() Updating drives list ... '", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	' Remettre a zero
+	drives_list.nb_drives = 0
+
+    FOR index as byte = 1 TO 26
+		
+		Dim LectIgnore 	as boolean = false
+
+		' IOCTL --> Device driver control
+        Reg.x.AX = &H4409	
+
+		' Lettre du lecteur
+        Reg.x.BX = index
+
+		' Interruption DPMI DOS
+        __dpmi_int(&H21, @Reg)
+
+		' Verifier si c'est mauvais
+        IF (Reg.x.Flags AND 1) THEN continue for
+
+		' Autrement on ajoute a la liste!
+        Lecteur = CHR(64 + Reg.x.BX)
+
+		if NOT Lecteur = "" Then
+			
+			' Ignorer les lecteur disquettes
+			if Lecteur = "A" Then
+				If Ignore_FLOPPY_A = true Then 
+					LectIgnore = true
+				end if
+			End if
+
+			if Lecteur = "B" Then
+				If Ignore_FLOPPY_B = true Then 
+					LectIgnore = true
+				end if
+			End if
+			
+			' Si c'est une disquette ignoree
+			if LectIgnore = true Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG(" - " & drives_list.nb_drives & " [TROUVE] '" & Lecteur & ":' (ID:" & index & "') semble disponible", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+					DEBUG(" LECTEUR IGNORE", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				Else
+					DEBUG(" - " & drives_list.nb_drives & " [FOUND] '" & Lecteur & ":' (ID:" & index & "') seem avaiable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+					DEBUG(" IGNORED DRIVE", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				End if
+			else
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG(" - " & drives_list.nb_drives & " [TROUVE] '" & Lecteur & ":' (ID:" & index & "') semble disponible", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				Else
+					DEBUG(" - " & drives_list.nb_drives & " [FOUND] '" & Lecteur & ":' (ID:" & index & "') seem avaiable", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				End if
+
+				' Ajouter jour 1 par 1
+				drives_list.Drives_LETTER(drives_list.nb_drives) = Lecteur
+				drives_list.nb_drives += 1
+			End if
+		End if
+    NEXT
+
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] get_Drives() " & drives_list.nb_drives & " lecteurs trouves et indexes", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEME] get_Drives() " & drives_list.nb_drives & " drives found and indexed", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	SORTIR_SectionCritique()
+
+	' Retourner la liste des lecteurs du PC
+    return true
+End Function
+
+Function _SYSTEME_Cpcdos_OSx__.get_Size_drive(lettre_lecteur as string, index as integer) as boolean
+	' Cette fonction permet de mettre a jour la taile d'un disque
+
+	dim Secteurs_par_Clusters as integer
+ 	dim Clusters_Disponibles as integer 
+	dim Octets_par_Clusters as integer 
+	dim Clusters_Totaux as integer 
+
+	Dim numero_lecteur as ushort = asc(lettre_lecteur) - asc("@")
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] get_Size_drive() '" & lettre_lecteur & ":' (id:" & numero_lecteur & ") --> ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEME] get_Size_drive() '" & lettre_lecteur & ":' (id:" & numero_lecteur & ") --> ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	
+	asm
+		mov dl, [numero_lecteur]
+		mov ah, 0x36
+		int 0x21
+		mov [Secteurs_par_Clusters], ax
+		mov [Clusters_Disponibles], bx
+		mov [Octets_par_Clusters], cx
+		mov [Clusters_Totaux], dx
+	end asm
+
+	' Calculer le CHS (Cluster x Head x Sector)
+	dim Taille_TOTALE 	as integer = Octets_par_Clusters * Secteurs_par_Clusters * Clusters_Totaux
+	dim Taille_LIBRE 	as integer = Octets_par_Clusters * Secteurs_par_Clusters * Clusters_Disponibles
+
+	' Stocker la taille totale
+	drives_list.Drives_SIZE(index) = Taille_TOTALE
+	drives_list.Drives_FREE_SIZE(index) = Taille_LIBRE
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG(Taille_TOTALE & " octets, dont " & Taille_LIBRE & " octets de libre." , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG(Taille_TOTALE & " byte, including " & Taille_LIBRE & " free bytes.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	return true
+
+End function
+
+
+Function _SYSTEME_Cpcdos_OSx__.get_MID_drive(lettre_lecteur as string, index as integer) as boolean
+	' Cette fonction permet de récuperer la structure MID
+	' Afin de récuperer les informations d'un lecteur
+	' tel que le systeme de fichier, label, numero de serie etc...
+
+	ENTRER_SectionCritique()
+
+	dim memory_bloc 	as integer = int(sizeof(_info_disques)/16)+1 
+	dim segment 		as ushort
+	Dim selecteur 		as ushort 
+	dim drive 			as string
+	dim dpmi_register 	as __dpmi_regs 
+	dim _mid 			as _info_disques
+	Dim num_erreur		as integer
+
+	' Recuperer la lettre du lecteur
+	Dim numero_lecteur as ushort = asc(lettre_lecteur) - asc("@")
+
+
+	
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] get_MID_drive() Obtention de la structure MID de '" & lettre_lecteur & ":' (id:" & numero_lecteur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEME] get_MID_drive() Getting MID structure for '" & lettre_lecteur & ":' (id:" & numero_lecteur & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+
+	asm
+		' Allouer un bloc de memoire pour recevoir les ID des drives
+		' Depuis la structure MID
+
+		mov ax, 0x100
+		mov bx, [memory_bloc]
+		int 0x31
+		jc  0f
+		mov [segment], ax
+		mov [selecteur], dx
+	0:
+	end asm
+
+	if segment = 0 then 
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] get_MID_drive() Impossible d'allouer de la memoire", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] get_MID_drive() Unable to allocate memory", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+
+		SORTIR_SectionCritique()
+		return false
+	End if
+
+	
+	' Preparer l'interruption en RM
+	dpmi_register.x.ax = &h440d       ' API
+	dpmi_register.x.bx = numero_lecteur
+	dpmi_register.h.ch = 8            ' Categorie du lecteur
+	dpmi_register.h.cl = &h66         ' Fonction
+	dpmi_register.x.ds = segment      ' RM segment
+	dpmi_register.x.dx = 0            ' Offset de depart
+
+	' Executer la structure en rm tout en recuperer la structure MID
+	asm
+		mov ax, 0x300				' API d'appel RM
+		mov bx, 0x21				' Interruption a executer
+		xor cx, cx
+		lea edi, [dpmi_register]
+
+		' Interruption en mode reel
+		int 0x31
+		jnc 0f                ' erreur
+		' inc DWORD PTR [num_erreur]
+	0:
+	end asm
+
+	' Erreur lors de la simulation real mode
+	if num_erreur then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] get_MID_drive() Impossible d'entrer en mode reel", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] get_MID_drive() Unable to enter to real mode", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+
+		SORTIR_SectionCritique()
+		return false
+	end if
+
+	'  Media ID erreur
+	if dpmi_register.x.flags and 1 then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] get_MID_drive() Erreur du Media ID", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] get_MID_drive() Media ID error", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+
+		SORTIR_SectionCritique()
+		return false
+	end if
+
+	' Copier la structure MDI
+	asm
+		push ds
+		mov ax, [selecteur]
+		mov ds, ax
+		xor esi, esi
+		lea edi, [_mid]
+		mov ecx, 25
+		rep movsb
+		pop ds
+	end asm
+
+
+	asm
+		mov ax, 0x101
+		mov dx, [selecteur]
+		int 0x31
+		jnc 0f
+		'inc DWORD PTR [num_erreur]
+	0:
+	end asm
+
+	' Imposible de liberer un bloc de memoire
+	if num_erreur then 
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] get_MID_drive() Impossible de liberer le bloc memoire ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] get_MID_drive() Unable to free memory bloc", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+	End if
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[SYSTEME] get_MID_drive() [OK] - Mise a jour de la stucture depuis les resultats du MID", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[SYSTEME] get_MID_drive() [OK] - Updating struct from MID results" & lettre_lecteur & ":' (" & index & ") ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	' Ajouter le numero de serie
+	drives_list.Drives_SERIAL_No(index) = RTRIM(LTRIM(hex(_mid.serial_number)))
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG(" --> NUMERO DE SERIE '" & drives_list.Drives_SERIAL_No(index) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG(" --> SERIAL NUMBER " & drives_list.Drives_SERIAL_No(index) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+
+	' Ajouter le nom du drive (Drives_LABEL)	
+	dim label as string
+	for i as integer = 0 to 10
+		label &= chr(_mid.volume_label(i))
+	next
+	drives_list.Drives_LABEL(index) = RTRIM(LTRIM(label))
+
+	DEBUG(" --> LABEL '" & drives_list.Drives_LABEL(index) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	
+
+	' Ajouter le nom du systeme de fichier
+	dim sysfile as string
+	for i as integer = 0 to 7
+		sysfile &= chr(_mid.sysfile_nom(i))
+	next
+	drives_list.Drives_SYSFILE(index) = RTRIM(LTRIM(sysfile))
+
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG(" --> SYSTEME DE FICHIER '" & drives_list.Drives_SYSFILE(index) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG(" --> FILE SYSTEM " & drives_list.Drives_SYSFILE(index) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+	SORTIR_SectionCritique()
+
+	return true
+End function
 
 Function _SYSTEME_Cpcdos_OSx__.check_NomAutorise(byval NomElement as String, PathComplet as boolean, Check_SFN as boolean, SFN as boolean) as String
 	' Cette fonction va permettre de corriger les catacteres non autorise par '_'
@@ -1032,9 +1620,17 @@ Function _SYSTEME_Cpcdos_OSx__.getHandleType(Numero_Handle as integer) as String
 		End if
 	Next boucle
 
+	' Chercher les exporer
+	For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_EXPLORER
+		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(boucle).Identification_Objet.Handle = Numero_Handle Then
+		
+			Function = "Explorer(" & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__EXPLORER(boucle).Identification_Objet.Nom & ") #" & Boucle
+			
+			exit Function
+		End if
+	Next boucle
+
 	Function = "null"
 End Function
 
-	
-	
 
