@@ -5,7 +5,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
  
 	dim Message_erreur as String
 
-	DEBUG("[SCI] Creer_Window() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] Window '" & this.INST_INIT_GUI.GUI__FENETRE(_index_).identification_objet.Nom & " title '" & this.INST_INIT_GUI.GUI__FENETRE(_index_).Titre & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+	DEBUG("[SCI] Creer_Window() IND:" & _index_ & " [0x" & hex(this._CLE_) & "] Window '" & this.INST_INIT_GUI.GUI__FENETRE(_index_).identification_objet.Nom & "' title '" & this.INST_INIT_GUI.GUI__FENETRE(_index_).Titre & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
 
 
 	IF this.GUI_Mode = TRUE Then

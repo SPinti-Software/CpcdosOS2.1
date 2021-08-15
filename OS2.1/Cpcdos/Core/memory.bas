@@ -64,12 +64,19 @@ End Function
 
 Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer) as integer
 	
-	
-	function = Creer_BITMAP_depuis_PTR(Nom_, Pointeur, Handle, 0, 0)
+	return Creer_BITMAP_depuis_PTR(Nom_, Pointeur, Handle, 0, 0)
 
 End Function
 
 Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, TX_ as integer, TY_ as integer) as integer
+
+	return Creer_BITMAP_depuis_PTR(Nom_, Pointeur, Handle, 0, 0, 0)
+End function
+
+
+Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, Tag_ID as integer, TX_ as integer, TY_ as integer) as integer
+
+
 	' Rechercher un emplacement libre
 	
 	if Pointeur > 0 Then
@@ -77,9 +84,9 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[_memoire_bitmap] Creer_BITMAP_depuis_PTR() parent handle:" & Handle & " id:" & Index_Libre & " depuis l'offset [0x" & hex(Pointeur) & "] Nom:" & Nom_, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Creer_BITMAP_depuis_PTR() parent handle:" & Handle & " (id:" & Index_Libre & " (TAG_ID:" & Tag_ID & ") depuis l'offset [0x" & hex(Pointeur) & "] Nom:" & Nom_, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			Else
-				DEBUG("[_memoire_bitmap] Creer_BITMAP_depuis_PTR() parent handle:" & Handle & " id:" & Index_Libre & " from l'offset [0x" & hex(Pointeur) & "] Name:" & Nom_, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Creer_BITMAP_depuis_PTR() parent handle:" & Handle & " id:" & Index_Libre & " (TAG_ID:" & Tag_ID & ") from l'offset [0x" & hex(Pointeur) & "] Name:" & Nom_, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			End if
 		End if
 		
@@ -128,6 +135,7 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_PTR(Nom_ as String, Pointeur as Any
 		this.OpaciteAlpha	(Index_Libre) = 255
 		this.utilise		(Index_Libre) = TRUE
 		this.LoadFromPTR	(Index_Libre) = TRUE
+		this.Tag_ID			(Index_Libre) = Tag_ID
 
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -187,6 +195,7 @@ Function _memoire_bitmap.Creer_BITMAP(byval NumeroID as integer, Nom_ as String,
 		this.OpaciteAlpha	(NumeroID) = OpaciteAlpha_
 		this.utilise		(NumeroID) = TRUE
 		this.EstFILE		(NumeroID) = FALSE
+		this.Tag_ID			(NumeroID) = 0
 		
 		
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -274,6 +283,7 @@ Function _memoire_bitmap.Creer_BITMAP_depuis_FILE(byval ImageSource as String, b
 		this.bits			(Index_Libre) = Bits_
 		this.EstFILE		(Index_Libre) = TRUE
 		this.utilise		(Index_Libre) = TRUE
+		this.Tag_ID			(Index_Libre) = 0
 		
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -1168,6 +1178,9 @@ Function _memoire_bitmap.Modifier_BITMAP_texte(Pointeur as any ptr, Texte as Str
 End Function
 
 #print * Info structure
+
+
+
 Function _memoire_bitmap.Recuperer_BITMAP_PTR(byval NumeroID as integer) as any ptr
 	' Permet de recuperer le pointeur via son ID
 	
@@ -1459,6 +1472,28 @@ Function _memoire_bitmap.Recuperer_BITMAP_nom(byval NumeroID as integer) as Stri
 	
 End Function
 
+Function _memoire_bitmap.Recuperer_BITMAP_tag_id(byval NumeroID as integer) as integer
+	' Permet de recuperer le tagid	
+	
+	if NumeroID > 0 Then
+		if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
+			DEBUG("Recuperer_BITMAP_tag_id() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			return 0
+		End if
+
+		return this.Tag_ID(NumeroID)
+	Else
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[_memoire_bitmap] Recuperer_BITMAP_tag_id() [ERREUR] NumeroID " & NumeroID & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		Else
+			DEBUG("[_memoire_bitmap] Recuperer_BITMAP_tag_id() [ERROR] NumeroID" & NumeroID & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+		return 0
+	End if
+	
+End Function
+
+
 #print * Garbage collector
 Function _memoire_bitmap.GarbageCollector() as String
 	' Cette fonction permet de supprimer tous les bitmaps qui ne sont plus references par
@@ -1627,21 +1662,22 @@ Function _memoire_bitmap.Supprimer_BITMAP(byval NumeroID as integer) as Boolean
 							End if
 						End if
 						ImageDestroy(this.donnees_RVBA(NumeroID))
-						this.donnees_RVBA	(NumeroID) 	= 0
-						this.Bits			(NumeroID) 	= 0
-						this.OpaciteAlpha	(NumeroID) 	= 0
-						this.TX				(NumeroID) 	= 0
-						this.TY				(NumeroID) 	= 0
-						this.Taille			(NumeroID) 	= 0
-						this.Handle_Parent	(NumeroID) 	= 0
-						this.Nom			(NumeroID) 	= ""
-						this.utilise		(NumeroID) 	= FALSE
-						this.EstFILE		(NumeroID) 	= False
-						this.Notification	(NumeroID) 	= FALSE
-						this.LoadFromPTR	(NumeroID) 	= FALSE
-						this.Actu_Bitmap_TYPE(NumeroID) = 0
-						this.Actu_Bitmap_PID (NumeroID) = 0
-						this.Actu_Bitmap_Index(NumeroID)= 0
+						this.donnees_RVBA		(NumeroID) = 0
+						this.Bits				(NumeroID) = 0
+						this.OpaciteAlpha		(NumeroID) = 0
+						this.TX					(NumeroID) = 0
+						this.TY					(NumeroID) = 0
+						this.Taille				(NumeroID) = 0
+						this.Handle_Parent		(NumeroID) = 0
+						this.Nom				(NumeroID) = ""
+						this.utilise			(NumeroID) = FALSE
+						this.EstFILE			(NumeroID) = False
+						this.Notification		(NumeroID) = FALSE
+						this.LoadFromPTR		(NumeroID) = FALSE
+						this.Actu_Bitmap_TYPE	(NumeroID) = 0
+						this.Actu_Bitmap_PID	(NumeroID) = 0
+						this.Actu_Bitmap_Index	(NumeroID) = 0
+						this.Tag_ID				(NumeroID) = 0
 						
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

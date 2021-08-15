@@ -301,6 +301,7 @@ Type _memoire_bitmap
 		Declare Function Creer_BITMAP				(Nom as String, TX as integer, TY as integer, byval handle_parent as integer)									as integer
 		Declare Function Creer_BITMAP_depuis_PTR	(Nom as String, Pointeur as Any PTR, byval handle_parent as integer) 											as integer
 		Declare Function Creer_BITMAP_depuis_PTR	(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, TX_ as integer, TY_ as integer) 					as integer
+		Declare Function Creer_BITMAP_depuis_PTR	(Nom_ as String, Pointeur as Any PTR, byval Handle as Integer, tag_id as integer, TX_ as integer, TY_ as integer) 					as integer
 		Declare Function Creer_BITMAP				(TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP				(Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
 		Declare Function Creer_BITMAP				(byval NumeroID as integer, Nom as String, TX as integer, TY as integer, Rouge as integer, Vert as integer, Bleu as integer, OpaciteAlpha as integer, byval handle_parent as integer) as integer
@@ -339,6 +340,7 @@ Type _memoire_bitmap
 		Declare Function Recuperer_BITMAP_ptr_by_Handle	(byval handle as integer) 													as any ptr
 		Declare Function Recuperer_BITMAP_Handle	(byval NumeroID as integer)														as Integer
 		Declare Function Recuperer_BITMAP_nom		(byval NumeroID as integer)														as String
+		Declare Function Recuperer_BITMAP_tag_id	(byval NumeroID as integer) 													as integer
 		Declare Function GarbageCollector			() 																				as String
 		
 		Declare Function IsPresent_BITMAP_byhandle	(byval handle as integer) 														as integer
@@ -399,6 +401,8 @@ Type _memoire_bitmap
 		handle_parent(0 to _MAX_BITMAP_ID)	as integer
 		
 		Nom			(0 to _MAX_BITMAP_ID)	as String
+
+		TAG_ID		(0 to _MAX_BITMAP_ID)	as integer
 		
 		donnees_RVBA(0 to _MAX_BITMAP_ID)	as any ptr
 		

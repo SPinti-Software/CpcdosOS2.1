@@ -8,6 +8,8 @@
 
 #print * WRAPPER
 ' ============================ Fonctions publiques/wrapped =============================
+Declare Function 	cpc_create_gui_objet 			cdecl Alias "cpc_create_gui_objet" 				(Windowhandle as integer, context_ID as integer, obj_type as integer, pos_x as integer, pos_y as integer, siz_x as integer, siz_y as integer, text as CONST ZString ptr, class_name as CONST ZString ptr, image as CONST ZString ptr, parameters as CONST ZString ptr) as integer
+
 Declare Function 	cpc_mouse_state					cdecl Alias "cpc_mouse_state" 					(param as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
 Declare Function 	cpc_mouse_state_lck				cdecl Alias "cpc_mouse_state_lck" 				(param as integer, id_context as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
 Declare Function 	cpc_set_mouse 					cdecl Alias "cpc_set_mouse" 					(PX as integer, PY as integer, Visible as boolean) as boolean
@@ -16,7 +18,9 @@ Declare Function	cpc_get_key						cdecl Alias "cpc_get_key"						() as integer '
 Declare Function	cpc_get_key_lck					cdecl Alias "cpc_get_key_lck"					(id_context as integer) as integer ' numero ascii
 
 Declare Function 	cpc_Blitter 					cdecl Alias "cpc_Blitter" 						(ID as integer) as integer
+Declare Function 	cpc_create_viewport 			cdecl Alias "cpc_create_viewport" 				(ID as integer, TailleX as integer, TailleY as integer) as integer
 Declare Function 	cpc_Creer_Contexte 				cdecl Alias "cpc_Creer_Contexte" 				(TailleX as integer, TailleY as integer) as integer
+Declare Function 	cpc_get_viewport_ptr 			cdecl Alias "cpc_get_viewport_ptr" 				(ID_bitmap as integer) as any ptr
 Declare Function 	cpc_Obtenir_Zone_Contexte 		cdecl Alias "cpc_Obtenir_Zone_Contexte" 		(ID as integer) as any ptr
 
 Declare Sub 		cpc_CCP_Exec_Commande 			cdecl alias "cpc_CCP_Exec_Commande"  			(Commande as CONST ZString PTR, niveau as integer)
@@ -46,6 +50,89 @@ Declare sub 		cpc_SortirSectionCritique 		cdecl Alias "cpc_SortirSectionCritique
 
 dim shared ACU 				as integer = 0
 dim shared temps_precedent 	as double = 1
+
+Public Function cpc_create_gui_objet cdecl Alias "cpc_create_gui_objet" (Windowhandle as integer, context_ID as integer, obj_type as integer, pos_x as integer, pos_y as integer, siz_x as integer, siz_y as integer, _
+																	text as CONST ZString ptr, class_name as CONST ZString ptr, image as CONST ZString ptr, parameters as CONST ZString ptr) as integer
+	' Cette fonction permet de creer des elements graphique depuis le C/C++ 
+
+
+
+	IF obj_type = GUI_TYPE.Fenetre Then
+		' Create Window
+
+		DEBUG("cpc_create_gui_objet() - Creating Window '" & *text & "'", 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - class           : '" & *class_name & "'", 				CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Win position    : '" & pos_x & "x" & pos_y & "'", 		CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Size            : '" & siz_x & "x" & siz_y & "'", 		CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Image           : '" & *image & "'", 						CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Parameters      : '" & *parameters & "'", 				CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+		' gui.create_window(name, title, pos_x, pos_y, siz_x, siz_y, parameters, win_rgb, title_rgb, opacity)
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ window_Handle = /F:gui.create_window(" & *class_name & "," & *text & "," & Pos_X & "," & Pos_Y & "," & Siz_X & "," & Siz_Y & "," & *parameters & ",255;255;255,050;050;050,220)", CPCDOS_INSTANCE.SCI_INSTANCE._CLE_, 3, 0, "")
+		Dim Window_handle as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("window_Handle", 3, CPCDOS_INSTANCE.SCI_INSTANCE._CLE_))
+
+		' Ajouter le context ID a la fenetre
+		if Window_handle > 0 AND context_ID > 0 Then
+			For index as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+				if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).identification_objet.Handle = Window_handle Then
+					CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).identification_objet.context_id = context_ID
+					exit for
+				End if
+			Next index
+		
+			Dim str_class_name	as string 		= "viewport_" & *class_name
+			Dim str_image		as string 		= "#" & Windowhandle ' Numero de bitmap ID
+			Dim str_parameters	as string 		= "UDP:1 " & *parameters
+
+			Dim tmp_class_name 	as ZString ptr 	= strptr(str_class_name)
+			Dim tmp_image 		as ZString ptr 	= strptr(str_image)
+			Dim tmp_parameters 	as ZString ptr  = strptr(str_parameters)
+
+			DEBUG("cpc_create_gui_objet() - Creating viewport into picturebox '" & *text & "'", 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			cpc_create_gui_objet(Window_handle, context_ID, GUI_TYPE.Picturebox, 0, 0, siz_x, siz_y, text, tmp_class_name, tmp_image, tmp_parameters)
+		End if
+		return Window_handle
+	ElseIf obj_type = GUI_TYPE.Bouton Then
+		' Create button
+
+	ElseIf obj_type = GUI_TYPE.Picturebox Then
+		' Create Picturebox
+
+		' Create Window
+
+		DEBUG("cpc_create_gui_objet() - Creating Picturebox '" & *text & "'", 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - class           : '" & *class_name & "'", 				CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Position        : '" & pos_x & "x" & pos_y & "'", 		CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Size            : '" & siz_x & "x" & siz_y & "'", 		CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Image           : '" & *image & "'", 						CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(" - Parameters      : '" & *parameters & "'", 				CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+		' gui.create_window(name, title, pos_x, pos_y, siz_x, siz_y, parameters, win_rgb, title_rgb, opacity)
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("/F:gui.create_picturebox(" & Windowhandle & "," & *class_name & "," & Pos_X & "," & Pos_Y & "," & Siz_X & "," & Siz_Y & "," & *parameters & ",255;255;255,050;050;050," & *image & ")", CPCDOS_INSTANCE.SCI_INSTANCE._CLE_, 3, 0, "")
+
+	ElseIf obj_type = GUI_TYPE.TextBlock Then
+		' Create Textblock
+
+	ElseIf obj_type = GUI_TYPE.TextBox Then
+		' Create Textbox
+
+	ElseIf obj_type = GUI_TYPE.ProgressBar Then
+		' Create ProgressBar
+
+	ElseIf obj_type = GUI_TYPE.Checkbox Then
+		' Create Checkbox
+
+	ElseIf obj_type = GUI_TYPE.Explorer Then
+		' Create Explorer
+
+	ElseIf obj_type = GUI_TYPE.Listbox Then
+		' Create ListBox
+
+
+	End if
+
+End function
+
 
 Public Function cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer) as integer 
 	return cpc_mouse_state_lck(param, 0)
@@ -336,52 +423,77 @@ Public Function cpc_Blitter cdecl Alias "cpc_Blitter" (ID as integer) as integer
 	return 0
 End function
 
-Public Function cpc_Creer_Contexte cdecl Alias "cpc_Creer_Contexte" (TailleX as integer, TailleY as integer) as integer
+
+Public function cpc_create_viewport cdecl Alias "cpc_create_viewport" (context_ID as integer, TailleX as integer, TailleY as integer) as integer
 	ENTRER_SectionCritique()
 
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[cpc_Creer_Contexte] Creation d'un contexte video BITMAP " & TailleX & "x" & TailleY & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+			DEBUG("[cpc_create_viewport] Creation d'un contexte video BITMAP " & TailleX & "x" & TailleY & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		Else
-			DEBUG("[cpc_Creer_Contexte] Creating video BITMAP context " & TailleX & "x" & TailleY & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+			DEBUG("[cpc_create_viewport] Creating video BITMAP context " & TailleX & "x" & TailleY & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		End if
 	End if
 	
-	Dim Resultat as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Render_Context(" & TailleX & "x" & TailleY & ")-" & CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, ImageCreate(TailleX, TailleY, RGB(50, 150, 250), 32), CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, TailleX, TailleY)
+	Dim Resultat as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_PTR("Render_Context(ID:" & context_ID & "," & TailleX & "x" & TailleY & ")-" & CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, ImageCreate(TailleX, TailleY, RGB(50, 150, 250), 32), CPCDOS_INSTANCE.get_ThreadEnCours() * 1024, context_ID, TailleX, TailleY)
 	
 	if Resultat > 0 Then
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-			DEBUG("[cpc_Creer_Contexte] [OK] ID:" & Resultat & " [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(Resultat), 8) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+			DEBUG("[cpc_create_viewport] [OK] ID:" & Resultat & " [0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(Resultat), 8) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		End if
+
+
 		Function = Resultat
 	Else
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[cpc_Creer_Contexte] [ERREUR] Impossible de creer le bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				DEBUG("[cpc_create_viewport] [ERREUR] Impossible de creer le bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 			Else
-				DEBUG("[cpc_Creer_Contexte] [ERROR] Unable to create bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				DEBUG("[cpc_create_viewport] [ERROR] Unable to create bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 			End if
 		End if
 		Function = 0
 	End if
 	
 	SORTIR_SectionCritique()
+end function
+
+Public Function cpc_Creer_Contexte cdecl Alias "cpc_Creer_Contexte" (TailleX as integer, TailleY as integer) as integer
+	return cpc_create_viewport(0, TailleX, TailleY)
 End function
 
-Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte" (ID as integer) as any ptr
+Public function cpc_get_id_from_handle cdecl Alias "cpc_get_id_from_handle" (win_handle as integer) as integer
+	' Obtenir l'ID du contexte depuis le numero de handle de la fenetre
+
+	' Ajouter le context ID a la fenetre
+	if win_handle > 0 Then
+		For index as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
+			if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).identification_objet.Handle = win_handle Then
+				return CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(index).identification_objet.context_id
+			End if
+		Next index
+	End if
+
+	DEBUG("[cpc_get_id_from_handle] [ERROR] context id from " & win_handle & " handle window not found", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+
+	return 0
+end function
+
+
+Public Function cpc_get_viewport_ptr cdecl Alias "cpc_get_viewport_ptr" (ID_bitmap as integer) as any ptr
 	ENTRER_SectionCritique()
 	
 	Dim Resultat as any ptr
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[cpc_Obtenir_Zone_Contexte] Recuperation du contexte bitmap ID " & ID & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+			DEBUG("[cpc_get_viewport_ptr] Recuperation du contexte bitmap ID " & ID_bitmap & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		Else
-			DEBUG("[cpc_Obtenir_Zone_Contexte] Getting bitmap context ID:" & ID & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+			DEBUG("[cpc_get_viewport_ptr] Getting bitmap context ID:" & ID_bitmap & " ... ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 		End if
 	End if
 
-	Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ID)
+	Resultat = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(ID_bitmap)
 	Dim BUFFER_CONTEXT as any ptr
 
 	if Resultat <> 0 Then
@@ -413,15 +525,20 @@ Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte
 		' Le bitmap ne doit pas exister?
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[ERREUR] Impossible de recuperer le pointeur du bitmap ID:" & ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				DEBUG("[ERREUR] Impossible de recuperer le pointeur du bitmap ID:" & ID_bitmap, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 			Else
-				DEBUG("[ERROR] Unable to get bitmap pointer ID:" & ID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
+				DEBUG("[ERROR] Unable to get bitmap pointer ID:" & ID_bitmap, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 			End if
 		End if
 	End if
 
 	SORTIR_SectionCritique()
+end function
+
+Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte" (ID_bitmap as integer) as any ptr
+	return cpc_get_viewport_ptr(ID_bitmap)
 End function
+
 
 public Function cpc_CCP_Exec_Commande_ret cdecl Alias "cpc_CCP_Exec_Commande_ret" (Commande as CONST ZString PTR, niveau as integer) as ZString ptr
 	print "Exec_RET !"

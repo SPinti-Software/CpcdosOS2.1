@@ -1,10 +1,35 @@
 // USER
 CCP/ /SET.LEVEL = 3
 
+declare/ gui.create_picturebox(Windowhandle, class_name, Pos_X, Pos_Y, Siz_X, Siz_Y , parameters, img_rgb, txt_rgb, image) : LEVEL(5)
+
 // ---- PICTUREBOX ----
 
 // Enable picturebox multi-threading when window is not focused (Can cause gui artefacts)
 set/ CPC_GUI.PICTUREBOX.MULTITHREAD.NOFOCUS = 1
+
+
+function/ gui.create_picturebox(Windowhandle, class_name, Pos_X, Pos_Y, Siz_X, Siz_Y , parameters, img_rgb, txt_rgb, image)
+    // This function allow to create picturebox from cpcdoscp function
+
+    // Rest to level 1
+    ccp/ /set.level = 1
+
+    Picturebox/ %class_name%
+        .handle         = "%Windowhandle%"
+        .parameters     = "%parameters%"
+        .px             = "%Pos_X%"
+        .py             = "%Pos_Y%"
+        .sx             = "%Siz_X%"
+        .sy             = "%Siz_Y%"
+        .opacity        = "0"
+        .image          = "%image%"
+        create/
+    End/ Picturebox
+
+
+end/ function
+
 
 
 

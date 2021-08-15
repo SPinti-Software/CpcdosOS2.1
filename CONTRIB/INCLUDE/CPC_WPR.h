@@ -32,6 +32,7 @@
 */
 
 
+extern "C" int			cpc_create_gui_objet			(int obj_type, int pos_x, int pos_y, int siz_x, int siz_y, const char* text, const char* class_name, const char* image, const char* parameters);
 
 extern "C" int			cpc_mouse_state					(int param); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
 extern "C" int			cpc_mouse_state_lck				(int param, int id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
@@ -78,6 +79,9 @@ extern "C" void			cpc_SortirSectionCritique 		();
 	{
 		public:
 		
+		// ************ For SCI Cpcdos GUI ************
+		int				create_gui_objet		(int obj_type, int pos_x, int pos_y, int siz_x, int siz_y, const char* text, const char* class_name, const char* image, const char* parameters);
+
 		// ************ For 3D Graphic engine ************
 		int				Mouse_state				(int param); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */
 		int				Mouse_state_lck			(int param, int id_context); /* 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel */

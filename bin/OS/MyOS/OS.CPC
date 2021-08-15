@@ -65,7 +65,7 @@ set/ size_x = %CPC.SCR.X%
 set/ size_y = %CPC.SCR.Y%
 
 // Execute desktop function
-// set/ handle_desktop = /F:Init_Desktop(MyDesktop, ./, %pos_x%, %pos_y%, %size_X%, %size_Y%)
+set/ handle_desktop = /F:Init_Desktop(MyDesktop, ./, %pos_x%, %pos_y%, %size_X%, %size_Y%)
 
 // Executer barre.CPC dans le processus "_MENUS_" via son PID
 CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc

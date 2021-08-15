@@ -1,7 +1,55 @@
 // This file allow to execute CPC format file
+// exe/ /win32 %_ARG_1%
 
-exe/ /win32 %_ARG_1%
 
+Window/ win32_xeloader_
+
+        .title          = "xe-loader Win32 experimentation - %_ARG_1%"
+        .parameters     = ""
+        .px             = "150"
+        .py             = "60"
+        .sx             = "640"
+        .sy             = "480"
+        .opacity        = "255"
+        .WindowColor    = "255,255,255"
+        .TitleColor     = "255,255,255"
+        .BackColor      = "000,000,000"
+        .events         = ""
+
+        @#window_handle create/
+
+End/ Window
+
+
+// Executer OpenGL Win32 dans un nouveau thread
+@#NumeroThread cmd/ /thread[MAX] exe/ /Win32 %_ARG_1%
+
+// (temporaire!!) Utiliser le numero de thread suivant 
+set/ NumeroThread = /c(%NumeroThread% + 0)
+
+// Convertir en handle
+Fix/ Handle = /C(%NumeroThread% * 1024)
+
+CCP/ /PAUSE 3000
+
+@#ImgID SYS/ /BITMAP /Get /IDbyHandle %Handle%
+
+
+Picturebox/ win32_viewport
+
+
+        .handle         = "%window_handle%"
+        .parameters     = "UPD:1"
+        .px             = "0"
+        .py             = "0"
+        .sx             = "640"
+        .sy             = "480"
+        .opacity        = "0"
+        .image          = "#%ImgID%"
+
+        create/
+
+End/ Picturebox
 
 
 

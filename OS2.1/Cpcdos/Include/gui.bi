@@ -212,6 +212,8 @@ Type _identification_objet_
 	_CLE_				as double 	' Emprunte numerique (CleID) pour son identification publique
 
 	OS_id				as integer
+
+	context_id			as integer 	' Pour les programmes externe (Win32)
 	
 	' ********************************
 	' *** Identification parentale ***
