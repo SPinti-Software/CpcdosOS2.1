@@ -218,14 +218,10 @@ End/ Function
 
 
 
-Function/ file_explorer_window.Resize(sizeup)
+Function/ file_explorer_window.ResizeEnd(Win_Size_X, Win_Size_Y)
 	// If user change window size
-
-	// Getting window size informations
-	window/ /modif:file_explorer_window
-		@#Win_Size_X .sx
-		@#Win_Size_Y .sy
-	end/ window
+        
+        ccp/ /set.level = 1
 	
         // According textbox size
         set/ Win_Size_Y = /C(%Win_Size_Y% - 23)

@@ -3850,7 +3850,12 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' Actualiser graphiquement l'explorer pour l'effet de "pression"
 												'if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
 													' Actualiser graphiquement le bouton pour l'effet de "survole"
-													Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+													this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press += 1
+															
+													if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press > 5 Then
+														this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_press = 0
+														Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+													End if
 												'End if
 												
 												IF this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.EV_Click = True Then
@@ -4010,7 +4015,13 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 														' Actualiser graphiquement le explorer pour l'effet de "pression"
 														if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).PROP_TYPE.DESKTOPMODE = false Then
 															' Actualiser graphiquement le bouton pour l'effet de "survole"
-															Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+															
+															this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole += 1
+															
+															if this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole > 4 Then
+																this.INST_INIT_GUI.GUI__EXPLORER(The_Objet_index).obj_doevent_survole = 0
+																Creer_Explorer(The_Objet_index, _INDEX_FENETRE_)
+															End if
 														End if
 
 														' On quitte cette boucle
@@ -5225,8 +5236,8 @@ Function _SCI_Cpcdos_OSx__.DeplacerFenetre_TO_SIZE(SIZE_X as integer, SIZE_Y as 
 		if SIZE_Y < 10 Then SIZE_Y = 10
 
 		' Modifier la position X et Y
-		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X
-		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_X = SIZE_X + 5
+		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).SIZ_Y = SIZE_Y + 5
 
 		' Forcer a reloader les bitmaps
 		this.INST_INIT_GUI.GUI__FENETRE(this.INST_INIT_GUI.REDIMENTIONNEMENT).design_Image_LOADED = false

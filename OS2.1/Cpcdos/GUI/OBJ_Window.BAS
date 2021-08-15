@@ -300,31 +300,33 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 
 				if TYPE_OBJ < 5 Then
 					if TYPE_OBJ = 0 OR TYPE_OBJ = 1 OR TYPE_OBJ = 2 or TYPE_OBJ = 3 Then
-						' Charger le de reduction si non charge
-						if CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID < 1 Then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_REDUCT_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-						End if
-
-						' Charger le de retrecissement si non charge
-						if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID < 1 Then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEDOWN_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-						End if
-
-						' Charger le d'agrandissement si non charge
-						if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID < 1 Then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEUP_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-						End if
-
-						' Charger le de fermeture si non charge
-						if CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID < 1 Then 
-							CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_CLOSE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-						End if
-
-						if this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID < 1 Then 
-							this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(ICONE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
-						End if
 
 						if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT = 0 Then
+							' Charger le de reduction si non charge
+							if CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID < 1 Then 
+								CPCDOS_INSTANCE.SCI_INSTANCE.BT_REDUCT_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_REDUCT_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							End if
+
+							' Charger le de retrecissement si non charge
+							if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID < 1 Then 
+								CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEDOWN_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEDOWN_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							End if
+
+							' Charger le d'agrandissement si non charge
+							if CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID < 1 Then 
+								CPCDOS_INSTANCE.SCI_INSTANCE.BT_SIZEUP_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_SIZEUP_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							End if
+
+							' Charger le de fermeture si non charge
+							if CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID < 1 Then 
+								CPCDOS_INSTANCE.SCI_INSTANCE.BT_CLOSE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(BT_CLOSE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							End if
+
+							if this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID < 1 Then 
+								this.INST_INIT_GUI.GUI__FENETRE(_index_).ICONE_IMG_ID = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(ICONE_CHEMIN, this.INST_INIT_GUI.GUI__FENETRE(_index_).Identification_Objet.Handle)
+							End if
+
+						
 							if this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_LOADED = false Then
 								Dim NombreBitmapDeleted as integer = 0
 								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -561,19 +563,19 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 								this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_LOADED = true
 
 							End if ' If deja loaded
-						end if ' Si n'est pas en cours de redimentionnement
-
-						' Display les elements
-						for index as integer = 0 to array_design_MAX
-							if this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) > 0 Then
-								IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-									DEBUG("[SCI] Creer_Window() Writting design. Source ID:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) & " PosX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index) & " PosY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index) & " SizX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index) & " SizY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index) & " Opacity:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
-								end if
-								' Dessiner sur l'ecran
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index), 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, true, false) 'Bthis.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index))
-							End if
-						Next index
 						
+
+							' Display les elements
+							for index as integer = 0 to array_design_MAX
+								if this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) > 0 Then
+									IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+										DEBUG("[SCI] Creer_Window() Writting design. Source ID:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index) & " PosX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index) & " PosY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index) & " SizX:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index) & " SizY:" & 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index) & " Opacity:" & this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)
+									end if
+									' Dessiner sur l'ecran
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_ID(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_px(index), 0 + this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_py(index), 0, 0, this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sx(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_sy(index), this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID, true, false) 'Bthis.INST_INIT_GUI.GUI__FENETRE(_index_).design_Image_alpha(index))
+								End if
+							Next index
+						end if ' Si n'est pas en cours de redimentionnement
 
 						IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 							DEBUG("[SCI] Creer_Window() Writting icons", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR)

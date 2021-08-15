@@ -691,6 +691,9 @@ Type Cpcdos_GUI__EXPLORER
 	
 	SIZ_X					as Integer 	' Taille horizontale
 	SIZ_Y					as Integer 	' Taille verticale
+
+	obj_doevent_survole		as integer
+	obj_doevent_press		as integer
 End Type
 
 ' ==== Pour la creation d'une ListBox ====
