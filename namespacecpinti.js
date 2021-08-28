@@ -1,10 +1,6 @@
 var namespacecpinti =
 [
-    [ "Informations", "index.html#autotoc_md1", null ],
-    [ "chrono", "namespacecpinti_1_1chrono.html", "namespacecpinti_1_1chrono" ],
-    [ "core", "namespacecpinti_1_1core.html", [
-      [ "get_rtc", "namespacecpinti_1_1core.html#aa50e6af00f7942735dfe91fed85c55a6", null ]
-    ] ],
+    [ "Information", "index.html#autotoc_md1", null ],
     [ "fs", "namespacecpinti_1_1fs.html", [
       [ "dir_exist", "namespacecpinti_1_1fs.html#a120bfa8612bf8c207d7dd6418d2961de", null ],
       [ "file_exist", "namespacecpinti_1_1fs.html#afea1850997e3f0f842b739a8d3aa6506", null ]

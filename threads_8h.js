@@ -5,6 +5,7 @@ var threads_8h =
     [ "cpinti_arreter_thread", "threads_8h.html#a5563284c122fca981102361c4d95e8f6", null ],
     [ "cpinti_arreter_thread", "threads_8h.html#a575898d4f3044f265c999aca5721a17f", null ],
     [ "cpinti_creer_thread", "threads_8h.html#a0c6d8878452d6e0ebb31a9ae9910d859", null ],
+    [ "cpinti_creer_thread", "threads_8h.html#a51999b0d5e6551d7384fd8da9cd6620e", null ],
     [ "cpinti_etat_thread", "threads_8h.html#aeffddb6392b29fe9aba560f7e824acc2", null ],
     [ "cpinti_fin_thread", "threads_8h.html#a0c0510966125e1a76026b112613397e5", null ],
     [ "cpinti_gerer_thread", "threads_8h.html#a69e09208d110e202a4c57ecab4df2a83", null ],

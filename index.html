@@ -88,12 +88,12 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="title">Cpcdos OS2.1 co-kernel source code. </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> <img src=".github/logo.png" alt="" class="inline"/></p>
-<p>Il s'agit bien officiellement du code source du co-noyau Cpcdos OSx. Cette version sera maintenue à jour jusqu'à ce que la <a href="https://github.com/SPinti-Software/CpcdosOS2.2">version OS2.2</a> sera prête. (Without FreeDos)</p>
-<p>Créé le 15 Juillet 2011. Code source publié officiellement le 09 Janvier 2021.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> <img src="https://cpcdos.net/user/themes/cpcdos/images/logo.png" alt="" class="inline"/></p>
+<p>This is the official repository for the co-kernel Cpcdos OSx. This version will be maintained until the release of version <a href="https://github.com/SPinti-Software/CpcdosOS2.2">OS2.2</a>. (Without FreeDos)</p>
+<p>The repository was created on 15 July 2011. The source code was officially released on 09 January 2021.</p>
 <h3><a class="anchor" id="autotoc_md1"></a>
-Informations</h3>
-<p><em>Le projet à été nettoyé, tous les <b>elements prototype</b> qui ne fonctionnent plus tel que le boot, GDT, low memory management ...etc, ont étés balayés du projet! Nos excuses s'il reste des morceaux ou des commentaires s'apparentant à ceci dans le code ou bien des morceaux de copyright, vous pouvez y passer outre. La version OS2.1 va finalement rester axé au-dessus de FreeDOS. Pendant que la OS2.2 se développera sans FreeDos</em></p>
+Information</h3>
+<p>The project has been cleaned up, all <b>prototype elements</b> that no longer work such as boot, GDT, low memory management ...etc, have been removed from the project! Our apologies if there are any bits or comments mentionning them in the code or any copyrighted parts, you can ignore them. This version runs on top of FreeDOS. This will be adjusted on the next major version (OS2.2)</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Platform   </th><th class="markdownTableHeadNone">Build Status    </th></tr>
@@ -101,80 +101,85 @@ Informations</h3>
 <td class="markdownTableBodyNone">Windows   </td><td class="markdownTableBodyNone"><a href="https://ci.appveyor.com/project/Maeiky/cpcdosos2-1"><img src="https://ci.appveyor.com/api/projects/status/nfkdxmis9s2s4d4s?svg=true" alt="Build status" class="inline"/></a>   </td></tr>
 </table>
 <h1><a class="anchor" id="autotoc_md2"></a>
-Comment contribuer</h1>
+How to contribute</h1>
 <ul>
-<li>Créez un fork du dépôt sur votre compte GitHub.</li>
-<li>Faites votre contribution tout en testant si cela marche (allez voir le paragraphe sur la compilation ci-dessous).</li>
-<li>Faites un push de vos modifications sur votre fork.</li>
-<li>Créez une pull-request via votre fork. AppVeyor fera des tests pour voir si tout va bien. Le propriétaire du dépôt se chargera de vérifier et, si tout va bien, de merge votre contribution dès que possible !</li>
+<li>Create a fork of the repository on your GitHub account.</li>
+<li>Make your contribution. Don't forget to test your code before commiting (see the paragraph on compilation below).</li>
+<li>Push your changes to your fork.</li>
+<li>Create a pull-request. AppVeyor will make sure that everything is fine. The repository owners will check if everything works as expected, if so, they'll merge your contribution as soon as possible!</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md3"></a>
-Comment compiler</h1>
+How to compile</h1>
 <ul>
-<li>Téléchargez et installez la dernière version de <a href="https://github.com/VLiance/Cwc">CWC</a></li>
-<li>Puis exécutez simplement le fichier <code>OS2.1\_Make_CpcDos_.cwMake</code> <em>associé à CWC</em></li>
-<li>Assurez-vous d'avoir une machine virtuelle <a href="https://github.com/VLiance/VW_Viewer">éditable</a> ou un support USB bootable Cpcdos (Tuto Cpcdos <a href="https://www.youtube.com/user/cpcdososx">No1</a> <a href="https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos">No2</a>) Il est recommandé d'utiliser <a href="https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&amp;productId=1039&amp;rPId=55794">VMware workstation player 16</a> et ne pas avoir installé la version pro sur votre machine, au risque d'avoir moins d'options de configuration de votre carte réseau. N'hésitez pas à utiliser une ancienne VM cpcdos déjà configurée pour la mettre à jour.</li>
-<li>Copiez simplement le nouveau fichier généré <code>CPCLDR.EXE</code> dans votre répertoire <code>\CPCDOS</code></li>
-<li>Executez-le avec votre OS !</li>
+<li>Download and install the latest version of <a href="https://github.com/VLiance/Cwc">CWC</a></li>
+<li>Then simply run <code>OS2.1\_Make_CpcDos_.cwMake</code> <em>associated with CWC</em> file</li>
+<li>Make sure you have an [editable] virtual machine (<a href="https://github.com/VLiance/VW_Viewer">https://github.com/VLiance/VW_Viewer</a>) or a bootable drive with Cpcdos installed (Cpcdos Tutorial <a href="https://www.youtube.com/user/cpcdososx">No1</a> <a href="https://www.youtube.com/channel/UCkFCPxJF7ZzmWxW4i5WavCA/videos">No2</a>) It is recommended to use <a href="https://my.vmware.com/fr/web/vmware/downloads/details?downloadGroup=PLAYER-1610&amp;productId=1039&amp;rPId=55794">VMware workstation player 16</a> make sure that you don't have the pro version on your machine, as you may have less options to configure your network card. Feel free to use an older Cpcdos VM already configured to make the update process easier.</li>
+<li>Simply copy the newly generated <code>CPCLDR.EXE</code> file into your <code>CPCDOS</code> directory</li>
+<li>Run it with your OS !</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md4"></a>
-Comment participer au projet</h1>
-<p>Rejoignez le <a href="https://discord.com/invite/3Qm8xDp">discord Cpcdos</a></p>
+How to participate in the project</h1>
+<p>Join the <a href="https://discord.com/invite/3Qm8xDp">Cpcdos discord</a></p>
 <h1><a class="anchor" id="autotoc_md5"></a>
-Liens officiel</h1>
+Official links</h1>
 <ul>
-<li><a href="https://cpcdos.net">Site web - cpcdos.net</a></li>
-<li><a href="https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos">Forum - developpez.net</a></li>
+<li><a href="https://cpcdos.net">Website - cpcdos.net</a></li>
+<li><a href="https://www.developpez.net/forums/f2044/systemes/autres-systemes/cpcdos">Forum - developpez.net</a> :warning: the forum is in french :warning:</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md6"></a>
-Mettre à jour</h1>
+Update</h1>
 <ul>
-<li>Depuis le <a href="https://cpcdos.net">site web</a> ci-dessus.</li>
-<li>Directement depuis votre console CpcdosC+ : <code>sys/ /update-get-install</code></li>
+<li>From <a href="https://cpcdos.net">our website</a>.</li>
+<li>Directly from your CpcdosC+ console: <code>sys/ /update-get-install</code></li>
 </ul>
 <h1><a class="anchor" id="autotoc_md7"></a>
-Développeur(s)</h1>
+Releases note</h1>
 <ul>
-<li>Sébastien FAVIER - Concepteur de Cpcdos depuis 2011 - Papoune de CraftyOS &amp; GoatOS</li>
+<li>News into <a href="https://github.com/SPinti-Software/CpcdosOS2.1/blob/dev/OS2.1/Cpcdos/Version.txt">Version.txt</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md8"></a>
-Contributeurs principaux</h2>
+<h1><a class="anchor" id="autotoc_md8"></a>
+Developer(s)</h1>
 <ul>
-<li>Mickael BANVILLE (<a href="https://github.com/Maeiky">Maeiky</a>) - Principal contributeur SDK (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).</li>
-<li>Simon MICHENAUD (<a href="https://www.simon-micheneau.fr/about">SimonDevelop</a>) - Principal intégrateur backend du site WEB.</li>
-<li>Esteban CADIC (<a href="https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/">Estylo</a>) - Principal modérateur du <a href="https://discord.com/invite/3Qm8xDp">groupe Discord</a></li>
+<li>Sébastien FAVIER - Designer of Cpcdos since 2011 - Father of CraftyOS &amp; GoatOS</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md9"></a>
-Ultima testers &amp; Développeurs d'OS Cpcdos</h2>
+Main contributors</h2>
 <ul>
-<li>Léo VACHET - Un papoune de CraftyOS/GoatOS</li>
-<li>Timothée LUSSIAUD - Un autre papoune de CraftyOS/GoatOS</li>
-<li>Meaxy - ElieOS</li>
-<li>Chrapati - Hexac System</li>
+<li>Mickael BANVILLE (<a href="https://github.com/Maeiky">Maeiky</a>) - Main SDK contributor (CWC, ExeLoader, OpenGL / GZE, VM-Viewer).</li>
+<li>Meaxy - ElieOS and Operating system experimentations</li>
+<li>Chrapati - Hexac System + Tutorials and help for the community</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Ultima testers &amp; OS Cpcdos developers</h2>
+<ul>
+<li>Léo VACHET - One of the father of CraftyOS/GoatOS</li>
+<li>Timothée LUSSIAUD - Another father of CraftyOS/GoatOS</li>
+<li>Simon MICHENAUD (<a href="https://www.simon-micheneau.fr/about">SimonDevelop</a>) - Main backend integrator of the website.</li>
+<li>Esteban CADIC (<a href="https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/">Estylo</a>) - Main moderator of the <a href="https://discord.com/invite/3Qm8xDp">Discord group</a></li>
+<li>04Kylian - FireFlyOS</li>
 <li>Nadir - MineOSX</li>
 <li>PokeCraft - LeviathanOS</li>
 <li>iplux - MaverickOS</li>
 <li>FicelleYTB</li>
 <li>Climax</li>
 <li>D3nX</li>
-<li>04Kylian - FireFlyOS</li>
 <li>Léo ENDOR</li>
 <li>NiceY0mi - NoobOS</li>
 <li>vip181</li>
 </ul>
-<p><a href="https://cpcdos.net/fr/contributors">Le reste ici</a></p>
-<p><em>La plupart des systèmes cités ci-dessus sont opensource</em></p>
-<h2><a class="anchor" id="autotoc_md10"></a>
-Remerciements &amp; Contributions</h2>
+<p><a href="https://cpcdos.net/fr/contributors">You can find a more complete list of the contributors here</a></p>
+<p>Most of the above systems are open source.</p>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Acknowledgements &amp; Contributions</h2>
 <ul>
 <li><a href="https://github.com/Keyboard-Slayer">Keyboard-Slayer</a></li>
-<li><a href="https://github.com/sleepy-monax">Monax</a></li>
 <li><a href="https://github.com/d0p1s4m4">d0p1</a></li>
+<li><a href="https://github.com/Supercip971">supercyp</a></li>
+<li><a href="https://github.com/sleepy-monax">Monax</a></li>
 <li><a href="https://github.com/alexbelm48">alexbelm48</a></li>
 <li><a href="https://github.com/PolentesAxel">PolentesAxel</a></li>
-<li><a href="https://github.com/Supercip971">supercyp</a></li>
 </ul>
-<p><em>Les membres contributeur &amp; ex-contributeurs, s'il manque votre nom, n'hésitez pas à vous rajouter ou modifier votre pseudo</em> </p>
+<p><em>Contributor &amp; ex-contributor members, if your name is missing, feel free to add or modify your nickname</em>. </p>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->

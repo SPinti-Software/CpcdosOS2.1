@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['update_5fcycle_5fcpu_1093',['Update_cycle_CPU',['../classgestionnaire__tache_1_1_gestionnaire__des__taches.html#a0032229ba4c3207aed0f157a42922357',1,'gestionnaire_tache::Gestionnaire_des_taches']]],
-  ['usleep_1094',['usleep',['../class_cpcdos_o_sx___c_pinti_core.html#aa4c51bf25098eea7d28769cc7724ae5c',1,'CpcdosOSx_CPintiCore']]]
+  ['verifier_5fcorrespondance_1073',['Verifier_correspondance',['../class_n_p__cpinti__socket_1_1cpinti__socket.html#a4b318e974767df04472183d473c96d6f',1,'NP_cpinti_socket::cpinti_socket']]],
+  ['verifier_5fdescripteur_1074',['Verifier_descripteur',['../class_n_p__cpinti__socket_1_1cpinti__socket.html#ac38695780f5965dcab591754315290f3',1,'NP_cpinti_socket::cpinti_socket']]]
 ];

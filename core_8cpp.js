@@ -36,5 +36,6 @@ var core_8cpp =
     [ "supprimer_Processus", "core_8cpp.html#ac43c3c3801eaf41bc3e0b0d184461f96", null ],
     [ "supprimer_Thread", "core_8cpp.html#ace8684d7861881e3535f5eaa6008b94f", null ],
     [ "switch_context", "core_8cpp.html#a673eddce3cf102d14f24f4b0a7b916ba", null ],
+    [ "xe_cpinti_get_ThreadEnCours", "core_8cpp.html#a1c50515576b497a0146ca6ac62c2cf46", null ],
     [ "SectionCritique_RECURSIF", "core_8cpp.html#acc128e2e9edf3072b885cf2a06739e4f", null ]
 ];

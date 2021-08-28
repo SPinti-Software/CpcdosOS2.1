@@ -113,8 +113,18 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:ad96df25775533d37714acfe25f015d97"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wpr__thread_8cpp.html#ad96df25775533d37714acfe25f015d97">xe_cpinti_creer_thread</a> (void *(*Fonction)(void *arg), unsigned long stackSize, void *threadParam, bool ExecuteThreadNow)</td></tr>
+<tr class="separator:ad96df25775533d37714acfe25f015d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f0214be479539b745c18c5b6cef9cd3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wpr__thread_8cpp.html#a3f0214be479539b745c18c5b6cef9cd3">xe_cpinti_doevents</a> (unsigned long time_ms)</td></tr>
+<tr class="separator:a3f0214be479539b745c18c5b6cef9cd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a5b1a5df2a8620a5b168488a8ca0b54"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wpr__thread_8cpp.html#a7a5b1a5df2a8620a5b168488a8ca0b54">xe_cpinti_ENTRER_SectionCritique</a> ()</td></tr>
+<tr class="separator:a7a5b1a5df2a8620a5b168488a8ca0b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a520c9d5f72dabb91d0538aae70ecec60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="wpr__thread_8cpp.html#a520c9d5f72dabb91d0538aae70ecec60">xe_cpinti_SORTIR_SectionCritique</a> ()</td></tr>
+<tr class="separator:a520c9d5f72dabb91d0538aae70ecec60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c6d8878452d6e0ebb31a9ae9910d859"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a0c6d8878452d6e0ebb31a9ae9910d859">cpinti::gestionnaire_tache::cpinti_creer_thread</a> (unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char *NomThread, long Priorite, void *(*Fonction)(void *arg), void *ARG_CP, unsigned long ARG_TH)</td></tr>
 <tr class="separator:a0c6d8878452d6e0ebb31a9ae9910d859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51999b0d5e6551d7384fd8da9cd6620e"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a51999b0d5e6551d7384fd8da9cd6620e">cpinti::gestionnaire_tache::cpinti_creer_thread</a> (unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char *NomThread, long Priorite, void *(*Fonction)(void *arg), void *ARG_CP, unsigned long ARG_TH, bool ExecuteThreadNow)</td></tr>
+<tr class="separator:a51999b0d5e6551d7384fd8da9cd6620e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0510966125e1a76026b112613397e5"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a0c0510966125e1a76026b112613397e5">cpinti::gestionnaire_tache::cpinti_fin_thread</a> (unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)</td></tr>
 <tr class="separator:a0c0510966125e1a76026b112613397e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5563284c122fca981102361c4d95e8f6"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a5563284c122fca981102361c4d95e8f6">cpinti::gestionnaire_tache::cpinti_arreter_thread</a> (unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)</td></tr>
@@ -138,6 +148,123 @@ Functions</h2></td></tr>
 <tr class="memitem:af15aa72abaa04767218c7410cc0d72c2"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#af15aa72abaa04767218c7410cc0d72c2">cpinti::gestionnaire_tache::cpinti_get_nombre_threads</a> ()</td></tr>
 <tr class="separator:af15aa72abaa04767218c7410cc0d72c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ad96df25775533d37714acfe25f015d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad96df25775533d37714acfe25f015d97">&#9670;&nbsp;</a></span>xe_cpinti_creer_thread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long xe_cpinti_creer_thread </td>
+          <td>(</td>
+          <td class="paramtype">void *(*)(void *arg)&#160;</td>
+          <td class="paramname"><em>Fonction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>stackSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>threadParam</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ExecuteThreadNow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="wpr__thread_8cpp_ad96df25775533d37714acfe25f015d97_cgraph.svg" width="346" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a3f0214be479539b745c18c5b6cef9cd3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f0214be479539b745c18c5b6cef9cd3">&#9670;&nbsp;</a></span>xe_cpinti_doevents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void xe_cpinti_doevents </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>time_ms</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="wpr__thread_8cpp_a3f0214be479539b745c18c5b6cef9cd3_cgraph.svg" width="343" height="38"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a7a5b1a5df2a8620a5b168488a8ca0b54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a5b1a5df2a8620a5b168488a8ca0b54">&#9670;&nbsp;</a></span>xe_cpinti_ENTRER_SectionCritique()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void xe_cpinti_ENTRER_SectionCritique </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="wpr__thread_8cpp_a7a5b1a5df2a8620a5b168488a8ca0b54_cgraph.svg" width="435" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a520c9d5f72dabb91d0538aae70ecec60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a520c9d5f72dabb91d0538aae70ecec60">&#9670;&nbsp;</a></span>xe_cpinti_SORTIR_SectionCritique()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void xe_cpinti_SORTIR_SectionCritique </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="wpr__thread_8cpp_a520c9d5f72dabb91d0538aae70ecec60_cgraph.svg" width="422" height="52"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

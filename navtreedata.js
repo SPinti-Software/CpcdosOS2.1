@@ -26,41 +26,24 @@ var NAVTREE =
 [
   [ "Cpcdos", "index.html", [
     [ "Cpcdos OS2.1 co-kernel source code.", "index.html", [
-      [ "Comment contribuer", "index.html#autotoc_md2", null ],
-      [ "Comment compiler", "index.html#autotoc_md3", null ],
-      [ "Comment participer au projet", "index.html#autotoc_md4", null ],
-      [ "Liens officiel", "index.html#autotoc_md5", null ],
-      [ "Mettre à jour", "index.html#autotoc_md6", null ],
-      [ "Développeur(s)", "index.html#autotoc_md7", [
-        [ "Contributeurs principaux", "index.html#autotoc_md8", null ],
-        [ "Ultima testers & Développeurs d'OS Cpcdos", "index.html#autotoc_md9", null ],
-        [ "Remerciements & Contributions", "index.html#autotoc_md10", null ]
+      [ "How to contribute", "index.html#autotoc_md2", null ],
+      [ "How to compile", "index.html#autotoc_md3", null ],
+      [ "How to participate in the project", "index.html#autotoc_md4", null ],
+      [ "Official links", "index.html#autotoc_md5", null ],
+      [ "Update", "index.html#autotoc_md6", null ],
+      [ "Releases note", "index.html#autotoc_md7", null ],
+      [ "Developer(s)", "index.html#autotoc_md8", [
+        [ "Main contributors", "index.html#autotoc_md9", null ],
+        [ "Ultima testers & OS Cpcdos developers", "index.html#autotoc_md10", null ],
+        [ "Acknowledgements & Contributions", "index.html#autotoc_md11", null ]
       ] ]
-    ] ],
-    [ "Coding Style", "md_coding_style.html", [
-      [ "File Layout", "md_coding_style.html#autotoc_md12", null ],
-      [ "Leading whitespace", "md_coding_style.html#autotoc_md13", null ],
-      [ "Blocks", "md_coding_style.html#autotoc_md14", null ],
-      [ "Comments", "md_coding_style.html#autotoc_md15", null ],
-      [ "Functions", "md_coding_style.html#autotoc_md16", null ],
-      [ "Variables", "md_coding_style.html#autotoc_md17", null ],
-      [ "Keywords", "md_coding_style.html#autotoc_md18", null ],
-      [ "Switch", "md_coding_style.html#autotoc_md19", null ],
-      [ "Headers", "md_coding_style.html#autotoc_md20", null ],
-      [ "User Defined Types", "md_coding_style.html#autotoc_md21", null ],
-      [ "Line length", "md_coding_style.html#autotoc_md22", null ],
-      [ "Main function", "md_coding_style.html#autotoc_md23", null ],
-      [ "Handling Errors", "md_coding_style.html#autotoc_md24", null ],
-      [ "Formatting", "md_coding_style.html#autotoc_md25", null ],
-      [ "Authors", "md_coding_style.html#autotoc_md26", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
         [ "All", "namespacemembers.html", null ],
         [ "Functions", "namespacemembers_func.html", null ],
-        [ "Variables", "namespacemembers_vars.html", null ],
-        [ "Enumerator", "namespacemembers_eval.html", null ]
+        [ "Variables", "namespacemembers_vars.html", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
@@ -69,8 +52,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Related Functions", "functions_rela.html", null ]
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -89,10 +71,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "__wrap_8h.html",
-"core_8cpp.html#a3662a5a014e912217bba894e2e39490a",
-"functions_t.html",
-"namespacecpinti_1_1gestionnaire__tache.html#a640f909bd791a0d1c0f4d87e58fbb5ae",
-"structcpinti_1_1gestionnaire__tache_1_1list__processus.html#a9cf0f6503df40a444eeefd02298e1663"
+"core_8cpp.html#a640f909bd791a0d1c0f4d87e58fbb5ae",
+"globals_b.html",
+"namespacecpinti_1_1gestionnaire__tache.html#ac39e89c68667f074a252569a20c74975",
+"structgz__header__s.html#a29fa8de3acff8d8c7bad61dc924d8564"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

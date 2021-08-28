@@ -1,9 +1,6 @@
 var annotated_dup =
 [
     [ "cpinti", "namespacecpinti.html", [
-      [ "chrono", "namespacecpinti_1_1chrono.html", [
-        [ "DateTime", "classcpinti_1_1chrono_1_1_date_time.html", "classcpinti_1_1chrono_1_1_date_time" ]
-      ] ],
       [ "gestionnaire_tache", "namespacecpinti_1_1gestionnaire__tache.html", [
         [ "liste_threads", "structcpinti_1_1gestionnaire__tache_1_1liste__threads.html", "structcpinti_1_1gestionnaire__tache_1_1liste__threads" ],
         [ "list_processus", "structcpinti_1_1gestionnaire__tache_1_1list__processus.html", "structcpinti_1_1gestionnaire__tache_1_1list__processus" ],

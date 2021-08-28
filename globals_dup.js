@@ -16,5 +16,6 @@ var globals_dup =
     [ "r", "globals_r.html", null ],
     [ "s", "globals_s.html", null ],
     [ "t", "globals_t.html", null ],
+    [ "x", "globals_x.html", null ],
     [ "z", "globals_z.html", null ]
 ];

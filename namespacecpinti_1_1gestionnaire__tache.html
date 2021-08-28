@@ -184,8 +184,16 @@ Functions</h2></td></tr>
 <tr class="separator:a7ad157c33a0e2a1cfe9adbde0c4760d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b64a1728225c4a407ff5ae8193236ed"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a2b64a1728225c4a407ff5ae8193236ed">cpinti_get_nombre_processus</a> ()</td></tr>
 <tr class="separator:a2b64a1728225c4a407ff5ae8193236ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab43fc95343a60cb93a59eba5dde89195"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#ab43fc95343a60cb93a59eba5dde89195">cpinti_get_nombre_thread_in_processus</a> (unsigned long PID)</td></tr>
+<tr class="separator:ab43fc95343a60cb93a59eba5dde89195"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a990255915a7f8209717543277e291d6c"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a990255915a7f8209717543277e291d6c">cpinti_get_pid_from_tid</a> ()</td></tr>
+<tr class="separator:a990255915a7f8209717543277e291d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d6e7c4c888a8f314544b2a05c1cfb11"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a4d6e7c4c888a8f314544b2a05c1cfb11">cpinti_get_pid_from_tid</a> (unsigned tid)</td></tr>
+<tr class="separator:a4d6e7c4c888a8f314544b2a05c1cfb11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c6d8878452d6e0ebb31a9ae9910d859"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a0c6d8878452d6e0ebb31a9ae9910d859">cpinti_creer_thread</a> (unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char *NomThread, long Priorite, void *(*Fonction)(void *arg), void *ARG_CP, unsigned long ARG_TH)</td></tr>
 <tr class="separator:a0c6d8878452d6e0ebb31a9ae9910d859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a51999b0d5e6551d7384fd8da9cd6620e"><td class="memItemLeft" align="right" valign="top">unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a51999b0d5e6551d7384fd8da9cd6620e">cpinti_creer_thread</a> (unsigned long ID_KERNEL, unsigned long ID_OS, unsigned long ID_USER, unsigned long PID, const char *NomThread, long Priorite, void *(*Fonction)(void *arg), void *ARG_CP, unsigned long ARG_TH, bool ExecuteThreadNow)</td></tr>
+<tr class="separator:a51999b0d5e6551d7384fd8da9cd6620e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0510966125e1a76026b112613397e5"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a0c0510966125e1a76026b112613397e5">cpinti_fin_thread</a> (unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)</td></tr>
 <tr class="separator:a0c0510966125e1a76026b112613397e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5563284c122fca981102361c4d95e8f6"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacecpinti_1_1gestionnaire__tache.html#a5563284c122fca981102361c4d95e8f6">cpinti_arreter_thread</a> (unsigned long ID_KERNEL, unsigned long PID, unsigned long TID)</td></tr>
@@ -316,7 +324,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a6e5e5771fd2998d286a459f65136f6ab_cgraph.svg" width="828" height="314"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a6e5e5771fd2998d286a459f65136f6ab_cgraph.svg" width="546" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 <div class="dynheader">
@@ -369,7 +377,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_ad538e6617b7db29fc971ae1980a2e8be_icgraph.svg" width="927" height="460"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_ad538e6617b7db29fc971ae1980a2e8be_icgraph.svg" width="927" height="483"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -583,7 +591,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <a id="a0c6d8878452d6e0ebb31a9ae9910d859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c6d8878452d6e0ebb31a9ae9910d859">&#9670;&nbsp;</a></span>cpinti_creer_thread()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c6d8878452d6e0ebb31a9ae9910d859">&#9670;&nbsp;</a></span>cpinti_creer_thread() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -649,6 +657,88 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a0c6d8878452d6e0ebb31a9ae9910d859_icgraph.svg" width="346" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a51999b0d5e6551d7384fd8da9cd6620e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51999b0d5e6551d7384fd8da9cd6620e">&#9670;&nbsp;</a></span>cpinti_creer_thread() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long cpinti::gestionnaire_tache::cpinti_creer_thread </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>ID_KERNEL</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>ID_OS</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>ID_USER</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>PID</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>NomThread</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>Priorite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *(*)(void *arg)&#160;</td>
+          <td class="paramname"><em>Fonction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>ARG_CP</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>ARG_TH</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>ExecuteThreadNow</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 <p>Identifiant NOYAU</p>
 <p>Identifiant OS</p>
 <p>Identifiant Utilisateur</p>
@@ -657,7 +747,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a0c6d8878452d6e0ebb31a9ae9910d859_cgraph.svg" width="1011" height="314"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a51999b0d5e6551d7384fd8da9cd6620e_cgraph.svg" width="728" height="170"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -831,6 +921,12 @@ Here is the call graph for this function:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a7cb713603998f80cdebd1c9dbc1e76d2_cgraph.svg" width="388" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a7cb713603998f80cdebd1c9dbc1e76d2_icgraph.svg" width="366" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -849,6 +945,12 @@ Here is the call graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a7ad157c33a0e2a1cfe9adbde0c4760d8_cgraph.svg" width="591" height="196"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
 
 </div>
 </div>
@@ -899,6 +1001,24 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="ab43fc95343a60cb93a59eba5dde89195"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab43fc95343a60cb93a59eba5dde89195">&#9670;&nbsp;</a></span>cpinti_get_nombre_thread_in_processus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long cpinti::gestionnaire_tache::cpinti_get_nombre_thread_in_processus </td>
+          <td>(</td>
+          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramname"><em>PID</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="af15aa72abaa04767218c7410cc0d72c2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af15aa72abaa04767218c7410cc0d72c2">&#9670;&nbsp;</a></span>cpinti_get_nombre_threads()</h2>
 
@@ -919,6 +1039,53 @@ Here is the call graph for this function:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_af15aa72abaa04767218c7410cc0d72c2_cgraph.svg" width="418" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
+
+</div>
+</div>
+<a id="a990255915a7f8209717543277e291d6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a990255915a7f8209717543277e291d6c">&#9670;&nbsp;</a></span>cpinti_get_pid_from_tid() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long cpinti::gestionnaire_tache::cpinti_get_pid_from_tid </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a990255915a7f8209717543277e291d6c_cgraph.svg" width="387" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a990255915a7f8209717543277e291d6c_icgraph.svg" width="382" height="104"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+</div>
+</div>
+
+</div>
+</div>
+<a id="a4d6e7c4c888a8f314544b2a05c1cfb11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d6e7c4c888a8f314544b2a05c1cfb11">&#9670;&nbsp;</a></span>cpinti_get_pid_from_tid() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned long cpinti::gestionnaire_tache::cpinti_get_pid_from_tid </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>tid</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1099,7 +1266,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a1dffbe4de63a3f294858ef36948b3115_icgraph.svg" width="1114" height="460"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a1dffbe4de63a3f294858ef36948b3115_icgraph.svg" width="1114" height="483"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1215,7 +1382,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_acface3e9bff6cc53f1d214c962f0196c_icgraph.svg" width="388" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_acface3e9bff6cc53f1d214c962f0196c_icgraph.svg" width="591" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1383,7 +1550,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_ab076831eb798dd962d6cdf867b7ff8b4_icgraph.svg" width="760" height="67"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_ab076831eb798dd962d6cdf867b7ff8b4_icgraph.svg" width="856" height="223"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1487,7 +1654,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a640f909bd791a0d1c0f4d87e58fbb5ae_icgraph.svg" width="615" height="279"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a640f909bd791a0d1c0f4d87e58fbb5ae_icgraph.svg" width="615" height="180"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 
@@ -1679,7 +1846,7 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a2cb7408de395cda0909727daabbf14d9_icgraph.svg" width="854" height="355"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespacecpinti_1_1gestionnaire__tache_a2cb7408de395cda0909727daabbf14d9_icgraph.svg" width="854" height="279"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe>
 </div>
 </div>
 

@@ -1,9 +1,7 @@
 <map id="cpinti::gestionnaire_tache::Interruption_Timer" name="cpinti::gestionnaire_tache::Interruption_Timer">
-<area shape="rect" id="node1" title=" " alt="" coords="437,122,609,163"/>
-<area shape="rect" id="node2" href="$namespacecpinti_1_1gestionnaire__tache.html#a6e5e5771fd2998d286a459f65136f6ab" title=" " alt="" coords="220,13,373,54"/>
-<area shape="rect" id="node4" href="$namespacecpinti.html#add88e43780041b1587942a9bc7aa6f0d" title=" " alt="" coords="5,107,156,133"/>
-<area shape="rect" id="node5" href="$namespacecpinti.html#a8235499e69d1e950b8ad549075f21a3d" title=" " alt="" coords="227,129,367,156"/>
-<area shape="rect" id="node6" href="$namespacecpinti_1_1gestionnaire__tache.html#ad386876c980cb034a2f757e09a1c4977" title=" " alt="" coords="204,181,389,222"/>
-<area shape="rect" id="node7" href="$core_8cpp.html#a8072a106077bf5b87885ed3fbafc7229" title=" " alt="" coords="233,247,360,273"/>
-<area shape="rect" id="node3" href="$namespacecpinti_1_1gestionnaire__tache.html#a0c6d8878452d6e0ebb31a9ae9910d859" title=" " alt="" coords="13,5,148,61"/>
+<area shape="rect" id="node1" title=" " alt="" coords="437,53,609,94"/>
+<area shape="rect" id="node2" href="$namespacecpinti.html#add88e43780041b1587942a9bc7aa6f0d" title=" " alt="" coords="5,5,156,32"/>
+<area shape="rect" id="node3" href="$namespacecpinti.html#a8235499e69d1e950b8ad549075f21a3d" title=" " alt="" coords="227,31,367,57"/>
+<area shape="rect" id="node4" href="$namespacecpinti_1_1gestionnaire__tache.html#ad386876c980cb034a2f757e09a1c4977" title=" " alt="" coords="204,82,389,123"/>
+<area shape="rect" id="node5" href="$core_8cpp.html#a8072a106077bf5b87885ed3fbafc7229" title=" " alt="" coords="233,148,360,175"/>
 </map>

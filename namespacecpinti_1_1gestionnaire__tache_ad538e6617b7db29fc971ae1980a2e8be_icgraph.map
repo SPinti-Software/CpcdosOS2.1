@@ -1,17 +1,16 @@
 <map id="cpinti::gestionnaire_tache::begin_SectionCritique" name="cpinti::gestionnaire_tache::begin_SectionCritique">
-<area shape="rect" id="node1" title=" " alt="" coords="728,195,921,236"/>
+<area shape="rect" id="node1" title=" " alt="" coords="728,224,921,265"/>
 <area shape="rect" id="node2" href="$namespacecpinti_1_1gestionnaire__tache.html#a785f49984308a281ea2220d2dea93f63" title=" " alt="" coords="485,5,632,47"/>
 <area shape="rect" id="node3" href="$namespacecpinti_1_1interception.html#a1772e262cfb40d4016511caeae45b861" title=" " alt="" coords="495,71,622,112"/>
 <area shape="rect" id="node6" href="$namespacecpinti_1_1gestionnaire__tache.html#a8ceefba5730150b183a64422c1520ce2" title=" " alt="" coords="494,136,623,177"/>
-<area shape="rect" id="node7" href="$namespacecpinti_1_1gestionnaire__tache.html#ad386876c980cb034a2f757e09a1c4977" title=" " alt="" coords="204,129,389,171"/>
+<area shape="rect" id="node7" href="$namespacecpinti_1_1gestionnaire__tache.html#ad386876c980cb034a2f757e09a1c4977" title=" " alt="" coords="204,159,389,200"/>
 <area shape="rect" id="node8" href="$namespacecpinti_1_1gestionnaire__tache.html#a640f909bd791a0d1c0f4d87e58fbb5ae" title=" " alt="" coords="473,253,645,295"/>
-<area shape="rect" id="node14" href="$namespacecpinti_1_1gestionnaire__tache.html#a9e12afb26403f340d75fd3c881b68da2" title=" " alt="" coords="437,328,680,369"/>
-<area shape="rect" id="node15" href="$namespacecpinti_1_1gestionnaire__tache.html#a673eddce3cf102d14f24f4b0a7b916ba" title=" " alt="" coords="219,413,374,455"/>
-<area shape="rect" id="node4" href="$namespacecpinti_1_1interception.html#a4c805b9e79a66eca888512879f8d9e10" title=" " alt="" coords="223,64,371,105"/>
-<area shape="rect" id="node5" href="$namespacecpinti_1_1interception.html#a71269205d7f5572d106bf3d75cfcf104" title=" " alt="" coords="6,57,155,113"/>
-<area shape="rect" id="node9" href="$namespacecpinti_1_1gestionnaire__tache.html#a6e5e5771fd2998d286a459f65136f6ab" title=" " alt="" coords="220,195,373,236"/>
-<area shape="rect" id="node11" href="$namespacecpinti.html#add88e43780041b1587942a9bc7aa6f0d" title=" " alt="" coords="5,289,156,315"/>
-<area shape="rect" id="node12" href="$namespacecpinti.html#a8235499e69d1e950b8ad549075f21a3d" title=" " alt="" coords="227,311,367,338"/>
-<area shape="rect" id="node13" href="$core_8cpp.html#a8072a106077bf5b87885ed3fbafc7229" title=" " alt="" coords="233,362,360,389"/>
-<area shape="rect" id="node10" href="$namespacecpinti_1_1gestionnaire__tache.html#a0c6d8878452d6e0ebb31a9ae9910d859" title=" " alt="" coords="13,187,148,243"/>
+<area shape="rect" id="node12" href="$namespacecpinti_1_1gestionnaire__tache.html#a9e12afb26403f340d75fd3c881b68da2" title=" " alt="" coords="437,319,680,360"/>
+<area shape="rect" id="node13" href="$namespacecpinti_1_1gestionnaire__tache.html#a673eddce3cf102d14f24f4b0a7b916ba" title=" " alt="" coords="219,377,374,419"/>
+<area shape="rect" id="node14" href="$wpr__thread_8cpp.html#a7a5b1a5df2a8620a5b168488a8ca0b54" title=" " alt="" coords="467,436,650,477"/>
+<area shape="rect" id="node4" href="$namespacecpinti_1_1interception.html#a4c805b9e79a66eca888512879f8d9e10" title=" " alt="" coords="223,71,371,112"/>
+<area shape="rect" id="node5" href="$namespacecpinti_1_1interception.html#a71269205d7f5572d106bf3d75cfcf104" title=" " alt="" coords="6,63,155,119"/>
+<area shape="rect" id="node9" href="$namespacecpinti.html#add88e43780041b1587942a9bc7aa6f0d" title=" " alt="" coords="5,250,156,277"/>
+<area shape="rect" id="node10" href="$namespacecpinti.html#a8235499e69d1e950b8ad549075f21a3d" title=" " alt="" coords="227,275,367,302"/>
+<area shape="rect" id="node11" href="$core_8cpp.html#a8072a106077bf5b87885ed3fbafc7229" title=" " alt="" coords="233,326,360,353"/>
 </map>

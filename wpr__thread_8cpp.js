@@ -4,6 +4,7 @@ var wpr__thread_8cpp =
     [ "cpinti_arreter_thread", "wpr__thread_8cpp.html#a5563284c122fca981102361c4d95e8f6", null ],
     [ "cpinti_arreter_thread", "wpr__thread_8cpp.html#a575898d4f3044f265c999aca5721a17f", null ],
     [ "cpinti_creer_thread", "wpr__thread_8cpp.html#a0c6d8878452d6e0ebb31a9ae9910d859", null ],
+    [ "cpinti_creer_thread", "wpr__thread_8cpp.html#a51999b0d5e6551d7384fd8da9cd6620e", null ],
     [ "cpinti_etat_thread", "wpr__thread_8cpp.html#aeffddb6392b29fe9aba560f7e824acc2", null ],
     [ "cpinti_fin_thread", "wpr__thread_8cpp.html#a0c0510966125e1a76026b112613397e5", null ],
     [ "cpinti_gerer_thread", "wpr__thread_8cpp.html#a69e09208d110e202a4c57ecab4df2a83", null ],
@@ -11,5 +12,9 @@ var wpr__thread_8cpp =
     [ "cpinti_get_nombre_threads", "wpr__thread_8cpp.html#af15aa72abaa04767218c7410cc0d72c2", null ],
     [ "cpinti_joindre_thread", "wpr__thread_8cpp.html#ad05e027357b9cc5ff0c449e985320e76", null ],
     [ "cpinti_sortir_thread", "wpr__thread_8cpp.html#a84f0b40a3ee71ac335d57677d80041c6", null ],
-    [ "cpinti_thread_args", "wpr__thread_8cpp.html#ac30449b7accd26e1e8f06e66e45daad3", null ]
+    [ "cpinti_thread_args", "wpr__thread_8cpp.html#ac30449b7accd26e1e8f06e66e45daad3", null ],
+    [ "xe_cpinti_creer_thread", "wpr__thread_8cpp.html#ad96df25775533d37714acfe25f015d97", null ],
+    [ "xe_cpinti_doevents", "wpr__thread_8cpp.html#a3f0214be479539b745c18c5b6cef9cd3", null ],
+    [ "xe_cpinti_ENTRER_SectionCritique", "wpr__thread_8cpp.html#a7a5b1a5df2a8620a5b168488a8ca0b54", null ],
+    [ "xe_cpinti_SORTIR_SectionCritique", "wpr__thread_8cpp.html#a520c9d5f72dabb91d0538aae70ecec60", null ]
 ];
