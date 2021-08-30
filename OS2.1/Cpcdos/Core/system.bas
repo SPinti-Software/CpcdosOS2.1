@@ -765,7 +765,17 @@ Function _SYSTEME_Cpcdos_OSx__.cpc_GetMouse(byref Pos_X as integer, byref Pos_Y 
 	End if
 End function
 
-	
+
+Sub _SYSTEME_Cpcdos_OSx__.ClearKeyboardBuffer()
+	' clean buffer
+	Dim Flag As Integer
+	Dim e As EVENT
+	Flag = ScreenEvent(@e)
+	While (Flag = -1)
+		Flag = ScreenEvent(@e)
+		Sleep 1
+	Wend
+End Sub
 
 
 

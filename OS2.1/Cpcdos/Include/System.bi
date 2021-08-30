@@ -725,6 +725,8 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer) 		as integer
 		Declare Function cpc_GetMouse			(byref Pos_X as integer, byref Pos_Y as integer, byref Scroll_Weel as integer, byref TypeClic as integer, byref clip as integer) as integer
 		
+		Declare Sub ClearKeyboardBuffer			()
+
 		' **** Fichiers images ****
 		' Declare Static Sub libpng_error_callback cdecl	(png as png_structp,  p as png_const_charp)
 		' Effet flou

@@ -2,6 +2,7 @@
     "files.associations": {
         "*.bas": "vb",
         "*.bi": "vb",
+        "*.cw": "cpp",
         "string": "cpp",
         "xstring": "cpp",
         "typeinfo": "cpp",
@@ -70,6 +71,11 @@
         "xtree": "cpp",
         "filesystem": "cpp",
         "thread": "c",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "windows.h": "c",
+        "unistd.h": "c",
+        "list": "c",
+        "deque": "c",
+        "xlocmon": "c"
     }
 }

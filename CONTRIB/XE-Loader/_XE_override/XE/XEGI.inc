@@ -55,6 +55,11 @@ uint32_t Create_context(ContextInf _ctx)
 		aContext[idx].id_context = cpc_Creer_Contexte((long) aContext[idx].width, (long)aContext[idx].height);
 		showinf("Create_Context()= idx: %d, id.context: %zu, height: %d, width: %d", idx,  aContext[idx].id_context, aContext[idx].height,  aContext[idx].width);
 	}
+	else
+	{
+		aContext[idx].id_context = cpc_Creer_Contexte((long) 1, (long)1);
+		showinf("Create_Context()= (FIXED) idx: %d, id.context: %zu, height: %d, width: %d", idx,  aContext[idx].id_context, 1,  1);
+	}
 
 	showinf("PixView= idx: %d,  height: %d, width: %d", idx, aContext[idx].height,  aContext[idx].width);
 	showinf("create hwnd_View( hwnd_View: %d, idx: %d, height: %d, width: %d )", aContext[idx].hwnd_View,  idx,  aContext[idx].height,  aContext[idx].width );
@@ -92,6 +97,7 @@ ContextInf* Blit_context(uint32_t _idx, const void* _pixels, int _SrcWidth)
 	return &aContext[_idx]; //number of scan lines copied
 }
 
+long previous_keydown[12] = {0};
 int UserInputUpdate(uint32_t h, long id_context)
 {
 	// cpc_mouse_state_lck() --> 0:Clic state (1:left 2:right 3:middle) | 1:Position X | 2:Position Y | 3:Scrool wheel
@@ -102,6 +108,11 @@ int UserInputUpdate(uint32_t h, long id_context)
 	// Getting mouse position (relative to window with id)
 	long posx = (long) cpc_mouse_state_lck(1, id_context);
 	long posy = (long) cpc_mouse_state_lck(2, id_context);
+
+
+	long get_key = (long) cpc_get_key_lck(id_context);
+
+	_printl(" *** get_key : %ld\n", get_key);
 
 	// ---- EVENTS ----
 
@@ -116,7 +127,57 @@ int UserInputUpdate(uint32_t h, long id_context)
 	// When user mouse move
 	aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(MOUSEMOVE), .x=posx, .y=posy });
 
-	_printl("hndl:%zu - UserInputUpdate(%l) - Mouse state [clic:%ld] [%ldx%ld] ", h, id_context, clic, posx, posy);
+	_printl("hndl:%zu - UserInputUpdate(%ld) - Mouse state [clic:%ld] [%ldx%ld] ", h, id_context, clic, posx, posy);
+
+
+	if (get_key > 0)
+	{
+		_printl(" ****** KEYDOWN\n");
+		aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(KEYDOWN), .key=get_key});
+		for(int index = 0; index < 12; index++)
+		{
+			if(previous_keydown[index] == get_key) 
+				break;
+
+			if(previous_keydown[index] == 0)
+				previous_keydown[index] = get_key;
+		}
+	}
+
+	// get_key = 0;
+
+	if (get_key == 0)
+	{
+		_printl(" ****** KEYUP\n");
+		for(int index = 12; index >= 0; index--)
+		{
+			if(previous_keydown[index] > 0)
+			{
+				aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(KEYUP), .key=previous_keydown[index]});
+				previous_keydown[index] = 0;
+				break;
+			}
+		}
+	}
+
+	if (get_key < 0)
+	{
+		get_key = 0-get_key;
+
+		_printl(" ****** KEYUP -- \n");
+		for(int index = 12; index >= 0; index--)
+		{
+			if(previous_keydown[index] == get_key)
+			{
+				aSysMsg(add,(XEGI_SysMsg){.handle=h, .type=XEGI_Msg_(KEYUP), .key=get_key});
+				previous_keydown[index] = 0;
+				break;
+			}
+		}
+	}
+
+	_printl("hndl:%zu - UserInputUpdate(%ld) - Keyboard state [key:0x%x ASCII:%ld]", h, id_context, get_key, get_key);
+	
 }
 
 

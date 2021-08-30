@@ -333,7 +333,41 @@ Public Function cpc_get_key_lck cdecl Alias "cpc_get_key_lck" (id_context as int
 					
 							' L'index de l'objet + index TID parent trouve, ON CONTINUE ! :)
 							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Actu_Bitmap_Index(id_context)).Identification_Objet.Handle_PARENT > 0 Then
-								return ASC(inkey)
+								dim retour as string = inkey
+								
+								Dim e As EVENT
+								If (ScreenEvent(@e)) Then
+									Select Case e.Type
+									Case EVENT_KEY_RELEASE
+										dim scancode as integer = e.scancode
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer()
+										If (scancode > 0) Then
+											if scancode = &h48 Then return -38 ' SC_UP		(72)
+											if scancode = &h50 Then return -40 ' SC_DOWN	(80)
+											if scancode = &h4B Then return -37 ' SC_LEFT	(75)
+											if scancode = &h4D Then return -39 ' SC_RIGHT	(77)
+											if scancode = &h53 Then return -46 ' SC_DELETE	(83)
+										end if
+									End Select
+								End if
+
+								if MultiKey(&h48) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 38 ' SC_UP		(72)
+								if MultiKey(&h50) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 40 ' SC_DOWN		(80)
+								if MultiKey(&h4B) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 37 ' SC_LEFT		(75)
+								if MultiKey(&h4D) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 39 ' SC_RIGHT		(77)
+								if MultiKey(&h53) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 46 ' SC_DELETE	(83)
+
+								if MultiKey(&h1D) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 17 ' SC_CONTROL
+								if MultiKey(&h38) Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.ClearKeyboardBuffer() : return 18 ' SC_ALT
+
+								if retour = chr(255, 72) Then return 0 'return 38 
+								if retour = chr(255, 80) Then return 0 'return 40 
+								if retour = chr(255, 75) Then return 0 'return 37
+								if retour = chr(255, 77) Then return 0 'return 39
+								if retour = chr(255, 83) Then return 0 'return 46
+
+								return ASC(retour)
+
 							End if
 						End if
 					End if
