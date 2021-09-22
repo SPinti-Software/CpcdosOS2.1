@@ -76,6 +76,7 @@
         "unistd.h": "c",
         "list": "c",
         "deque": "c",
-        "xlocmon": "c"
+        "xlocmon": "c",
+        "FONT.H": "cpp"
     }
 }

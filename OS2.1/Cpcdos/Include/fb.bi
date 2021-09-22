@@ -12,6 +12,7 @@
 #include once "crt/string.bi"
 #include once "dir.bi"
 
+
 #if __FB_LANG__ = "fb"
 Using fb '' constants and structures are stored in the FB namespace in lang fb
 #endif
