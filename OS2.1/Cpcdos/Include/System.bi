@@ -201,6 +201,33 @@ enum effet_img
 	_custom_4
 End enum
 
+type _FONT_positionning
+	width	as integer
+	height	as integer
+	org_x	as integer
+	org_y	as integer
+	size_x	as integer
+	size_y	as integer
+end type
+
+Type _FONT_
+	
+	is_loaded					as boolean 			' Si on a charge au moins 1 font
+
+	font_img_id		(0 to 24)	as integer 			' ID de l'image FONT
+	font_name		(0 to 24) 	as string			' Nom du font
+
+	font_path_ttf	(0 to 24)	as string			' TTF path
+	font_path_png	(0 to 24)	as string			' PNG path
+	font_path_ini	(0 to 24)	as string			' INI path config
+	
+	font_nb_sizes	(0 to 24)	as integer			' Number of differents sizes per fonts png files
+	font_sizes		(0 to 24, 0 to 12)	as integer	' List of font sizes per fonts png files
+
+	font_pos		(0 to 24, 0 to 12) as _FONT_positionning ' Positionning per fonts
+	
+end type
+
 
 ' ===== Cette structure permet de gerer les fichiers JPG =====
 enum
@@ -775,7 +802,9 @@ Type _SYSTEME_Cpcdos_OSx__
 
 		Declare Function getHandleType			(byval NumeroHandle as integer) 																						as String
 		
-		
+		Declare Function Convert_TTF_to_PNG		() as boolean
+		Declare Function Load_png_font			() as boolean
+		Declare Function Load_png_font_to_char	() as boolean
 
 		Declare Constructor()
 		Declare Destructor()
@@ -847,3 +876,4 @@ Type _STRUCT_PROCESSUS_Cpcdos_OSx__
 		stack		as ANY PTR		' Adresse memoire stack
 	
 End Type
+
