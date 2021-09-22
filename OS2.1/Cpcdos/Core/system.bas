@@ -1644,3 +1644,11 @@ Function _SYSTEME_Cpcdos_OSx__.getHandleType(Numero_Handle as integer) as String
 End Function
 
 
+Function _SYSTEME_Cpcdos_OSx__.Convert_TTF_to_PNG() as boolean
+	' This function allow to convert TTF files to PNG file with Win32 x86 external program (for best performances and compatibilities)
+
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ /win32 KRNL/FreeType.exe", This._CLE_, 3, 0, "")
+
+
+End function
+
