@@ -34,7 +34,7 @@
 	
 		[AJOUTS]
 
-		
+	
 
 		[CORRECTIONS]
 			- [CPCDOS] Correction de l'oubli de la propriété ListBox lors de l'appel de la fonction getHandleType()
