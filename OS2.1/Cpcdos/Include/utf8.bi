@@ -1,9 +1,9 @@
 ' Contient la declaration des fonctions et variables concernant 
-' la gestion UTF 8
+' la gestion des fonts
 
 ' Par Sebastien FAVIER
 ' Reecriture le 13/10/2016
-' Mise a jour le 17/10/2016
+' Mise a jour le 24/09/2021
 
 
 Type __UTF8_Cpcdos_OSx__ 

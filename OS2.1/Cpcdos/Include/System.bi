@@ -213,6 +213,7 @@ end type
 Type _FONT_
 	
 	is_loaded					as boolean 			' Si on a charge au moins 1 font
+	enable						as boolean 			' Activer/desactiver
 
 	font_img_id		(0 to 24)	as integer 			' ID de l'image FONT
 	font_name		(0 to 24) 	as string			' Nom du font
@@ -563,6 +564,9 @@ Type _SYSTEME_Cpcdos_OSx__
 		Taille_memoire		as integer = -1
 		Frequence			as integer = -1
 		DriverVideo			as String = "<Non installe/Not installed>"
+
+		' Font
+		
 		
 		
 		' Fonction prives JPG
@@ -652,6 +656,9 @@ Type _SYSTEME_Cpcdos_OSx__
 
 		' Liste des lecteurs, cdrom, floppy etc..
 		drives_list 				as _DRIVES_
+
+		' Fonts
+		font_manager				as _FONT_
 
 		' Ignorer les lecteurs de disquettes trop lente
 		Ignore_FLOPPY_A				as boolean = true

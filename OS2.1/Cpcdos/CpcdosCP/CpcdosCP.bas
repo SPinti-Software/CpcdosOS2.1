@@ -20290,6 +20290,15 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     ... aussi avec Go pour Giga Octets, To pour Tera Octets"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Charger la police d'ecriture"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /load_ttf"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /Font /load_char"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Activer/desactiver le gestionnaire de fonts"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Enable"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Disable"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    Deboguer le noyau. (Affiche toutes les activites du noyau)"
 					Mess_Aide = Mess_Aide & CRLF & "      SYS/ /DEBUG {COMn} {/CPINTICORE} {/SERVEUR:TCP} = { 0, 1, 2, 3 }"
 					Mess_Aide = Mess_Aide & CRLF
@@ -20488,15 +20497,17 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     Display used memory in Mb"
 					Mess_Aide = Mess_Aide & CRLF & "      sys/ /memu mb"
 					Mess_Aide = Mess_Aide & CRLF & "     ... also with Gb Giga Bytes, To for Tera Bytes."
-					' Mess_Aide = Mess_Aide & CRLF
-					' Mess_Aide = Mess_Aide & CRLF & "   Change font"
-					' Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font Arial"
-					' Mess_Aide = Mess_Aide & CRLF & "     sys/ /Font Comic Sans MS"
-					' Mess_Aide = Mess_Aide & CRLF & "     sys/ /font Segoe Script"
-					' Mess_Aide = Mess_Aide & CRLF & "    Enable/disable font manager"
-					' Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Enable"
-					' Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Disable"
-					Mess_Aide = Mess_Aide & CRLF & "    "
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Change font"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /load_ttf"
+					Mess_Aide = Mess_Aide & CRLF & "     sys/ /Font /load_char"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF & "   Enable/disable font manager"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Enable"
+					Mess_Aide = Mess_Aide & CRLF & "     Sys/ /font /Disable"
+					Mess_Aide = Mess_Aide & CRLF
+					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "    Debug kernel. (Display all kernel activities)"
 					Mess_Aide = Mess_Aide & CRLF & "      SYS/ /DEBUG {/CPINTICORE} {/SERVER:NoPort} = { 0, 1, 2, 3 }"
 					Mess_Aide = Mess_Aide & CRLF
@@ -21099,172 +21110,34 @@ _FIN_EXE_CCP_EXE:
 			Dim PosParam1 as integer = 0
 			' Changer la police d'ecriture du systeme
 			IF Instr(UCASE(Param), "/FONT") > 0 Then
-				PosParam1 = Instr(UCASE(Param), "/FONT") + 6
-			END IF
-			
-			IF Instr(UCASE(Param), "/POLICE") > 0 OR PosParam1 > 0 Then
-			
-				' Si la version anglaise n'est pas definie
-				IF PosParam1 = 0 Then PosParam1 = Instr(UCASE(Param), "/POLICE") + 8
-				
-				Dim ListerLesPolices		as Integer
-		
-				Dim NomPolice				as String
-				Dim Buffer_POLICE_COPIE 	as String
-				Dim buff_NomPolice			as String
-				Dim buff_REPPolice			as String
-				Dim Pos_CRLF 				as Integer = 0
-				Dim Pos_EGALE 				as Integer = 0
 
-				' IF Instr(UCASE(Param), "/DESACTIVER") > 0 Then
-					' DEBUG("", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					' DEBUG("", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					' ' CPCDOS_INSTANCE.utf_actif = -1
-					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices desactiv�", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' Else
-							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' End if
-					' END IF
-				' END IF
-				' IF Instr(UCASE(Param), "/DISABLE") > 0 Then
-					' ' utf_actif = -1
-					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices deactiv�", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' Else
-							' DEBUG("[CpcdosC+] Font manager disable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' End if
-					' END IF
-				' End if
-				' IF Instr(UCASE(Param), "/ACTIVER") > 0 Then
-					' ' utf_actif = 1
-					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ�", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' Else
-							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
-						' End if
-					' End if
-				' End if
-				' IF Instr(UCASE(Param), "/ENABLE") > 0 Then
-					' ' utf_actif = 1
-					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Gestionnaire de polices activ�", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR) : exit _scope_CMD, _scope
-						' Else
-							' DEBUG("[CpcdosC+] Font manager enable", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR) : exit _scope_CMD, _scope
-						' End if
-					' End if
-				' End if
-				' ' IF utf_actif = 0 Then
-					' ' Message_erreur = ERRAVT("AVT_054", 0)
-					' ' DEBUG("[CpcdosC+] " & Message_erreur, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					' ' exit _scope_CMD, _scope
-				' ' Elseif utf_actif = -1 then
-					' ' utf_actif = 0
-				' ' End if
-				' IF Instr(UCASE(Param), "/LIST") > 0 Then ListerLesPolices = 1
-				' IF Instr(UCASE(Param), "/LISTE") > 0 Then ListerLesPolices = 1
+				' Convertir les fichiers TTF en PNG		
+				IF Instr(UCASE(Param), "/LOAD_TTF") > 0 Then
+					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Convert_TTF_to_PNG() = true Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true
+					else
+						
+					End if
 
-				' IF ListerLesPolices = 1 Then
-					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG(" Liste des polices install�es  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					' else
-						' DEBUG(" List installed fonts  ", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					' End if
-				' End if
-				' NomPolice = UCASE(MID(Param, PosParam1))
-				' Pos_CRLF = 1
-				' ' Lire le fichier de configuration des polices pour chercher si elle existe
-				' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG("[CpcdosC+][CPinti] Appel de l'instance de lecture de fichiers complet depuis FONTS\INDEX.CFG mode:r", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' Else
-						' DEBUG("[CpcdosC+][CPinti] Calling complet file reader instance of FONTS\INDEX.CFG mode:rb", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' End If
-				' End if
-				' Dim TailleRetourCHR as integer
-				' Dim POLICE_FICHIER_instance as cpinti.cpinti_core
-				' ' Recuperer la taille d fichier
+					
+				End if
 				
-				' ' Dim Taille_Du_Fichier as integer = POLICE_FICHIER_instance.CPinti_Taille_Fichier(AllouerString(Param))
-				
-				' ' Creation d'un nouveau pointeur
-				' Dim Buffer_POLICE as Zstring ptr
-				' Buffer_POLICE = Allocate(Taille_Du_Fichier)
-				
-				' dim Resultat as integer
-				' ' Resultat = POLICE_FICHIER_instance.cpinti_Lire_Fichier_complet(AllouerString("FONTS\INDEX.CFG"), AllouerString("RB"), Buffer_POLICE)
-				
-				' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG(" - offset depart 0x" & Hex(Buffer_POLICE, 32) & " fin + 0x" & Hex(TailleString(*Buffer_POLICE), 32) & " (" & TailleString(*Buffer_POLICE) & " octets)", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' Else
-						' DEBUG(" - offset begin 0x" & Hex(Buffer_POLICE, 32) & " end + 0x" & Hex(TailleString(*Buffer_POLICE), 32) & " (" & TailleString(*Buffer_POLICE) & " bytes", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' End If
-				' End if
-				' Buffer_POLICE_COPIE = UCASE(*Buffer_POLICE)
-				' While((TailleString(Buffer_POLICE_COPIE) > 0)) ' On chercher dans le fichier index.cfg les polices dispo
-					' ' Position du "="
-					' Pos_EGALE = Instr(Buffer_POLICE_COPIE, "=")
-					' ' Recupere le nom de police
-					' buff_NomPolice = MID(Buffer_POLICE_COPIE, 1, (Pos_EGALE - 1))
-					' ' Recupere la position du CR
-					' Pos_CRLF = Instr(Buffer_POLICE_COPIE, CHR(13) & CHR(10))
-					' If Pos_CRLF > 0 then
-						' TailleRetourCHR = 2
-					' Else
-						' TailleRetourCHR = 1
-						' Pos_CRLF = Instr(Buffer_POLICE_COPIE, CHR(10))
-						' IF Pos_CRLF < 0 Then Pos_CRLF = Instr(Buffer_POLICE_COPIE, CHR(13))
-					' End if
-					' ' Recupere le nom du dossier racine
-					' buff_REPPolice = MID(Buffer_POLICE_COPIE, Pos_EGALE + 1, Pos_CRLF - ( Pos_EGALE + 1))
-					' ' On resize le contenu du buffer afin de simplifier la boucle et optimiser la memoire
-					' Buffer_POLICE_COPIE = MID(Buffer_POLICE_COPIE, Pos_CRLF + TailleRetourCHR)
-					' ' Si il n'y avait pas de CR alors c'est la fin du fichier, on vide le buffer!
-					' IF Pos_CRLF < 1 Then Buffer_POLICE_COPIE = ""
-					' IF Instr(buff_NomPolice, "##") = 0 Then ' Commentaire
-						' IF ListerLesPolices = 1 Then
-							' DEBUG(CRLF & " -" & LCASE(buff_NomPolice), Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-						' Else
-							' IF NomPolice = buff_NomPolice Then ' La police existe!
-								' Buffer_POLICE_COPIE = "" ' On vide le buffer
-								' init_utf8(buff_NomPolice, buff_REPPolice, 18, 1, RetourVAR) ' Charger la police correspondante dans la RAM instancie seulement dans le SCI
-							' END IF
-						' END IF
-						' if ListerLesPolices = 1 then DEBUG("", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' End if
-				' Wend
-				' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						' DEBUG("[CpcdosC+] Fin de lecture de " & "FONTS\INDEX.CFG", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						' DEBUG("[CpcdosC+] Desallocation memoire 0x" & hex(Buffer_POLICE, 8) & "...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' Else
-						' DEBUG("[CpcdosC+] End reading " & "FONTS\INDEX.CFG", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						' DEBUG("[CpcdosC+] Memory desallocation 0x" & hex(Buffer_POLICE, 8) & "...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					' End If
-				' End if
-				' If Buffer_POLICE <> 0 Then
-					' 'memset(Buffer_POLICE, 0, 8)
-					' *Buffer_POLICE = ""
-					' ' Deallocate(Buffer_POLICE)
-					' REM Buffer_POLICE = 0
-					' IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-						' IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							' DEBUG("[CpcdosC+] Desallocation OK", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						' Else
-							' DEBUG("[CpcdosC+] Desallocation OK", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-						' End If
-					' End if
-				' End if
-				' exit _scope_CMD, _scope
+				' Charger les bitmap
+				IF Instr(UCASE(Param), "/LOAD_CHAR") > 0 Then
 
-				' ConsoleCpcdos.ACurClecheOuPas = 0
-				' ConsoleCpcdos.Accumulation = ConsoleCpcdos.TailleBase
-				Print "Police d'ecriture et UF8 a finir!"
+				End if
+				
+				' Activer la police d'ecriture
+				IF Instr(UCASE(Param), "/ENABLE") > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true
+				End if
+
+				' Desactiver la police d'ecriture
+				IF Instr(UCASE(Param), "/DISABLE") > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = false
+				End if
+
+				
 			END IF
 
 

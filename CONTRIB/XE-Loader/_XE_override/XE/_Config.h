@@ -32,9 +32,10 @@
 /////////////  CUSTOM SETTINGS  ////////////////////
 ////////////////////////////////////////////////////
 
-#define VirtualLoadPE
-
 #define USE_Direct_Mapping
+#define USE_Direct_Mapping_Printf
+
+#define VirtualLoadPE
 
 //Use the Windows Standard LoadLibraryA or undef to use the ExeLaoder AddLibrary similar to loading .exe from memory
 //#define USE_Windows_LoadLibrary

@@ -1657,7 +1657,10 @@ End Function
 Function _SYSTEME_Cpcdos_OSx__.Convert_TTF_to_PNG() as boolean
 	' This function allow to convert TTF files to PNG file with Win32 x86 external program (for best performances and compatibilities)
 
-	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ /win32 KRNL/x86/ttf_gen.exe", CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAIN_CLE, 3, 0, "")
+	
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ /win32 KRNL/x86/ttf_gen.exe", CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAIN_CLE, 5, 0, "")
+
+	' Verifier si le font s'est charge ICI
 
 	return true
 End function
@@ -1665,7 +1668,7 @@ End function
 Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 	' This function allow to load PNG image to memory
 
-
+	
 	
 	return true
 End function
