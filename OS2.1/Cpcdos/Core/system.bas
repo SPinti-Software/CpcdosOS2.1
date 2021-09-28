@@ -1657,6 +1657,7 @@ End Function
 Function _SYSTEME_Cpcdos_OSx__.Convert_TTF_to_PNG() as boolean
 	' This function allow to convert TTF files to PNG file with Win32 x86 external program (for best performances and compatibilities)
 
+	DEBUG("Load_png_font() : Loading TTF files ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 	
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("exe/ /win32 KRNL/x86/ttf_gen.exe", CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAIN_CLE, 5, 0, "")
 
@@ -1668,7 +1669,76 @@ End function
 Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 	' This function allow to load PNG image to memory
 
+	DEBUG("Load_png_font() : Loading generated fonts", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	Dim Position_Debut 	as integer = 1
+	Dim Position_FIN 	as integer = 1
 	
+
+	Dim Buffer_Fichier	as String = CPCDOS_INSTANCE.Lire_fichier_complet("KRNL\CONFIG\fonts.cfg")
+	Dim Chaine_Ligne 	as string
+
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir = ""
+	
+	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number_MAX
+		
+		Position_FIN = INSTR(Position_Debut, Buffer_Fichier, CRLF)
+		
+		if Position_FIN < 1 then Position_FIN = Len(Buffer_Fichier)
+		
+		' Recuperer la ligne dans le fichier en supprimant le CRLF a la fin
+		Chaine_Ligne = Mid(Buffer_Fichier, Position_Debut, Position_FIN - Position_Debut)
+		
+		if Chaine_Ligne = "" Then Exit for
+		
+		Position_Debut = Position_FIN + 2
+		
+
+		' Media fonts
+		if len(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir) = 0 AND Nombre_police = 0 Then ' premiere ligne
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, Instr(Chaine_Ligne, "SRC=") + 4), chr(13)), chr(10)))
+			
+			
+			' Ne fait pas partie de la liste
+			Nombre_police -= 1
+		else
+		
+			' Recuperer le nom de la police
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, 1, Instr(Chaine_Ligne, "=") - 1), chr(13)), chr(10)))
+
+			' Recuperer la liste des sizes
+			Dim Liste_sizes as String = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, Instr(Chaine_Ligne, "=") + 1), chr(13)), chr(10)))
+			Dim list_sizes_tmp as string = Liste_sizes
+			DEBUG("Load_png_font() : font_name  :" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			DEBUG("Load_png_font() : Liste_sizes:" & Liste_sizes & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			Dim Nombre_STR as String
+			dim index_array as integer = 0
+			for boucle as integer = 0 to 128
+				
+				'DEBUG("Load_png_font() : " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+				
+				if mid(list_sizes_tmp, boucle, 1) = "," then
+7
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
+					
+
+					DEBUG("Load_png_font() : SIZE (" & index_array & ") '" & Nombre_STR & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+					index_array += 1
+					Nombre_STR = ""
+				else
+					Nombre_STR = Nombre_STR & mid(list_sizes_tmp, boucle, 1)
+				End if
+
+			next boucle
+		End if
+		
+		if Position_FIN = Len(Buffer_Fichier) Then exit for
+	Next Nombre_police
+
+	DEBUG("Load_png_font() : Loading generated fonts", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 	
 	return true
 End function
