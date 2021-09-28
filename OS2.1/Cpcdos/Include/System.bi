@@ -212,20 +212,24 @@ end type
 
 Type _FONT_
 	
-	is_loaded					as boolean 			' Si on a charge au moins 1 font
-	enable						as boolean 			' Activer/desactiver
+	is_loaded					as boolean = false	' Si on a charge au moins 1 font
+	enable						as boolean = false	' Activer/desactiver
+
+	fonts_number				as integer = 0		' Number of fonts
+	fonts_number_MAX			as integer = 24		' Max number of fonts
 
 	font_img_id		(0 to 24)	as integer 			' ID de l'image FONT
 	font_name		(0 to 24) 	as string			' Nom du font
 
+	font_path_dir				as string			' Media path dir
 	font_path_ttf	(0 to 24)	as string			' TTF path
 	font_path_png	(0 to 24)	as string			' PNG path
 	font_path_ini	(0 to 24)	as string			' INI path config
 	
 	font_nb_sizes	(0 to 24)	as integer			' Number of differents sizes per fonts png files
-	font_sizes		(0 to 24, 0 to 12)	as integer	' List of font sizes per fonts png files
+	font_sizes		(0 to 24, 0 to 24)	as integer	' List of font sizes per fonts png files
 
-	font_pos		(0 to 24, 0 to 12) as _FONT_positionning ' Positionning per fonts
+	font_pos		(0 to 24, 0 to 24) as _FONT_positionning ' Positionning per fonts
 	
 end type
 

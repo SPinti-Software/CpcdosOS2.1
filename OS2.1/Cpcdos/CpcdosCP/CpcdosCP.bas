@@ -21124,7 +21124,7 @@ _FIN_EXE_CCP_EXE:
 				
 				' Charger les bitmap
 				IF Instr(UCASE(Param), "/LOAD_CHAR") > 0 Then
-
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Load_png_font()
 				End if
 				
 				' Activer la police d'ecriture

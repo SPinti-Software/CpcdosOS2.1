@@ -222,7 +222,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "Console.bi"
 #include once "CpcdosCP.bi"
 
-CONST _VJOUR as string 	= "24" 
+CONST _VJOUR as string 	= "28" 
 CONST _VMOIS as string 	= "09"
 CONST _VANNEE as string = "2021"
 
@@ -234,8 +234,8 @@ CONST _VERSION_MAJEUR 	as string = "2.1"
 'CONST _VERSION_ETAT		as string = "HotRelease"
 CONST _VERSION_ETAT		as string = "PUBLIC"
 
-CONST _VERSION_MINEUR 	as string = "beta 1.5"
-CONST _VER_NET_MINEUR 	as string = "BETA1.5"
+CONST _VERSION_MINEUR 	as string = "beta 1.6"
+CONST _VER_NET_MINEUR 	as string = "BETA1.6"
 CONST _VERSION_CCP 		as string = "3.0"
 CONST _VERSION_SCI 		as string = "3.0"
 CONST _VERSION_CONSOLE	as string = "3.0"
