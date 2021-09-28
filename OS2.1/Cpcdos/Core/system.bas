@@ -1669,13 +1669,15 @@ End function
 Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 	' This function allow to load PNG image to memory
 
-	DEBUG("Load_png_font() : Loading generated fonts", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+
+	DEBUG("Load_png_font()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 	Dim Position_Debut 	as integer = 1
 	Dim Position_FIN 	as integer = 1
 	
 
-	DEBUG("Load_png_font() : Loading config from " & "KRNL\CONFIG\fonts.cfg", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	DEBUG("Load_png_font() : Loading front list from " & "KRNL\CONFIG\fonts.cfg", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 	Dim Buffer_Fichier	as String = CPCDOS_INSTANCE.Lire_fichier_complet("KRNL\CONFIG\fonts.cfg")
 	Dim Chaine_Ligne 	as string
@@ -1701,12 +1703,17 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, Instr(Chaine_Ligne, "SRC=") + 4), chr(13)), chr(10)))
 			
 			
+			
 			' Ne fait pas partie de la liste
 			Nombre_police -= 1
 		else
 		
 			' Recuperer le nom de la police
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, 1, Instr(Chaine_Ligne, "=") - 1), chr(13)), chr(10)))
+
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ttf(Nombre_police) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir & "\" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & ".TTF"
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_png(Nombre_police) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir & "\" &  CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & ".PNG"
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_dir & "\" &  CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & ".INI"
 
 			' Recuperer la liste des sizes
 			Dim Liste_sizes as String = RTRIM(RTRIM(RTRIM(MID(Chaine_Ligne, Instr(Chaine_Ligne, "=") + 1), chr(13)), chr(10)))
@@ -1733,7 +1740,6 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
 						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police) = index_array
 
-						'DEBUG("Load_png_font() : SIZE (" & index_array & ") '" & Nombre_STR & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 						exit for ' bye bye pelo !
 					else
 						' On cumule lettre par lettre, par ce que "Chiffres et des Lettres". C'etait pas drole... Mais drole d'emission...
@@ -1742,6 +1748,9 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 				End if
 
 			next boucle
+
+			' Increment fonts number
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number += 1
 
 			' Display informations about font
 			DEBUG("Load_png_font() : Font name : '" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
@@ -1758,8 +1767,75 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 		if Position_FIN = Len(Buffer_Fichier) Then exit for
 	Next Nombre_police
 
-	DEBUG("Load_png_font() : Loading generated fonts", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	DEBUG("Load_png_font() : Loading fonts configuration", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 	
+	' Load INI file by font
+	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+
+	
+		for boucle as integer = 1 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
+
+			' Read INI values from font file
+			dim test as string = CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), "width")
+
+			' If this works, we continue ! We put coordinates values by fonts
+			if NOT test = "" Then
+				' WIDTH
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).width = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "width"))
+
+				' HEIGHT
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).height = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "height"))
+
+				' ORG_X
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_x = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "org_x"))
+
+				' ORG_Y
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_y = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "org_y"))
+
+				' SIZE_X
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_x = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "size_x"))
+
+				' SIZE_Y
+				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(boucle), "size_y"))
+
+			Else
+				' NEXT !
+				continue for
+			End if
+
+		next boucle
+
+	Next Nombre_police
+
+	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+
+	
+		for boucle as integer = 1 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
+
+			DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' WIDTH
+			DEBUG(" - WIDTH:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).width, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' HEIGHT
+			DEBUG(" - HEIGHT:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).height, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' ORG_X
+			DEBUG(" - ORG_X:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_x, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' ORG_Y
+			DEBUG(" - ORG_Y:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_y, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' SIZE_X
+			DEBUG(" - SIZE_X:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_x, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+			' SIZE_Y
+			DEBUG(" - SIZE_Y:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		next boucle
+
+	Next Nombre_police
+		
+
 	return true
 End function
 
