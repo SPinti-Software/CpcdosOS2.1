@@ -231,8 +231,8 @@ CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/E
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
-'CONST _VERSION_ETAT		as string = "HotRelease"
-CONST _VERSION_ETAT		as string = "PUBLIC"
+CONST _VERSION_ETAT		as string = "HotRelease"
+'CONST _VERSION_ETAT		as string = "PUBLIC"
 
 CONST _VERSION_MINEUR 	as string = "beta 1.6"
 CONST _VER_NET_MINEUR 	as string = "BETA1.6"
