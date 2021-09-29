@@ -1782,7 +1782,7 @@ function __Noyau_Cpcdos_OSx__.Read_INI_value (Fichier_source as string, Section 
 				Step_str = instr(Chaine_Ligne, "=")
 				Gauche_str = trim(left(Chaine_Ligne,Step_str-1))
 				Droite_Str = trim(right(Chaine_Ligne, len(Chaine_Ligne)-Step_str))
-				if (NouvelleSection = Section) and (Gauche_str = Cle) then
+				if (ucase(NouvelleSection) = ucase(Section)) and (ucase(Gauche_str) = ucase(Cle)) then
 				
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 						DEBUG("[OK] Value '" & Droite_Str & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
