@@ -42,7 +42,7 @@
 //#define USE_Windows_GetProcAddress
 
 //Show when function are called from the fonction table, with is parameters
-#define Show_FuncTable
+// #define Show_FuncTable
 
 //Some function are irrelevant and may be annoying, but sometime we need it for debugging purpose
 // #define Show_AllFuncTable

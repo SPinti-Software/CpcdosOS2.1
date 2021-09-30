@@ -21123,8 +21123,12 @@ _FIN_EXE_CCP_EXE:
 				End if
 				
 				' Charger les bitmap
-				IF Instr(UCASE(Param), "/LOAD_CHAR") > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Load_png_font()
+				IF Instr(UCASE(Param), "/LOAD_CFG") > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Load_TTF_config()
+				End if
+
+				IF Instr(UCASE(Param), "/LOAD_MAP") > 0 Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Load_TTF_Map()
 				End if
 				
 				' Activer la police d'ecriture

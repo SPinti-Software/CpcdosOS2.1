@@ -1666,7 +1666,7 @@ Function _SYSTEME_Cpcdos_OSx__.Convert_TTF_to_PNG() as boolean
 	return true
 End function
 
-Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
+Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 	' This function allow to load PNG image to memory
 
 
@@ -1756,7 +1756,7 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 			DEBUG("Load_png_font() : Font name : '" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			DEBUG("Load_png_font() : Sizes     : '", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
-			for boucle as integer = 1 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
+			for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
 				DEBUG(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle) & " ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			next boucle
 			
@@ -1767,21 +1767,20 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 		if Position_FIN = Len(Buffer_Fichier) Then exit for
 	Next Nombre_police
 
-	
+	' Fix 
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number -= 1
+
+	dim loaded_ttf_config as boolean = false
 	
 	' Load INI file by font
 	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
 
 		DEBUG("Load_png_font() : Loading fonts configuration from '" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 	
-		for boucle as integer = 1 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
-
-			DEBUG("'FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle) & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
 			
 			' Read INI values from font file
 			dim test as string = CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), "width")
-
-			DEBUG("test: '" & test & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 			' If this works, we continue ! We put coordinates values by fonts
 			if NOT test = "" Then
@@ -1803,6 +1802,7 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 				' SIZE_Y
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), "size_y"))
 
+				loaded_ttf_config = true
 			Else
 				' NEXT !
 				continue for
@@ -1812,11 +1812,42 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 
 	Next Nombre_police
 
+
+	if loaded_ttf_config = true Then
+		DEBUG("Load_png_font() : TTF font configuration loaded !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		return true
+	else
+		DEBUG("Load_png_font() : Unable to load TTF font configuration.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.Load_TTF_Map() as boolean
+	' This function allow to load PNG image to memory
+
+	DEBUG("Load_TTF_Map() : Loading TTF bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
 	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
 
-	
-		for boucle as integer = 1 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
+		DEBUG("Load_TTF_Map() : Loading converted '" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & "' font", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
+		' Load png bitmap to memory
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(Nombre_police) = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Creer_BITMAP_depuis_FILE(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_png(Nombre_police), CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_id_handle)
+
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(Nombre_police) = 0 then
+			DEBUG("[ERROR] Unable to load FONT map " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_png(Nombre_police) & ". Index (" & Nombre_police & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			return false
+		else
+			DEBUG("[OK]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+
+	next Nombre_police
+
+	DEBUG("Load_TTF_Map() : Finish!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Validation, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	return true
+
+	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+		for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
 			DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 			' WIDTH
@@ -1837,15 +1868,8 @@ Function _SYSTEME_Cpcdos_OSx__.Load_png_font() as boolean
 			' SIZE_Y
 			DEBUG(" - SIZE_Y:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		next boucle
-
 	Next Nombre_police
-		
 
-	return true
-End function
-
-Function _SYSTEME_Cpcdos_OSx__.Load_png_font_to_char() as boolean
-	' This function allow to load PNG image to memory
 
 	return true
 End function

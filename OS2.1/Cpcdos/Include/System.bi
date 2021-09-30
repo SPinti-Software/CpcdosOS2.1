@@ -663,6 +663,7 @@ Type _SYSTEME_Cpcdos_OSx__
 
 		' Fonts
 		font_manager				as _FONT_
+		font_id_handle				as integer = 2222
 
 		' Ignorer les lecteurs de disquettes trop lente
 		Ignore_FLOPPY_A				as boolean = true
@@ -814,8 +815,8 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function getHandleType			(byval NumeroHandle as integer) 																						as String
 		
 		Declare Function Convert_TTF_to_PNG		() as boolean
-		Declare Function Load_png_font			() as boolean
-		Declare Function Load_png_font_to_char	() as boolean
+		Declare Function Load_TTF_config		() as boolean
+		Declare Function Load_TTF_Map			() as boolean
 
 		Declare Constructor()
 		Declare Destructor()
