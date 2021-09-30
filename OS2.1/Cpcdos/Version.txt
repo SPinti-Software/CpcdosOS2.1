@@ -7,7 +7,7 @@
 	#### En bref ####
 	#################
 
-		--> 1	Ajouts de divers fonctionnalités.
+		--> 2	Ajouts de divers fonctionnalités.
 		--> 0	corrections importantes.
 		--> 0	optimisations.
 		--> 1	corrections et modifications mineures.
@@ -33,7 +33,7 @@
 	#############################
 	
 		[AJOUTS]
-
+			- [SYSTEME] Possibilité de charger et utiliser des polices d'écriture au format TTF.
 	
 
 		[CORRECTIONS]

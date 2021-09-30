@@ -56,6 +56,27 @@ SUB DEBUG(Evenement as string, Ecran as integer, DansLeLOG as integer, Prio as i
 	Dim Evenement_tmp as String
 	
 	SORTIR_SectionCritique()
+
+	' Action
+	if instr(Evenement, "A: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION
+
+	' Pass
+	if instr(Evenement, "P: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_validation
+
+	' Info
+	if instr(Evenement, "I: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR
+
+	' Trace
+	if instr(Evenement, "T: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Surbrille
+
+	' Log
+	if instr(Evenement, "L: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal
+
+	' Warning
+	if instr(Evenement, "W: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT
+
+	' Error
+	if instr(Evenement, "E: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR
 	
 	if AfficherDate > 0 Then
 		Evenement = "(THREAD #" & CPCDOS_INSTANCE.get_ThreadEnCours() & ") " & Evenement
