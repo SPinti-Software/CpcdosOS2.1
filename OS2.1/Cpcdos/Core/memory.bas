@@ -1840,7 +1840,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 		Dim Char_bitmap as any ptr
 
 		' Getting bitmap font ID
-		Dim font__img_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(police_name_index)
+		Dim font_img_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(police_name_index)
 
 		' Getting ORG positionning
 		Dim font_PX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).org_x + CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).width * 2
@@ -1867,7 +1867,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 		
 		DEBUG("Ecrire_ecran_font() : Getting '" & mid(Texte, 1, 1) & "' (" & index_char & " char", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
-		Get CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(police_name_index), (font_PX, font_PY)- STEP (font_SX, font_SY), Destination_ptr
+		Get font_img_ID, (font_PX, font_PY)- STEP (font_SX, font_SY), Destination_ptr
 
 		DEBUG("Ecrire_ecran_font() : Writing to screen " & buffer_text_font & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
