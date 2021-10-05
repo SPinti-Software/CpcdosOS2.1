@@ -388,6 +388,7 @@ Type _memoire_bitmap
 		Declare Function Ecrire_ecran_ml			(Texte as String, TableauLignes() as String, NombreLignes as integer, TypeRetourOct as integer, PX as integer, PY as integer, SX as integer, SY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		Declare Function Ecrire_ecran_font			(byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Capture_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX as integer, SY as integer) as boolean
 		Declare Function Capture_bitmap				(byval NumeroID_source as integer, PX as integer, PY as integer, SX as integer, SY as integer) as any ptr
@@ -818,8 +819,8 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function Convert_TTF_to_PNG		() as boolean
 		Declare Function Load_TTF_config		() as boolean
 		Declare Function Load_TTF_Map			() as boolean
-		Declare Function Get_char_font			(char_ascii as string, size_font as integer, font_name as string, font_name_index as integer) as any ptr
-		declare sub 	debug_font				(police_index as integer, size_index as integer)
+		Declare Sub font_check_array			(byref font_size as integer, byref font_name as string, byref font_name_index as integer)
+		declare sub 	 debug_font				(police_index as integer, size_index as integer)
 
 		Declare Constructor()
 		Declare Destructor()

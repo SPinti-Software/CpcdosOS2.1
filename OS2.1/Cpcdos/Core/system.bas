@@ -1881,10 +1881,10 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_Map() as boolean
 	return true
 End function
 
-Function _SYSTEME_Cpcdos_OSx__.Get_char_font(char_ascii as string, font_size as integer, font_name as string, font_name_index as integer) as any ptr
-	' This function allow to convert ascii char to font bitmap
-	
-	DEBUG("Get_char_font()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byref font_name as string, byref font_name_index as integer)
+	' This function allow to convert 
+	' --> font_size : value to array index SIZE
+	' --> font_name : name to array index NAME
 
 	if font_name_index < 0 then
 		if len(font_name) > 0 Then
@@ -1900,43 +1900,21 @@ Function _SYSTEME_Cpcdos_OSx__.Get_char_font(char_ascii as string, font_size as 
 	' Si pas trouve
 	if font_name_index < 0 Then
 		DEBUG("Get_char_font() : Not found font into memory ! '" & font_name & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-		return NULL
+		return
 	End if
 
-	dim Size_index as integer
 	if font_size > 0 Then
 		For Nombre_sizes as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(font_name_index, Nombre_sizes) = font_size Then
-				Size_index = Nombre_sizes
+				' Mettre a jour la valeur directement dans la reference memoire
+				font_size = Nombre_sizes
 				exit for
 			end if
 		next Nombre_sizes
 	end if
 
+End sub
 
-	dim Char_bitmap as any ptr
-	
-	dim index_char as integer = asc(char_ascii) - 32
-
-	DEBUG("Get_char_font() : Nombre_police:" & font_name_index & " index_char:" & index_char & " font_size(" & Size_index & "):" & font_size & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-	debug_font(font_name_index, Size_index)
-			
-	' Getting bitmap part
-	Char_bitmap = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Capture_bitmap( _
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(font_name_index), _
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).org_x + (index_char * CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).width), _
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).org_y, _
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).width, _
-								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).height)
-
-	DEBUG("Get_char_font() : Char_bitmap: 0x" & hex(Char_bitmap), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-	
-	' Return result
-	return Char_bitmap
-
-
-End function
 
 sub _SYSTEME_Cpcdos_OSx__.debug_font(police_index as integer, size_index as integer)
 	DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(police_index) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
