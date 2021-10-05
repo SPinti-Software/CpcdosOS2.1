@@ -21111,6 +21111,14 @@ _FIN_EXE_CCP_EXE:
 			' Changer la police d'ecriture du systeme
 			IF Instr(UCASE(Param), "/FONT") > 0 Then
 
+				IF Instr(UCASE(Param), "/WRITE") > 0 Then
+					Dim resultat_font as any ptr = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Get_char_font("A", 12, "", 1)
+
+					if resultat_font <> 0 Then
+						put (10, 10), resultat_font, ALPHA
+					End if
+				End if
+
 				' Convertir les fichiers TTF en PNG		
 				IF Instr(UCASE(Param), "/LOAD_TTF") > 0 Then
 					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Convert_TTF_to_PNG() = true Then

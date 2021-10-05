@@ -1560,6 +1560,13 @@ Function _SYSTEME_Cpcdos_OSx__.getHandleType(Numero_Handle as integer) as String
 	' Fenetre, bouton, picturebox, instance....
 	' Si retourne "NULL" c'est qu'il existe pas
 
+	' 1111 = bootscreen
+	
+	' gui font
+	'if Numero_Handle = 2222 Then 
+		'return "Font"
+	'End if
+
 	' Chercher les fenetres
 	For boucle as integer = 1 to CPCDOS_INSTANCE._MAX_GUI_FENETRE
 		if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(boucle).Identification_Objet.Handle = Numero_Handle Then
@@ -1814,7 +1821,7 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 
 
 	if loaded_ttf_config = true Then
-		DEBUG("Load_png_font() : TTF font configuration loaded !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG("Load_png_font() : TTF font configuration loaded !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		return true
 	else
 		DEBUG("Load_png_font() : Unable to load TTF font configuration.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
@@ -1873,3 +1880,83 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_Map() as boolean
 
 	return true
 End function
+
+Function _SYSTEME_Cpcdos_OSx__.Get_char_font(char_ascii as string, font_size as integer, font_name as string, font_name_index as integer) as any ptr
+	' This function allow to convert ascii char to font bitmap
+	
+	DEBUG("Get_char_font()", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	if font_name_index < 0 then
+		if len(font_name) > 0 Then
+			For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+				if ucase(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police)) = ucase(font_name) Then
+					font_name_index = Nombre_police
+					exit for
+				end if
+			next Nombre_police
+		end if
+	End if
+
+	' Si pas trouve
+	if font_name_index < 0 Then
+		DEBUG("Get_char_font() : Not found font into memory ! '" & font_name & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		return NULL
+	End if
+
+	dim Size_index as integer
+	if font_size > 0 Then
+		For Nombre_sizes as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(font_name_index, Nombre_sizes) = font_size Then
+				Size_index = Nombre_sizes
+				exit for
+			end if
+		next Nombre_sizes
+	end if
+
+
+	dim Char_bitmap as any ptr
+	
+	dim index_char as integer = asc(char_ascii) - 32
+
+	DEBUG("Get_char_font() : Nombre_police:" & font_name_index & " index_char:" & index_char & " font_size(" & Size_index & "):" & font_size & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	debug_font(font_name_index, Size_index)
+			
+	' Getting bitmap part
+	Char_bitmap = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Capture_bitmap( _
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(font_name_index), _
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).org_x + (index_char * CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).width), _
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).org_y, _
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).width, _
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(font_name_index, Size_index).height)
+
+	DEBUG("Get_char_font() : Char_bitmap: 0x" & hex(Char_bitmap), CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	
+	' Return result
+	return Char_bitmap
+
+
+End function
+
+sub _SYSTEME_Cpcdos_OSx__.debug_font(police_index as integer, size_index as integer)
+	DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(police_index) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' WIDTH
+	DEBUG(" - WIDTH:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).width, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' HEIGHT
+	DEBUG(" - HEIGHT:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).height, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' ORG_X
+	DEBUG(" - ORG_X:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).org_x, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' ORG_Y
+	DEBUG(" - ORG_Y:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).org_y, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' SIZE_X
+	DEBUG(" - SIZE_X:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).size_x, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+	' SIZE_Y
+	DEBUG(" - SIZE_Y:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).size_y, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+
+end sub

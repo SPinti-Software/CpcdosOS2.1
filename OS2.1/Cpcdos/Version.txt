@@ -34,6 +34,14 @@
 	
 		[AJOUTS]
 			- [SYSTEME] Possibilité de charger et utiliser des polices d'écriture au format TTF.
+			- [Win32] Affichage de la coloration en mode console en respectant les critères suivante
+				A:  Action
+				P:  Pass
+				I:  Information
+				T:  Trace
+				L:  Log
+				W:  Warning
+				E:  Error
 	
 
 		[CORRECTIONS]
@@ -59,6 +67,7 @@
 
 		[MODIFICATIONS]
 		- [XE-LOADER] Mise à jour et optimisation du code. @Maeiky
+		- [XE-LOADER] Ajustements pour coloration de la sortie console.
 
 
 		
