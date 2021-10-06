@@ -1881,7 +1881,7 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_Map() as boolean
 	return true
 End function
 
-Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byref font_name as string, byref font_name_index as integer)
+Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byval font_name as string, byref font_name_index as integer)
 	' This function allow to convert 
 	' --> font_size : value to array index SIZE
 	' --> font_name : name to array index NAME
@@ -1891,6 +1891,7 @@ Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byref fon
 			For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
 				if ucase(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police)) = ucase(font_name) Then
 					font_name_index = Nombre_police
+
 					exit for
 				end if
 			next Nombre_police
