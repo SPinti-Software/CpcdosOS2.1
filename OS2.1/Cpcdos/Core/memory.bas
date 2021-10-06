@@ -1855,18 +1855,20 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 		CPCDOS_INSTANCE.SYSTEME_INSTANCE.debug_font(police_name_index, police_size_index)
 
 		' Create text buffer for final GUI drawing
-		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", len(Texte) * font_SX + 1, font_SY + 1, 2222)
+		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", len(Texte) * font_SX+1, font_SY+1, 2222)
 
 		' Create char buffer
-		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX + 1, font_SY, 2222)
+		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX + 1, font_SY +1, 2222)
 
 		' Getting ASCII number char per char		
 		dim index_char as integer = asc(mid(Texte, 1, 1)) - 32
 
+		dim PosCharPX as integer = font_PX + ((index_char-2) * font_SX)
+		dim PosCharPY as integer = (font_PY)
 
 		' Getting char into font bitmap	
-		DEBUG("Ecrire_ecran_font() : Getting '" & mid(Texte, 1, 1) & "' (" & index_char & ") char", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-		Get Recuperer_BITMAP_PTR(font_img_ID), (font_PX, font_PY) - STEP (font_SX, font_SY), Recuperer_BITMAP_PTR(buffer_char)
+		DEBUG("Ecrire_ecran_font() : Getting '" & mid(Texte, 1, 1) & "' (" & index_char & ") char, at " & PosCharPX & "x" & PosCharPY & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Get Recuperer_BITMAP_PTR(font_img_ID), (PosCharPX, PosCharPY) - STEP (font_SX, font_SY), Recuperer_BITMAP_PTR(buffer_char)
 
 		' Writing char into final buffer with his position
 		DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")

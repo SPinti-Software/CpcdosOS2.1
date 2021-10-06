@@ -85,6 +85,10 @@ refresh/ /all
 
 sys/ /os:myos
 
+sys/ /debug = 2
+sys/ /font /write
+
+
 
 
 

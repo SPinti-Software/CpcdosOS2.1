@@ -21112,7 +21112,7 @@ _FIN_EXE_CCP_EXE:
 			IF Instr(UCASE(Param), "/FONT") > 0 Then
 
 				IF Instr(UCASE(Param), "/WRITE") > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("A", 12, "Arial", 10, 10, 255, 255, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("#", 12, "Arial", 10, 10, 255, 255, 255)
 				End if
 
 				' Convertir les fichiers TTF en PNG		
