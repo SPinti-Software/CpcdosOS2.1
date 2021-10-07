@@ -1862,9 +1862,9 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 
 		for boucle_char as integer = 1 to len(texte)
 			' Getting ASCII number char per char		
-			dim index_char as integer = (asc(Texte, boucle_char) - 31)
+			dim index_char as integer = (asc(Texte, boucle_char) - 32)
 
-			dim PosCharPX as integer = font_PX + ((index_char) * font_SX) + index_char
+			dim PosCharPX as integer = font_PX + (((index_char) * font_SX))
 			dim PosCharPY as integer = (font_PY)
 
 			DEBUG("****** boucle_char:" & boucle_char & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
@@ -1880,7 +1880,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 
 			' Writing char into final buffer with his position
 			DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-			put Recuperer_BITMAP_PTR(buffer_text_font), (boucle_char * font_SX, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY)
+			put Recuperer_BITMAP_PTR(buffer_text_font), ((boucle_char * font_SX)-font_SX, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY)
 
 		next boucle_char
 
