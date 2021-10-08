@@ -75,9 +75,7 @@ CMD/ /PID:%PID_Menu_Accueil% exe/ & %HOST_OS%/barre.cpc
 // Executer app.cpc dans le processus "_APP_" via son PID
 CMD/ /PID:%PID_APP% exe/ & %HOST_OS%/app.cpc
 
-' Load fonts from already converted TTF into TEMP/FONTS
-sys/ /font /load_cfg
-sys/ /font /load_map
+
 
 // exe/ & tests/explorer.cpc
 
@@ -85,7 +83,12 @@ refresh/ /all
 
 sys/ /os:myos
 
+
+' Load fonts from already converted TTF into TEMP/FONTS
 sys/ /debug = 2
+
+sys/ /font /load_cfg
+sys/ /font /load_map
 sys/ /font /write
 
 

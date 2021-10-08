@@ -1808,6 +1808,32 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 
 				' SIZE_Y
 				CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y = val(CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), "size_y"))
+				
+				dim Nombre_STR as string
+				Dim index_array as integer
+				dim char_values as string = CPCDOS_INSTANCE.Read_INI_value(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_path_ini(Nombre_police), "FONT_SIZE_" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, boucle), "char_size")
+				for char_index as integer = 1 to 1024
+				
+					if mid(char_values, char_index, 1) = "," then
+
+						if val(Nombre_STR) < 800 Then
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+						End if
+
+						index_array += 1
+						Nombre_STR = ""
+					else
+						' Si on arrive a la fin
+						if mid(char_values, char_index, 1) = "" then
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+
+							exit for ' bye bye pelo !
+						else
+							' On cumule lettre par lettre
+							Nombre_STR = Nombre_STR & mid(char_values, char_index, 1)
+						End if
+					End if
+				next char_index
 
 				loaded_ttf_config = true
 			Else
@@ -1853,32 +1879,43 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_Map() as boolean
 
 	return true
 
-	For Nombre_police as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
-		for boucle as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police)
-			DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(Nombre_police) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' WIDTH
-			DEBUG(" - WIDTH:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).width, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' HEIGHT
-			DEBUG(" - HEIGHT:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).height, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' ORG_X
-			DEBUG(" - ORG_X:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_x, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' ORG_Y
-			DEBUG(" - ORG_Y:" 	& CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).org_y, 	CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' SIZE_X
-			DEBUG(" - SIZE_X:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_x, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-
-			' SIZE_Y
-			DEBUG(" - SIZE_Y:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_y, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-		next boucle
-	Next Nombre_police
 
 
 	return true
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.font_len(byref text as string, police_name as string, police_size as integer) as integer
+
+	' This function allow to calculate size of font text
+
+	Dim police_size_index as integer = police_size
+	Dim police_name_index as integer = -1
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(police_size_index, police_name, police_name_index)
+
+	return font_len(text, police_size_index, police_name_index)
+
+End function
+
+Function _SYSTEME_Cpcdos_OSx__.font_len(byref text as string, police_size_index as integer, police_name_index as integer) as integer
+	' This function allow to calculate size of font text
+
+	if police_name_index >= 0 AND police_name_index >= 0 Then
+		dim SizeChar as integer
+		dim index_char as integer
+		for boucle_char as integer = 1 to len(text)
+			' Getting ASCII number char per char	
+
+			index_char = (asc(text, boucle_char) - 32)
+
+			SizeChar += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_char)
+
+		Next boucle_char
+
+		return SizeChar
+	End if
+
+	return -1
+
 End function
 
 Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byval font_name as string, byref font_name_index as integer)
@@ -1938,4 +1975,12 @@ sub _SYSTEME_Cpcdos_OSx__.debug_font(police_index as integer, size_index as inte
 	' SIZE_Y
 	DEBUG(" - SIZE_Y:" & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).size_y, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
+	DEBUG(" - CHAR_SIZES :", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	
+	Dim chaine as string
+	for index_array as integer = 0 to 128
+		chaine += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_index, size_index).size_char(index_array) & ","
+	next index_array
+	
+	DEBUG(chaine, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 end sub

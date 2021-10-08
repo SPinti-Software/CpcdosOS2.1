@@ -208,6 +208,7 @@ type _FONT_positionning
 	org_y	as integer
 	size_x	as integer
 	size_y	as integer
+	size_char (0 to 128) as integer
 end type
 
 Type _FONT_
@@ -819,7 +820,9 @@ Type _SYSTEME_Cpcdos_OSx__
 		Declare Function Convert_TTF_to_PNG		() as boolean
 		Declare Function Load_TTF_config		() as boolean
 		Declare Function Load_TTF_Map			() as boolean
-		Declare Sub font_check_array			(byref font_size as integer, byval font_name as string, byref font_name_index as integer)
+		Declare Sub 	 font_check_array		(byref font_size as integer, byval font_name as string, byref font_name_index as integer)
+		Declare Function font_len				(byref text as string, police_name as string, police_size as integer) as integer
+		Declare Function font_len				(byref text as string, police_size_index as integer, police_name_index as integer) as integer
 		declare sub 	 debug_font				(police_index as integer, size_index as integer)
 
 		Declare Constructor()
