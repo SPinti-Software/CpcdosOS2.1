@@ -21142,6 +21142,22 @@ _FIN_EXE_CCP_EXE:
 				' Activer la police d'ecriture
 				IF Instr(UCASE(Param), "/ENABLE") > 0 Then
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true
+
+					IF Instr(UCASE(Param), "/ALL:") > 0 Then
+						Dim police as string = Mid(Param, Instr(UCASE(Param), "/ALL:") + 5)
+
+
+						' Check if font exist
+						for verif as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+
+							if ucase(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(verif)) = ucase(police) Then
+
+								' If exist, put this font
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = ucase(CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(verif))
+
+							end if
+						next verif
+					End if
 				End if
 
 				' Desactiver la police d'ecriture

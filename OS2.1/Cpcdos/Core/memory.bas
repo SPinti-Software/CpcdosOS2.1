@@ -1098,7 +1098,9 @@ Function _memoire_bitmap.Modifier_BITMAP_texte(byval NumeroID as integer, Texte 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Modifier_BITMAP_texte() : Font enabled !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		end if
-		return Ecrire_ecran_font(NumeroID, Texte, 12, "Arial", PX, PY, R, V, B)
+		
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = "" Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
+		return Ecrire_ecran_font(NumeroID, Texte, 12, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
 	end if
 
 
@@ -1985,7 +1987,8 @@ Function _memoire_bitmap.Ecrire_ecran(byval ID_buffer as integer, byval Texte as
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran() : Font enabled !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		end if
-		return Ecrire_ecran_font(ID_buffer, Texte, 12, "Arial", PX, PY, R, V, B)
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = "" Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
+		return Ecrire_ecran_font(ID_buffer, Texte, 12, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
 	end if
 
 	' Permet d'ecrire du texte sur un l'ecran directement

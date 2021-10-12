@@ -231,6 +231,9 @@ Type _FONT_
 	font_sizes		(0 to 24, 0 to 24)	as integer	' List of font sizes per fonts png files
 
 	font_pos		(0 to 24, 0 to 24) as _FONT_positionning ' Positionning per fonts
+
+	' TEMPORAIRE!!!!
+	general_font as string = ""
 	
 end type
 
