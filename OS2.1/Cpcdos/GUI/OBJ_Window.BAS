@@ -710,6 +710,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
 						End if
 
 						' Ecrire titre dans le buffer
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran_font(CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID), )
 						Draw string CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(this.INST_INIT_GUI.GUI__FENETRE(_index_).BUFFER_WINDOW_IMG_ID), (0 + POS_TITRE_X, 0 + POS_TITRE_Y), Titre, RGB(Couleur_TITRE_R, Couleur_TITRE_V,Couleur_TITRE_B)
 					End if
 					
