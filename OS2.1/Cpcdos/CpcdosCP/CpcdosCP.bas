@@ -21112,10 +21112,10 @@ _FIN_EXE_CCP_EXE:
 			IF Instr(UCASE(Param), "/FONT") > 0 Then
 
 				IF Instr(UCASE(Param), "/WRITE") > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("Hello i'm Arial font", 12, "arial", 10, 10, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("In italic !", 12, "ariali", 10, 30, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("In comic sans ms BOLD!", 12, "comicbd", 10, 50, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font("And in IMPACT Tadaaaa !", 12, "impact", 10, 70, 255, 255, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "Hello i'm Arial font", 12, "arial", 10, 10, 255, 255, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "In italic !", 12, "ariali", 10, 30, 255, 255, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "In comic sans ms BOLD!", 12, "comicbd", 10, 50, 255, 255, 255)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "And in IMPACT Tadaaaa !", 12, "impact", 10, 70, 255, 255, 255)
 				End if
 
 				' Convertir les fichiers TTF en PNG		

@@ -64,6 +64,8 @@ set/ pos_y = 30
 set/ size_x = %CPC.SCR.X%
 set/ size_y = %CPC.SCR.Y%
 
+
+
 // Execute desktop function
 set/ handle_desktop = /F:Init_Desktop(MyDesktop, ./, %pos_x%, %pos_y%, %size_X%, %size_Y%)
 
@@ -86,7 +88,6 @@ sys/ /os:myos
 
 ' Load fonts from already converted TTF into TEMP/FONTS
 sys/ /debug = 2
-
 sys/ /font /load_cfg
 sys/ /font /load_map
 ' sys/ /font /write

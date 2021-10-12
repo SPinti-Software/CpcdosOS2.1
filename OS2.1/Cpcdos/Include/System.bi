@@ -397,9 +397,10 @@ Type _memoire_bitmap
 		Declare Function Ecrire_ecran_ml			(Texte as String, TableauLignes() as String, NombreLignes as integer, TypeRetourOct as integer, PX as integer, PY as integer, SX as integer, SY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		Declare Function Ecrire_ecran				(byval ID_buffer as integer, byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		' Declare Function trans_font 				(ByVal source_pixel As uinteger, ByVal destination_pixel As uinteger, ByVal parameter As Any Ptr ) As uinteger
-		HEX_color_volatile as ubyte
-		Declare Function Ecrire_ecran_font			(byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		HEX_color_volatile as uinteger
+		Declare Function Ecrire_ecran_font			(byval id_buffer as integer, byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Capture_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX as integer, SY as integer) as boolean
 		Declare Function Capture_bitmap				(byval NumeroID_source as integer, PX as integer, PY as integer, SX as integer, SY as integer) as any ptr

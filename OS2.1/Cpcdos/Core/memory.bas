@@ -39,11 +39,11 @@ Function _memoire_bitmap.Bloc_Libre() as integer
 End Function
 
 Function _memoire_bitmap.Creer_BITMAP(TX as integer, TY as integer, byval Handle as Integer) as integer
-	Function = Creer_BITMAP("_SANS_NOM_", TX, TY, 255, 000, 255, 255, Handle)
+	Function = Creer_BITMAP("_SANS_NOM_", TX, TY, 000, 000, 000, 0, Handle)
 End Function
 
 Function _memoire_bitmap.Creer_BITMAP(Nom as String, TX as integer, TY as integer, byval Handle as Integer) as integer
-	Function = Creer_BITMAP(Nom, TX, TY, 255, 000, 255, 255, Handle)
+	Function = Creer_BITMAP(Nom, TX, TY, 000, 000, 000, 0, Handle)
 End Function
 
 
@@ -1093,6 +1093,15 @@ End Function
 Function _memoire_bitmap.Modifier_BITMAP_texte(byval NumeroID as integer, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 	' Permet d'ecrire du texte sur un bitmap
 
+
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded = true AND CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true then
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("Modifier_BITMAP_texte() : Font enabled !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		end if
+		return Ecrire_ecran_font(NumeroID, Texte, 12, "Arial", PX, PY, R, V, B)
+	end if
+
+
 	if NumeroID > 0 then 
 		if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
 			DEBUG("Modifier_BITMAP_texte() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
@@ -1827,20 +1836,19 @@ Function color_font ( ByVal source_pixel As uinteger, ByVal destination_pixel As
 	if (source_pixel And &hffffff) <> &hffffff Then
 		Return source_pixel
 	else
-		DEBUG("[_memoire_bitmap] destination_pixel:" & destination_pixel & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-        Return destination_pixel
+        Return cuint((source_pixel AND &hff000000) OR (CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.HEX_color_volatile and &h00ffffff)) '(&h00991111 shr 8))'destination_pixel
     End If
 End Function
 
 
-Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 	' This allow to write to screen with font.
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[_memoire_bitmap] Ecrire_ecran_font() Texte:'" & Texte & "' font:" & police_name & " (" & police_size & ") " & " R:" & R & " V:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Ecrire_ecran_font() Bitmap ID:" & bitmap_id & " Texte:'" & Texte & "' font:" & police_name & " (" & police_size & ") " & " R:" & R & " V:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			Else
-				DEBUG("[_memoire_bitmap] Ecrire_ecran_font() Text:'" & Texte & "' font:" & police_name & " (" & police_size & ") " & " R:" & R & " G:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Ecrire_ecran_font() Bitmap ID:" & bitmap_id & " Text:'" & Texte & "' font:" & police_name & " (" & police_size & ") " & " R:" & R & " G:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			End if
 		End if
 
@@ -1927,6 +1935,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 			HEX_color_volatile = R
 			HEX_color_volatile = (HEX_color_volatile shl 8) + V
 			HEX_color_volatile = (HEX_color_volatile shl 8) + B
+
 			put Recuperer_BITMAP_PTR(buffer_text_font), (Texte_PX_accumulation, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY), Custom, @color_font
 
 			' Accumulation char size by char size
@@ -1940,10 +1949,21 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval Texte as String, police_size as
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran_font() : Writing " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & "] to screen", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End if
-		put (PX, PY), Recuperer_BITMAP_PTR(buffer_text_font), alpha
+
+		' Write on screen on directly on buffer
+		if bitmap_id > 0 Then
+			put Recuperer_BITMAP_PTR(bitmap_id), (PX, PY), Recuperer_BITMAP_PTR(buffer_text_font), alpha
+		else
+			put (PX, PY), Recuperer_BITMAP_PTR(buffer_text_font), alpha
+		End if
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran_font() : OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End if
+
+
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			DEBUG("Ecrire_ecran_font() : Clean buffers OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End if
 
 		return true
@@ -1954,26 +1974,33 @@ End function
 
 
 Function _memoire_bitmap.Ecrire_ecran(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+	return Ecrire_ecran(0, Texte, PX, PY, R, V, B)
+end function
+Function _memoire_bitmap.Ecrire_ecran(byval ID_buffer as integer, byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 	
 	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded = true AND CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true then
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran() : Font enabled !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		end if
-		return Ecrire_ecran_font(Texte, 12, "Arial", PX, PY, R, V, B)
+		return Ecrire_ecran_font(ID_buffer, Texte, 12, "Arial", PX, PY, R, V, B)
 	end if
 
 	' Permet d'ecrire du texte sur un l'ecran directement
 	IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[_memoire_bitmap] Ecrire_ecran() Texte:'" & Texte & "' " & " R:" & R & " V:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Ecrire_ecran() ID bitmap : " & ID_buffer & " Texte:'" & Texte & "' " & " R:" & R & " V:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			Else
-				DEBUG("[_memoire_bitmap] Ecrire_ecran() Texte:'" & Texte & "' " & " R:" & R & " G:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+				DEBUG("[_memoire_bitmap] Ecrire_ecran() ID bitmap : " & ID_buffer & "Texte:'" & Texte & "' " & " R:" & R & " G:" & V & " B:" & B & " " & PX & "x" & PY & " source PTR SCREEN[0x" & hex(CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_EcranPTR()) & "]", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 			End if
 		End if
 		
-		' Faire sorte a ce que le texte soit decoupe pour le multi-ligne ou non
-		Draw String (PX, PY), Texte, RGB(R, V, B)
+		if ID_buffer > 0 Then
+			' Faire sorte a ce que le texte soit decoupe pour le multi-ligne ou non
+			Draw String Recuperer_BITMAP_PTR(ID_buffer), (PX, PY), Texte, RGB(R, V, B)
+		Else
+			Draw String (PX, PY), Texte, RGB(R, V, B)
+		End if
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
