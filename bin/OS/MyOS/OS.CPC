@@ -89,7 +89,9 @@ sys/ /debug = 2
 
 sys/ /font /load_cfg
 sys/ /font /load_map
-sys/ /font /write
+' sys/ /font /write
+
+sys/ /font /enable
 
 
 

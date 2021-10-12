@@ -21121,7 +21121,7 @@ _FIN_EXE_CCP_EXE:
 				' Convertir les fichiers TTF en PNG		
 				IF Instr(UCASE(Param), "/LOAD_TTF") > 0 Then
 					if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Convert_TTF_to_PNG() = true Then
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true
+						
 					else
 						
 					End if
@@ -21136,6 +21136,7 @@ _FIN_EXE_CCP_EXE:
 
 				IF Instr(UCASE(Param), "/LOAD_MAP") > 0 Then
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Load_TTF_Map()
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded = true
 				End if
 				
 				' Activer la police d'ecriture

@@ -321,7 +321,15 @@ type _buffer_jpg_RESAMPLE_
 	as integer ypos
 end type
 
+#macro hex2rgb(h, r,g,b)
+    r = h shr 16 and 255
+    g = h shr 8 and 255
+    b = h and 255
+#endmacro
 
+#macro rgb2hex(h, r,g,b)
+    h = "&H" & hex( r shl 16 or g shl 8 or b )
+#endmacro
 
 ' Cette structure permet de gerer le blocde memoire bitmap
 Type _memoire_bitmap
@@ -389,6 +397,8 @@ Type _memoire_bitmap
 		Declare Function Ecrire_ecran_ml			(Texte as String, TableauLignes() as String, NombreLignes as integer, TypeRetourOct as integer, PX as integer, PY as integer, SX as integer, SY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		' Declare Function trans_font 				(ByVal source_pixel As uinteger, ByVal destination_pixel As uinteger, ByVal parameter As Any Ptr ) As uinteger
+		HEX_color_volatile as ubyte
 		Declare Function Ecrire_ecran_font			(byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		
 		Declare Function Capture_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX as integer, SY as integer) as boolean
