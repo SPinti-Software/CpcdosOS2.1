@@ -87,12 +87,12 @@ sys/ /os:myos
 
 
 ' Load fonts from already converted TTF into TEMP/FONTS
-sys/ /debug = 2
-sys/ /font /load_cfg
-sys/ /font /load_map
-' sys/ /font /write
+' sys/ /debug = 2
+' sys/ /font /load_cfg
+' sys/ /font /load_map
+' sys/ /font /write (test on screen)
 
-sys/ /font /enable
+' sys/ /font /enable
 
 
 

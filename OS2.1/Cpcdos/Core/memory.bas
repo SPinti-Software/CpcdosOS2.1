@@ -1929,7 +1929,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 			' Writing char into final buffer with his position
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-				DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & ". At " & Texte_PX_accumulation & " in X.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & "] at " & Texte_PX_accumulation & " in X.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			End if
 
 			HEX_color_volatile = R
@@ -1962,7 +1962,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		End if
 
 		' Clean buffers
-		Supprimer_BITMAP(bitmap_id)
+		Supprimer_BITMAP(buffer_char)
 		Supprimer_BITMAP(buffer_text_font)
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
