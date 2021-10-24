@@ -5,7 +5,7 @@
 This is the official repository for the co-kernel Cpcdos OSx.
 This version will be maintained until the release of version [OS2.2](https://github.com/SPinti-Software/CpcdosOS2.2). (Without FreeDos)
 
-The repository was created on 15 July 2011.
+This repository was created on 15 July 2011.
 The source code was officially released on 09 January 2021.
 
 #### Information
@@ -53,20 +53,21 @@ Join the [Cpcdos discord](https://discord.com/invite/3Qm8xDp)
  - Chrapati - Hexac System + Tutorials and help for the community 
 
 ### Ultima testers & OS Cpcdos developers
- - Léo VACHET - One of the father of CraftyOS/GoatOS
- - Timothée LUSSIAUD - Another father of CraftyOS/GoatOS
+ - Léo VACHET - One of the fathers of CraftyOS/GoatOS
+ - Timothée LUSSIAUD - Another fathers of CraftyOS/GoatOS
  - Simon MICHENAUD ([SimonDevelop](https://www.simon-micheneau.fr/about)) - Main backend integrator of the website.
  - Esteban CADIC ([Estylo](https://systeme.developpez.com/actu/97935/Apprendre-a-integrer-Cpcdos-Raspberry-Pi-Arduino-une-proposition-de-Estylos/)) - Main moderator of the [Discord group](https://discord.com/invite/3Qm8xDp)
  - 04Kylian - FireFlyOS
  - Nadir - MineOSX
  - PokeCraft - LeviathanOS
- - iplux - MaverickOS
+ - iplux - protonOS
  - FicelleYTB
  - Climax
  - D3nX
  - Léo ENDOR
  - NiceY0mi - NoobOS
- - vip181
+ - vip181 - VactOS
+ - Climoux - WondorOS
 
 [You can find a more complete list of the contributors here](https://cpcdos.net/fr/contributors)
 
