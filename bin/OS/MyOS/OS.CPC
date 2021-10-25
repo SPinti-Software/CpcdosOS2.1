@@ -86,10 +86,12 @@ refresh/ /all
 sys/ /os:myos
 
 
+'sys/ /debug = 2
+
 ' Load fonts from already converted TTF into TEMP/FONTS
-' sys/ /font /load_cfg
-' sys/ /font /load_map
-' sys/ /font /write (test on screen)
+'sys/ /font /load_cfg
+'sys/ /font /load_map
+'sys/ /font /write (test on screen)
 
 ' sys/ /font /enable /all:impact
 

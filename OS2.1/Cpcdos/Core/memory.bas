@@ -1908,7 +1908,13 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 				PosCharPX += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(compter_size_x)
 			next compter_size_x
 			
-			dim PosCharPY as integer = (font_PY) - 3
+			dim PosCharPY as integer = font_PY
+			if font_PY >= 3 then
+				 PosCharPY = (font_PY) - 3
+			elseif font_PY = 2 then
+				PosCharPY = 1
+			End if
+
 
 			Dim Siz_CharSX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_char)
 			Dim Siz_CharSY as integer = font_SY
@@ -1988,7 +1994,7 @@ Function _memoire_bitmap.Ecrire_ecran(byval ID_buffer as integer, byval Texte as
 			DEBUG("Ecrire_ecran() : Font enabled !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		end if
 		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = "" Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
-		return Ecrire_ecran_font(ID_buffer, Texte, 12, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
+		return Ecrire_ecran_font(ID_buffer, Texte, 8, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
 	end if
 
 	' Permet d'ecrire du texte sur un l'ecran directement
