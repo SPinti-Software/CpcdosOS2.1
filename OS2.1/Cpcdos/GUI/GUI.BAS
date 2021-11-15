@@ -83,6 +83,8 @@ Function _SCI_Cpcdos_OSx__.Initialiser_GUI__ImGUI(Arg1 as integer, RetourVAR_ as
 		Dim ImGUI__Thread as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("ImGUI__Thread", 4, _CLE_))
 	End if
 
+	return Test_Resolution
+
 End function
 
 
