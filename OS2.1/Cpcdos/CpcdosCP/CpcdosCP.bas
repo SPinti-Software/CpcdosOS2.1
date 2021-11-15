@@ -3603,6 +3603,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					DEBUG("[CpcdosC+] Launching graphic interface (OSid:" & NumeroOS & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 				End if
 			END IF
+
+			
 			
 			IF instr(ucase(Param), "/MULTI-PICTUREBOX") > 0 Then
 				CPCDOS_INSTANCE.SCI_INSTANCE.MULTI_PICTUREBOX = 1
@@ -3699,6 +3701,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				exit _scope_CMD, _scope
 			End if
 
+			IF instr(ucase(Param), "/IMGUI") > 0 Then
+				CPCDOS_INSTANCE.SCI_INSTANCE.IMGUI_mode = true
+			end if
+
 			
 			IF instr(ucase(Param), "/OS") > 0 Then
 				Dim NomOS as String = Mid(Ucase(Param), instr(ucase(Param), "/OS") + 4)
@@ -3765,22 +3771,41 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				End if
 			else
 			
-				if CPCDOS_INSTANCE.SCI_INSTANCE.Initialiser_GUI(0, RetourVAR, _CLE_) = 1 then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Interface graphique initialise!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] Graphic interface initialised!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+				if CPCDOS_INSTANCE.SCI_INSTANCE.IMGUI_mode = true Then
+					if CPCDOS_INSTANCE.SCI_INSTANCE.Initialiser_GUI__ImGUI(0, RetourVAR, _CLE_) = 1 then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Interface graphique ImGUI initialise!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] ImGUI graphic interface initialised!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					else
+
+						Message_erreur = ERRAVT("ERR_049", 0)
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Erreur d'initialisation de ImGUI", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Unable to initialise the ImGUI", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
 					End if
-					
-					
 				else
-					Message_erreur = ERRAVT("ERR_049", 0)
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Erreur d'initialisation de l'IUG", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Unable to initialise the GUI", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
-					End if
-				end if
+
+					if CPCDOS_INSTANCE.SCI_INSTANCE.Initialiser_GUI(0, RetourVAR, _CLE_) = 1 then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Interface graphique initialise!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] Graphic interface initialised!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+						
+						
+					else
+						Message_erreur = ERRAVT("ERR_049", 0)
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Erreur d'initialisation de l'IUG", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] ERR_049: " & Message_erreur & ". Unable to initialise the GUI", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
+					end if
+				End if
 			End if ' Si numero OS < 0
 
 			' ====================================================================

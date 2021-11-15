@@ -19,6 +19,73 @@
 #include once "Cpcdos.bi"
 
 #print * Initaliser GUI
+
+
+Function _SCI_Cpcdos_OSx__.Initialiser_GUI__ImGUI(Arg1 as integer, RetourVAR_ as String, _CLE_ as double) as integer
+
+
+	ENTRER_SectionCritique()
+	
+	Dim Test_Resolution 	as Integer
+	Dim var_SCR_BIT 		as integer
+	Dim tmpKernelID			as uinteger
+	Dim tmpOSID				as uinteger
+	Dim tmpTID				as uinteger
+	Dim tmpPID	 			as uinteger
+	dim tmpUSERID			as uinteger
+	
+	Dim var_SCR_RES 		as string
+	
+	
+	this.RetourVAR = RetourVAR_
+	
+	tmpKernelID = CPCDOS_INSTANCE.get_id_kernel(_CLE_)
+	tmpOSID 	= CPCDOS_INSTANCE.get_id_OS(_CLE_)
+	tmpTID 		= CPCDOS_INSTANCE.get_id_TID(_CLE_)
+	tmpPID 		= CPCDOS_INSTANCE.get_id_PID(_CLE_)
+	tmpUSERID 	= CPCDOS_INSTANCE.get_id_Utilisateur(_CLE_)
+	
+	this._CLE_ = _CLE_
+	
+	
+	' Definit le nouvel ID os depuis la CLE
+	set_OSid(tmpOSID)
+	
+	' Valider l'execution depuis ID os
+	CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec_os(tmpOSID) = True
+	
+	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+		DEBUG("[GUI] Initialisation de la GUI [OS:" & tmpOSID & " 0x" & hex(_CLE_, 8) & "].", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	Else
+		DEBUG("[GUI] GUI Initialisation [OS:" & tmpOSID & " 0x" & hex(_CLE_, 8) & "].", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	End if
+	
+	' Recupere la resolution dans les variables utilisateurs
+	var_SCR_RES	= UCASE(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("SCR_RES", 4, _CLE_))
+	var_SCR_BIT	= Val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("SCR_BIT", 4, _CLE_))
+	
+	
+	DEBUG("[GUI] " & var_SCR_RES & " " & var_SCR_BIT & " bits", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	
+	' Tester et initialiser la resolution d'ecran
+	Test_Resolution = Initialiser_ECRAN(var_SCR_RES, var_SCR_BIT)
+
+	CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = FALSE
+	CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = false
+
+	
+
+
+	DEBUG("[GUI] Return " & Test_Resolution, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+	
+	if Test_Resolution > 0 Then
+		CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("@#ImGUI__Thread cmd/ /thread[MAX] exe/ /Win32 tests/imgui.exe", _CLE_, 4, 0, "")
+		Dim ImGUI__Thread as integer = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("ImGUI__Thread", 4, _CLE_))
+	End if
+
+End function
+
+
 Function _SCI_Cpcdos_OSx__.Initialiser_GUI(Arg1 as integer, RetourVAR_ as String, _CLE_ as double) as integer
 	' Cette fonction va permettre d'initialiser l'interface graphique
 	' Declarer les variables

@@ -988,6 +988,7 @@ Type _SCI_Cpcdos_OSx__
 		GUI_Exec 			as boolean ' 0:Non charge  1:Charge
 		GUI_Exec_os			(0 to _MAX_NOMBRE_OS) as boolean
 		GUI_Mode 			as boolean ' 0:Non affiche 1:Affiche
+		IMGUI_mode			as boolean ' 0:non  1:yes
 		
 		UTF8_INSTANCE 		as __UTF8_Cpcdos_OSx__	' Gestion UTF-8
 		
@@ -995,6 +996,8 @@ Type _SCI_Cpcdos_OSx__
 		Declare Sub 	 Blitter_Video				()
 		Declare Sub 	 Blitter_Video				(byval Pos_X as integer, Pos_Y as integer, SourisPresente as integer)
 		Declare Function Initialiser_GUI			(Arg1 as integer, RetourVAR_ as String, _CLE_ as double)	as integer
+		Declare Function Initialiser_GUI__ImGUI		(Arg1 as integer, RetourVAR_ as String, _CLE_ as double) as integer
+
 		Declare Sub 	 IUG_Updater				(Type_IUG as integer, index as integer, index_PID as integer)
 		Declare Function CPC__GUI_Init_obj			(Type_De_GUI as Integer, _Proprietes as CPCDOS_GUI_INIT__, _CLE_ as uinteger, Modification_GUI as boolean,  _INDEX_MODIF_ as integer)as Integer
 		Declare Function CPC__GUI_SUPPRIMER_bitmaps_fenetre(_INDEX_FENETRE_ as integer, clean_memory as boolean, reset_id as boolean, objets as boolean) as Integer

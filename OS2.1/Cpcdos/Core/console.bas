@@ -171,7 +171,7 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 				
 					
 					
-					if NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
+					if NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.IMGUI_mode = true THEN
 						' Graphique N'EST pas en cours d'execution
 
 
@@ -201,7 +201,7 @@ Function _CONSOLE_Cpcdos_OSx__.MAIN_Console Alias "MAIN_Console"(byval thread_st
 						
 						' Touche CTRL + PrintScreen - Capture d'ecran
 						if Touche_Inkey = CHR(16) Then
-							if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE THEN
+							if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = TRUE AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = TRUE OR CPCDOS_INSTANCE.SCI_INSTANCE.IMGUI_mode = true THEN
 								CPCDOS_INSTANCE.Screenshot(_CLE_)
 							End if
 						End if
