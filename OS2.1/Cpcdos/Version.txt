@@ -1,6 +1,6 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.6         *** 
-	***       00 Novembre 2021 For public     ***
+	***       00 Fevrier 2021 For public      ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 
 	#################
@@ -10,7 +10,7 @@
 		--> 2	Ajouts de divers fonctionnalités.
 		--> 0	corrections importantes.
 		--> 0	optimisations.
-		--> 1	corrections et modifications mineures.
+		--> 2	corrections et modifications mineures.
 
 		--> Gain de stabilité : +0%
 		--> Note de stabilité : 14/20
@@ -33,7 +33,7 @@
 	#############################
 	
 		[AJOUTS]
-			- [SYSTEME] Possibilité de charger et utiliser des polices d'écriture au format TTF.
+			- [SYSTEME] Possibilité de charger et utiliser des polices d'écriture au format TTF. !!! INSTABLE !!!
 			- [Win32] Affichage de la coloration en mode console en respectant les critères suivante
 				A:  Action
 				P:  Pass
@@ -42,10 +42,14 @@
 				L:  Log
 				W:  Warning
 				E:  Error
+			
+
 	
 
 		[CORRECTIONS]
 			- [CPCDOS] Correction de l'oubli de la propriété ListBox lors de l'appel de la fonction getHandleType()
+			- [CPCDOSC+] Correction de la variable %exe_path_dir% qui affichait le path du fichier quand "/" était utilisé
+						 dans la fin du path
 
 		
 		[MODIFICATIONS]

@@ -12882,7 +12882,32 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						
 						CpcdosCP_SHELL("SET/ _EXE_PATH_ = " & Param, Nouvelle_Cle, 2, Param_1, Param_2)
 						
-						CpcdosCP_SHELL("SET/ _EXE_PATH_DIR_ = " & Mid(Param, 1, INSTRREV(Param, "\") - 1), Nouvelle_Cle, 2, Param_1, Param_2)
+						dim exe_path_dir_tmp as string 
+						if INSTRREV(Param, "\") > 0 then
+							if INSTRREV(Param, "/") > 0 Then
+								if INSTRREV(Param, "/") > INSTRREV(Param, "\") Then ' Si / et \ son present sur la meme ligne
+									exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "/") - 1) ' S'arreter avant le dernier /
+								elseif INSTRREV(Param, "/") < INSTRREV(Param, "\") Then
+									exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "\") - 1) ' S'arreter avant le dernier \
+								End if
+							else
+								exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "\") - 1) ' S'arreter avant le dernier \
+							End if
+						elseif INSTRREV(Param, "/") > 0 then
+
+							if INSTRREV(Param, "/") > 0 Then
+								if INSTRREV(Param, "/") > INSTRREV(Param, "\") Then ' Si / et \ son present sur la meme ligne
+									exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "/") - 1) ' S'arreter avant le dernier /
+								elseif INSTRREV(Param, "/") < INSTRREV(Param, "\") Then
+									exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "\") - 1) ' S'arreter avant le dernier \
+								End if
+							else
+								exe_path_dir_tmp = Mid(Param, 1, INSTRREV(Param, "/") - 1) ' S'arreter avant le dernier /
+							End if
+
+						end if
+
+						CpcdosCP_SHELL("SET/ _EXE_PATH_DIR_ = " & exe_path_dir_tmp, Nouvelle_Cle, 2, Param_1, Param_2)
 						
 						CpcdosCP_SHELL("SET/ _EXE_PID_ = " & Auth_PID , Nouvelle_Cle, 2, Param_1, Param_2)
 						
