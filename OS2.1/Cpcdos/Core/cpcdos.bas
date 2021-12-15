@@ -1960,6 +1960,20 @@ public function __Noyau_Cpcdos_OSx__.Screenshot(_cle_ as double) as boolean
 	return true
 End function
 
+public function __Noyau_Cpcdos_OSx__.encrypt_message(message as string) as string
+	' This function allow to to encrypt text with simple function
+
+	dim enc_message as String = space(len(message))
+	dim final_message as string
+	for index as integer = 0 to len(message)-1
+    	enc_message[index] = message[index] xor int((index+len(message)) * 64)
+		final_message = enc_message[index] & final_message
+	next index
+
+	return final_message
+
+end function
+
 public sub __Noyau_Cpcdos_OSx__.tester_erreur_memoire()
 	SCOPE
 		Dim testerreur as boolean = false

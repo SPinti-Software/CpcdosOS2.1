@@ -2326,6 +2326,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			TXT_Date 	= CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate
 			TXT_Couleur = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal
 
+			IF Instr(UCASE(Param), "/#ENCRYPT") > 0 Then
+				Param = MID(Param, 1, Instr(UCASE(Param), "/#ENCRYPT") - 1) 
+
+				' Encrypt message
+				Param = CPCDOS_INSTANCE.encrypt_message(Param)
+			End if
+
 			IF Instr(UCASE(Param), "/#R") > 0 Then
 				Param = MID(Param, 1, Instr(UCASE(Param), "/#R") - 1) ' /#R pour que le texte reste sur la ligne
 				TXT_CRLF = CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF

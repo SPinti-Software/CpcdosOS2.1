@@ -230,7 +230,7 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "CpcdosCP.bi"
 
 
-CONST _VJOUR as string 	= "01" 
+CONST _VJOUR as string 	= "15" 
 CONST _VMOIS as string 	= "12"
 CONST _VANNEE as string = "2021"
 
@@ -633,7 +633,9 @@ Type __Noyau_Cpcdos_OSx__
 		' Capture d'ecran
 		Declare function 	Screenshot(_cle_ as double)																				as boolean
 		
-		
+		' Simple encryption
+		Declare function encrypt_message(message as string) 																		as string
+
 		Declare sub tester_erreur_memoire()
 		
 		' *** Constructeur/Desctructeur ***

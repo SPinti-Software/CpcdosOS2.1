@@ -1,13 +1,13 @@
 	= = = = = = = = = = = = = = = = = = = = = = =
 	***         Cpcdos OS2.1 BETA 1.6         *** 
-	***       00 Fevrier 2021 For public      ***
+	***       00 Mars 2021 For public      ***
 	= = = = = = = = = = = = = = = = = = = = = = =
 
 	#################
 	#### En bref ####
 	#################
 
-		--> 2	Ajouts de divers fonctionnalités.
+		--> 3	Ajouts de divers fonctionnalités.
 		--> 0	corrections importantes.
 		--> 0	optimisations.
 		--> 2	corrections et modifications mineures.
@@ -33,6 +33,7 @@
 	#############################
 	
 		[AJOUTS]
+			- [CPCDOS] Ajout d'un encryption XOR simple pour les mots de passes en utilisant les égalités.
 			- [SYSTEME] Possibilité de charger et utiliser des polices d'écriture au format TTF. !!! INSTABLE !!!
 			- [Win32] Affichage de la coloration en mode console en respectant les critères suivante
 				A:  Action
