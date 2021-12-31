@@ -6,8 +6,8 @@
 ' Mise a jour le 17/10/2016
 
 
-#include once "Cpcdos.bi"
-#include once "UTF8.bi"	' Gestion UTF-8
+#include once "cpcdos.bi"
+#include once "utf8.bi"	' Gestion UTF-8
 
 Constructor __UTF8_Cpcdos_OSx__()
 	DEBUG(" * Instanciation du module UTF-8 --> Allocation offset:0x" & hex(@this) & " Taille:" & SizeOf(this) & " octets", 1, 1, 2, 0, 0, 1, 0, "")

@@ -13,16 +13,16 @@
 ' 26-10-2017	: AJOUT du support d'actualisation graphique du textebox et l'interaction clavier de base
 ' 06-07-2017	: Ajout des interacton indirect evenementielles KeyPress() et KeyPress(valeur)
 ' 01-06-2017	: Ajout des modes d'affichage du fond d'ecran
-'					0 : Remplir l'écran (PAR DEFAUT)
-'					1 : Image ajusté à l'écran 
+'					0 : Remplir l'ï¿½cran (PAR DEFAUT)
+'					1 : Image ajustï¿½ ï¿½ l'ï¿½cran 
 '					2 : Vignettes (02-06-2017)
-'					3 : Image brute centré
+'					3 : Image brute centrï¿½
 '					4 : Image brute
 
 ' 19-05-2017	: Readaptation du PNG et le picturebox
 
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 #print
 #print ============ Interface Utilisateur Graphique ==============
@@ -51,7 +51,7 @@ Function _SCI_Cpcdos_OSx__.Initialiser_ECRAN(Res_X as integer, Res_Y as integer,
 	dim Message_erreur as String
 	
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[SCI] Test de la r‚solution " & Res_X & "x" & Res_Y & "x" & Bits & " ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
+		DEBUG("[SCI] Test de la rï¿½solution " & Res_X & "x" & Res_Y & "x" & Bits & " ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 	Else
 		DEBUG("[SCI] Testing screen resolution " & Res_X & "x" & Res_Y & "x" & Bits & " ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 	End if
@@ -69,7 +69,7 @@ Function _SCI_Cpcdos_OSx__.Initialiser_ECRAN(Res_X as integer, Res_Y as integer,
 						' ************ RESOLUTION SUPPORTEE ************
 						
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[SCI] R‚solution compatible avec votre carte graphique. Tentative d'application...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
+							DEBUG("[SCI] Rï¿½solution compatible avec votre carte graphique. Tentative d'application...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 						Else
 							DEBUG("[SCI] Screen resolution is compatible with your graphique card. Attempted ...", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 						End if
@@ -84,7 +84,7 @@ Function _SCI_Cpcdos_OSx__.Initialiser_ECRAN(Res_X as integer, Res_Y as integer,
 
 							' ************ OK FRANCKY ************
 							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-								DEBUG("[SCI] Resolution " & Res_X & "x" & Res_Y & "x" & Bits & " appliqu‚e avec succes!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
+								DEBUG("[SCI] Resolution " & Res_X & "x" & Res_Y & "x" & Bits & " appliquï¿½e avec succes!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 							Else
 								DEBUG("[SCI] Screen resolution " & Res_X & "x" & Res_Y & "x" & Bits & " applied with succes!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CONS, this.RetourVAR )
 							End if
@@ -130,7 +130,7 @@ Function _SCI_Cpcdos_OSx__.Initialiser_ECRAN(Res_X as integer, Res_Y as integer,
 
 						' ************ Elle n'est pas disponible ************
 						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-							DEBUG("[SCI] La r‚solution de " & Res_X & "x" & Res_Y & "x" & Bits & " n'est pas support‚ par votre systeme.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+							DEBUG("[SCI] La rï¿½solution de " & Res_X & "x" & Res_Y & "x" & Bits & " n'est pas supportï¿½ par votre systeme.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 						Else
 							DEBUG("[SCI] Screen resolution " & Res_X & "x" & Res_Y & "x" & Bits & " isn't compatible with your system.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 						End if
@@ -213,7 +213,7 @@ Function _SCI_Cpcdos_OSx__.charger_Curseurs_properties() as boolean
 
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-		DEBUG("[SCI] Proprietes du curseurs graphiques chargés !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+		DEBUG("[SCI] Proprietes du curseurs graphiques chargï¿½s !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 	Else
 		DEBUG("[SCI] Gui cursors properties loaded !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 	End if
@@ -274,7 +274,7 @@ Function _SCI_Cpcdos_OSx__.charger_Curseurs(Handle as integer) as integer
 
 
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-			DEBUG("[SCI] Curseurs graphiques chargés !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
+			DEBUG("[SCI] Curseurs graphiques chargï¿½s !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 		Else
 			DEBUG("[SCI] Loaded gui cursors !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, this.RetourVAR )
 		End if
@@ -348,7 +348,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 		Hauteur = CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_y(ImageID)
 
 
-		' MODE 0 : Remplir l'écran (PAR DEFAUT)
+		' MODE 0 : Remplir l'ï¿½cran (PAR DEFAUT)
 		If SCR_IMG_MODE = 0 Then
 			
 			' Chercher le plus petit axe
@@ -371,7 +371,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 			End if
 		
 			
-		' MODE 1 : Image ajusté à l'écran 
+		' MODE 1 : Image ajustï¿½ ï¿½ l'ï¿½cran 
 		ElseIf SCR_IMG_MODE = 1 Then
 
 			' On cherche le plus grand axe pour le retrecir jusqu'au bords de l'ecran en
@@ -399,7 +399,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 
 			End if
 		
-		' MODE 2 : Adapté à l'écran (peut deformer l'image)
+		' MODE 2 : Adaptï¿½ ï¿½ l'ï¿½cran (peut deformer l'image)
 		ElseIf SCR_IMG_MODE = 2 Then
 			PosX = 0
 			PosY = 0
@@ -440,7 +440,7 @@ Function _SCI_Cpcdos_OSx__.charger_Fond(CHEMIN as String, Handle as integer) as 
 			ImageID = ImageID_FOND
 		
 		
-		' MODE 4 : Image brute centré
+		' MODE 4 : Image brute centrï¿½
 		ElseIF SCR_IMG_MODE = 4 Then
 			PosX = int((CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_X() / 2) - (Largeur / 2))
 			PosY = int((CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_Resolution_Y() / 2) - (Hauteur / 2))
@@ -2612,7 +2612,7 @@ End function
 
 Function _SCI_Cpcdos_OSx__.FILE_FORMAT_load_icons() as boolean ' ID : 11111
 	' Cette fonction permet de charger les icones graphiques des formats de fichiers :)
-	' Bien qu'il soit evident qu'il faut que la commande SYS/ /fileformat-update soit executée
+	' Bien qu'il soit evident qu'il faut que la commande SYS/ /fileformat-update soit executï¿½e
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		DEBUG("[SCI] FILE_FORMAT_load_icons() Chargement des icones graphiques.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")

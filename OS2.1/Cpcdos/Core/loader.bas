@@ -1,7 +1,7 @@
 #print
 #print ============ KRNL_LDR ==============
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 ' Cle d'authentification des donnees en niveau. 
 ' ex : 

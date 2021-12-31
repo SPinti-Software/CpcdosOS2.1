@@ -5,7 +5,7 @@
 ' Reecriture le 15/10/2018
 ' Mise a jour le 05/03/2021
 
-' 05-02-2021	: Ajout des conditions de securité
+' 05-02-2021	: Ajout des conditions de securitï¿½
 ' 15-10-2018	: Adaptation en beta 2.1
 ' 19-01-2018	: AJOUT du garbage collector pour les bitmaps (GUI)
 ' 17-11-2017 	: AJOUT du gestionnaire de bitmaps
@@ -14,7 +14,7 @@
 
 #print * GESTIONNAIRE MEMOIRE BITMAP
 
-#include once "Cpcdos.bi"	' Declaration/Fonctions communs
+#include once "cpcdos.bi"	' Declaration/Fonctions communs
 ' =====================================================================================
 '   							M E M O I R E   B I T M A P
 ' =====================================================================================
@@ -1944,7 +1944,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			HEX_color_volatile = (HEX_color_volatile shl 8) + V
 			HEX_color_volatile = (HEX_color_volatile shl 8) + B
 
-			put Recuperer_BITMAP_PTR(buffer_text_font), (Texte_PX_accumulation, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY), Custom, @color_font
+			' put Recuperer_BITMAP_PTR(buffer_text_font), (Texte_PX_accumulation, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY), Custom, @color_font
 
 			' Accumulation char size by char size
 			Texte_PX_accumulation += Siz_CharSX

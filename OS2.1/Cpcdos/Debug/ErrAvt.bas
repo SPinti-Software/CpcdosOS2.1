@@ -4,7 +4,7 @@
 ' Reecriture le 19/01/2017
 ' Mise a jour le 16/10/2018
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 #define _scope do
 #define _end_scope loop while 0
@@ -32,11 +32,11 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "001") > 0 THEN
-			TXTERREUR = "Avertissement, M‚moire, D‚passement des limites m‚moire attribu‚. Pour executer votre application, fermez quelques fenetres"
+			TXTERREUR = "Avertissement, Mï¿½moire, Dï¿½passement des limites mï¿½moire attribuï¿½. Pour executer votre application, fermez quelques fenetres"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "002") > 0 THEN
-			TXTERREUR = "Avertissement, M‚moire insuffisante pour executer cette action."
+			TXTERREUR = "Avertissement, Mï¿½moire insuffisante pour executer cette action."
 			exit _scope
 		END if
 		IF INSTR(Erreur, "003") > 0 THEN
@@ -44,19 +44,19 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "004") > 0 THEN
-			TXTERREUR = "Avertissement, Longeur chaine du nom de la variable d‚pass‚ (35 octets)"
+			TXTERREUR = "Avertissement, Longeur chaine du nom de la variable dï¿½passï¿½ (35 octets)"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "005") > 0 THEN
-			TXTERREUR = "Avertissement, Longueur chaine de la variable d‚pass‚ (255 000 Octets)"
+			TXTERREUR = "Avertissement, Longueur chaine de la variable dï¿½passï¿½ (255 000 Octets)"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "006") > 0 THEN
-			TXTERREUR = "Avertissement, Cr‚ation d'objet non d‚clar‚"
+			TXTERREUR = "Avertissement, Crï¿½ation d'objet non dï¿½clarï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "007") > 0 THEN
-			TXTERREUR = "Avertissement, Creation d'objet non ferm‚"
+			TXTERREUR = "Avertissement, Creation d'objet non fermï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "008") > 0 THEN
@@ -76,11 +76,11 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "011") > 0 THEN
-			TXTERREUR = "Avertissement, SystŠme d'Op‚ration non d‚clar‚ !"
+			TXTERREUR = "Avertissement, Systï¿½me d'Opï¿½ration non dï¿½clarï¿½ !"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "012") > 0 THEN
-			TXTERREUR = "Avertissement, Nom de fenˆtre existante"
+			TXTERREUR = "Avertissement, Nom de fenï¿½tre existante"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "013") > 0 THEN
@@ -116,7 +116,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "019") > 0 THEN
-			TXTERREUR = "Avertissement, si/ : l'op‚rateur est manquant"
+			TXTERREUR = "Avertissement, si/ : l'opï¿½rateur est manquant"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "020") > 0 THEN
@@ -128,27 +128,27 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "022") > 0 THEN
-            TXTERREUR = "Avertissement, Le nom n'a pas pu ˆtre r‚solu"
+            TXTERREUR = "Avertissement, Le nom n'a pas pu ï¿½tre rï¿½solu"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "023") > 0 THEN
-            TXTERREUR = "Avertissement, Aucun pilote de la carte r‚seau est install‚"
+            TXTERREUR = "Avertissement, Aucun pilote de la carte rï¿½seau est installï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "024") > 0 THEN
-            TXTERREUR = "Avertissement, Pas de r‚ponse"
+            TXTERREUR = "Avertissement, Pas de rï¿½ponse"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "025") > 0 THEN
-            TXTERREUR = "Avertissement, R‚pertoire r‚seau non disponible"
+            TXTERREUR = "Avertissement, Rï¿½pertoire rï¿½seau non disponible"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "026") > 0 THEN
-             TXTERREUR = "Avertissement, Lecteur r‚seau introuvable"
+             TXTERREUR = "Avertissement, Lecteur rï¿½seau introuvable"
 			exit _scope
 		END if
         IF INSTR(Erreur, "027") > 0 THEN
-			TXTERREUR = "Avertissement, Lecteur non specifi‚"
+			TXTERREUR = "Avertissement, Lecteur non specifiï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "028") > 0 THEN
@@ -156,7 +156,7 @@ _scope
 			exit _scope
 		END if
         IF INSTR(Erreur, "029") > 0 THEN
-			TXTERREUR = "Avertissement, D‚passement des limites fix‚s"
+			TXTERREUR = "Avertissement, Dï¿½passement des limites fixï¿½s"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "030") > 0 THEN
@@ -176,7 +176,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "034") > 0 THEN
-			TXTERREUR = "Avertissement, bloc de m‚moire DOS libre ‚chou‚"
+			TXTERREUR = "Avertissement, bloc de mï¿½moire DOS libre ï¿½chouï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "035") > 0 THEN
@@ -188,7 +188,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "037") > 0 THEN
-			TXTERREUR = "Avertissement, allocation ‚chou‚e"
+			TXTERREUR = "Avertissement, allocation ï¿½chouï¿½e"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "038") > 0 THEN
@@ -200,7 +200,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "040") > 0 THEN
-			TXTERREUR = "Avertissement, aucun service en ex‚cution"
+			TXTERREUR = "Avertissement, aucun service en exï¿½cution"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "041") > 0 THEN
@@ -208,7 +208,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "042") > 0 THEN
-			TXTERREUR = "Avertissement, structure d'‚v‚nement du fichier incorecte"
+			TXTERREUR = "Avertissement, structure d'ï¿½vï¿½nement du fichier incorecte"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "043") > 0 THEN
@@ -249,7 +249,7 @@ _scope
 		END if
 		IF INSTR(Erreur, "050") > 0 THEN
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then 
-				TXTERREUR = "Avertissement, vous ne pouvez pas cr‚er une variable en la supprimant, STOP DRINKING :-P"
+				TXTERREUR = "Avertissement, vous ne pouvez pas crï¿½er une variable en la supprimant, STOP DRINKING :-P"
 			ELSE
 				TXTERREUR = "Warning, hm.. you can't delete AND create a variable, STOP DRINKING :-P"
 			END IF
@@ -281,7 +281,7 @@ _scope
 		END if
 		IF INSTR(Erreur, "054") > 0 THEN
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then 
-				TXTERREUR = "Avertissement, gestionnaire des polices d‚sactiv‚. Executez: SYS/ /POLICE /ACTIVER"
+				TXTERREUR = "Avertissement, gestionnaire des polices dï¿½sactivï¿½. Executez: SYS/ /POLICE /ACTIVER"
 			ELSE
 				TXTERREUR = "Warning, font manager disable. Enter: SYS/ /FONT /ENABLE"
 			END IF
@@ -537,11 +537,11 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "001") > 0 THEN
-			TXTERREUR = "Erreur, M‚moire pleine."
+			TXTERREUR = "Erreur, Mï¿½moire pleine."
 			exit _scope
 		END if
 		IF INSTR(Erreur, "002") > 0 THEN
-			TXTERREUR = "Erreur m‚moire"
+			TXTERREUR = "Erreur mï¿½moire"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "003") > 0 THEN
@@ -553,23 +553,23 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "005") > 0 THEN
-			TXTERREUR = "Erreur, Conflit mat‚riel"
+			TXTERREUR = "Erreur, Conflit matï¿½riel"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "006") > 0 THEN
-			TXTERREUR = "Erreur, Impossible d'‚xecuter cette action."
+			TXTERREUR = "Erreur, Impossible d'ï¿½xecuter cette action."
 			exit _scope
 		END if
 		IF INSTR(Erreur, "007") > 0 THEN
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then 
-				TXTERREUR = "Erreur, ParamŠtre invalide"
+				TXTERREUR = "Erreur, Paramï¿½tre invalide"
 			ELSE
 				TXTERREUR = "Error, invalid parameter"
 			End if
 			exit _scope
 		END if
 		IF INSTR(Erreur, "008") > 0 THEN
-			TXTERREUR = "Erreur, Fenetre introuvable , verifiez vos paramŠtres"
+			TXTERREUR = "Erreur, Fenetre introuvable , verifiez vos paramï¿½tres"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "009") > 0 THEN
@@ -598,12 +598,12 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "012") > 0 THEN
-			TXTERREUR = "Erreur fatale ,le thread est introuvable !" + chr(11) + "Veuillez faire un diagnostique de la m‚moire RAM.."
+			TXTERREUR = "Erreur fatale ,le thread est introuvable !" + chr(11) + "Veuillez faire un diagnostique de la mï¿½moire RAM.."
 			exit _scope
 		END if
 		IF INSTR(Erreur, "013") > 0 THEN
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then 
-				TXTERREUR = "Erreur, Label sp‚cifi‚ introuvable"
+				TXTERREUR = "Erreur, Label spï¿½cifiï¿½ introuvable"
 			ELSE
 				TXTERREUR = "Error, specified label not found"
 			END IF
@@ -626,15 +626,15 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "017") > 0 THEN
-			TXTERREUR = "Erreur, Erreur d'accŠs au registre"
+			TXTERREUR = "Erreur, Erreur d'accï¿½s au registre"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "018") > 0 THEN
-			TXTERREUR = "Erreur, Chemin d'accŠs registre introuvable"
+			TXTERREUR = "Erreur, Chemin d'accï¿½s registre introuvable"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "019") > 0 THEN
-			TXTERREUR = "Erreur, Cl‚ registre introuvable"
+			TXTERREUR = "Erreur, Clï¿½ registre introuvable"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "020") > 0 THEN
@@ -654,11 +654,11 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "024") > 0 THEN
-            TXTERREUR = "Erreur, La machine distante ne r‚pond pas"
+            TXTERREUR = "Erreur, La machine distante ne rï¿½pond pas"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "025") > 0 THEN
-            TXTERREUR = "Erreur, Le serveur DNS ne r‚pond pas"
+            TXTERREUR = "Erreur, Le serveur DNS ne rï¿½pond pas"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "026") > 0 THEN
@@ -666,15 +666,15 @@ _scope
 			exit _scope
 		END if
         IF INSTR(Erreur, "027") > 0 THEN
-            TXTERREUR = "Erreur, machine introuvableintrouvable sur le r‚seau"
+            TXTERREUR = "Erreur, machine introuvableintrouvable sur le rï¿½seau"
 			exit _scope                   
 		END if
         IF INSTR(Erreur, "028") > 0 THEN
-            TXTERREUR = "Erreur, Connexion au systŠme distant impossible"
+            TXTERREUR = "Erreur, Connexion au systï¿½me distant impossible"
 			exit _scope
 		END if
         IF INSTR(Erreur, "029") > 0 THEN
-            TXTERREUR = "Erreur, SystŠme d'exploitation distant introuvable"
+            TXTERREUR = "Erreur, Systï¿½me d'exploitation distant introuvable"
 			exit _scope
 		END if
         IF INSTR(Erreur, "030") > 0 THEN
@@ -682,15 +682,15 @@ _scope
 			exit _scope
 		END if
         IF INSTR(Erreur, "031") > 0 THEN
-			TXTERREUR = "Erreur, Cl‚ non sp‚cifi‚e"
+			TXTERREUR = "Erreur, Clï¿½ non spï¿½cifiï¿½e"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "032") > 0 THEN
-			TXTERREUR = "Erreur, Impossible de cr‚er le lecteur virtuel"
+			TXTERREUR = "Erreur, Impossible de crï¿½er le lecteur virtuel"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "033") > 0 THEN
-			TXTERREUR = "Erreur, Impossible d'‚crire"
+			TXTERREUR = "Erreur, Impossible d'ï¿½crire"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "034") > 0 THEN
@@ -698,19 +698,19 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "035") > 0 THEN
-			TXTERREUR = "Erreur, Partage d‚ja en diffusion"
+			TXTERREUR = "Erreur, Partage dï¿½ja en diffusion"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "036") > 0 THEN
-			TXTERREUR = "Erreur, aucun pilote reseau TCP/IP install‚"
+			TXTERREUR = "Erreur, aucun pilote reseau TCP/IP installï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "037") > 0 THEN
-			TXTERREUR = "Erreur, Num‚ro de ligne hors limites"
+			TXTERREUR = "Erreur, Numï¿½ro de ligne hors limites"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "038") > 0 THEN
-			TXTERREUR = "Erreur, impossible de fermer le processus, verifiez qu'un PID n'est pas dupliqu‚"
+			TXTERREUR = "Erreur, impossible de fermer le processus, verifiez qu'un PID n'est pas dupliquï¿½"
 			exit _scope
 		END if
 		IF INSTR(Erreur, "039") > 0 THEN
@@ -722,7 +722,7 @@ _scope
 			exit _scope
 		END if
 		IF INSTR(Erreur, "041") > 0 THEN
-			TXTERREUR = "Erreur, ISR : La routine ISR n'a pas demarr‚."
+			TXTERREUR = "Erreur, ISR : La routine ISR n'a pas demarrï¿½."
 			exit _scope
 		END if
 		IF INSTR(Erreur, "042") > 0 THEN
@@ -799,7 +799,7 @@ _scope
 		END if
 		IF INSTR(Erreur, "052") > 0 THEN
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then 
-				TXTERREUR = "Erreur, Oups probleme! La r‚solution d'ecran n'a pas pu etre appliqu‚e"
+				TXTERREUR = "Erreur, Oups probleme! La rï¿½solution d'ecran n'a pas pu etre appliquï¿½e"
 			ELSE
 				TXTERREUR = "Error, Outch problem! The screen resolution can't be applied"
 			END IF

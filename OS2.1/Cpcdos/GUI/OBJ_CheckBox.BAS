@@ -1,5 +1,5 @@
 #print * CheckBox
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 ' Reflechir qu'aussi en cas de changement d'image a chaud l'image ne vas pas changer puisse ce qu'il est deja en memoire
 '  il faudra(si changement) desallouer et recharger l'image

@@ -77,7 +77,7 @@
 ' 14-02-2017	: Finalisation des commandes SERVEUR/ et CLIENT/
 
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 
 #define _scope do
@@ -478,10 +478,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							' EFFECTUER UN COLLER
 							Dim position_curseur as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos
 
-							' Placer le texte où est positionné le curseur
+							' Placer le texte oï¿½ est positionnï¿½ le curseur
 							Dim Traitement as string = mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, 1, position_curseur) & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
 							
-							' Positionner apres le texte collé
+							' Positionner apres le texte collï¿½
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = len(Traitement)
 
 							' Completer la fin du texte
@@ -4675,7 +4675,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							' Avec son index
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = INDEX_Textbox
 
-							' Dernière position
+							' Derniï¿½re position
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte)
 						
 
@@ -19908,7 +19908,7 @@ _FIN_EXE_CCP_EXE:
 						' Indiquer que c'est une fenetre qu'on veut supprimer
 						TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
 
-						' Si c'est une fenêtre desktop, on delete!
+						' Si c'est une fenï¿½tre desktop, on delete!
 						if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
 							CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
 						End if
@@ -20084,7 +20084,7 @@ _FIN_EXE_CCP_EXE:
 							' Indiquer que c'est une fenetre qu'on veut supprimer
 							TypeObjet = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.Fenetre
 
-							' Si c'est une fenêtre desktop, on delete!
+							' Si c'est une fenï¿½tre desktop, on delete!
 							if CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = boucle Then
 								CPCDOS_INSTANCE.SCI_INSTANCE.DESKTOPMODE_Index_Fenetre = 0
 							End if
@@ -20482,7 +20482,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 5"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriï¿½tï¿½s du curseur graphique"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"
@@ -20677,7 +20677,7 @@ _FIN_EXE_CCP_EXE:
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /listvar 4"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF
-					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriétés du curseur graphique"
+					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les propriï¿½tï¿½s du curseur graphique"
 					Mess_Aide = Mess_Aide & CRLF & "     sys/ /load-cursor-properties"
 					Mess_Aide = Mess_Aide & CRLF
 					Mess_Aide = Mess_Aide & CRLF & "   Charger/recharger les icones des curseurs graphiques"

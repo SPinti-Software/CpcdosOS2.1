@@ -1,4 +1,4 @@
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as integer) as integer
 	

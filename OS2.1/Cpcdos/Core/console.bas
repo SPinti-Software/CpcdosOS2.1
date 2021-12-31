@@ -13,7 +13,7 @@
 ' 20-02-2017	: Support console TELNET OK
 ' 14-02-2017	: Adaptation de la console pour le reseau + historique et completions
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 Constructor _CONSOLE_Cpcdos_OSx__()
 	DEBUG(" * Instanciation du module console --> Allocation offset:0x" & hex(@this) & " Taille:" & SizeOf(this) & " octets", 1, 1, 2, 0, 0, 1, 0, "")
