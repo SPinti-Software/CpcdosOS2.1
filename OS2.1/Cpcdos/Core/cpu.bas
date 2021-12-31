@@ -9,7 +9,7 @@
 
 #print * CPU
 
-#include once "Cpcdos.bi"	' Declaration/Fonctions communs
+#include once "cpcdos.bi"	' Declaration/Fonctions communs
 
 ' =====================================================================================
 '   				              	C P U  I D

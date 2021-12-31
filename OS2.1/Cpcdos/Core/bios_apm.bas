@@ -9,7 +9,7 @@
 
 #print * BIOS APM interface
 
-#include once "Cpcdos.bi"	' Declaration/Fonctions communs
+#include once "cpcdos.bi"	' Declaration/Fonctions communs
 
 ' =====================================================================================
 '   				    	I N T E R F A C E    A P M

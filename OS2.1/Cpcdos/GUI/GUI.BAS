@@ -16,7 +16,7 @@
 ' 19-05-2017	: Readaptation du PNG et le picturebox
 
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 #print * Initaliser GUI
 
@@ -451,7 +451,7 @@ Function _SCI_Cpcdos_OSx__.CPC__GUI_Init_obj(Type_De_GUI as Integer, _Proprietes
 
 		' Sil y a une taskbar
 		if CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win > 0 Then
-			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_ Then ' Et que c'est pas elle même
+			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win = _INDEX_ Then ' Et que c'est pas elle mï¿½me
 				' On actualise le contenu de la taskbar
 				ActualiserGUI(1, CPCDOS_INSTANCE.SCI_INSTANCE.TaskBar_List_win)
 
@@ -2526,9 +2526,9 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 
 									' Ajouter MOUSE_ENTER --> Lors ce que la souris ENTRE dans l'objet
 									' Ajouter quand on relache le bouton du clic
-									' Ajouter quand on entre en restant CLIQUé
-									' Ajouter quand sort en restant CLIQUé
-									' Ajouter quand on est dedans et le bouton relaché
+									' Ajouter quand on entre en restant CLIQUï¿½
+									' Ajouter quand sort en restant CLIQUï¿½
+									' Ajouter quand on est dedans et le bouton relachï¿½
 									
 									Fichier_evenement  	= this.INST_INIT_GUI.GUI__PICTUREBOX(The_Objet_index).PROP_TYPE.Fichier_evenement
 									
@@ -3112,7 +3112,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 											
 											
-											' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+											' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 											if NOT Fichier_evenement = "" Then
 												IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_Click = True Then
 													' Si l'utilisateur clique (bouton enfonce) avec nimporte quel bouton de la souris (Click) ou (Click(Valeur))
@@ -3167,7 +3167,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 												' Actualiser graphiquement le bouton pour l'effet de "pression"
 												Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 												
-												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 												if NOT Fichier_evenement = "" Then
 													IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 														' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3207,7 +3207,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											IF NOT this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
 												IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Survole = FALSE Then
 												
-													' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+													' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 													if NOT Fichier_evenement = "" Then
 														IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_MouseEnter = True Then
 															if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseEnter()") > 0 Then
@@ -3244,7 +3244,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											
 											IF NOT this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Fichier_evenement = "" Then
 												
-												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+												' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 												if NOT Fichier_evenement = "" Then
 													IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_MouseMove = True Then
 														if NOT instr(CPCDOS_INSTANCE.SCI_INSTANCE.Event_Liste_Noire, Fichier_evenement & "->" & Nom_Objet & ":MouseMove()") > 0 Then
@@ -3284,7 +3284,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 										' Actualiser graphiquement le bouton pour l'effet de "pression"
 										Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
 								
-										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 										if NOT Fichier_evenement = "" Then
 											IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_MouseClick = True Then
 												' Si l'utilisateur clique (bouton relache) avec nimporte quel bouton de la souris (MouseClick) ou (Click(Valeur))
@@ -3323,7 +3323,7 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 									IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Survole = TRUE Then
 										this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Survole = False
 										
-										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezé car pas fichier events
+										' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freezï¿½ car pas fichier events
 										if NOT Fichier_evenement = "" Then
 											IF this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.EV_MouseLeave = True Then
 												' Si la souris de l'utilisateur sort de l'objet (MouseLeave)

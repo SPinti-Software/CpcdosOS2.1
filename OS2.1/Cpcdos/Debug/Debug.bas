@@ -14,7 +14,7 @@
 #print
 #print ============ DEBUG ==============
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 Constructor _DEBUG_Cpcdos_OSx__()
 	' Le debug ne peut pas etre utilise car le noyau n'es pas encore initialise	

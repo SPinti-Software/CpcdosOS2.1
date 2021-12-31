@@ -4,7 +4,7 @@
 ' Reecriture le 23/01/2017
 ' Mise a jour le 07/03/2019
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 #print * Threads parentaux SHELL
 Function Shell_THREAD cdecl Alias "Shell_THREAD" (ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer : On local Error Goto Intercept_Error

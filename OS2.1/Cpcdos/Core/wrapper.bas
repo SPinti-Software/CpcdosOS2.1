@@ -210,7 +210,7 @@ Public Function cpc_mouse_state_lck cdecl Alias "cpc_mouse_state_lck" (param as 
 				End if
 			End if
 		else
-			' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+			' Pas de context ID pas conseillï¿½! car les events vont transiter peut importe quel windows focused
 
 			' TYPE DE CLIC
 			if param = 0 then
@@ -290,7 +290,7 @@ Public Function cpc_set_mouse_lck cdecl Alias "cpc_set_mouse_lck" (PX as integer
 			End if
 		End if
 	else
-		' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+		' Pas de context ID pas conseillï¿½! car les events vont transiter peut importe quel windows focused
 
 		retour = Setmouse(PX, PY, 0)
 		
@@ -376,7 +376,7 @@ Public Function cpc_get_key_lck cdecl Alias "cpc_get_key_lck" (id_context as int
 			End if
 		End if
 	else
-		' Pas de context ID pas conseillé! car les events vont transiter peut importe quel windows focused
+		' Pas de context ID pas conseillï¿½! car les events vont transiter peut importe quel windows focused
 		return ASC(inkey)
 	End if
 End function

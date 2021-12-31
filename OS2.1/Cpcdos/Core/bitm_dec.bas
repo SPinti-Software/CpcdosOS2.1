@@ -12,7 +12,7 @@
 
 ' 17-02-2017	: Support PNG
 
-#include once "Cpcdos.bi"	' Declaration/Fonctions communs
+#include once "cpcdos.bi"	' Declaration/Fonctions communs
 
 #print * bit converter
 function _SYSTEME_Cpcdos_OSx__.bit_converter(byref source as any ptr) as any ptr

@@ -18,7 +18,7 @@
 #print
 #print ============ SYSTEME ==============
 
-#include once "Cpcdos.bi"	' Declaration/Fonctions communs
+#include once "cpcdos.bi"	' Declaration/Fonctions communs
 
 
 Constructor _SYSTEME_Cpcdos_OSx__()
@@ -307,7 +307,7 @@ Function _SYSTEME_Cpcdos_OSx__.test_Resolution(ByVal Resolution as String, Bits 
 		
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[SYSTEME] " & LCASE(Resolution) & "x" & Bits & " support‚e par votre carte graphique!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				DEBUG("[SYSTEME] " & LCASE(Resolution) & "x" & Bits & " supportï¿½e par votre carte graphique!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
 			Else
 				DEBUG("[SYSTEM] " & LCASE(Resolution) & "x" & Bits & " supported by your graphic card!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_VALIDATION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
 			End if
@@ -318,7 +318,7 @@ Function _SYSTEME_Cpcdos_OSx__.test_Resolution(ByVal Resolution as String, Bits 
 	Else
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-				DEBUG("[SYSTEME] " & LCASE(Resolution) & "x" & Bits & " N'EST PAS support‚e par votre carte graphique!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
+				DEBUG("[SYSTEME] " & LCASE(Resolution) & "x" & Bits & " N'EST PAS supportï¿½e par votre carte graphique!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
 			Else
 				DEBUG("[SYSTEM] " & LCASE(Resolution) & "x" & Bits & " IS NOT supported by your graphic card!", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, this.RetourVAR_resolution )
 			End if
@@ -1312,8 +1312,8 @@ End function
 
 
 Function _SYSTEME_Cpcdos_OSx__.get_MID_drive(lettre_lecteur as string, index as integer) as boolean
-	' Cette fonction permet de récuperer la structure MID
-	' Afin de récuperer les informations d'un lecteur
+	' Cette fonction permet de rï¿½cuperer la structure MID
+	' Afin de rï¿½cuperer les informations d'un lecteur
 	' tel que le systeme de fichier, label, numero de serie etc...
 
 	ENTRER_SectionCritique()

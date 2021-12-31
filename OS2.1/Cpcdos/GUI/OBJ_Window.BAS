@@ -1,5 +1,5 @@
 #print * Fenetre
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 Function _SCI_Cpcdos_OSx__.Creer_Fenetre(_index_ as integer) as integer
  

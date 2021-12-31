@@ -5,7 +5,7 @@
 ' Reecriture le 13/10/2016
 ' Mise a jour le 23/06/2020
 
-#include once "UTF8.bi"	' Gestion UTF-8
+#include once "utf8.bi"	' Gestion UTF-8
 
 
 type _Context_menu_properties

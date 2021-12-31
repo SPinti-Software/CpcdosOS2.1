@@ -32,7 +32,7 @@
 '						- NET.PING()		: Pinger une machine
 '						
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 #define _scope do
 #define _end_scope loop while 0
@@ -1988,7 +1988,7 @@ Function _SHELL_Cpcdos_OSx__.Gest_variables_LIRE (Nom as string, niveau as integ
 	
 	IF PremiereParenthese > 0 Then
 		Dim DeuxiemeParenthese as integer = INSTRREV(Nom, "]")
-		' Si la première parenthese '(' est bien avant la deuxieme ')'
+		' Si la premiï¿½re parenthese '(' est bien avant la deuxieme ')'
 		if PremiereParenthese < DeuxiemeParenthese Then 
 			Dim Variable_a_Chercher as String
 			Dim Resultat_RechercheVariable as String

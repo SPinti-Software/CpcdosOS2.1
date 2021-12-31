@@ -42,7 +42,7 @@
         <Folder name="Include">
             <File name="Cpcdos\Include\CCP_Thrd.bi" />
             <File name="Cpcdos\Include\Console.bi" />
-            <File name="Cpcdos\Include\Cpcdos.bi" />
+            <File name="Cpcdos\Include\cpcdos.bi" />
             <File name="Cpcdos\Include\CpcdosCP.bi" />
             <File name="Cpcdos\Include\CPinti.bi" />
             <File name="Cpcdos\Include\Debug.bi" />

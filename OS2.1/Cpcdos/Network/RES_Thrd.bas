@@ -4,10 +4,10 @@
 ' Creation 		26-01-2017
 ' Mise a jour 	10-05-2017
 
-' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crée" alors que non
+' 09-05-2017	: CORRECTION de la confusion du thread SERVEUR et CLIENT qui affiche "crï¿½e" alors que non
 ' 14-02-2017	: Finalisation du thread Client
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 #print * Threads parentaux Client TCP et UDP
 Function Client_THREAD cdecl Alias "Client_THREAD" (ByVal thread_struct as _STRUCT_THREAD_Cpcdos_OSx__) as integer : On local Error Goto Intercept_Error

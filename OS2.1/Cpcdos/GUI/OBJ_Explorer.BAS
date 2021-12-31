@@ -1,5 +1,5 @@
 #print * Explorer
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 Declare Function 	cpc_mouse_state cdecl Alias "cpc_mouse_state" (param as integer) as integer ' 0:clic 1:posx 2:posy 3:scrool
 

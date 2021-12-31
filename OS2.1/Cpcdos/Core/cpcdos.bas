@@ -20,7 +20,7 @@ REM =====================================================
 
 #define FBCALL
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 #print
 #print ============ Cpcdos ==============

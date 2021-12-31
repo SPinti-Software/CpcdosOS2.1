@@ -18,7 +18,7 @@ rem option gosub
 
 ' Inclure les declarations du projet entier
 
-#include once "Cpcdos.bi"
+#include once "cpcdos.bi"
 
 ' 16-01-2018	: Adaptation des buffeurs BITMAP avec l'instance de la classe MEMOIRE_MAP
 '					- PictureBox
@@ -32,7 +32,7 @@ rem option gosub
 '					+ CORRECTION des crashs du type:1
 ' 26-10-2017	: AJOUT du support du TexteBox
 ' 10-10-2017	: Separation des fichiers d'objets
-'					+ Correction de la taille X du textebloc qui était egale a la taille du precedent
+'					+ Correction de la taille X du textebloc qui ï¿½tait egale a la taille du precedent
 '						objet initialise.
 ' 15-09-2017	: Revue des crashs du picturebox (Reecriture complete en vue)
 ' 17-07-2017	: AJOUT du textebloc

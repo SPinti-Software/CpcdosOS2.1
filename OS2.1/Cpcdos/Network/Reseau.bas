@@ -15,7 +15,7 @@
 ' 14-02-2017	: Connexion client + Envoyer + recevoir
 ' 13-02-2017	: Possibilite d'envoyer a un socket precis deja connecte
 
-#include "Cpcdos.bi"
+#include "cpcdos.bi"
 
 
 #print
