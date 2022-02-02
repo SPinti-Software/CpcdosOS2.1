@@ -3,21 +3,21 @@ CCP/ /SET.LEVEL = 3
 
 // [FR] Nom des fenetres sans titre
 // [EN] Windows name without title
-FIX/ CPC_GUI.WINDOW.TITLE = <Sans titre / Without title>
+set/ CPC_GUI.WINDOW.TITLE = <Sans titre / Without title>
 
 // [FR] Position X, Y du titre de la fenetre
 // [EN] Windows title X, Y position
-FIX/ CPC_GUI.WINDOW.TITLE_PX = 32
-FIX/ CPC_GUI.WINDOW.TITLE_PY = 10
+set/ CPC_GUI.WINDOW.TITLE_PX = 32
+set/ CPC_GUI.WINDOW.TITLE_PY = 10
 
 // [FR] Taille Y du titre de la fenetre
 // [EN] Windows title X, Y size
-FIX/ CPC_GUI.WINDOW.TITLE_SY = 26
+set/ CPC_GUI.WINDOW.TITLE_SY = 26
 
 // [FR] Couleur du titre
 // [EN] Title color
-FIX/ CPC_GUI.WINDOW.TITLE_RGB = 020,020,020
+set/ CPC_GUI.WINDOW.TITLE_RGB = 020,020,020
 
 // [FR] Image barre de titre
 // [EN] Title bar image
-FIX/ CPC_GUI.WINDOW.TITLE_IMG = %OS_GUI%/IMG_WIN.PNG
+set/ CPC_GUI.WINDOW.TITLE_IMG = %OS_GUI%/IMG_WIN.PNG

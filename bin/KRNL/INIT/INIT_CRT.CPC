@@ -10,7 +10,7 @@ Function/ INIT_CRT()
 	
 	// [FR] Declaration au niveau KERNEL
 	// [EN] Declaration to KERNEL level
-	ccp/ /fix.level = 5
+	ccp/ /set.level = 5
 
 
 	// [FR] ----- MANIPULATION DE CHAINES DE ascii_charS -------

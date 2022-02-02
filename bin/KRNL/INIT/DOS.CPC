@@ -25,7 +25,7 @@ End/ Function
 
 Function/ After_DOS()
 
-        ccp/ /fix.level = 2
+        ccp/ /set.level = 2
 
 	// Getting size string variable
 	Set/ GUI_Res = /F:CPC.LEN(Resolution_BEFORE)

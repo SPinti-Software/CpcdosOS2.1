@@ -5,21 +5,21 @@ declare/ gui.create_window(name, title, pos_x, pos_y, siz_x, siz_y, parameters, 
 
 // [FR] Bordure de la fenetre
 // [EN] Window border
-FIX/ CPC_GUI.WINDOW.BORDER = 1
+set/ CPC_GUI.WINDOW.BORDER = 1
 
 // [FR] Transparence par defaut des fenetres
 // [EN] Windows transparency by default
-FIX/ CPC_GUI.WINDOW.ALPHA = 255
+set/ CPC_GUI.WINDOW.ALPHA = 255
 
 
 
 // [FR] Couleur de la fenetre
 // [EN] Window color
-FIX/ CPC_GUI.WINDOW.RGB = 240,240,240
+set/ CPC_GUI.WINDOW.RGB = 240,240,240
 
 // [FR] Couleur de fond de la fenetre
 // [EN] Windows shadow color background
-FIX/ CPC_GUI.WINDOW.BACKGROUND_RGB = 190,190,190
+set/ CPC_GUI.WINDOW.BACKGROUND_RGB = 190,190,190
 
 
 // GUI Config files

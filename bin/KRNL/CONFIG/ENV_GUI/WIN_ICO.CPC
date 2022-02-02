@@ -5,22 +5,22 @@ CCP/ /SET.LEVEL = 3
 
 // [FR] Icone PNG d'une application par defaut
 // [EN] PNG icon application by default
-FIX/ CPC_GUI.WINDOW.ICO = %OS_GUI%/ICO_DEF.PNG
+set/ CPC_GUI.WINDOW.ICO = %OS_GUI%/ICO_DEF.PNG
 
 // [FR] Position X,Y de l'icone de la fenetre
 // [EN] Windows title X,Y position
-FIX/ CPC_GUI.WINDOW.ICO_PX = 8
-FIX/ CPC_GUI.WINDOW.ICO_PY = 5
+set/ CPC_GUI.WINDOW.ICO_PX = 8
+set/ CPC_GUI.WINDOW.ICO_PY = 5
 
 // [FR] Taille X,Y de l'icone de la fenetre 16x16p
 // [EN] Windows title X,Y Size 16x16p
-FIX/ CPC_GUI.WINDOW.ICO_S = 0
-FIX/ CPC_GUI.WINDOW.ICO_SX = 20
-FIX/ CPC_GUI.WINDOW.ICO_SY = 20
+set/ CPC_GUI.WINDOW.ICO_S = 0
+set/ CPC_GUI.WINDOW.ICO_SX = 20
+set/ CPC_GUI.WINDOW.ICO_SY = 20
 
 // [FR] Position relative (Gauche:1, centre:2, droit:3)
 // [EN] Relative position (Left:1, center:2, right:3)
-FIX/ CPC_GUI.WINDOW.ICO_POSITION = 1
+set/ CPC_GUI.WINDOW.ICO_POSITION = 1
 
 
 
@@ -28,44 +28,44 @@ FIX/ CPC_GUI.WINDOW.ICO_POSITION = 1
 
 // [FR] Icone PNG du bouton de femeture de la fenetre
 // [EN] PNG window closing button icon
-FIX/ CPC_GUI.WINDOW.BT_CLOSE = %OS_GUI%/WINDOW/B_CLOSE.png
+set/ CPC_GUI.WINDOW.BT_CLOSE = %OS_GUI%/WINDOW/B_CLOSE.png
 
 // [FR] Position X,Y de l'icone de la fenetre
 // [EN] Windows title X,Y position
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_PX = 6
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_PY = 4
+set/ CPC_GUI.WINDOW.BT_CLOSE_PX = 6
+set/ CPC_GUI.WINDOW.BT_CLOSE_PY = 4
 
 // [FR] Taille X,Y de l'icone de la fenetre 16x16p
 // [EN] Windows title X,Y Size 16x16p
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_S = 0
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_SX = 20
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_SY = 20
+set/ CPC_GUI.WINDOW.BT_CLOSE_S = 0
+set/ CPC_GUI.WINDOW.BT_CLOSE_SX = 20
+set/ CPC_GUI.WINDOW.BT_CLOSE_SY = 20
 
 // [FR] Position relative (Gauche:1, centre:2, droit:3)
 // [EN] Relative position (Left:1, center:2, right:3)
-FIX/ CPC_GUI.WINDOW.BT_CLOSE_POSITION = 3
+set/ CPC_GUI.WINDOW.BT_CLOSE_POSITION = 3
 
 
 // --- APPLICATION SIZE+  ---
 
 // [FR] Icone PNG du bouton d'agrandissement de la fenetre
 // [EN] PNG window size up button icon
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP = %OS_GUI%/WINDOW/B_SIZEUP.png
+set/ CPC_GUI.WINDOW.BT_SIZEUP = %OS_GUI%/WINDOW/B_SIZEUP.png
 
 // [FR] Position X,Y de l'icone de la fenetre
 // [EN] Windows title X,Y position
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_PX = 36
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_PY = 4
+set/ CPC_GUI.WINDOW.BT_SIZEUP_PX = 36
+set/ CPC_GUI.WINDOW.BT_SIZEUP_PY = 4
 
 // [FR] Taille X,Y de l'icone de la fenetre 16x16p
 // [EN] Windows title X,Y Size 16x16p
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_S = 0
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_SX = 20
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_SY = 20
+set/ CPC_GUI.WINDOW.BT_SIZEUP_S = 0
+set/ CPC_GUI.WINDOW.BT_SIZEUP_SX = 20
+set/ CPC_GUI.WINDOW.BT_SIZEUP_SY = 20
 
 // [FR] Position relative (Gauche:1, centre:2, droit:3)
 // [EN] Relative position (Left:1, center:2, right:3)
-FIX/ CPC_GUI.WINDOW.BT_SIZEUP_POSITION = 3
+set/ CPC_GUI.WINDOW.BT_SIZEUP_POSITION = 3
 
 
 
@@ -73,22 +73,22 @@ FIX/ CPC_GUI.WINDOW.BT_SIZEUP_POSITION = 3
 
 // [FR] Icone PNG du bouton retrecisement de la fenetre
 // [EN] PNG window size down button icon
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN = %OS_GUI%/WINDOW/B_SIZEDW.png
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN = %OS_GUI%/WINDOW/B_SIZEDW.png
 
 // [FR] Position X,Y de l'icone de la fenetre
 // [EN] Windows title X,Y position
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_PX = 36
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_PY = 4
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_PX = 36
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_PY = 4
 
 // [FR] Taille X,Y de l'icone de la fenetre 16x16p
 // [EN] Windows title X,Y Size 16x16p
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_S = 0
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_SX = 20
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_SY = 20
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_S = 0
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_SX = 20
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_SY = 20
 
 // [FR] Position relative (Gauche:1, centre:2, droit:3)
 // [EN] Relative position (Left:1, center:2, right:3)
-FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_POSITION = 3
+set/ CPC_GUI.WINDOW.BT_SIZEDOWN_POSITION = 3
 
 
 
@@ -96,22 +96,22 @@ FIX/ CPC_GUI.WINDOW.BT_SIZEDOWN_POSITION = 3
 
 // [FR] Icone PNG du bouton reduction de la fenetre
 // [EN] PNG window reduction button icon
-FIX/ CPC_GUI.WINDOW.BT_REDUCT = %OS_GUI%/WINDOW/B_DOWN.png
+set/ CPC_GUI.WINDOW.BT_REDUCT = %OS_GUI%/WINDOW/B_DOWN.png
 
 // [FR] Position X,Y de l'icone de la fenetre
 // [EN] Windows title X,Y position
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_PX = 66
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_PY = 4
+set/ CPC_GUI.WINDOW.BT_REDUCT_PX = 66
+set/ CPC_GUI.WINDOW.BT_REDUCT_PY = 4
 
 // [FR] Taille X,Y de l'icone de la fenetre 16x16p
 // [EN] Windows title X,Y Size 16x16p
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_S = 0
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_SX = 20
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_SY = 20
+set/ CPC_GUI.WINDOW.BT_REDUCT_S = 0
+set/ CPC_GUI.WINDOW.BT_REDUCT_SX = 20
+set/ CPC_GUI.WINDOW.BT_REDUCT_SY = 20
 
 // [FR] Position relative (Gauche:1, centre:2, droit:3 --> Nombre negatif)
 // [EN] Relative position (Left:1, center:2, right:3 --> Negative number)
-FIX/ CPC_GUI.WINDOW.BT_REDUCT_POSITION = 3
+set/ CPC_GUI.WINDOW.BT_REDUCT_POSITION = 3
 
 
 

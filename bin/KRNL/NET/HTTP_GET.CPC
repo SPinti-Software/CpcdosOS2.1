@@ -21,7 +21,7 @@ FUNCTION/ http_get(IPaddress, Port, request, header, Redirection, VAR_PROGRESSIO
         // [EN] This function allow to send HTTP request to a httpp server
 
                                                                   
-	ccp/ /fix.niveau = 1
+	ccp/ /set.level = 1
                                                
 	// [FR] Se connecter au serveur grace a l'adresse IP et le numero de port
 	// [EN] Connect to the server with IP address and port number
@@ -119,7 +119,7 @@ FUNCTION/ http_get(IPaddress, Port, request, header, Redirection, VAR_PROGRESSIO
 					// [EN] We write any on file
 					WRITE/ /BIN %Redirection%=%Results%
 					return/ txt/ 
-				fin/ if
+				end/ if
 			else:
 				return/ txt/ %Results%
 			end/ if

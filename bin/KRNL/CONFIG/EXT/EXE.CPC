@@ -28,7 +28,7 @@ End/ Window
 set/ NumeroThread = /c(%NumeroThread% + 0)
 
 // Convertir en handle
-Fix/ Handle = /C(%NumeroThread% * 1024)
+set/ Handle = /C(%NumeroThread% * 1024)
 
 CCP/ /PAUSE 3000
 

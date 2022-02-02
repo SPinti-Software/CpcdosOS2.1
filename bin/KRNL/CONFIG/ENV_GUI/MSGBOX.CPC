@@ -14,7 +14,7 @@ Function/ gui.msgbox.window(window_name, title, WIN_POS_X, WIN_POS_Y, WIN_SIZ_X,
 	// [EN] Display window
 	// [FR] Afficher la fenetre
 	Window/ %window_name%
-		.titre 			= "%Title%"
+		.title 			= "%Title%"
 		.PX				= "%WIN_POS_X%"
 		.PY				= "%WIN_POS_Y%"
 		.SX				= "%WIN_SIZ_X%"

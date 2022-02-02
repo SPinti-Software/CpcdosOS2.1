@@ -20,7 +20,7 @@ FUNCTION/ http_get(IPaddress, Port, request, header, Redirection)
 	// [FR] Cette fonction permet d'envoyer une requete HTTP a un serveur
 	// [EN] This function allow to send HTTP request to a http server
 
-	ccp/ /fix.niveau = 1
+	ccp/ /set.level = 1
                                                
 	// [FR] Se connecter au serveur grace a l'adresse IP et le numero de port
 	// [EN] Connect to the server with IP address and port number
@@ -110,7 +110,7 @@ FUNCTION/ http_get(IPaddress, Port, request, header, Redirection)
 					// [EN] We write any on file
 					WRITE/ /BIN %Redirection%=%Results%
 					return/ txt/ 
-				fin/ if
+				end/ if
 			else:
 				return/ txt/ %Results%
 			end/ if

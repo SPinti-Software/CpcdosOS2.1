@@ -1,7 +1,7 @@
 
 // Variables niveau OS
-ccp/ /fix.niveau = 4
-fix/ OS_GUI = OS/MEDIA/GUI
+ccp/ /set.level = 4
+set/ OS_GUI = OS/MEDIA/GUI
 
 // USER
 CCP/ /SET.LEVEL = 3

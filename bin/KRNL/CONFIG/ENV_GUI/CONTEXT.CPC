@@ -69,7 +69,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_TL.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
     // TOP MIDDLE
     picturebox/ Win_context_menu_img_M
@@ -82,7 +82,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
 
     // TOP RIGHT
@@ -96,7 +96,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_TR.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
     // CENTER - MIDDLE
     picturebox/ Win_context_menu_img_M
@@ -109,7 +109,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
     
      // DOWN LEFT
@@ -123,7 +123,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_DL.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
     // DOWN MIDDLE
     picturebox/ Win_context_menu_img_M
@@ -136,7 +136,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_M.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
 
     // DOWN RIGHT
@@ -150,7 +150,7 @@ function/ gui.create_context_menu(pos_x, pos_y, siz_x, siz_y)
         .Image			= "%OS_GUI%/MENU_CTX/CTX_DR.PNG"
         .opacity		= "%img_opacity%"
         creer/
-    Fin/ Picturebox
+    end/ Picturebox
 
     // Return handle window number
     return/ %window_handle%
