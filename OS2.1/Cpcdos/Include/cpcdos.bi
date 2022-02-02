@@ -230,9 +230,9 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "CpcdosCP.bi"
 
 
-CONST _VJOUR as string 	= "15" 
-CONST _VMOIS as string 	= "12"
-CONST _VANNEE as string = "2021"
+CONST _VJOUR as string 	= "02" 
+CONST _VMOIS as string 	= "02"
+CONST _VANNEE as string = "2022"
 
 CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/EN]"
 
