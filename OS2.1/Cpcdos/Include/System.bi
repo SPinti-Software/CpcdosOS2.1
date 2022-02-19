@@ -416,12 +416,14 @@ Type _memoire_bitmap
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, CanalAlpha as boolean)																												as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer, CanalAlpha as boolean)																					as boolean
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean)												as boolean
+		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, Surbrillance as single) 												as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean)					as boolean
 		
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, CanalAlpha as boolean, valeur as integer)																								as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer, CanalAlpha as boolean, valeur as integer)																as boolean
 		Declare Function Dessiner_ecran				(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean, valeur as integer) 							as boolean
 		Declare Function Dessiner_ecran				(byval PAGE_VIDEO as integer, byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, CanalAlpha as boolean, valeur as integer)as boolean
+		
 	
 		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, byval NumeroID_Destination as integer, CanalAlpha as boolean, noth as boolean = false) as boolean
 		Declare Function Dessiner_ecran				(byval NumeroID_Source as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, byval NumeroID_Destination as integer, effet as effet_img, valeur as integer, ef as boolean) as boolean

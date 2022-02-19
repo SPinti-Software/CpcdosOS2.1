@@ -157,6 +157,8 @@ Type Proprietes_Objet
 
 	' Floutage
 	Blurry_Mode		as integer
+
+	Surbrillance	as integer
 	
 	' Bordure
 	Bordure			as integer

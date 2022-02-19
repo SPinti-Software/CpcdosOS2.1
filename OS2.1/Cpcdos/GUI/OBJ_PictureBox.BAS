@@ -417,6 +417,12 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 					End if
 				End if
 				
+				Dim Surbrillance as integer = 0
+				if this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Survole = true or this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.EV_MouseEnter = True Then 
+					Surbrillance = this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).PROP_TYPE.Surbrillance
+				end if
+
+
 				' Et... Hop! on dessine dans le buffer video
 				if Couleur_ALPHA = 0 Then
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, false)
@@ -425,6 +431,8 @@ Function _SCI_Cpcdos_OSx__.Creer_PictureBox(_index_ as integer, _INDEX_PID_ as i
 				Else
 					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, true, Couleur_ALPHA)
 				End if
+
+				if Surbrillance > 0 Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(this.INST_INIT_GUI.GUI__PICTUREBOX(_index_).IMG_ID, Pos_X, Pos_Y, 0, 0, Siz_X - En_trop_X, Siz_Y - En_trop_Y, Surbrillance)
 
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

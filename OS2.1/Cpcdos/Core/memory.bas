@@ -2622,3 +2622,34 @@ Function _memoire_bitmap.Dessiner_ecran(byval NumeroID_Source as integer, PX as 
 	
 End Function
 
+
+Function _memoire_bitmap.Dessiner_ecran(byval NumeroID as integer, PX as integer, PY as integer, SX1 as integer, SY1 as integer, SX2 as integer, SY2 as integer, Surbrillance as single) as boolean
+	' Permet de dessiner le bitmap sur l'ecran avec le canal alpha
+	
+	if NumeroID > 0 Then
+		if NumeroID > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
+			DEBUG("Dessiner_ecran#16() [ERROR] NumeroID : " & NumeroID & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+			return false
+		End if
+
+		IF CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = True Then 
+			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID) > 0 AND NumeroID > 0 Then
+				
+				put (PX, PY), CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Recuperer_BITMAP_PTR(NumeroID), (SX1, SY1)-(SX2, SY2), add, Surbrillance
+
+				
+				Function = true
+			Else
+				Function = false
+			End if
+		End if	
+	else
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[_memoire_bitmap] Dessiner_ecran() [ERREUR] NumeroID " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		Else
+			DEBUG("[_memoire_bitmap] Dessiner_ecran() [ERROR] NumeroID " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
+		End if
+		return false
+	End if
+End Function
+

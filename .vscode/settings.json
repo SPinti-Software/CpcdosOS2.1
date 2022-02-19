@@ -79,5 +79,6 @@
         "xlocmon": "c",
         "FONT.H": "cpp",
         "typeindex": "c"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

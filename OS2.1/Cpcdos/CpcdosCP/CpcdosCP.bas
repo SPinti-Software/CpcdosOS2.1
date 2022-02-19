@@ -13131,6 +13131,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						DIM GUI__PROP_CONTENEUR_COMPLET as boolean 	= false
 						DIM GUI__PROP_ALPHA_MODE 		as integer	= 0
 						DIM GUI__PROP_BLURRY_MODE		as integer 	= 0
+						Dim GUI__PROP_SURBRILLE			as integer 	= 0
 						
 						DIM GUI__PROP_FOND_COULEUR		as boolean = TRUE
 
@@ -14102,6 +14103,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 															
 															GUI__PROP_ALPHA_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).Alpha_Mode
 															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).PROP_TYPE.Blurry_Mode
+
 															
 															GUI__PROP_IMGTITRE 		= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).IMG_TITRE
 															
@@ -14669,6 +14671,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 															GUI__PROP_BLURRY_MODE	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Blurry_Mode
 															
+															GUI__PROP_SURBRILLE 	= CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Surbrillance
 															
 															' Couleur de la fenetre en general  ===> GUI__PROP_COULEURFENETRE
 															IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__PICTUREBOX(_INDEX_PICTUREBOX_).PROP_TYPE.Couleur_FNT_R < 1 Then
@@ -16171,6 +16174,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "BLURRY:7") > 0 Then GUI__PROP_BLURRY_MODE = 7
 												IF INSTR(GUI__PROP_TYPE, "BLURRY:8") > 0 Then GUI__PROP_BLURRY_MODE = 8
 												IF INSTR(GUI__PROP_TYPE, "BLURRY:9") > 0 Then GUI__PROP_BLURRY_MODE = 9
+
+												IF INSTR(GUI__PROP_TYPE, "SURBRILLE:") > 0 Then GUI__PROP_SURBRILLE = VAL(MID(GUI__PROP_TYPE, INSTR(GUI__PROP_TYPE, "SURBRILLE:") + 10, 3))
 												
 												IF INSTR(GUI__PROP_TYPE, "COL:0") > 0 Then GUI__PROP_FOND_COULEUR = FALSE
 												IF INSTR(GUI__PROP_TYPE, "COL:1") > 0 Then GUI__PROP_FOND_COULEUR = TRUE
@@ -16848,6 +16853,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.AutoSizeIMG = GUI__PROP_AUTOSIZE
 
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Blurry_Mode = GUI__PROP_BLURRY_MODE
+
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Surbrillance = GUI__PROP_SURBRILLE
 
 												' Couleur du picturebox ===> GUI__PROP_COULEURFOND
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__PICTUREBOX.PROP_TYPE.Couleur_CTN_R = val(Mid(GUI__PROP_COULEURFOND, 1, 3))
@@ -17782,14 +17789,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 											IUG_CREATION_EXPLORER 		= ""
 											IUG_CREATION_LISTBOX 		= ""
 											
-											GUI__PROP_VALEUR = 0
+											GUI__PROP_VALEUR 			= 0
 											
 											GUI__PROP_CONTENEUR_COMPLET = false
-											GUI__PROP_ALPHA_MODE = 0
-											GUI__PROP_BLURRY_MODE = 0
-											Modification_IUG = false
-											GUI__PROP_TYPE_OBJ = 0
-											GUI__PROP_TYPE_DESKTOPMODE = false
+											GUI__PROP_ALPHA_MODE 		= 0
+											GUI__PROP_BLURRY_MODE 		= 0
+											GUI__PROP_SURBRILLE 		= 0
+											Modification_IUG 			= false
+											GUI__PROP_TYPE_OBJ 			= 0
+											GUI__PROP_TYPE_DESKTOPMODE 	= false
 											GUI__PROP_DEPLACABLE		= true
 											GUI__PROP_REDUCTABLE		= true
 											GUI__PROP_SIZEABLE			= true
