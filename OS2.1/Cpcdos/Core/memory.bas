@@ -1090,6 +1090,15 @@ Function _memoire_bitmap.Modifier_BITMAP_CP(byval NumeroID as integer, byval Num
 	
 End Function
 
+Function _memoire_bitmap.Modifier_BITMAP_texte(byval NumeroID as integer, Texte as String, byval police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+	' Permet d'ecrire du texte sur un bitmap avec une taille de police specifique
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded = true AND CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true then
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = "" Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
+		return Ecrire_ecran_font(NumeroID, Texte, police_size, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
+	end if
+	return Modifier_BITMAP_texte(NumeroID, Texte, PX, PY, R, V, B)
+End Function
+
 Function _memoire_bitmap.Modifier_BITMAP_texte(byval NumeroID as integer, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 	' Permet d'ecrire du texte sur un bitmap
 
@@ -1835,13 +1844,14 @@ End Function
 
 ' HEX_color_volatile
 Function color_font ( ByVal source_pixel As uinteger, ByVal destination_pixel As uinteger, ByVal parameter As Any Ptr ) As uinteger
-    ' Faire remplacer le fond noir par un fond rose magenta
-    'if (source_pixel And CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.HEX_color_volatile) <> &hffffff Then
-	if (source_pixel And &hffffff) <> &hffffff Then
-		Return source_pixel
-	else
-        Return cuint((source_pixel AND &hff000000) OR (CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.HEX_color_volatile and &h00ffffff)) '(&h00991111 shr 8))'destination_pixel
-    End If
+    ' PNG arial.png est RGBA (color type 6) : glyphes blancs (R=G=B=255), intensite dans le canal Alpha
+    '   fond transparent (A=0)   -> transparent
+    '   lettre pleine    (A=255) -> couleur police opaque
+    '   pixels anti-aliases (0<A<255) -> transparence correcte
+    ' FreeBASIC stocke les pixels en BGRA 32-bit : alpha = bits 24-31
+    Dim g As UByte = CUByte((source_pixel Shr 24) And &hFF)
+    If g = 0 Then Return 0
+    Return (CUInt(g) Shl 24) Or (CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.HEX_color_volatile And &h00FFFFFF)
 End Function
 
 
@@ -1871,6 +1881,9 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		End if
 
 		dim Size_text_len as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_len(Texte, police_size_index, police_name_index)
+		if Size_text_len <= 0 Then
+			return true
+		End if
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("[_memoire_bitmap] Ecrire_ecran_font() Pixel text size with this font : " & Size_text_len, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.NoCRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
@@ -1880,6 +1893,14 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		' Getting bitmap font ID
 		Dim font_img_ID as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_img_id(police_name_index)
+		if font_img_ID <= 0 Then
+			return false
+		End if
+		Dim font_img_SX as integer = Recuperer_BITMAP_x(font_img_ID)
+		Dim font_img_SY as integer = Recuperer_BITMAP_y(font_img_ID)
+		if font_img_SX <= 0 OR font_img_SY <= 0 Then
+			return false
+		End if
 
 		' Getting ORG positionning
 		Dim font_PX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).org_x' + CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).width * 2
@@ -1887,7 +1908,11 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		' Getting X Y char size
 		Dim font_SX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).width
-		Dim font_SY as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).height
+		' size_y = hauteur reelle du glyphe rendu dans l'atlas (sans le padding de cellule height)
+		Dim font_SY as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_y
+		if font_SX <= 0 OR font_SY <= 0 Then
+			return false
+		End if
 
 
 		' DEBUG
@@ -1906,10 +1931,25 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		
 
 		' Create text buffer for final GUI drawing
-		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", Size_text_len, font_SY, 255, 0, 255, 0, 2222)
+		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", Size_text_len, font_SY, 0, 0, 0, 0, 2222)
 
 		' Create char buffer
-		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 255, 0, 255, 0, 2222)
+		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 0, 0, 0, 0, 2222)
+
+		Dim ptr_font_src as any ptr = 0
+		Dim ptr_buffer_text as any ptr = 0
+		Dim ptr_buffer_char as any ptr = 0
+
+		if this.utilise(font_img_ID) = true Then ptr_font_src = this.donnees_RVBA(font_img_ID)
+		if this.utilise(buffer_text_font) = true Then ptr_buffer_text = this.donnees_RVBA(buffer_text_font)
+		if this.utilise(buffer_char) = true Then ptr_buffer_char = this.donnees_RVBA(buffer_char)
+
+		if ptr_font_src = 0 OR ptr_buffer_text = 0 OR ptr_buffer_char = 0 Then
+			DEBUG("Ecrire_ecran_font() : Abort, invalid bitmap pointer (font/buffer).", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			Supprimer_BITMAP(buffer_char)
+			Supprimer_BITMAP(buffer_text_font)
+			return false
+		End if
 
 
 		dim Texte_PX_accumulation as integer = 1
@@ -1926,41 +1966,47 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 
 			dim PosCharPX as integer = glyph_offset_x(index_char)
-			
-			dim PosCharPY as integer = font_PY
-			if font_PY >= 3 then
-				 PosCharPY = (font_PY) - 3
-			elseif font_PY = 2 then
-				PosCharPY = 1
-			End if
+
+			' org_y dans l'ini est en 1-indexed : le glyphe commence a org_y-1 en 0-indexed FreeBASIC
+			dim PosCharPY as integer = font_PY - 1
 
 
 			Dim Siz_CharSX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_char)
 			Dim Siz_CharSY as integer = font_SY
 			if Siz_CharSX <= 0 Then continue for
-			
-			' fix some graphics artefacts
-			if PosCharPX > 1 Then
-				PosCharPX -= 1
-			elseif PosCharPX < 2 Then
-				Siz_CharSX -= 1
+
+			' Clip glyph read inside source font bitmap to prevent runtime faults on Get.
+			if PosCharPX < 0 OR PosCharPY < 0 Then continue for
+			if PosCharPX >= font_img_SX OR PosCharPY >= font_img_SY Then continue for
+			if PosCharPX + Siz_CharSX > font_img_SX Then
+				Siz_CharSX = font_img_SX - PosCharPX
 			End if
+			if PosCharPY + Siz_CharSY > font_img_SY Then
+				Siz_CharSY = font_img_SY - PosCharPY
+			End if
+			if Siz_CharSX > font_SX Then Siz_CharSX = font_SX
+			if Siz_CharSY > font_SY Then Siz_CharSY = font_SY
+			if Texte_PX_accumulation > Size_text_len Then continue for
+			if Texte_PX_accumulation + Siz_CharSX - 1 > Size_text_len Then
+				Siz_CharSX = Size_text_len - Texte_PX_accumulation + 1
+			End if
+			if Siz_CharSX <= 0 OR Siz_CharSY <= 0 Then continue for
 			
 			ENTRER_SectionCritique()
 			' Getting char into font bitmap	
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				DEBUG("Ecrire_ecran_font() : Getting '" & chr(index_char+32) & "' (ASCII MAP:" & index_char & ") char, position (" & PosCharPX & "x" & PosCharPY & ") size (" & Siz_CharSX & "x" & Siz_CharSY & ").", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			end if
-			Get Recuperer_BITMAP_PTR(font_img_ID), (PosCharPX, PosCharPY) - STEP (Siz_CharSX, Siz_CharSY), Recuperer_BITMAP_PTR(buffer_char)
+			Get ptr_font_src, (PosCharPX, PosCharPY) - STEP (Siz_CharSX - 1, Siz_CharSY - 1), ptr_buffer_char
 
 			
 
 			' Writing char into final buffer with his position
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-				DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & "] at " & Texte_PX_accumulation & " in X.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(ptr_buffer_char) & "] to buffer " & buffer_text_font & " [0x" & hex(ptr_buffer_text) & "] at " & Texte_PX_accumulation & " in X.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			End if
 
-			' put Recuperer_BITMAP_PTR(buffer_text_font), (Texte_PX_accumulation, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY), Custom, @color_font
+			put ptr_buffer_text, (Texte_PX_accumulation, 0), ptr_buffer_char, (0, 0)-(Siz_CharSX - 1, Siz_CharSY - 1), Custom, @color_font
 
 			' Accumulation char size by char size
 			Texte_PX_accumulation += Siz_CharSX
@@ -1976,9 +2022,17 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		' Write on screen on directly on buffer
 		if bitmap_id > 0 Then
-			put Recuperer_BITMAP_PTR(bitmap_id), (PX, PY), Recuperer_BITMAP_PTR(buffer_text_font), alpha
+			Dim ptr_target_bitmap as any ptr = 0
+			if this.utilise(bitmap_id) = true Then ptr_target_bitmap = this.donnees_RVBA(bitmap_id)
+			if ptr_target_bitmap = 0 Then
+				DEBUG("Ecrire_ecran_font() : Abort, invalid target bitmap pointer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				Supprimer_BITMAP(buffer_char)
+				Supprimer_BITMAP(buffer_text_font)
+				return false
+			End if
+			put ptr_target_bitmap, (PX, PY), ptr_buffer_text, alpha
 		else
-			put (PX, PY), Recuperer_BITMAP_PTR(buffer_text_font), alpha
+			put (PX, PY), ptr_buffer_text, alpha
 		End if
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -1999,6 +2053,17 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 	return false
 End function
 
+
+Function _memoire_bitmap.Ecrire_ecran(byval Texte as String, police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+	return Ecrire_ecran(0, Texte, police_size, PX, PY, R, V, B)
+end function
+Function _memoire_bitmap.Ecrire_ecran(byval ID_buffer as integer, byval Texte as String, police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded = true AND CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable = true then
+		if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = "" Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
+		return Ecrire_ecran_font(ID_buffer, Texte, police_size, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, PX, PY, R, V, B)
+	end if
+	return Ecrire_ecran(ID_buffer, Texte, PX, PY, R, V, B)
+End Function
 
 Function _memoire_bitmap.Ecrire_ecran(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 	return Ecrire_ecran(0, Texte, PX, PY, R, V, B)

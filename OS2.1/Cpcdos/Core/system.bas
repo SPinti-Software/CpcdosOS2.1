@@ -1917,7 +1917,7 @@ Function _SYSTEME_Cpcdos_OSx__.font_len(byref text as string, police_size_index 
 	' This function allow to calculate size of font text
 
 	if police_name_index >= 0 AND police_size_index >= 0 Then
-		dim SizeChar as integer
+		dim SizeChar as integer = 0
 		dim index_char as integer
 		dim text_len as integer = len(text)
 		if text_len <= 0 Then

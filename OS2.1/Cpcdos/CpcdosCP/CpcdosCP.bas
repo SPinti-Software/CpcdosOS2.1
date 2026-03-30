@@ -21225,10 +21225,20 @@ _FIN_EXE_CCP_EXE:
 			IF Instr(UCASE(Param), "/FONT") > 0 Then
 
 				IF Instr(UCASE(Param), "/WRITE") > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "Hello i'm Arial font", 8, "arial", 10, 10, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "In italic !", 8, "ariali", 10, 30, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "In comic sans ms BOLD!", 8, "comicbd", 10, 50, 255, 255, 255)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "And in IMPACT Tadaaaa !", 8, "impact", 10, 70, 255, 255, 255)
+					Dim write_font as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+
+					if len(write_font) = 0 Then
+						if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number >= 0 Then
+							write_font = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(0)
+						End if
+					End if
+
+					if len(write_font) > 0 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "[FONT TEST] " & write_font, 8, write_font, 10, 10, 255, 255, 255)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP.Ecrire_ecran_font(0, "The quick brown fox 1234567890", 8, write_font, 10, 30, 255, 255, 255)
+					Else
+						DEBUG("sys/ /font /write : no loaded font available (load_cfg/load_map).", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					End if
 				End if
 
 				' Convertir les fichiers TTF en PNG		

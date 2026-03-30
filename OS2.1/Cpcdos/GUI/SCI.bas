@@ -2524,7 +2524,7 @@ Function _SCI_Cpcdos_OSx__.IMG_Changer_taille(byref Source as any ptr, byref Des
 	Taille_Y = Val(MID(Taille_Image_Source, instr(Taille_Image_Source, "X")+1))
 	
 	if RegenBitmap = true then
-		Destination = ImageCreate(Nouveau_X, Nouveau_Y, RGBA(255, 100, 255, 255), bpp_Image_Source)
+		Destination = ImageCreate(Nouveau_X, Nouveau_Y, RGBA(0, 0, 0, 0), bpp_Image_Source)
 	End if
 	
 	' Verifier si il faut agrandir l'image ou la retrecir

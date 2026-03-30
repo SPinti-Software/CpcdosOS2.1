@@ -369,6 +369,7 @@ Type _memoire_bitmap
 		Declare Function Modifier_BITMAP_CP			(byval NumeroID as integer, byval NumeroID_Dest as integer, PX as integer, PY as integer, alpha_ as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval Pointeur as any ptr, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Modifier_BITMAP_texte		(byval NumeroID as integer, Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		Declare Function Modifier_BITMAP_texte		(byval NumeroID as integer, Texte as String, byval police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Recuperer_BITMAP_PTR		(byval NumeroID as integer) 														as any ptr
 		
 		Declare Function Recuperer_BITMAP_x			(byval NumeroID as integer)														as integer
@@ -401,6 +402,8 @@ Type _memoire_bitmap
 		
 		Declare Function Ecrire_ecran				(byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		Declare Function Ecrire_ecran				(byval ID_buffer as integer, byval Texte as String, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		Declare Function Ecrire_ecran				(byval Texte as String, police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
+		Declare Function Ecrire_ecran				(byval ID_buffer as integer, byval Texte as String, police_size as integer, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
 		' Declare Function trans_font 				(ByVal source_pixel As uinteger, ByVal destination_pixel As uinteger, ByVal parameter As Any Ptr ) As uinteger
 		HEX_color_volatile as uinteger
 		Declare Function Ecrire_ecran_font			(byval id_buffer as integer, byval Texte as String, police_size as integer, police_name as string, PX as integer, PY as integer, R as integer, V as integer, B as integer) as boolean
