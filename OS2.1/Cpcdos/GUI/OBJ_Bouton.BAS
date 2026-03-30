@@ -501,8 +501,10 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 			IF len(Texte) > 0 Then
 			
 
-				Dim Position_Texte_X as integer = (Siz_X / 2) - ((LEN(Texte)*8) / 2)
-				Dim Position_Texte_Y as integer = (Siz_Y / 2) - (8 / 2) ' TEMPORAIRE --> 8 etant la hauteur en pixels
+				Dim font_text_len as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_len(Texte, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, 8)
+				if font_text_len < 0 Then font_text_len = LEN(Texte) * 8
+				Dim Position_Texte_X as integer = (Siz_X / 2) - (font_text_len \ 2)
+				Dim Position_Texte_Y as integer = (Siz_Y / 2) - (8 \ 2)
 				
 				if Bordure = 0 Then
 					IF Pression = TRUE Then
@@ -513,7 +515,7 @@ Function _SCI_Cpcdos_OSx__.Creer_Bouton(_index_ as integer, _INDEX_PID_ as integ
 				
 				' Si des caracteres ASCII sont present on ecrit dans le bitmap
 				IF len(Texte) > 0 Then
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, Pos_X + Position_Texte_X, Pos_Y + Position_Texte_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, 8, Pos_X + Position_Texte_X, Pos_Y + Position_Texte_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 				End if
 	
 			End if

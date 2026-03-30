@@ -393,7 +393,7 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_index_ as integer, _INDEX_PID_ as int
 					' Si des caracteres ASCII sont present
 
 					IF len(Texte) > 0 Then
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID, Texte, IMG_Taille_X + 5, 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(this.INST_INIT_GUI.GUI__CHECKBOX(_index_).IMG_fond_ID, Texte, 12, IMG_Taille_X + 5, 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 					End if
 
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then
@@ -422,7 +422,7 @@ Function _SCI_Cpcdos_OSx__.Creer_CheckBox(_index_ as integer, _INDEX_PID_ as int
 				if Fond_Couleur = 0 Then
 					' Si des caracteres ASCII sont present
 					IF len(Texte) > 0 Then
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, Pos_X + IMG_Taille_X + 5, Pos_Y + 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, 8, Pos_X + IMG_Taille_X + 5, Pos_Y + 4, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 					End if
 					
 					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 AND this.INST_INIT_GUI.DEPLACEMENT = 0 Then

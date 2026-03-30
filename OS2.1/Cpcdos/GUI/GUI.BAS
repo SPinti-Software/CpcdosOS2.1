@@ -5823,7 +5823,7 @@ Function _SCI_Cpcdos_OSx__.Display_Taskbar(index_fenetre as integer) as boolean
 							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Dessiner_ecran(Icone_Fenetre_ID, Pos_X + Positionnement_X + Pos_Icon_X, Pos_Y + Pos_Icon_Y, 0, 0, Size_X_item, Size_Y_item)
 
 							' Ajouter le nom de l'application
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, Pos_X + Positionnement_X + Pos_Text_X, Pos_Y + Pos_Text_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Titre_Fenetre, 8, Pos_X + Positionnement_X + Pos_Text_X, Pos_Y + Pos_Text_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 
 							IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then

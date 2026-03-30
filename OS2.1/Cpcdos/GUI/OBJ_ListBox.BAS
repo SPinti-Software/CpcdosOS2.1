@@ -390,10 +390,10 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 								
 								if this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = b Then
 									' Couleur du selectionne
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 12, POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
 								else
 									' Couleur du NON selectionne
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, instance_FICHER_DOSSIER_.liste_Elements(b), 12, POS_Col_Nom , 0 + Pos_lst_Y + 9, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								End if
 
 								
@@ -404,14 +404,13 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 								Dim Nom_element as String = instance_FICHER_DOSSIER_.liste_Elements(b)
 
 								dim Pos_X_icon_item as integer = Pos_lst_X - (Espacement_POS_X_icon/2)
-								dim Pos_X_name_item as integer = Pos_lst_X - ((Len(Nom_element)*8) /2)
+									dim Pos_X_name_item as integer = Pos_lst_X - (CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_len(Nom_element, CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font, 12) \ 2)
 
-								if this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = b Then
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
-								Else
-									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									if this.INST_INIT_GUI.GUI__ListBox(_index_).SELECTIONNE_index = b Then
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, 12, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_Select_R, Couleur_Select_G, Couleur_Select_B)
+									Else
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(IMG_BUFFER_ID, Nom_element, 12, Pos_X_name_item , 0 + Pos_lst_Y + 45, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 								End if
-
 								if DisplayDrives = true Then
 									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.FORMAT_file_icon_MAX_ID(CPCDOS_INSTANCE.FORMAT_INDEX_UNKNOW), IMG_BUFFER_ID, Pos_X_icon_item, 0 + Pos_lst_Y)
 								Else

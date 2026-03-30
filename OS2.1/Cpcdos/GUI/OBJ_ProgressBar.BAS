@@ -442,8 +442,7 @@ Function _SCI_Cpcdos_OSx__.Creer_ProgressBar(_index_ as integer, _INDEX_PID_ as 
 				
 				
 				IF len(Texte) > 0 Then
-					' CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, Texte, ((Siz_X / 2) - (Len(Texte)*8) / 2), (Siz_Y / 2) - (8/ 2), Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, Texte, 10, 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_texte(this.INST_INIT_GUI.GUI__PROGRESSBAR(_index_).IMG_ID, Texte, 8, 10, 10, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
 				End if
 		
 				
