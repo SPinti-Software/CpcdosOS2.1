@@ -272,7 +272,12 @@ Function _SCI_Cpcdos_OSx__.Creer_Explorer(_index_ as integer, _INDEX_PID_ as int
 				End if
 				
 				' Push l'image background sur le buffer
-				if DESKTOPMODE = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
+				if DESKTOPMODE = false Then
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.EXP_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
+				ElseIf CPCDOS_INSTANCE.SCI_INSTANCE.BACKGROUND_IMAGE > 0 Then
+					' Mode bureau : rafraichir le buffer depuis le fond d'ecran propre chaque frame
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.BACKGROUND_IMAGE, IMG_BUFFER_ID, 0, 0)
+				End If
 				
 				Scope
 					Texte = Rtrim(Texte)

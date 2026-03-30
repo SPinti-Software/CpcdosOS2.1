@@ -2582,6 +2582,13 @@ Function _SCI_Cpcdos_OSx__.IMG_Changer_taille(byref Source as any ptr, byref Des
 					AccPSET_X = AccPSET_X + 1
 				Next Boucle_X
 			Next Boucle_Y
+		ElseIF Action_Y = 0 Then
+			' Reduction en X, hauteur identique
+			AccPSET_X = 0
+			For Boucle_X = 1 to Taille_X step Calc_X
+				Put Destination, (AccPSET_X, 0), Source, (Boucle_X, 0)-(Boucle_X+1, Taille_Y-1), PSet
+				AccPSET_X = AccPSET_X + 1
+			Next Boucle_X
 		End if
 	ELSEIF Action_X = 2 Then
 		IF Action_Y = 2 Then
@@ -2600,6 +2607,26 @@ Function _SCI_Cpcdos_OSx__.IMG_Changer_taille(byref Source as any ptr, byref Des
 					Put Destination, (Boucle_X , AccPSET_Y), Source, (Boucle_X / (Nouveau_X/Taille_X), Boucle_Y)-(Boucle_X / (Nouveau_X/Taille_X) + 1, Boucle_Y+1), PSet
 				Next Boucle_X
 				AccPSET_Y = AccPSET_Y + 1
+			Next Boucle_Y
+		ELSEIF Action_Y = 0 Then
+			' Agrandissement en X, hauteur identique
+			For Boucle_X = 0 to Nouveau_X
+				Put Destination, (Boucle_X, 0), Source, (Boucle_X / (Nouveau_X/Taille_X), 0)-(Boucle_X / (Nouveau_X/Taille_X) + 1, Taille_Y-1), PSet
+			Next Boucle_X
+		End IF
+	ELSEIF Action_X = 0 Then
+		' Largeur identique, transformation de la hauteur uniquement
+		IF Action_Y = 1 Then
+			' Meme largeur, reduction en Y
+			AccPSET_Y = 0
+			For Boucle_Y = 0 to Taille_Y step Calc_Y
+				Put Destination, (0, AccPSET_Y), Source, (0, Boucle_Y)-(Taille_X-1, Boucle_Y+1), PSet
+				AccPSET_Y = AccPSET_Y + 1
+			Next Boucle_Y
+		ELSEIF Action_Y = 2 Then
+			' Meme largeur, agrandissement en Y
+			For Boucle_Y = 0 to Nouveau_Y
+				Put Destination, (0, Boucle_Y), Source, (0, Boucle_Y / (Nouveau_Y/Taille_Y))-(Taille_X-1, Boucle_Y / (Nouveau_Y/Taille_Y) + 1), PSet
 			Next Boucle_Y
 		End IF
 	End if
