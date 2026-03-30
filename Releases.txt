@@ -35,6 +35,7 @@
 	#############################
 
 		[CORRECTIONS]
+        - [FONTS] Correction affichage et plantage lors de l'utilisation des fonts TTF (Arial, Impact ...)
 		- [MEMORY] Correction critique de Recuperer_BITMAP_PTR() et Capture_bitmap() qui renvoyaient un faux pointeur non nul au lieu de NULL.
 		- [MEMORY] Correction des acces hors bornes dans Ecrire_ecran_font() et font_len() sur les index de glyphes/polices.
 		- [SYSTEME] Correction de AllouerString() avec ajout de l'octet de fin manquant pour les chaines ZString.
