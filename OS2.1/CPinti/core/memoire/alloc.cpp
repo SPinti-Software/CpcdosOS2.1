@@ -76,7 +76,7 @@ char * test_realloc(char *ptr, int size)
   if (size <= oldsize)
     return ptr;
   newptr = (char *)test_malloc(size);
-  memcpy(ptr, newptr, oldsize);
+	memcpy(newptr, ptr, oldsize);
   test_free(ptr);
   return newptr;
 

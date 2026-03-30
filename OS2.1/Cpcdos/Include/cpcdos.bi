@@ -230,24 +230,24 @@ REM Source protege par les droits d'auteur (Dossier No:J8781B5)
 #include once "CpcdosCP.bi"
 
 
-CONST _VJOUR as string 	= "19" 
-CONST _VMOIS as string 	= "02"
-CONST _VANNEE as string = "2022"
+CONST _VJOUR as string 	= "30" 
+CONST _VMOIS as string 	= "03"
+CONST _VANNEE as string = "2026"
 
 CONST _VERSION_DATEV 	as string = _VJOUR & "-" & _VMOIS & "-" & _VANNEE & "[FR/EN]"
 
 CONST _VERSION_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & "21"
 
 CONST _VERSION_MAJEUR 	as string = "2.1"
-CONST _VERSION_ETAT		as string = "HotRelease"
-'CONST _VERSION_ETAT		as string = "PUBLIC"
+'CONST _VERSION_ETAT		as string = "HotRelease"
+CONST _VERSION_ETAT		as string = "PUBLIC"
 
-CONST _VERSION_MINEUR 	as string = "beta 1.6"
-CONST _VER_NET_MINEUR 	as string = "BETA1.6"
-CONST _VERSION_CCP 		as string = "3.0"
-CONST _VERSION_SCI 		as string = "3.0"
-CONST _VERSION_CONSOLE	as string = "3.0"
-CONST _VERSION_CPINTI	as string = "4.0"
+CONST _VERSION_MINEUR 	as string = "beta 1.7"
+CONST _VER_NET_MINEUR 	as string = "BETA1.7"
+CONST _VERSION_CCP 		as string = "3.1"
+CONST _VERSION_SCI 		as string = "3.1"
+CONST _VERSION_CONSOLE	as string = "3.1"
+CONST _VERSION_CPINTI	as string = "4.1"
 
 CONST _VER_OF_DAY		as String = "00"
 CONST _VER_NET_BUILD 	as string = _VANNEE & _VMOIS & _VJOUR & _VER_OF_DAY & "_OS" & _VERSION_MAJEUR & "_" & _VER_NET_MINEUR

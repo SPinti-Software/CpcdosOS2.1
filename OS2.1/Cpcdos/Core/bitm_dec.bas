@@ -222,6 +222,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	dim as FILE ptr PtrFichier = fopen( Fichier, "rb" )
 	
 	ENTRER_SectionCritique()
+	Dim section_critique_active as boolean = TRUE
 	
 	dim as integer profondeurbits, canaux, profondeurPixelleuumeuhmeuuuh, typecouleur, rowbytes
 	
@@ -237,7 +238,12 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	Dim RetourVAR as string
 	
 	dim RetourVAR_PNG as String = ""
-	dim imgPNG as FB.IMAGE ptr  
+	Dim ResultatPNG as Any Ptr = NULL
+	dim imgPNG as FB.IMAGE ptr = NULL
+	dim as ubyte ptr src = NULL
+	dim as png_structp png = NULL
+	dim info as png_infop = NULL
+	Function = NULL
 	
 	
 	
@@ -255,42 +261,39 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		' Fichier introuvable !	
 		Message_erreur = ERRAVT("ERR_015", 0)
 		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
-		SORTIR_SectionCritique()
-		Exit function
+		Goto Fin_Charger_PNG
 	end if
 	
 	if( fread( @header(0), 1, 8, PtrFichier ) <> 8 ) then ' 17-02-2017 : A revoir sur la fonction fread() pour utiliser celui de CPinti Core
 		Message_erreur = ERRAVT("AVT_043", 0)
 		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
-		fclose(PtrFichier)
-		SORTIR_SectionCritique()
-		Exit function
+		Goto Fin_Charger_PNG
 	end if
 
 	if(png_sig_cmp( @header(0), 0, 8 )) then
 		Message_erreur = ERRAVT("AVT_044", 0)
 		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
-		fclose(PtrFichier)
-		SORTIR_SectionCritique()
-		Exit function
+		Goto Fin_Charger_PNG
 	end if
 
-	dim as png_structp png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, @libpng_error_callback, NULL )
+	png = png_create_read_struct( PNG_LIBPNG_VER_STRING, NULL, @libpng_error_callback, NULL )
 	if(png = NULL) then
 		Message_erreur = ERRAVT("AVT_045", 0)
 		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
-		fclose(PtrFichier)
-		SORTIR_SectionCritique()
-		Exit function
+		Goto Fin_Charger_PNG
 	end if
 	
-	dim info as png_infop = png_create_info_struct(png)
+	info = png_create_info_struct(png)
 	if(info = NULL) then
 		Message_erreur = ERRAVT("AVT_046", 0)
 		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
-		fclose(PtrFichier)
-		SORTIR_SectionCritique()
-		Exit function
+		Goto Fin_Charger_PNG
+	end if
+
+	if (setjmp(png_jmpbuf(png))) then
+		Message_erreur = ERRAVT("ERR_046", 0)
+		DEBUG("[SYSTEME] " & Message_erreur & " " & CHR(34) & Fichier & CHR(34) & ".", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR_PNG)
+		Goto Fin_Charger_PNG
 	end if
 	
 
@@ -299,8 +302,6 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 
 	png_read_info( png, info )
 
-	Dim debbug as boolean
-	
 	largeur = png_get_image_width( png, info )
 	hauteur = png_get_image_height( png, info )
 	
@@ -344,7 +345,7 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 				End If
 			End if
 			
-			return null
+			Goto Fin_Charger_PNG
 	end select
 
 	
@@ -352,6 +353,16 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	SCOPE
 
 		imgPNG = imagecreate( largeur, hauteur, RGBA(0, 0, 0, 0))
+		if imgPNG = NULL then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SYSTEME] Memoire insuffisante", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+				Else
+					DEBUG("[SYSTEME] Out of memory", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+				End If
+			End if
+			Goto Fin_Charger_PNG
+		end if
 
 		dim as ubyte ptr dst = cptr( ubyte ptr, imgPNG + 1 )
 
@@ -360,12 +371,23 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		rowbytes = png_get_rowbytes( png, info )
 	
 
-		dim as ubyte ptr src = callocate( rowbytes )
+		src = callocate( rowbytes )
+		if src = NULL then
+			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[SYSTEME] Memoire insuffisante", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+				Else
+					DEBUG("[SYSTEME] Out of memory", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+				End If
+			End if
+			Goto Fin_Charger_PNG
+		end if
 
 		DEBUG(" Source PTR 0x" & hex(src, 8) & " " & rowbytes & " rowbytes. Pitch " & imgPNG->pitch , CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_NORMAL, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 		
 		
 		SORTIR_SectionCritique()
+		section_critique_active = FALSE
 
 
 		for y as integer = 0 to hauteur-1
@@ -469,12 +491,12 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 		DEBUG("Deallocation", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
 		
 		deallocate( src )
+		src = NULL
 	END SCOPE
 	
 	png_read_end( png, info )
-	png_destroy_read_struct( @png, @info, 0 )
-	fclose( PtrFichier )
-	function = imgPNG
+	ResultatPNG = imgPNG
+	imgPNG = NULL
 	
 	IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -485,6 +507,13 @@ function _SYSTEME_Cpcdos_OSx__.charger_PNG(byval Fichier as String, byval Bits  
 	End if
 
 		
+Fin_Charger_PNG:
+	Function = ResultatPNG
+	if src <> NULL then deallocate(src)
+	if png <> NULL then png_destroy_read_struct( @png, @info, 0 )
+	if PtrFichier <> NULL then fclose( PtrFichier )
+	if section_critique_active = TRUE then SORTIR_SectionCritique()
+	if ResultatPNG = NULL AND imgPNG <> NULL then ImageDestroy(imgPNG)
 end function
 
 #print * Save PNG
@@ -498,7 +527,16 @@ function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string)
 		End If
 	End if
 	
-	dim fp as FILE ptr
+	dim fp as FILE ptr = NULL
+	dim as png_structp png_ptr = NULL
+	dim as png_infop info_ptr = NULL
+	dim as png_bytep row = NULL
+	Dim Sauvegarde_OK as boolean = FALSE
+	dim source as tImage
+	dim as ubyte ptr pp = NULL
+	dim as integer bypp = 0
+	Dim As Integer Taille_X, Taille_Y, bitPerPixel_SOURCE, bitPerPixel_DESTINATION, pitch_SOURCE, pitch_DESTINATION
+	Dim as byte ptr PointeurDestination
 	fp = fopen(strptr(Fichier), @"wb")
 
 	if( fp = NULL ) then
@@ -508,8 +546,24 @@ function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string)
 		return false
 	end if
 
-	dim as png_structp png_ptr 	= png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)
-	dim as png_infop info_ptr 	= png_create_info_struct(png_ptr)
+	png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL)
+	if png_ptr = NULL then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Impossible d'initialiser libpng", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Unable to initialize libpng", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Goto Fin_Save_PNG
+	end if
+	info_ptr = png_create_info_struct(png_ptr)
+	if info_ptr = NULL then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Impossible d'initialiser les metadonnees PNG", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Unable to initialize PNG metadata", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Goto Fin_Save_PNG
+	end if
 
 	if (setjmp(png_jmpbuf(png_ptr))) then
 		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -517,26 +571,38 @@ function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string)
 		Else
 			DEBUG("[SYSTEM] Error ! Unable to write PNG file", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End If
-		Return false
+		Goto Fin_Save_PNG
 	End If
 
-	dim source as tImage
 	source.width 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_x(source_id)
 	source.height 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_y(source_id)
 	source.bpp 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_bits(source_id)
 	source.pixels 	= CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(source_id)
+	if source.pixels = NULL OR source.width <= 0 OR source.height <= 0 then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Bitmap source invalide", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Invalid source bitmap", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Goto Fin_Save_PNG
+	end if
 
 	png_init_io(png_ptr, fp)
 
 	png_set_IHDR(png_ptr, info_ptr, source.width, source.height, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT)
 	png_write_info(png_ptr, info_ptr)
 
-	dim as png_bytep row = Allocate(3 * source.width * sizeof(png_byte))
-	dim as ubyte ptr pp = cptr(ubyte ptr, source.pixels+1)
-	dim as integer bypp = source.bpp
-
-	Dim As Integer Taille_X, Taille_Y, bitPerPixel_SOURCE, bitPerPixel_DESTINATION, pitch_SOURCE, pitch_DESTINATION
-	Dim as byte ptr PointeurDestination
+	row = Allocate(3 * source.width * sizeof(png_byte))
+	if row = NULL then
+		IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+			DEBUG("[SYSTEME] Erreur ! Memoire insuffisante", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		Else
+			DEBUG("[SYSTEM] Error ! Out of memory", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		End If
+		Goto Fin_Save_PNG
+	end if
+	pp = cptr(ubyte ptr, source.pixels+1)
+	bypp = source.bpp
 	
 	ImageInfo( source.pixels,  Taille_X,  Taille_Y, bitPerPixel_SOURCE, pitch_SOURCE,  pp  )
 
@@ -549,7 +615,7 @@ function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string)
 		Else
 			DEBUG("[SYSTEM] Error 4bpp is supported", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End If
-		Return false
+		Goto Fin_Save_PNG
 	End If
 	for y as integer = 0 to source.height-1
 		for x as integer = 0 to source.width-1
@@ -561,11 +627,13 @@ function _SYSTEME_Cpcdos_OSx__.Save_png(source_id as integer, Fichier as string)
 	Next
 
 	png_write_end(png_ptr, NULL)
+	Sauvegarde_OK = TRUE
 
-	if (fp <> NULL) then fclose(fp)
-	if (info_ptr <> NULL) then png_free_data(png_ptr, info_ptr, PNG_FREE_ALL, -1)
-	if (png_ptr <> NULL) then png_destroy_write_struct(@png_ptr, NULL)
+	Fin_Save_PNG:
 	if (row <> NULL) then DeAllocate(row)
+	if (png_ptr <> NULL) then png_destroy_write_struct(@png_ptr, @info_ptr)
+	if (fp <> NULL) then fclose(fp)
+	if Sauvegarde_OK = FALSE then return false
 
 	IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 		DEBUG("[SYSTEME] Fichier PNG enregistre !", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
@@ -1663,6 +1731,7 @@ sub _SYSTEME_Cpcdos_OSx__.cleanup_jpeg(pointeur_jpg as _tableau_JPEG_ ptr)
 		if (pointeur_jpg->image_comparaison(i).Pointeur_donnees) then
 			deallocate pointeur_jpg->image_comparaison(i).donnees_RAW
 			pointeur_jpg->image_comparaison(i).Pointeur_donnees = NULL
+			pointeur_jpg->image_comparaison(i).donnees_RAW = NULL
 		end if
 		if (pointeur_jpg->image_comparaison(i).buffer_ligne) then
 			deallocate pointeur_jpg->image_comparaison(i).buffer_ligne
@@ -1856,6 +1925,7 @@ function _SYSTEME_Cpcdos_OSx__.ChargerJPG(byval Chemin as string, byref Hauteur 
 	Dim PassageDoEvents as integer
 	
 	if len(Chemin)=0 then
+		SORTIR_SectionCritique()
 		return NULL
 	end if
 	
@@ -1897,6 +1967,18 @@ function _SYSTEME_Cpcdos_OSx__.ChargerJPG(byval Chemin as string, byref Hauteur 
 	end if
 
 	PointeurBuffer = allocate(Taille)
+	if PointeurBuffer = NULL then
+		close #PtrFichier
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+				DEBUG("[SYSTEME] Memoire insuffisante", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+			Else
+				DEBUG("[SYSTEME] Out of memory", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR_PNG)
+			End If
+		End if
+		SORTIR_SectionCritique()
+		return NULL
+	end if
 	get #PtrFichier,,PointeurBuffer[0], Taille
 	
 	close #PtrFichier
@@ -1917,6 +1999,11 @@ function _SYSTEME_Cpcdos_OSx__.ChargerJPG(byval Chemin as string, byref Hauteur 
 		' Parser les octets RVB sur le buffer
 		
 		ImageDestination = ImageCreate( largeur, hauteur, RGB(255, 0, 255),  BITS)
+		if ImageDestination = NULL then
+			if PtrResultat then deallocate(PtrResultat)
+			SORTIR_SectionCritique()
+			return NULL
+		end if
 		
 		SORTIR_SectionCritique()
 		

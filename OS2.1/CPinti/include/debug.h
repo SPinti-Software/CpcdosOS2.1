@@ -1,6 +1,6 @@
 /* Entete debug.CPP */
 
-#include <iostream>
+#include <string>
 
 #define Alerte_surbrille		0
 #define Alerte_normal			1
@@ -31,8 +31,8 @@ namespace cpinti_dbg
 							long DebutLigne, long NiveauAlerte, 
 							long AffDate, long RetourLigneHaut);
 
-	void CPINTI_DEBUG(std::string TexteFrancais, std::string TexteAnglais, 
-						std::string Declencheur, std::string Fonction, 
+	void CPINTI_DEBUG(const std::string& TexteFrancais, const std::string& TexteAnglais, 
+						const std::string& Declencheur, const std::string& Fonction, 
 						long DebutLigne, long NiveauAlerte,
 						long AffDate, long RetourLigneHaut);
 

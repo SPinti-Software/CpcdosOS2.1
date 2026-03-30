@@ -18,7 +18,7 @@
 	Mise a jour
 		29/01/2018
 		
-		29-01-2018	: CORRECTION du calcul du temps qui etait basé sur la trame reçue et non la trame d'envoie
+		29-01-2018	: CORRECTION du calcul du temps qui etait basï¿½ sur la trame reï¿½ue et non la trame d'envoie
 		07-12-2017	: AMELIORATION du code en suivant une procedure sticte de GCC
 		05-01-2017  : Correction du probleme de reception de la trame (return mal place)
 					: Correction des 4 octets en trop dans la trame 
@@ -81,7 +81,7 @@ namespace cpinti
 			int errcode;
 			char addrstr[100];
 			void *ptr = NULL;
-			const char* AdresseFinal = (const char*) malloc(16);
+			static std::string AdresseFinal;
 			
 			memset (&hints, 0, sizeof (hints));
 			hints.ai_family = PF_UNSPEC;
@@ -113,10 +113,9 @@ namespace cpinti
 			}
 
 			inet_ntop (res->ai_family, ptr, addrstr, 100);
-			// printf ("IPv%d address: %s (%s)\n", );
-			
-			AdresseFinal = (res->ai_family == PF_INET6 ? 6 : 4, addrstr, res->ai_canonname);
-			return AdresseFinal;
+			AdresseFinal = addrstr;
+			freeaddrinfo(res);
+			return AdresseFinal.c_str();
 		}
 		
 		
@@ -154,6 +153,10 @@ namespace cpinti
 		
 		long ping(const char* AdresseIP, const char* Message, long _Timeout)
 		{
+			if (Message == NULL)
+			{
+				Message = "";
+			}
 			
 			
 			int Timeout = (int) _Timeout;
@@ -305,7 +308,7 @@ namespace cpinti
 									"Socket binding ",
 									"net_ping", "ping()", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
 			
-			bzero((char *) &Sock_sockaddr, sizeof(Sock_sockaddr));
+			memset((char *) &Sock_sockaddr, 0, sizeof(Sock_sockaddr));
 			
 			cpinti_dbg::CPINTI_DEBUG(".", ".",
 								"", "", Ligne_reste, Alerte_action, Date_sans, Ligne_r_normal);
@@ -368,13 +371,22 @@ namespace cpinti
 			TRAME_ICMP->icmp_id = (rand() % 65500 + 1) & 0xFFFF; // 6 501 possibilites c'est deja pas mal hein!
 			
 			// Creer la requete ICMP
-			TAILLE_ICMP_HDR 		= REQUETE_ICMP; // Toujours egale a 8
+			TAILLE_ICMP_HDR 		= sizeof(struct icmp);
 			TAILLE_PAQUET_ENVOYE 	= sizeof(Nombre_paquets_envoyes);
 			TAILLE_Temps_Debut		= sizeof(Temps_Depart);
 			Taille_Message 			= strlen(Message);
 			
 			// Calculer sa taille totale
 			TAILLE_Finale			= TAILLE_ICMP_HDR + TAILLE_PAQUET_ENVOYE + TAILLE_Temps_Debut + Taille_Message ;
+
+			if (TAILLE_Finale > sizeof(PAQUET_ICMP))
+			{
+				cpinti_dbg::CPINTI_DEBUG(" [ERREUR] Trame ICMP trop grande pour le buffer local", 
+					" [ERROR] ICMP frame too large for local buffer", 
+					"", "", Ligne_saute, Alerte_erreur, Date_sans, Ligne_r_normal);
+				Fermer_socket(SocketReseau);
+				return (long) PING_ERR_INIT_SOCK;
+			}
 			
 			// Packager l'entete, la requete et le message
 			memcpy(&PAQUET_ICMP[TAILLE_ICMP_HDR], &Temps_Depart, TAILLE_Temps_Debut);

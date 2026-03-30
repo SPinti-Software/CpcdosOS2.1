@@ -65,11 +65,13 @@ namespace cpinti
 			
 			
 			ENTRER_SectionCritique();
+			bool section_critique_active = true;
 			
 			// Definit les attributs temporaires		
 			long CompteurDoevents = 0;
 			unsigned long Position = 0;
-			char data = 0;
+			int data = 0;
+			bool lecture_complete = true;
 			FILE* Instance_Fichier;
 
 			// Ouvrir un canal du fichier
@@ -80,7 +82,7 @@ namespace cpinti
 			{
 				
 				// Boucler jusqu'a la fin du fichier
-				while (Position <= TailleFichier) 
+				while (Position < TailleFichier) 
 				{ 
 
 					// Cette partie va permettre d'alleger le CPU
@@ -88,34 +90,52 @@ namespace cpinti
 					{
 						CompteurDoevents = 0;
 						SORTIR_SectionCritique();
+						section_critique_active = false;
 						doevents(0);
 						ENTRER_SectionCritique();
+						section_critique_active = true;
 					} else
 						CompteurDoevents++;
 					
 					
 					// Recuperer le caractere
 					data = fgetc(Instance_Fichier);
+					if (data == EOF)
+					{
+						lecture_complete = false;
+						break;
+					}
 
 					// Merge le caractere avec les donnees
-					_DONNEES[Position] = data;
+					_DONNEES[Position] = static_cast<char>(data);
 					
 					// Avancer d'une position
 					Position++;
 					
 				}
-				
-				// _DONNEES[Position] = '\0';
 
+				while (Position < TailleFichier)
+				{
+					_DONNEES[Position] = 0;
+					Position++;
+				}
+				
 				// Fermer le fichier
 				fclose(Instance_Fichier);
 				
-				SORTIR_SectionCritique();
+				if (section_critique_active)
+				{
+					SORTIR_SectionCritique();
+				}
 
-				return true;
+				return lecture_complete;
 			}
 			else
 			{
+				if (section_critique_active)
+				{
+					SORTIR_SectionCritique();
+				}
 				// Sinon probleme
 				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
 					cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'ouvrir le fichier '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)), 

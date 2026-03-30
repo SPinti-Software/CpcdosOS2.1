@@ -555,6 +555,7 @@ Public Function cpc_get_viewport_ptr cdecl Alias "cpc_get_viewport_ptr" (ID_bitm
 			End if
 		End if
 
+		SORTIR_SectionCritique()
 		return buffer_screen
 
 	elseif ID_bitmap > 0 AND ID_bitmap < 12316 Then
@@ -585,7 +586,8 @@ Public Function cpc_get_viewport_ptr cdecl Alias "cpc_get_viewport_ptr" (ID_bitm
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					DEBUG(" [OK] Context PTR [0x" & hex(BUFFER_CONTEXT, 8) & "] ", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")	
 				End if
-				Function = BUFFER_CONTEXT
+				SORTIR_SectionCritique()
+				return BUFFER_CONTEXT
 			Else
 				' Ah ... pas bon
 				
@@ -611,6 +613,7 @@ Public Function cpc_get_viewport_ptr cdecl Alias "cpc_get_viewport_ptr" (ID_bitm
 	end if
 
 	SORTIR_SectionCritique()
+	return 0
 end function
 
 Public Function cpc_Obtenir_Zone_Contexte cdecl Alias "cpc_Obtenir_Zone_Contexte" (ID_bitmap as integer) as any ptr
@@ -637,7 +640,7 @@ public Function cpc_CCP_Exec_Commande_ret cdecl Alias "cpc_CCP_Exec_Commande_ret
 	Dim Resultat as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("exec_ret", 4, _CLE_)
 
 	print "****** RETOUUR : " & Resultat
-	Dim Variable as ZString ptr = malloc(Len(Resultat))
+	Dim Variable as ZString ptr = malloc(Len(Resultat) + 1)
 	*Variable = Resultat
 	return Variable
 
@@ -659,7 +662,7 @@ Public Function	cpc_CCP_Lire_Variable cdecl alias "cpc_CCP_Lire_Variable" (NomVa
 		
 		Resultat = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(NomVariable_str, niveau, _CLE_)
 	End scope
-	Dim Variable as ZString ptr = malloc(Len(Resultat))
+	Dim Variable as ZString ptr = malloc(Len(Resultat) + 1)
 	*Variable = Resultat
 	return Variable
 End function
@@ -784,6 +787,7 @@ Public Function cpc_cpinti_Lire_Fichier_complet cdecl Alias "cpc_cpinti_Lire_Fic
 	Retour = CPCDOS_INSTANCE.Lire_fichier_complet(*Chemin)
 	
 	memcpy(retour_str, strptr(Retour), len(Retour))
+	retour_str[len(Retour)] = 0
 	
 	function = len(Retour)
 End function

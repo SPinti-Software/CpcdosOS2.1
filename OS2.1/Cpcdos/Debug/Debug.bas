@@ -57,6 +57,12 @@ SUB DEBUG(Evenement as string, Ecran as integer, DansLeLOG as integer, Prio as i
 	
 	SORTIR_SectionCritique()
 
+	IF Ecran = 0 Then
+		IF Fichier = "" OR Fichier = "0" Then
+			IF DansLeLOG = 0 Then Exit Sub
+		End If
+	END IF
+
 	' Action
 	if instr(Evenement, "A: ") = 1 Then Evenement = mid(Evenement, 3) : Prio = CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION
 
@@ -81,15 +87,10 @@ SUB DEBUG(Evenement as string, Ecran as integer, DansLeLOG as integer, Prio as i
 	if AfficherDate > 0 Then
 		Evenement = "(THREAD #" & CPCDOS_INSTANCE.get_ThreadEnCours() & ") " & Evenement
 		
-		CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC = true
-		
-		
 		' Mettre a jour 1 fois sur 2 l'heure RTC pour optimiser le CPU
+		CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC = NOT CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC
 		if CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC = true Then 
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_RTC()
-			CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC = false 
-		else 
-			CPCDOS_INSTANCE.DEBUG_INSTANCE.UpdateRTC = true
 		End if
 		
 		ENTRER_SectionCritique()
@@ -99,15 +100,6 @@ SUB DEBUG(Evenement as string, Ecran as integer, DansLeLOG as integer, Prio as i
 	End if
 
 	CPCDOS_INSTANCE.No_ISR = 1
-	
-	IF Ecran = 0 then  ' On verifie l'utilite de continuer
-		IF Fichier = "" then
-			If Fichier = "0" then
-				' Ne rien afficher, ne rien ecrire, ni dans le log? Bein on quitte!
-				IF DansLeLOG = 0 then exit sub
-			End if
-		end if
-	END IF
 	
 	
 	Scope

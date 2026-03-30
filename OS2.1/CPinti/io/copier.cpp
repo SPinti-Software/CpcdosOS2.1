@@ -103,6 +103,9 @@ namespace cpinti
 					unsigned long NombreOctets 		= 0;
 					unsigned long NombreOctetsParSec = 0;
 					unsigned long TempsPasse 		= 0;
+					const bool has_var_progression = ((VAR_Progression != NULL) && (strlen(VAR_Progression) > 1));
+					const bool has_var_octets = ((VAR_Octets != NULL) && (strlen(VAR_Octets) > 1));
+					const bool has_var_octets_par_sec = ((VAR_OctetsParSec != NULL) && (strlen(VAR_OctetsParSec) > 1));
 					
 					double valeur					= 0;
 					double vitesse					= 0;
@@ -111,14 +114,19 @@ namespace cpinti
 					clock_t	TempsFin;
 
 					char _output_ = '\0';
-					char data = '\0';
+					int data = 0;
 					
-					char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 128);
+					char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 256);
 					
 					ENTRER_SectionCritique();
 
+					if(has_var_octets_par_sec)
+					{
+						TempsDebut = clock();
+					}
+
 					// Boucler jusqu'a la fin du fichier
-					while (Position <= TailleFichier) 
+					while (Position < TailleFichier) 
 					{ 
 
 						// Cette partie va permettre d'alleger le CPU
@@ -130,30 +138,30 @@ namespace cpinti
 							ENTRER_SectionCritique();
 							
 							/** PROGRESSION EN POURCENTAGE **/
-							if((VAR_Progression != NULL) && (strlen(VAR_Progression) > 1))
+							if(has_var_progression && (TailleFichier > 0))
 							{
 								
 								valeur = ((double) NombreOctets / (double) TailleFichier) * 100;
-								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_Progression, valeur);
+								snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_Progression, valeur);
 								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 							}
 							
 							/** NOMBRE D'OCTETS COPIES **/
-							if((VAR_Octets != NULL) && (strlen(VAR_Octets) > 1))
+							if(has_var_octets)
 							{
 
 								valeur = (double) NombreOctets;
-								sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_Octets, valeur);
+								snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_Octets, valeur);
 								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 							}
 						
 							if(vitesse > 1)
 							{
 								/** NOMBRE D'OCTETS PAR SECONDES **/
-								if((VAR_OctetsParSec != NULL) && (strlen(VAR_OctetsParSec) > 1))
+								if(has_var_octets_par_sec)
 								{
 									
-									sprintf(_Commande_CpcdosCP, "FIX/ %s = /F:CPC.long(%f)", VAR_OctetsParSec, vitesse);
+									snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_OctetsParSec, vitesse);
 									cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									vitesse = 0;
 								}
@@ -165,6 +173,10 @@ namespace cpinti
 						
 						// Recuperer le caractere SOURCE
 						data = fgetc(Instance_Fichier_SOURCE);
+						if(data == EOF)
+						{
+							break;
+						}
 
 						// Ecrire le caractere DESTINATION
 						fputc(data, Instance_Fichier_DESTINATION);
@@ -175,7 +187,7 @@ namespace cpinti
 						NombreOctetsParSec++;
 						NombreOctets++;
 	
-						if((VAR_OctetsParSec != NULL) && (strlen(VAR_OctetsParSec) > 1))
+						if(has_var_octets_par_sec)
 						{
 							TempsFin = clock();
 
@@ -196,6 +208,7 @@ namespace cpinti
 					SORTIR_SectionCritique();
 					
 					_Commande_CpcdosCP[0] = '\0';
+					free(_Commande_CpcdosCP);
 					
 					// OK
 					RETOUR = true;

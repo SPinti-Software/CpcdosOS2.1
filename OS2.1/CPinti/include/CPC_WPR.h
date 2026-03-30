@@ -14,12 +14,12 @@
 	  http://cpcdos.fr.nf/
 	  
  Condition :
-	Ce fichier réservé uniquement aux adhérants du developpement C/C++ 
+	Ce fichier rï¿½servï¿½ uniquement aux adhï¿½rants du developpement C/C++ 
 	du noyau. Pour toutes questions : sebastien.ordinateur@hotmail.fr
 
  Description :
 	Header/Wrapper du noyau Cpcdos & CPinti Core pour la programmation 
-	C/C++ de modules externe. Ceci va permettre aux adhérants de créer 
+	C/C++ de modules externe. Ceci va permettre aux adhï¿½rants de crï¿½er 
 	des fonctions native pour cpcdos. Il s'agit d'un header qui 
 	contient la liste des fonctions de Cpcdos dont le developpeur aura 
 	besoin pour developper ses fonction afin qu'il soit nativement  
@@ -68,7 +68,7 @@ extern "C" double 		cpc_cpinti_Obtenir_Temps_ms		(double Temps_av);
 		
 		// ***************** CpcdosC+ Engine *****************
 		void 			Shell_CCP				(const char* COMMAND, long LEVEL);		// Executer une commande CpcdosC+<
-		long 			Shell_FILE				(const char* FILE, long THREAD_PRIORITY); // Executer un fichier CpcdosC+ multithreadé ou pas
+		long 			Shell_FILE				(const char* FILE, long THREAD_PRIORITY); // Executer un fichier CpcdosC+ multithreadï¿½ ou pas
 		
 		// ******************** Cpcdos OSx ********************
 		char* 			Get_Path(long ARG);												// Obtenir le chemin d'acces en cours
@@ -141,7 +141,7 @@ extern "C" double 		cpc_cpinti_Obtenir_Temps_ms		(double Temps_av);
 		char BUFFER[1024] = {0};
 		
 		va_start (arg, format);
-			vsprintf (BUFFER, format, arg);
+			vsnprintf (BUFFER, sizeof(BUFFER), format, arg);
 		va_end (arg);
 		
 		

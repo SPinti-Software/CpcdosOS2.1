@@ -647,22 +647,47 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		' A partir d'ici, nous n'avions plus d'espaces au debut
 		'  On cherche donc le prochain espace et on a la CMD!
 		Position_CMD = 0
+		Dim Position_CMD_FIN as integer = 0
 
 		Dim Arrob as boolean = false
 		
 		' Capturer la cmd au la prochaine espace apres '/'
-		tst_Cap = MID(CMD_tst, 1, Instr(CMD_tst, CHR(32)) - 1)
+		Position_CMD_FIN = Instr(CMD_tst, CHR(32))
+		if Position_CMD_FIN > 0 Then
+			tst_Cap = MID(CMD_tst, 1, Position_CMD_FIN - 1)
+		Else
+			tst_Cap = CMD_tst
+		End if
 		IF NOT tst_Cap = "" then
 			IF MID(tst_Cap, 1, 1) = CHR(64) Then ' Caractere '@'
-				Position_CMD = Instr(CMD_tst, CHR(32))
+				Position_CMD = Position_CMD_FIN
 				Arrob = true
 
 				' Chercher le prochain espace apres l'espace precedent
-				tst_Cap = MID(CMD_tst, 1, Instr(Position_CMD + 1, CMD_tst, CHR(32)) - 1)
+				Position_CMD_FIN = Instr(Position_CMD + 1, CMD_tst, CHR(32))
+				if Position_CMD_FIN > 0 Then
+					tst_Cap = MID(CMD_tst, 1, Position_CMD_FIN - 1)
+				Else
+					tst_Cap = CMD_tst
+				End if
 			End if
 		Else
 			tst_Cap = CMD_tst
 		END IF
+
+		' Petit cache local de resolution de commande pour accelerer les sequences
+		' de commandes repetitives sans changer la syntaxe ni le comportement.
+		Static cache_tst_cap as String
+		Static cache_oncherche as String
+		Static cache_taillecomm as integer
+		Static cache_commposition as integer
+		Static cache_init as integer
+		
+		if cache_init <> 0 AND cache_tst_cap = tst_Cap Then
+			OnCherche = cache_oncherche
+			TailleComm = cache_taillecomm
+			CommPosition = cache_commposition
+		else
 		
 		for Boucle as integer = 1 to this._MAX_CMD_CCP
 			if boucle > this._MAX_CMD_CCP then exit for
@@ -721,6 +746,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 			
 		Next Boucle
+
+		cache_tst_cap = tst_Cap
+		cache_oncherche = OnCherche
+		cache_taillecomm = TailleComm
+		cache_commposition = CommPosition
+		cache_init = 1
+		end if
 
 		' Rien n'a ete trouve, commande invalide!
 		IF OnCherche = "" then exit _scope
@@ -1405,6 +1437,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			End if
 			
 			Param = Rtrim(Param)
+
+			IF NOT INSTR(Param, ",") > 0 Then
+				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+					DEBUG("[CpcdosC+] Pour cette version vous devez separer les arguments par une virgule ',' " & CRLF & "Exemple: COPIER/ FichierA, FichierB", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Else
+					DEBUG("[CpcdosC+] For this version, you must separate arguments by a comma ','" & CRLF & "Examble: COPY/ FileA, FileB", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				End if
+
+				exit _scope_CMD, _scope
+			End if
 			
 			Source 		 = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, 1, Instr(Param, ",") - 1)), CHR(09))), CHR(09))
 			Destination  = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, Instr(Param, ",") + 1)), CHR(09))), CHR(09))
@@ -8851,9 +8893,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 			
 			SI_NonVAL = 0
+			dim SI_Expression_1_len as integer = Len(SI_Expression_1)
+			dim SI_Expression_2_len as integer = Len(SI_Expression_2)
 			' Chercher la presence d'une chaine de caractere (et/ou avec exp numerique) ou d'un expression numerique seulement
-			for SI_BoucleNB as integer = 1 to Len(SI_Expression_1)
-				SI_RecupASCII_1 = ASC(MID(SI_Expression_1, SI_BoucleNB, 1)) ' Recuperer 1 caractere par 1
+			for SI_BoucleNB as integer = 1 to SI_Expression_1_len
+				SI_RecupASCII_1 = ASC(SI_Expression_1, SI_BoucleNB) ' Recuperer 1 caractere par 1
 				IF SI_RecupASCII_1 < 48 Then ' Si plus petit que zero en ASCII
 					SI_NonVAL = 1
 					exit for ' Pas besoin de chercher plus.On optimise
@@ -8863,8 +8907,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				End if
 			next SI_BoucleNB
 			
-			for SI_BoucleNB as integer = 1 to Len(SI_Expression_2)
-				SI_RecupASCII_2 = ASC(MID(SI_Expression_2, SI_BoucleNB, 1)) ' Recuperer 1 caractere par 1
+			for SI_BoucleNB as integer = 1 to SI_Expression_2_len
+				SI_RecupASCII_2 = ASC(SI_Expression_2, SI_BoucleNB) ' Recuperer 1 caractere par 1
 
 				IF SI_RecupASCII_2 < 48 Then ' Si plus petit que zero en ASCII
 					SI_NonVAL = 1
@@ -10545,7 +10589,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				' Cuter le contenu si le numero de ligne a ete demande
 				if Numero_Ligne > -1 Then 
 					dim Decoupage as integer = 1
-					for boucle as integer = 0 to Len(Buffer_CCP)
+					dim Buffer_CCP_len as integer = Len(Buffer_CCP)
+					do while Decoupage <= Numero_Ligne - 1 AND Buffer_CCP_len > 0
 						
 						if Decoupage > 1 Then
 							' S'il y a un CRLF, alors on cut !
@@ -10563,11 +10608,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						End if
 						
 						' Jusqu'a qu'on atteingne le nombre de ligne
-						if Decoupage > Numero_Ligne-1 Then exit for
+						if Decoupage > Numero_Ligne-1 Then exit do
 				
 						' Nombre de lignes cutes
 						Decoupage += 1
-					next boucle
+						Buffer_CCP_len = Len(Buffer_CCP)
+					loop
 				
 					' Puis on cute les autres lignes!
 					if Instr(Buffer_CCP, CRLF) > 0 Then
@@ -10582,7 +10628,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				ElseIf Numero_Ligne = -2 Then
 					dim Decoupage as integer = 1
 					if len(Text_Recherche) > 0 Then
-						for boucle as integer = 0 to Len(Buffer_CCP)
+						dim Buffer_CCP_len as integer = Len(Buffer_CCP)
+						do while Decoupage <= Buffer_CCP_len AND Buffer_CCP_len > 0
 							
 							if Decoupage > 1 Then
 								' S'il y a un CRLF, alors on cut !
@@ -10600,17 +10647,18 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							End if
 							
 							' Des qu'il y a le texte recherche!
-							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, CRLF) - 1), Text_Recherche) > 0 Then Exit for
-							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, CR) - 1), Text_Recherche) > 0 Then Exit for
-							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, LF) - 1), Text_Recherche) > 0 Then Exit for
+							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, CRLF) - 1), Text_Recherche) > 0 Then Exit do
+							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, CR) - 1), Text_Recherche) > 0 Then Exit do
+							if Instr(Mid(Buffer_CCP, 1, Instr(Buffer_CCP, LF) - 1), Text_Recherche) > 0 Then Exit do
 								
 							' Jusqu'a qu'on atteingne le nombre de ligne
-							if Decoupage > Len(Buffer_CCP) Then exit for
+							if Decoupage > Len(Buffer_CCP) Then exit do
 							
 							' Nombre de lignes cutes
 							Decoupage += 1
+							Buffer_CCP_len = Len(Buffer_CCP)
 							
-						next boucle
+						loop
 					
 						' Puis on cute les autres lignes!
 						if Instr(Buffer_CCP, CRLF) > 0 Then
@@ -11446,7 +11494,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Adresse_URI = MID(URL, PosPremierSLASH + 1)
 						
 						' Si le dernier caractere se finit par '/'
-						If MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
+						If LEN(Adresse_URI) > 0 AND MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
 							Adresse_URI = MID(Adresse_URI, 1, LEN(Adresse_URI) - 1) ' On supprime le caractere
 						End if
 						
@@ -11524,7 +11572,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Adresse_URI = MID(URL, PosPremierSLASH + 1)
 						
 						' Si le dernier caractere se finit par '/'
-						If MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
+						If LEN(Adresse_URI) > 0 AND MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
 							Adresse_URI = MID(Adresse_URI, 1, LEN(Adresse_URI) - 1) ' On supprime le caractere
 						End if
 						
@@ -11595,7 +11643,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 						Adresse_URI = MID(URL, PosPremierSLASH + 1)
 						
 						' Si le dernier caractere se finit par '/'
-						If MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
+						If LEN(Adresse_URI) > 0 AND MID(Adresse_URI, LEN(Adresse_URI)) = "/" Then
 							Adresse_URI = MID(Adresse_URI, 1, LEN(Adresse_URI) - 1) ' On supprime le caractere
 						End if
 						
@@ -21561,7 +21609,7 @@ _FIN_EXE_CCP_EXE:
 				
 				if NetID = "" then
 					dim NetID_ID as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_SYS.NET.ID", 5, _CLE_)
-					dim Final_NetID as string = NetID_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - 3) 
+					dim Final_NetID as string = NetID_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - IIf(Len(CPCDOS_INSTANCE.UNIQUE) >= 3, 3, 0)) 
 					DEBUG("--> CURRENT SERVER NET ID : '" & Final_NetID & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					exit _scope_CMD, _scope
 				End if
@@ -21586,7 +21634,7 @@ _FIN_EXE_CCP_EXE:
 				
 				if NetID = "" then
 					dim Net_ID as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_SYS.NET.ID", 5, _CLE_)
-					dim Final_NetID as string = Net_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - 3) 
+					dim Final_NetID as string = Net_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - IIf(Len(CPCDOS_INSTANCE.UNIQUE) >= 3, 3, 0)) 
 					DEBUG("--> CURRENT SERVER NET ID : '" & Final_NetID & "' saved!", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 					exit _scope_CMD, _scope
 				End if
@@ -21599,7 +21647,7 @@ _FIN_EXE_CCP_EXE:
 				
 				' On relit tout
 				dim Username as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_SYS.NET.ID", 5, _CLE_)
-				dim Final_NetID as string = Username & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - 3) 
+				dim Final_NetID as string = Username & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - IIf(Len(CPCDOS_INSTANCE.UNIQUE) >= 3, 3, 0)) 
 				
 				
 				' Et on affiche le resultat
@@ -21692,7 +21740,7 @@ _FIN_EXE_CCP_EXE:
 					doevents(10000)
 					
 					dim pseudo_ID as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_SYS.NET.ID", 5, _CLE_)
-					dim Final_NetID as string = pseudo_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - 3) 
+					dim Final_NetID as string = pseudo_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - IIf(Len(CPCDOS_INSTANCE.UNIQUE) >= 3, 3, 0)) 
 					
 					' Chercher une mise a jour disponible
 					if telecharger_HotRelease = true Then ' & "&id=" & CPCDOS_INSTANCE.UNIQUE
@@ -21750,7 +21798,7 @@ _FIN_EXE_CCP_EXE:
 					doevents(10000)
 					
 					dim pseudo_ID as String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("CPC_SYS.NET.ID", 5, _CLE_)
-					dim Final_NetID as string = pseudo_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - 3) 
+					dim Final_NetID as string = pseudo_ID & "_" & Mid(CPCDOS_INSTANCE.UNIQUE, 1, Len(CPCDOS_INSTANCE.UNIQUE) - IIf(Len(CPCDOS_INSTANCE.UNIQUE) >= 3, 3, 0)) 
 					
 					' Chercher une mise a jour disponible
 					if telecharger_HotRelease = true Then ' & "&id=" & CPCDOS_INSTANCE.UNIQUE
@@ -21760,6 +21808,15 @@ _FIN_EXE_CCP_EXE:
 					End if
 
 					doevents(1000000)
+
+					If CPCDOS_INSTANCE.Fichier_Existe(TEMP_NET & "\" & Serveur_depot & "\update.php") = false Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[UPDATE] Erreur, le fichier de reponse du serveur est introuvable.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG("[UPDATE] Error, server response file is missing.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
+						exit _scope_CMD, _scope
+					End if
 					
 					' Recuperer l'URL du ZIP
 					URL_ZIP = CPCDOS_INSTANCE.Lire_fichier_complet(TEMP_NET & "\" & Serveur_depot & "\update.php")
@@ -21842,6 +21899,15 @@ _FIN_EXE_CCP_EXE:
 				' Telecharger l'update ZIP
 				if Download_flag = true Then
 				
+					If CPCDOS_INSTANCE.Fichier_Existe(TEMP_NET & "\" & Serveur_depot & "\update.php") = false Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[UPDATE] Erreur, le fichier de reponse du serveur est introuvable.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG("[UPDATE] Error, server response file is missing.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
+						exit _scope_CMD, _scope
+					End if
+
 					' Recuperer l'URL du ZIP
 					URL_ZIP = CPCDOS_INSTANCE.Lire_fichier_complet(TEMP_NET & "\" & Serveur_depot & "\update.php")
 					
@@ -21879,6 +21945,8 @@ _FIN_EXE_CCP_EXE:
 						dim var_size 			as integer = 0
 						dim var_speed 			as integer = 0
 						dim var_socket 			as integer = 0
+						dim progression_precedente as integer = -1
+						dim attente_sans_progression as integer = 0
 						
 						' Creer les variables niveau 2
 						CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("set/ VAR_Progress = 0"	, _CLE_, 2, 0, RetourVAR)
@@ -21921,6 +21989,27 @@ _FIN_EXE_CCP_EXE:
 							var_size 			= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("VAR_Bytes", 2, _CLE_))
 							var_speed 			= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("VAR_Speed", 2, _CLE_))
 							var_socket 			= val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable("VAR_Socket", 2, _CLE_))
+
+							if var_progression = progression_precedente Then
+								attente_sans_progression += 1
+							Else
+								progression_precedente = var_progression
+								attente_sans_progression = 0
+							End if
+
+							if attente_sans_progression > 120 Then
+								IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+									DEBUG("[UPDATE] Telechargement bloque ou trop long, annulation.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+								Else
+									DEBUG("[UPDATE] Download stalled or too long, cancelling.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+								End if
+
+								if var_socket > 0 Then
+									CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("client/ /send:" & var_socket & " #STOP", _CLE_, 2, 0, RetourVAR)
+								End if
+
+								exit _scope_CMD, _scope
+							End if
 							
 							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("colorf/ 15", _CLE_, 2, 0, RetourVAR)
 							CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("colorb/ 2", _CLE_, 2, 0, RetourVAR)
@@ -21954,9 +22043,18 @@ _FIN_EXE_CCP_EXE:
 						
 						DEBUG("", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Surbrille, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 						
+						If CPCDOS_INSTANCE.Fichier_Existe(TEMP_NET & "\" & PathZIP) = false Then
+							IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+								DEBUG("[UPDATE] Erreur, le package telecharge est introuvable.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							Else
+								DEBUG("[UPDATE] Error, downloaded package is missing.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+							End if
+							exit _scope_CMD, _scope
+						End if
+
 						' Tester la taille du fichier
 						if CPCDOS_INSTANCE.Taille_Fichier(TEMP_NET & "\" & PathZIP) < 1024 Then
-							Dim Contenufichier as String = CPCDOS_INSTANCE.Lire_fichier_complet(TEMP_NET & "\" & DossierZIP)
+							Dim Contenufichier as String = CPCDOS_INSTANCE.Lire_fichier_complet(TEMP_NET & "\" & PathZIP)
 							
 							
 							if Instr(Contenufichier, "301") > 0 OR Instr(Contenufichier, "302") > 0 Then 							
@@ -22057,6 +22155,15 @@ _FIN_EXE_CCP_EXE:
 				' Installer le ZIP
 				if Install_flag = true Then
 				
+					If CPCDOS_INSTANCE.Fichier_Existe(TEMP_NET & "\" & Serveur_depot & "\update.php") = false Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[UPDATE] Erreur, le fichier de reponse du serveur est introuvable.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						Else
+							DEBUG("[UPDATE] Error, server response file is missing.", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Erreur, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+						End if
+						exit _scope_CMD, _scope
+					End if
+
 					' Recuperer l'URL du ZIP
 					URL_ZIP = CPCDOS_INSTANCE.Lire_fichier_complet(TEMP_NET & "\" & Serveur_depot & "\update.php")
 					

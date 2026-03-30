@@ -1240,7 +1240,9 @@ Function _memoire_bitmap.Recuperer_BITMAP_PTR(byval NumeroID as integer) as any 
 		Else
 			DEBUG("[_memoire_bitmap] Recuperer_BITMAP_PTR() [ERROR] NumeroID : " & NumeroID, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
 		End if
-		return false
+		' Toujours renvoyer un pointeur nul en cas d'ID invalide.
+		' "false" vaut -1 en FB et peut etre pris comme pointeur non nul.
+		return 0
 	End if
 	
 End Function
@@ -1859,6 +1861,15 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		Dim police_name_index as integer = -1
 		CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(police_size_index, police_name, police_name_index)
 
+		if police_name_index < 0 OR police_size_index < 0 Then
+			return false
+		End if
+
+		dim texte_len as integer = len(texte)
+		if texte_len <= 0 Then
+			return true
+		End if
+
 		dim Size_text_len as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_len(Texte, police_size_index, police_name_index)
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -1882,8 +1893,15 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		' DEBUG
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran_font() : police_name(" & police_name_index & "):'" & police_name & "' font_size(" & police_size_index & "):'" & police_size & "'.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			CPCDOS_INSTANCE.SYSTEME_INSTANCE.debug_font(police_name_index, police_size_index)
 		End if
-		CPCDOS_INSTANCE.SYSTEME_INSTANCE.debug_font(police_name_index, police_size_index)
+
+		' Pre-calcul des offsets X de glyphes pour eviter une somme a chaque caractere.
+		dim glyph_offset_x(128) as integer
+		glyph_offset_x(0) = 0
+		for index_off as integer = 1 to 128
+			glyph_offset_x(index_off) = glyph_offset_x(index_off - 1) + CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_off - 1)
+		next index_off
 
 		
 
@@ -1896,17 +1914,18 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		dim Texte_PX_accumulation as integer = 1
 
-		for boucle_char as integer = 1 to len(texte)
+		HEX_color_volatile = R
+		HEX_color_volatile = (HEX_color_volatile shl 8) + V
+		HEX_color_volatile = (HEX_color_volatile shl 8) + B
+
+		for boucle_char as integer = 1 to texte_len
 			' Getting ASCII number char per char		
 			dim index_char as integer = (asc(Texte, boucle_char) - 32)
+			if index_char < 0 then index_char = 0
+			if index_char > 128 then index_char = 0
 
 
-			dim PosCharPX as integer
-
-			' Adding char by char to interested char
-			for compter_size_x as integer = 0 to index_char-1
-				PosCharPX += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(compter_size_x)
-			next compter_size_x
+			dim PosCharPX as integer = glyph_offset_x(index_char)
 			
 			dim PosCharPY as integer = font_PY
 			if font_PY >= 3 then
@@ -1918,6 +1937,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 			Dim Siz_CharSX as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_char)
 			Dim Siz_CharSY as integer = font_SY
+			if Siz_CharSX <= 0 Then continue for
 			
 			' fix some graphics artefacts
 			if PosCharPX > 1 Then
@@ -1939,10 +1959,6 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 				DEBUG("Ecrire_ecran_font() : Writing " & buffer_char & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_char)) & "] to buffer " & buffer_text_font & " [0x" & hex(Recuperer_BITMAP_PTR(buffer_text_font)) & "] at " & Texte_PX_accumulation & " in X.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 			End if
-
-			HEX_color_volatile = R
-			HEX_color_volatile = (HEX_color_volatile shl 8) + V
-			HEX_color_volatile = (HEX_color_volatile shl 8) + B
 
 			' put Recuperer_BITMAP_PTR(buffer_text_font), (Texte_PX_accumulation, 1), Recuperer_BITMAP_PTR(buffer_char), (1, 1)-(font_SX, font_SY), Custom, @color_font
 
@@ -2071,7 +2087,7 @@ Function  _memoire_bitmap.Capture_bitmap(byval NumeroID_source as integer, PX as
 	if NumeroID_source > 0 Then
 		if NumeroID_source > CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID Then
 			DEBUG("Capture_bitmap() [ERROR] NumeroID : " & NumeroID_source & " too big! Unable to use this ! (MAX " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.Memoire_MAP._MAX_BITMAP_ID & ")", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, CPCDOS_INSTANCE.SYSTEME_INSTANCE.RetourVAR_PNG)
-			return false
+			return NULL
 		End if
 
 		dim Destination_ptr as any ptr = ImageCreate(SX, SY)

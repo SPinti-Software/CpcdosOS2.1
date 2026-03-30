@@ -87,7 +87,9 @@ namespace cpinti
 				gestionnaire_tache::Liste_Processus[Resultat].TID_Parent = gestionnaire_tache::Thread_en_cours;
 				
 				/** Nom du processus **/				
-				strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, NomProcessus, strlen(NomProcessus));
+				const char* nom_processus = (NomProcessus != nullptr) ? NomProcessus : "";
+				memset(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, 0, sizeof(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus));
+				strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, nom_processus, sizeof(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus) - 1);
 			}
 			else
 			{

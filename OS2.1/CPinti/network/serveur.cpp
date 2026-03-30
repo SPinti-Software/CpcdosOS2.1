@@ -283,11 +283,11 @@ namespace cpinti
 				bool EN_VIE = true;
 				while(EN_VIE)   
 				{   
-					doevents(0);
-					
-					// Si aucun client est connecte
+					// Si aucun client est connecte, temporiser plus longtemps pour alleger le CPU.
 					if(NbClientCO == 0)
 						doevents(100000);
+					else
+						doevents(0);
 					
 					// Nettoyer le socket
 					FD_ZERO(&FD_socket);   
@@ -607,7 +607,7 @@ namespace cpinti
 							// Attendre que le socket se ferme, autrement receptionner les messages
 							if ((TailleLue = read( SocketClient , buffer, TailleBuffer)) == 0)   
 							{   								
-								// Un client s'est barré.. On le ferme!
+								// Un client s'est barrï¿½.. On le ferme!
 								getpeername(SocketClient , (struct sockaddr*)&Sock_Adresse , (socklen_t*)&Taille_Adresse);  
 
 								NbClientCO--;

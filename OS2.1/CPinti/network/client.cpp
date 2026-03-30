@@ -194,43 +194,89 @@ namespace cpinti
 		long Taille_Contenu(long socket)
 		{
 			// Permet de recuperer la taille du contenu
-			char c;
 			char buff[1024] = "";
-			char* ptr = buff + 4;
-			
-			int octets_recu;
-			while((octets_recu = recv((int) socket, ptr, 1, 0)))
+			int octets_recu = 0;
+
+			// Tentative optimisee: lire l'entete en mode peek puis consommer exactement sa taille.
+			// Cela evite les recv() octet par octet tout en preservant le debut du corps HTTP.
+			int peek_len = recv((int) socket, buff, (int) (sizeof(buff) - 1), MSG_PEEK);
+			if(peek_len > 0)
 			{
-				
-				if(octets_recu==-1){
+				buff[peek_len] = 0;
+				char* fin_entete = strstr(buff, "\r\n\r\n");
+				if(fin_entete != NULL)
+				{
+					size_t taille_entete = (size_t) ((fin_entete - buff) + 4);
+					size_t deja_lu = 0;
+					while(deja_lu < taille_entete)
+					{
+						size_t restant = taille_entete - deja_lu;
+						size_t capacite = (sizeof(buff) - 1) - deja_lu;
+						size_t taille_lire = (restant < capacite) ? restant : capacite;
+						int lu = recv((int) socket, buff + deja_lu, (int) taille_lire, 0);
+						if(lu <= 0)
+						{
+							octets_recu = lu;
+							break;
+						}
+						deja_lu += (size_t) lu;
+					}
+
+					if(deja_lu > 0)
+					{
+						buff[deja_lu] = 0;
+						octets_recu = 1;
+						char* ptr = strstr(buff, "Content-Length:");
+						if(ptr)
+						{
+							sscanf(ptr, "%*s %d", &octets_recu);
+						}
+						else
+						{
+							octets_recu = -2; // Taille inconnue
+						}
+
+						return (int) octets_recu;
+					}
+				}
+			}
+
+			// Fallback compatible: comportement historique en lecture octet par octet.
+			char* ptr = buff + 4;
+			size_t header_len = 0;
+			while(header_len < (sizeof(buff) - 5) && (octets_recu = recv((int) socket, ptr, 1, 0)))
+			{
+				if(octets_recu == -1)
+				{
 					perror("Parse Header");
 					break;
 				}
 
 				if(
-					(ptr[-3]=='\r')  && (ptr[-2]=='\n' ) &&
-					(ptr[-1]=='\r')  && (*ptr=='\n' )
+					(ptr[-3] == '\r') && (ptr[-2] == '\n') &&
+					(ptr[-1] == '\r') && (*ptr == '\n')
 				) break;
 				ptr++;
+				header_len++;
 			}
 
-			*ptr=0;
-			ptr=buff+4;
+			*ptr = 0;
+			ptr = buff + 4;
 
 			if(octets_recu)
 			{
-
-				ptr=strstr(ptr,"Content-Length:");
+				ptr = strstr(ptr, "Content-Length:");
 				if(ptr)
 				{
-					sscanf(ptr,"%*s %d", &octets_recu);
-
-				}else
-					octets_recu=-2; // Taille inconnue
+					sscanf(ptr, "%*s %d", &octets_recu);
+				}
+				else
+				{
+					octets_recu = -2; // Taille inconnue
+				}
 			}
-			
 
-			return (int) octets_recu ;
+			return (int) octets_recu;
 
 		}
 
@@ -272,7 +318,7 @@ namespace cpinti
 			bool Simple_TrameHTTP = false;
 			
 			int CompteurDoevents = 0;
-			char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 128);
+			char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 256);
 			std::string AdresseIP_DNS = "";
 			std::string _NumeroID_STR = std::to_string(_NumeroID);
 			std::string NumPort_STR = std::to_string(NumPort);
@@ -358,7 +404,7 @@ namespace cpinti
 									"Socket binding ",
 									"CLT:" + _NumeroID_STR, "Demarrer_client()", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
 										
-			bzero(&servaddr, sizeof(servaddr)); 
+			memset(&servaddr, 0, sizeof(servaddr)); 
 			
 			cpinti_dbg::CPINTI_DEBUG(".", ".",
 								"", "", Ligne_reste, Alerte_action, Date_sans, Ligne_r_normal);
@@ -409,16 +455,16 @@ namespace cpinti
 			char buffer[TailleBuffer+1]; 
 			std::string Fichier_TEMP_STR = "";
 			
-			char* VAR_PROGRESSION = (char*) calloc(16, sizeof(char));
+			char* VAR_PROGRESSION = (char*) calloc(32, sizeof(char));
 			bool var_progression = false;
 			
-			char* VAR_SPEED = (char*) calloc(16, sizeof(char));
+			char* VAR_SPEED = (char*) calloc(32, sizeof(char));
 			bool var_speed = false;
 			
-			char* VAR_SIZE = (char*) calloc(16, sizeof(char));
+			char* VAR_SIZE = (char*) calloc(32, sizeof(char));
 			bool var_size = false;
 			
-			char* VAR_SOCKET = (char*) calloc(16, sizeof(char));
+			char* VAR_SOCKET = (char*) calloc(32, sizeof(char));
 			bool var_socket = false;
 			
 			
@@ -481,7 +527,7 @@ namespace cpinti
 
 						std::string _tmp_cpy = BUFFER.substr(posCFG+18);
 
-						memcpy(VAR_PROGRESSION, _tmp_cpy.c_str(), _tmp_cpy.length());
+						snprintf(VAR_PROGRESSION, 32, "%s", _tmp_cpy.c_str());
 						
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable progression en poucentage '" + _tmp_cpy + "'",
@@ -499,7 +545,7 @@ namespace cpinti
 
 						std::string _tmp_cpy = (BUFFER.substr(posCFG+15).c_str());
 
-						memcpy(VAR_SPEED, _tmp_cpy.c_str(), _tmp_cpy.length());
+						snprintf(VAR_SPEED, 32, "%s", _tmp_cpy.c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets par secondes '" + _tmp_cpy + "'",
 												 "STATS : Variable bytes per sec '" + _tmp_cpy + "'",
@@ -517,7 +563,7 @@ namespace cpinti
 
 						std::string _tmp_cpy = (BUFFER.substr(posCFG+14).c_str());
 
-						memcpy(VAR_SIZE, _tmp_cpy.c_str(), _tmp_cpy.length());
+						snprintf(VAR_SIZE, 32, "%s", _tmp_cpy.c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable octets copies '" + _tmp_cpy + "'",
 												 "STATS : Variable definition for copied bytes'" + _tmp_cpy + "'",
@@ -534,13 +580,13 @@ namespace cpinti
 
 						std::string _tmp_cpy = (BUFFER.substr(posCFG+16).c_str());
 
-						memcpy(VAR_SOCKET, _tmp_cpy.c_str(), _tmp_cpy.length());
+						snprintf(VAR_SOCKET, 32, "%s", _tmp_cpy.c_str());
 						
 						cpinti_dbg::CPINTI_DEBUG("STATS : Definition variable socket'" + _tmp_cpy + "'",
 												 "STATS : Variable definition for socket '" + _tmp_cpy + "'",
 												"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
 								
-						sprintf(_Commande_CpcdosCP, "SET/ %s = %d", VAR_SOCKET, _NumeroID);
+						snprintf(_Commande_CpcdosCP, 256, "SET/ %s = %d", VAR_SOCKET, _NumeroID);
 						cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 						
 						
@@ -655,12 +701,15 @@ namespace cpinti
 
 							clock_t	TempsDebut;
 							clock_t	TempsFin;
+							TempsDebut = clock();
 							
 							FILE* FD_fichiertemp = NULL;
 
 							int Octets = 0;
 							int octets_recu = 0;
 							std::string octets_STR = "0";
+							size_t buffer_recu_capacity = 0;
+							size_t buffer_recu_len = 0;
 
 							
 							// Ecrire seulement si fichier definit
@@ -671,18 +720,34 @@ namespace cpinti
 													"CLT:" + _NumeroID_STR, "", Ligne_reste, Alerte_action, Date_avec, Ligne_r_normal);
 													
 								FD_fichiertemp = fopen(Fichier_TEMP_STR.c_str(),"wb");
-								buffer_recu = (char*) calloc(strlen(Fichier_TEMP_STR.c_str()) + 16, sizeof(char));
-								sprintf(buffer_recu, "#BINARY FILE# %s", Fichier_TEMP_STR.c_str());
-								
-								cpinti_dbg::CPINTI_DEBUG("[OK]",
+								if(FD_fichiertemp != NULL)
+								{
+									buffer_recu_capacity = strlen(Fichier_TEMP_STR.c_str()) + 16;
+									buffer_recu = (char*) calloc(buffer_recu_capacity, sizeof(char));
+									snprintf(buffer_recu, buffer_recu_capacity, "#BINARY FILE# %s", Fichier_TEMP_STR.c_str());
+									buffer_recu_len = strlen(buffer_recu);
+									
+									cpinti_dbg::CPINTI_DEBUG("[OK]",
 															 "[OK]",
 															"", "", Ligne_saute, Alerte_ok, Date_sans, Ligne_r_normal);
-								// EXCEPTION !!
-								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
-								doevents(20000);
+									// EXCEPTION !!
+									cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#TCP " + AdresseIP + ":" + NumPort_STR + " TCP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
+									doevents(20000);
+								}
+								else
+								{
+									cpinti_dbg::CPINTI_DEBUG("[AVERTISSEMENT] Impossible de creer le fichier temporaire, bascule en memoire vive.",
+															 "[WARNING] Unable to create temporary file, switching to memory buffer.",
+															"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_avertissement, Date_avec, Ligne_r_normal);
+									buffer_recu_capacity = (size_t) TailleContenu + 64;
+									buffer_recu = (char*) calloc(buffer_recu_capacity, sizeof(char));
+									Fichier_TEMP_STR = "";
+								}
 							}
-							else
-								buffer_recu = (char*) calloc((size_t) TailleContenu+64, sizeof(char));
+							else {
+								buffer_recu_capacity = (size_t) TailleContenu + 64;
+								buffer_recu = (char*) calloc(buffer_recu_capacity, sizeof(char));
+							}
 							
 							
 							// !!! #BINARY FILE NEST JAMAIS VISIBLE DEPUIS le HTTP_get en CPC !!!
@@ -691,8 +756,9 @@ namespace cpinti
 													 "Attempt to receive data...",
 													"CLT:" + _NumeroID_STR, "", Ligne_saute, Alerte_action, Date_avec, Ligne_r_normal);
 							fflush(stdout);
+							bool section_critique_active = true;
 							ENTRER_SectionCritique();
-							while((octets_recu = recv(SocketReseau, buffer, 8192, 0)))
+							while((octets_recu = recv(SocketReseau, buffer, TailleBuffer, 0)))
 							{
 					
 								// ENTRER_SectionCritique();
@@ -703,6 +769,11 @@ namespace cpinti
 								}
 
 								
+								if (octets_recu > 0)
+								{
+									buffer[octets_recu] = '\0';
+								}
+
 								if(Fichier_TEMP_STR != "")
 								{
 									if(cpinti_dbg::DEBUG_ENABLED == true)
@@ -729,7 +800,27 @@ namespace cpinti
 									}
 								}
 								else
-									strcat(buffer_recu, buffer);
+								{
+									if ((buffer_recu_len + (size_t)octets_recu + 1) > buffer_recu_capacity)
+									{
+										size_t new_capacity = buffer_recu_capacity + (size_t)octets_recu + 4096;
+										char* resized = (char*) realloc(buffer_recu, new_capacity);
+										if (resized != NULL)
+										{
+											buffer_recu = resized;
+											buffer_recu_capacity = new_capacity;
+										}
+									}
+
+									if ((buffer_recu_len + 1) < buffer_recu_capacity)
+									{
+										size_t remaining = buffer_recu_capacity - buffer_recu_len - 1;
+										size_t append_len = ((size_t)octets_recu < remaining) ? (size_t)octets_recu : remaining;
+										memcpy(buffer_recu + buffer_recu_len, buffer, append_len);
+										buffer_recu_len += append_len;
+										buffer_recu[buffer_recu_len] = '\0';
+									}
+								}
 								
 								Octets += octets_recu;
 								
@@ -751,6 +842,7 @@ namespace cpinti
 									{
 										CompteurDoevents = 0;
 										SORTIR_SectionCritique();
+										section_critique_active = false;
 										doevents(0);
 										
 										STACK_MEMOIRE_STR = cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_EXTRACT_POUR_SERVEUR, "");
@@ -765,6 +857,7 @@ namespace cpinti
 										}
 					
 										ENTRER_SectionCritique();
+										section_critique_active = true;
 										
 										if (NombreOctets < 1) NombreOctets = 1;
 										
@@ -774,7 +867,7 @@ namespace cpinti
 										{
 
 											valeur = ((double) NombreOctets / (double) TailleFichier) * 100;
-											sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
+											snprintf(_Commande_CpcdosCP, 256, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
 											cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 										}
 										
@@ -783,7 +876,7 @@ namespace cpinti
 										{
 
 											valeur = (double) NombreOctets;
-											sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
+											snprintf(_Commande_CpcdosCP, 256, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
 											cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 										}
 									
@@ -793,7 +886,7 @@ namespace cpinti
 											if((var_speed == true) && (strlen(VAR_SPEED) > 1))
 											{
 	
-												sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SPEED, vitesse);
+												snprintf(_Commande_CpcdosCP, 256, "SET/ %s = /F:CPC.INT(%f)", VAR_SPEED, vitesse);
 												cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 												vitesse = 0;
 											}
@@ -828,11 +921,16 @@ namespace cpinti
 								}
 
 								SORTIR_SectionCritique();
+								section_critique_active = false;
 						
 								_Commande_CpcdosCP[0] = '\0';
 									
 								if(octets_recu <= 0) break;
 								if(Octets == TailleContenu) break;
+							}
+							if(section_critique_active == true)
+							{
+								SORTIR_SectionCritique();
 							}
 							
 							// SORTIR_SectionCritique();
@@ -854,7 +952,7 @@ namespace cpinti
 									{
 
 										valeur = 100;
-										sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
+										snprintf(_Commande_CpcdosCP, 256, "SET/ %s = /F:CPC.INT(%f)", VAR_PROGRESSION, valeur);
 										cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									}
 									
@@ -863,7 +961,7 @@ namespace cpinti
 									{
 
 										valeur = (double) NombreOctets;
-										sprintf(_Commande_CpcdosCP, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
+										snprintf(_Commande_CpcdosCP, 256, "SET/ %s = /F:CPC.INT(%f)", VAR_SIZE, valeur);
 										cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
 									}
 								}
@@ -875,7 +973,7 @@ namespace cpinti
 					
 					
 						
-					if ((TailleContenu == 0) && (TailleLue = read(SocketReseau , buffer, TailleBuffer) == 0))
+					if ((TailleContenu == 0) && ((TailleLue = read(SocketReseau , buffer, TailleBuffer)) <= 0))
 					{
 						cpinti_dbg::CPINTI_DEBUG("Le serveur a ferme la connexion.",
 												 "Server has close connection.",
@@ -884,13 +982,17 @@ namespace cpinti
 					}
 					else
 					{
+						if(TailleLue > 0 && TailleLue <= TailleBuffer)
+						{
+							buffer[TailleLue] = '\0';
+						}
 
 						
 						if(NB_Message_RECEIVE < 4200000000) /* anti-crash*/
 							NB_Message_RECEIVE++;
 						
 						// Version HTTP
-						if((buffer == NULL) || ((Simple_TrameHTTP == true) && (Fichier_TEMP_STR != "")))
+						if((buffer_recu != NULL) || ((Simple_TrameHTTP == true) && (Fichier_TEMP_STR != "")))
 						{
 												
 							if(_TYPE_CLIENT == 1) /* TCP */
@@ -898,6 +1000,12 @@ namespace cpinti
 								
 							else if(_TYPE_CLIENT == 2) /* UDP */
 								cpinti::cpinti_GEST_BUFF(__NumeroID, _STACK_STOCKER_POUR_CPCDOS, "#UDP " + NumPort_STR + ":" + NumPort_STR + " UDP#" + SocketReseau_STR + "=" + std::string(buffer_recu)); 
+
+								if (buffer_recu != NULL)
+								{
+									free(buffer_recu);
+									buffer_recu = NULL;
+								}
 						}
 						else
 						{
@@ -914,6 +1022,11 @@ namespace cpinti
 			} 
 		  
 			// Fermer le socket
+			free(VAR_PROGRESSION);
+			free(VAR_SPEED);
+			free(VAR_SIZE);
+			free(VAR_SOCKET);
+			free(_Commande_CpcdosCP);
 			Fermer_socket(SocketReseau); 
 			return (long)CLIENT_OK;
 		}

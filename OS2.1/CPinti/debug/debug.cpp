@@ -39,10 +39,13 @@ namespace cpinti_dbg
 	
 	void CPINTI_DEBUG_C(const char* TexteFrancais, const char* TexteAnglais, const char* Declencheur, const char* Fonction, long DebutLigne, long NiveauAlerte, long AffDate, long RetourLigneHaut)
 	{
+		if(DEBUG_ENABLED <= 0)
+			return;
+
 		CPINTI_DEBUG(std::string(TexteFrancais), std::string(TexteAnglais), std::string(Declencheur), std::string(Fonction), DebutLigne, NiveauAlerte, AffDate, RetourLigneHaut);
 	}
 	
-	void CPINTI_DEBUG(std::string TexteFrancais, std::string TexteAnglais, std::string Declencheur, std::string Fonction, long DebutLigne, long NiveauAlerte, long AffDate, long RetourLigneHaut)
+	void CPINTI_DEBUG(const std::string& TexteFrancais, const std::string& TexteAnglais, const std::string& Declencheur, const std::string& Fonction, long DebutLigne, long NiveauAlerte, long AffDate, long RetourLigneHaut)
 	{
 		// Cette fonction permet de logger les activites du systeme
 		// TexteFrancais 	= Texte en francais
@@ -74,6 +77,7 @@ namespace cpinti_dbg
 			long Cpcdos_Langue = 0; // TEMPORAIRE
 			
 			std::string Texte_final;
+			Texte_final.reserve(TexteFrancais.size() + TexteAnglais.size() + Declencheur.size() + Fonction.size() + 8);
 			char const * File = NULL;
 			char const * Texte;
 			

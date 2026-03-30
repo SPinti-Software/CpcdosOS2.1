@@ -40,7 +40,7 @@ End Destructor
 Function _SYSTEME_Cpcdos_OSx__.AllouerString(ByRef texte as String) as Zstring ptr
 	' Permet d'allouer de la memoire pour ZString et ajouter les donnees
 	if texte = "" Then texte = " "
-	Dim tmp_alloc as Zstring ptr = Allocate(this.TailleString(texte))
+	Dim tmp_alloc as Zstring ptr = Allocate(this.TailleString(texte) + 1)
 	 *tmp_alloc = texte ' & chr(0) ' S'il y a un caractere bizarre, reduire la position de -1 le '0'
 
 	return tmp_alloc
@@ -82,7 +82,10 @@ Function _SYSTEME_Cpcdos_OSx__.TailleString(ByRef Texte as string) as integer
 	' avec la taille deja definie
 	Dim Resultat as integer
 	Dim Taille as integer
-	For Boucle as integer = 1 to Len(Texte)
+	Dim Texte_len as integer = Len(Texte)
+	if Texte_len <= 0 Then return 0
+
+	For Boucle as integer = 1 to Texte_len
 		Resultat = (255 AND ASC(Texte, Boucle))
 		IF Resultat <> 0 Then Taille += 1
 	Next Boucle
@@ -1736,16 +1739,23 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 				
 				if mid(list_sizes_tmp, boucle, 1) = "," then
 
-					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
+					if index_array >= 0 AND index_array <= 24 Then
+						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
+					End if
 					
-
-					index_array += 1
+					if index_array < 24 then
+						index_array += 1
+					else
+						exit for
+					End if
 					Nombre_STR = ""
 				else
 					' Si on arrive a la fin
 					if mid(list_sizes_tmp, boucle, 1) = "" then
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police) = index_array
+						if index_array >= 0 AND index_array <= 24 Then
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(Nombre_police, index_array) = val(Nombre_STR)
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(Nombre_police) = index_array
+						End if
 
 						exit for ' bye bye pelo !
 					else
@@ -1774,8 +1784,10 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 		if Position_FIN = Len(Buffer_Fichier) Then exit for
 	Next Nombre_police
 
-	' Fix 
-	CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number -= 1
+	' Fix: only decrement if at least one font has been parsed.
+	if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number > 0 then
+		CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number -= 1
+	End if
 
 	dim loaded_ttf_config as boolean = false
 	
@@ -1817,15 +1829,23 @@ Function _SYSTEME_Cpcdos_OSx__.Load_TTF_config() as boolean
 					if mid(char_values, char_index, 1) = "," then
 
 						if val(Nombre_STR) < 800 Then
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+							if index_array >= 0 AND index_array <= 128 Then
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+							End if
 						End if
 
-						index_array += 1
+						if index_array < 128 then
+							index_array += 1
+						else
+							exit for
+						End if
 						Nombre_STR = ""
 					else
 						' Si on arrive a la fin
 						if mid(char_values, char_index, 1) = "" then
-							CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+							if index_array >= 0 AND index_array <= 128 Then
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Nombre_police, boucle).size_char(index_array) = val(Nombre_STR)
+							End if
 
 							exit for ' bye bye pelo !
 						else
@@ -1896,13 +1916,20 @@ End function
 Function _SYSTEME_Cpcdos_OSx__.font_len(byref text as string, police_size_index as integer, police_name_index as integer) as integer
 	' This function allow to calculate size of font text
 
-	if police_name_index >= 0 AND police_name_index >= 0 Then
+	if police_name_index >= 0 AND police_size_index >= 0 Then
 		dim SizeChar as integer
 		dim index_char as integer
-		for boucle_char as integer = 1 to len(text)
+		dim text_len as integer = len(text)
+		if text_len <= 0 Then
+			return 0
+		End if
+
+		for boucle_char as integer = 1 to text_len
 			' Getting ASCII number char per char	
 
 			index_char = (asc(text, boucle_char) - 32)
+			if index_char < 0 then index_char = 0
+			if index_char > 128 then index_char = 0
 
 			SizeChar += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(police_name_index, police_size_index).size_char(index_char)
 
@@ -1939,13 +1966,19 @@ Sub _SYSTEME_Cpcdos_OSx__.font_check_array(byref font_size as integer, byval fon
 	End if
 
 	if font_size > 0 Then
-		For Nombre_sizes as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.fonts_number
+		dim found_size as boolean = false
+		For Nombre_sizes as integer = 0 to CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_nb_sizes(font_name_index)
 			if CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_sizes(font_name_index, Nombre_sizes) = font_size Then
 				' Mettre a jour la valeur directement dans la reference memoire
 				font_size = Nombre_sizes
+				found_size = true
 				exit for
 			end if
 		next Nombre_sizes
+
+		if found_size = false Then
+			font_size = -1
+		End if
 	end if
 
 End sub

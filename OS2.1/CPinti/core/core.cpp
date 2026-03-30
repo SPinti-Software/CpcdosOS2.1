@@ -366,7 +366,9 @@ namespace cpinti
 			Nombre_Processus++;
 			
 			// Nom du processus
-			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, NomProcessus, strlen(NomProcessus));
+			const char* nom_processus = (NomProcessus != nullptr) ? NomProcessus : "";
+			memset(Liste_Processus[Nouveau_PID].Nom_Processus, 0, sizeof(Liste_Processus[Nouveau_PID].Nom_Processus));
+			strncpy((char*) Liste_Processus[Nouveau_PID].Nom_Processus, nom_processus, sizeof(Liste_Processus[Nouveau_PID].Nom_Processus) - 1);
 
 			// Son numero de TID (Thread IDentifiant)
 			Liste_Processus[Nouveau_PID].PID 				= Nouveau_PID;
@@ -610,7 +612,9 @@ namespace cpinti
 			Nombre_Threads++;
 			
 			// Nom du thread
-			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, NomThread, strlen(NomThread));
+			const char* nom_thread = (NomThread != nullptr) ? NomThread : "";
+			memset(Liste_Threads[Nouveau_TID].Nom_Thread, 0, sizeof(Liste_Threads[Nouveau_TID].Nom_Thread));
+			strncpy((char*) Liste_Threads[Nouveau_TID].Nom_Thread, nom_thread, sizeof(Liste_Threads[Nouveau_TID].Nom_Thread) - 1);
 			
 			// Corriger les priorites
 			if(Liste_Threads[Thread_en_cours].Priorite < 2) 
