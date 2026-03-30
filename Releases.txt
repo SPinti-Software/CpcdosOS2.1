@@ -10,14 +10,14 @@
 	#################
 
 		--> 8	ajouts de divers fonctionnalites.
-		--> 17	corrections importantes.
+		--> 18	corrections importantes.
 		--> 6	optimisations.
 		--> 12	corrections et modifications mineures.
 
-		--> Gain de stabilite : +18%
+		--> Gain de stabilite : +60%
 		--> Note de stabilite : 16/20
 
-		--> Gain de performances : +10%
+		--> Gain de performances : +12%
 		--> Note de performances : 15/20
 
 		--> Probabilites de crash
