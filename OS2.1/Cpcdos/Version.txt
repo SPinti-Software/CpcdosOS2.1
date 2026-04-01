@@ -10,7 +10,7 @@
 	#################
 
 		--> 10	ajouts de divers fonctionnalites.
-		--> 19	corrections importantes.
+		--> 21	corrections importantes.
 		--> 6	optimisations.
 		--> 12	corrections et modifications mineures.
 
@@ -35,6 +35,11 @@
 	#############################
 
 		[CORRECTIONS]
+		- [CONSOLE] Console en mode GUI (Touche F9) grosses amélioration du mode 'CONSOLE:1'
+					* Possibilité d'utiliser la touche HAUT et BAS pour historique des commandes
+					* Défilement d'écran automatique
+					* Correction affichage tronqué
+					* Bloquage édition output.
         - [FONTS] Correction affichage et plantage lors de l'utilisation des fonts TTF (Arial, Impact ...)
 		- [FONTS] Correction de l'utilisation des polices TTF dans les textbox (Copier/coller/selection/ecriture...)
 		- [MEMORY] Correction critique de Recuperer_BITMAP_PTR() et Capture_bitmap() qui renvoyaient un faux pointeur non nul au lieu de NULL.
@@ -49,6 +54,7 @@
 		- [UPDATE] Correction des plantages de mise a jour SYS/ /UPDATE-GET et SYS/ /UPDATE-INSTALL si les fichiers temporaires attendus sont absents.
 
 		[AJOUTS]
+		- [TASKMANAGER] GUI possibilité d'arreter les processus (clic soit ou selection)
 		- [GUI] Textbox : Ajout la possibilité de selectionner les caracteres pour copier/coller ET compatible FONTS
 		- [GUI] Textbox : Ajout de la touche SUPPR
 		- [UPDATE] Ajout de verifications d'existence pour update.php et le package ZIP avant tout traitement de mise a jour.
@@ -61,6 +67,7 @@
 		[MODIFICATIONS]
 		- [VERSION] Revision modules : CCP 3.1 / SCI 3.1 / Console 3.1 / CPinti 4.1.
 		- [UPDATE] Ajustements du flux de telechargement et installation package cote shell/updater.
+		- [TASKMANAGER] Amélioration de l'application graphique (Touche ALT + SUPPR)
 
 
 	#######################
