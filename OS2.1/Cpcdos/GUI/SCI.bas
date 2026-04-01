@@ -1234,6 +1234,7 @@ Function THREAD_Screen_Video Alias "THREAD_Screen_Video" (ByVal thread_struct as
 	Dim As integer Pos_X, Pos_Y, Scroll_Weel, TypeClic, Clip, Presente
 	Dim Etat_Thread as uinteger
 	Dim EN_VIE as boolean = true
+	Dim Temps_Dernier_Flip as double = 0
 	Function = CPCDOS_INSTANCE.__THREAD_DEFAUT
 	
 	while(EN_VIE)
@@ -1241,16 +1242,21 @@ Function THREAD_Screen_Video Alias "THREAD_Screen_Video" (ByVal thread_struct as
 
 		if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		
 		SCOPE
 			' ********* D E B U T  *********
-
-			if NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
-				Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y)	
-				CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
+			' 60 FPS = 1/60 = 0.016 sec 
+			' 30 FPS = 1/30 = 0.033 secondes
+			' Limiter le rendu a ~60 FPS pour liberer le CPU
+			if (TIMER - Temps_Dernier_Flip) >= 0.033 Then
+				if NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.DEPLACEMENT > 0 OR NOT CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.REDIMENTIONNEMENT > 0 Then
+					Presente = CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpc_GetMouse(Pos_X, Pos_Y)	
+					CPCDOS_INSTANCE.SCI_INSTANCE.Blitter_Video(Pos_X, Pos_Y, Presente)
+				End if
+				Temps_Dernier_Flip = TIMER
 			End if
 
 			'  ********* F I N  *********
@@ -1348,8 +1354,8 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 
 		if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		
 		SCOPE
@@ -1540,11 +1546,13 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 				
 				Dim EstDifferent as boolean = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Affiche_EditBar
 				
-				' Switch entre TRUE et FALSE toutes les 1 secondes
+				' Switch entre TRUE et FALSE toutes les 500ms
 				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Affiche_EditBar = CPCDOS_INSTANCE.TIMING_500MS
 				
-				' Mettre a jour graphiquement
-				CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1))
+				' Mettre a jour graphiquement SEULEMENT si l'etat a change
+				if EstDifferent <> CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Affiche_EditBar Then
+					CPCDOS_INSTANCE.SCI_INSTANCE.IUG_Updater(CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1))
+				End if
 			End if
 			
 			
@@ -2087,8 +2095,8 @@ Function THREAD_RefreshGUI_Elements Alias "THREAD_RefreshGUI_Elements" (ByVal th
 
 		if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then doevents(0) : Sleep 1 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		
 		Compteur += 1

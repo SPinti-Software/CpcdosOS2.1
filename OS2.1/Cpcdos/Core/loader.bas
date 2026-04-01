@@ -37,8 +37,8 @@ public function Mon_Thread1 cdecl Alias "Mon_Thread1"(byref thread_struct as _ST
 		' Verifier l'etat du thread declare dans CPinti Core
 		Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET Then EN_VIE = FALSE 	' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Continue While		' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Sleep 5 : Continue While		' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		SCOPE
 		' ********* DEBUT CODE DU THREAD EN COURS D'EXECUTION *********
@@ -85,8 +85,8 @@ public function Mon_Thread2 cdecl Alias "Mon_Thread2"(byref thread_struct as _ST
 		' Verifier l'etat du thread declare dans CPinti Core
 		Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET Then EN_VIE = FALSE 	' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Continue While		' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Sleep 5 : Continue While		' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		SCOPE
 		' ********* DEBUT CODE DU THREAD EN COURS D'EXECUTION *********
@@ -133,8 +133,8 @@ public function Mon_Thread3 cdecl Alias "Mon_Thread3"(byref thread_struct as _ST
 		' Verifier l'etat du thread declare dans CPinti Core
 		Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET Then EN_VIE = FALSE 	' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Continue While		' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Sleep 5 : Continue While		' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		SCOPE
 		' ********* DEBUT CODE DU THREAD EN COURS D'EXECUTION *********
@@ -965,8 +965,8 @@ public function Thread_SYSTEM cdecl Alias "Thread_SYSTEM"(byval thread_struct as
 		' Verifier l'etat du thread declare dans CPinti Core
 		Etat_Thread = cpinti.gestionnaire_tache.cpinti_etat_thread(1, thread_struct.PROC_ID, thread_struct.THREAD_ID)
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET Then EN_VIE = FALSE 	' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Continue While		' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE Then Sleep 5 : Continue While		' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE Then Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		SCOPE
 		' ********* DEBUT CODE DU THREAD EN COURS D'EXECUTION *********
