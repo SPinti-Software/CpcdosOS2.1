@@ -1,9 +1,9 @@
 // COPY GUI monitor
 // Affiche une fenetre de progression si une copie dure plus d'1 seconde.
-// Variables attendues (niveau 2):
+// Variables attendues (niveau 3):
 // CPC_SYS.IO.COPY_GUI.SRC, DST, PCT, BYTES, SPEED, CANCEL, DONE, RESULT
 
-CCP/ /SET.LEVEL = 2
+CCP/ /SET.LEVEL = 3
 
 // Delai anti-flicker: n'afficher que si la copie depasse ~1 seconde
 // CCP/ /PAUSE 1000
@@ -102,6 +102,12 @@ CCP/ /PAUSE 260
 if/ "%CPC_SYS.IO.COPY_GUI.DONE%" == "1" then: Goto/ END_COPY_GUI
 
 set/ COPY_GUI_SPEED_KO = /C(%CPC_SYS.IO.COPY_GUI.SPEED% / 1024)
+set/ COPY_GUI_SPEED_MO = /C(%COPY_GUI_SPEED_KO% / 1024)
+if/ "%COPY_GUI_SPEED_MO%" != "0" then:
+set/ COPY_GUI_SPEED_TXT = "%COPY_GUI_SPEED_MO% Mo/s"
+Else:
+set/ COPY_GUI_SPEED_TXT = "%COPY_GUI_SPEED_KO% ko/s"
+End/ if
 
 if/ "%COPY_GUI_LAST_PCT%" == "" then: set/ COPY_GUI_LAST_PCT = "-1"
 if/ "%COPY_GUI_LAST_SPEED%" == "" then: set/ COPY_GUI_LAST_SPEED = "-1"
@@ -122,7 +128,7 @@ if/ "%CPC_SYS.IO.COPY_GUI.PCT%" != "%COPY_GUI_LAST_PCT%" then:
 set/ CHANGED = "1"
 End/ if
 
-if/ "%COPY_GUI_SPEED_KO%" != "%COPY_GUI_LAST_SPEED%" then:
+if/ "%COPY_GUI_SPEED_TXT%" != "%COPY_GUI_LAST_SPEED%" then:
 set/ CHANGED = "1"
 End/ if
 
@@ -142,7 +148,7 @@ End/ TextBlock
 
 TextBlock/ /MODIF:copy_gui_status
 .backcolor = "235,235,235"
-.text = "%CPC_SYS.IO.COPY_GUI.PCT%\% - %COPY_GUI_SPEED_KO% ko/s                    "
+.text = "%CPC_SYS.IO.COPY_GUI.PCT%\% - %COPY_GUI_SPEED_TXT%                    "
 create/
 End/ TextBlock
 
@@ -153,7 +159,7 @@ creer/
 Fin/ BarreProgression
 
 set/ COPY_GUI_LAST_PCT = "%CPC_SYS.IO.COPY_GUI.PCT%"
-set/ COPY_GUI_LAST_SPEED = "%COPY_GUI_SPEED_KO%"
+set/ COPY_GUI_LAST_SPEED = "%COPY_GUI_SPEED_TXT%"
 set/ COPY_GUI_LAST_SRC = "%CPC_SYS.IO.COPY_GUI.SRC%"
 set/ COPY_GUI_LAST_DST = "%CPC_SYS.IO.COPY_GUI.DST%"
 

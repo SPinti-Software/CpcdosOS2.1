@@ -147,7 +147,7 @@ namespace cpinti
 						// Yield CPU et mise a jour progression toutes les ~64 iterations (~256Ko)
 						CompteurDoevents++;
 						CompteurFlush++;
-						if(CompteurDoevents >= 64)
+						if(CompteurDoevents >= 128) // 64
 						{
 							CompteurDoevents = 0;
 							doevents((Priorite <= 1) ? 1 : 0);

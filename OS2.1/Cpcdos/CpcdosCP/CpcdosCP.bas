@@ -1481,6 +1481,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.DST = " & CHR(34) & Destination & CHR(34), _CLE_, 3, 0, "")
 
 				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("CMD/ /THREAD[STD] EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/COPY.CPC", _CLE_, 3, 0, "")
+				' Laisser le thread GUI demarrer et s'initialiser avant de lancer la copie
+				Sleep 150
+				doevents(0)
 			End if
 			
 			IF Not Var_Progression = "" Then
