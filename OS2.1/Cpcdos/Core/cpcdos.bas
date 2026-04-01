@@ -221,6 +221,10 @@ Function __Noyau_Cpcdos_OSx__.Fermer_processus(PID as uinteger) as boolean
 
 	
 	'
+	' Guard : eviter l'appel repetitif sur un processus deja arrete (supprime la boucle infinie de logs)
+	If cpinti.gestionnaire_tache.cpinti_get_etat_processus(get_id_kernel(), PID) = __ARRETE Then
+		Function = false : Exit Function
+	End If
 	' Fermer completement le processus et ses threads associes + nettoyage memoire
 	Function = cpinti.gestionnaire_tache.cpinti_arreter_processus(get_id_kernel(), PID)
 	

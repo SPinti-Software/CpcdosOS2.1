@@ -1825,13 +1825,24 @@ Function _memoire_bitmap.Ecrire_ecran_ml(Texte as String, TableauLignes() as Str
 		view screen (PX, PY)-(PX + SX, PY + SY)
 		' Ecrire les caracteres dans le bufer
 		if TypeRetourOct > 0 Then
+			' Hauteur de ligne selon la police active (evite le rendu avec la police FreeBASIC par defaut apres Entree)
+			Dim _ml_line_h as integer = 8
+			If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+				If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+					Dim _mlfn as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+					Dim _mlfn_idx as integer = -1
+					Dim _mlfs_idx as integer = 8
+					CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(_mlfs_idx, _mlfn, _mlfn_idx)
+					If _mlfn_idx >= 0 Then
+						_ml_line_h = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(_mlfn_idx, _mlfs_idx).size_y
+					End If
+				End If
+			End If
 			Dim PositionEnY as integer = 1
 			For Boucle_texte as integer = 1 to NombreLignes
-				
-				
-				
-				Draw String (Position_Texte_X + 1, Position_Texte_Y + PositionEnY), TableauLignes(Boucle_texte), RGB(R, V, B) ' TEMP. Faire sorte a ce que le texte soit decoupe pour le multi-ligne ou non
-				PositionEnY = (Boucle_texte * 8) + 1
+				' Utiliser Ecrire_ecran (route vers Ecrire_ecran_font si police active) au lieu de Draw String
+				Ecrire_ecran(TableauLignes(Boucle_texte), Position_Texte_X + 1, Position_Texte_Y + PositionEnY, R, V, B)
+				PositionEnY = (Boucle_texte * _ml_line_h) + 1
 			Next Boucle_texte
 		Else
 			CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, Position_Texte_X + 1, Position_Texte_Y + 1, R, V, B)
@@ -1933,8 +1944,17 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		' Create text buffer for final GUI drawing
 		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", Size_text_len, font_SY, 0, 0, 0, 0, 2222)
 
-		' Create char buffer
-		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 0, 0, 0, 0, 2222)
+		' Create char buffer (statique : reutilise si meme taille de glyphe, evite malloc/free par appel de rendu)
+		Static _char_buf_id as integer
+		Static _char_buf_sx as integer
+		Static _char_buf_sy as integer
+		if _char_buf_id <= 0 OR _char_buf_sx <> font_SX OR _char_buf_sy <> font_SY Then
+			if _char_buf_id > 0 Then Supprimer_BITMAP(_char_buf_id)
+			_char_buf_id = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 0, 0, 0, 0, 2222)
+			_char_buf_sx = font_SX
+			_char_buf_sy = font_SY
+		End if
+		dim buffer_char as integer = _char_buf_id
 
 		Dim ptr_font_src as any ptr = 0
 		Dim ptr_buffer_text as any ptr = 0
@@ -1946,7 +1966,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		if ptr_font_src = 0 OR ptr_buffer_text = 0 OR ptr_buffer_char = 0 Then
 			DEBUG("Ecrire_ecran_font() : Abort, invalid bitmap pointer (font/buffer).", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-			Supprimer_BITMAP(buffer_char)
+			_char_buf_id = 0 : Supprimer_BITMAP(buffer_char)  ' forcer recreation au prochain appel
 			Supprimer_BITMAP(buffer_text_font)
 			return false
 		End if
@@ -2026,8 +2046,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			if this.utilise(bitmap_id) = true Then ptr_target_bitmap = this.donnees_RVBA(bitmap_id)
 			if ptr_target_bitmap = 0 Then
 				DEBUG("Ecrire_ecran_font() : Abort, invalid target bitmap pointer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-				Supprimer_BITMAP(buffer_char)
-				Supprimer_BITMAP(buffer_text_font)
+				Supprimer_BITMAP(buffer_text_font)  ' buffer_char est statique, on ne le detruit pas
 				return false
 			End if
 			put ptr_target_bitmap, (PX, PY), ptr_buffer_text, alpha
@@ -2039,8 +2058,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			DEBUG("Ecrire_ecran_font() : OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End if
 
-		' Clean buffers
-		Supprimer_BITMAP(buffer_char)
+		' Clean buffers (buffer_char est statique et reutilise : seul buffer_text_font est detruit)
 		Supprimer_BITMAP(buffer_text_font)
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then

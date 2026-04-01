@@ -574,6 +574,13 @@ Type Cpcdos_GUI__TEXTBOX
 	
 	SIZ_X					as Integer 	' Taille horizontale
 	SIZ_Y					as Integer 	' Taille verticale
+
+	Etat_Rendu				as String	' Etat du dernier rendu (evite les repeintures si rien n'a change)
+
+	' Selection de texte par glissement souris
+	Sel_Ancre				as integer = -1  ' Ancre de selection (position au 1er clic, -1 = aucune)
+	Sel_Debut				as integer = -1  ' Debut de la selection (toujours <= Sel_Fin, -1 = pas de selection)
+	Sel_Fin					as integer = -1  ' Fin de la selection (-1 = pas de selection)
 End Type
 
 ' ==== Pour la creation d'une barre de progression ====

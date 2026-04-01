@@ -457,11 +457,88 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 							' Ok pas besoin de y replacer
 							this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.Pos_User_New = false
 							
-							' Arrondir en disivant par 8 pixels
-							if Move_Keyb = false Then 
-								UserEdit_Pos = cint((Pos_User_Mouse_X - Pos_X) / 8)
-								UserEdit_Pos_Y = cint(((Pos_User_Mouse_Y-12) - Pos_Y) / 8)
+							' Convertir la position souris en position caractere (utilise la largeur reelle de la police si disponible)
+							if Move_Keyb = false Then
+								Dim Hauteur_Ligne as integer = 8  ' hauteur ligne par defaut
+								Dim Utilise_Police as boolean = false
+								Dim Index_Police as integer = -1
+								Dim Taille_Police as integer = 8
+								If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+									If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+										Dim Nom_Police as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+										CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(Taille_Police, Nom_Police, Index_Police)
+										If Index_Police >= 0 Then
+											Hauteur_Ligne = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_y
+											Utilise_Police = true
+										End If
+									End If
+								End If
 								
+								' Ligne cliquee (Y) : le texte commence a PY+5 dans Ecrire_ecran_ml
+								Dim Pos_Souris_Y as integer = Pos_User_Mouse_Y - Pos_Y - 5
+								If Pos_Souris_Y < 0 Then Pos_Souris_Y = 0
+								UserEdit_Pos_Y = Pos_Souris_Y \ Hauteur_Ligne  ' 0-based
+								If UserEdit_Pos_Y >= NombreLignes Then UserEdit_Pos_Y = NombreLignes - 1
+								If UserEdit_Pos_Y < 0 Then UserEdit_Pos_Y = 0
+								
+								' Caractere clique (X) : le texte commence a PX+4
+								Dim Pos_Souris_X as integer = Pos_User_Mouse_X - Pos_X - 4
+								If Pos_Souris_X < 0 Then Pos_Souris_X = 0
+								
+								' Texte de la ligne cliquee
+								Dim Ligne_Cliquee as string
+								If NombreLignes > 1 Then
+									Ligne_Cliquee = TableauLignes(UserEdit_Pos_Y + 1)
+								Else
+									Ligne_Cliquee = Texte
+								End If
+								
+								' Trouver le caractere en iterant glyph par glyph (selon la police) ou largeur fixe 8px
+								Dim Char_Sur_Ligne as integer = 0
+								If Utilise_Police Then
+									Dim Largeur_Acc as integer = 0
+									For i_char as integer = 1 to Len(Ligne_Cliquee)
+										Dim Code_ASCII as integer = Asc(Ligne_Cliquee, i_char) - 32
+										If Code_ASCII < 0 Then Code_ASCII = 0
+										If Code_ASCII > 128 Then Code_ASCII = 128
+										Dim Largeur_Glyphe as integer = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_char(Code_ASCII)
+										If Largeur_Acc + (Largeur_Glyphe \ 2) >= Pos_Souris_X Then Exit For  ' Point milieu du glyphe : on s'arrete ici
+										Largeur_Acc += Largeur_Glyphe
+										Char_Sur_Ligne += 1
+									Next i_char
+								Else
+									Char_Sur_Ligne = Pos_Souris_X \ 8
+									If Char_Sur_Ligne > Len(Ligne_Cliquee) Then Char_Sur_Ligne = Len(Ligne_Cliquee)
+								End If
+								
+								' Position ASCII absolue dans le texte entier
+								Dim Pos_Debut_Ligne as integer = 0
+								For i_ligne as integer = 0 to UserEdit_Pos_Y - 1
+									Pos_Debut_Ligne += Len(TableauLignes(i_ligne + 1)) + TypeRetourOct
+								Next i_ligne
+								UserEdit_Pos = Pos_Debut_Ligne + Char_Sur_Ligne
+								
+								' Gestion de la selection par glissement
+								Dim Ancre_Sel as integer = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Ancre
+								If Ancre_Sel < 0 Then
+									' Premier clic : poser l'ancre, pas de selection
+									this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Ancre = CInt(UserEdit_Pos)
+									this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Debut  = -1
+									this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Fin    = -1
+								Else
+									' En glissement : etendre la selection depuis l'ancre
+									Dim Pos_Curseur_Sel as integer = CInt(UserEdit_Pos)
+									If Pos_Curseur_Sel > Ancre_Sel Then
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Debut = Ancre_Sel
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Fin   = Pos_Curseur_Sel
+									ElseIf Pos_Curseur_Sel < Ancre_Sel Then
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Debut = Pos_Curseur_Sel
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Fin   = Ancre_Sel
+									Else
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Debut = -1
+										this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Fin   = -1
+									End If
+								End If
 							End if
 						End if
 						
@@ -489,9 +566,37 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 						this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.UserEdit_Pos = UserEdit_Pos
 						
 						'					Pos ASCII   - Texte avant pour coller le curseur contre le textebox a gauche
-						
-						UE_PosX = Pos_X + (abs(UserEdit_Pos-len(CRLF_Avant)) * 8)
-						UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2
+						' Calcul de la position pixel du curseur selon la police active (glyphe reel ou 8px par defaut)
+						If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+							If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+								Dim Nom_Police as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+								Dim Index_Police as integer = -1
+								Dim Taille_Police as integer = 8
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(Taille_Police, Nom_Police, Index_Police)
+								Dim Hauteur_Ligne as integer = 8
+								Dim Curseur_Px as integer = 0
+								If Index_Police >= 0 Then
+									Hauteur_Ligne = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_y
+									' Somme des largeurs reelles de chaque glyphe avant le curseur sur la ligne courante
+									Dim Nb_Char_Avant as integer = abs(UserEdit_Pos - Len(CRLF_Avant))
+									Dim Texte_Avant_Curseur as string = Mid(TEXTE, Len(CRLF_Avant) + 1, Nb_Char_Avant)
+									For i_char as integer = 1 to Len(Texte_Avant_Curseur)
+										Dim Code_ASCII as integer = Asc(Texte_Avant_Curseur, i_char) - 32
+										If Code_ASCII < 0 Then Code_ASCII = 0
+										If Code_ASCII > 128 Then Code_ASCII = 128
+										Curseur_Px += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_char(Code_ASCII)
+									Next i_char
+								End If
+								UE_PosX = Pos_X + Curseur_Px + 4  ' +4 = offset interne texte dans Ecrire_ecran_ml (PX+3+1)
+								UE_PosY = Pos_Y + (Nombre_CRLF * Hauteur_Ligne) + 2
+							Else
+								UE_PosX = Pos_X + (abs(UserEdit_Pos-len(CRLF_Avant)) * 8)
+								UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2
+							End If
+						Else
+							UE_PosX = Pos_X + (abs(UserEdit_Pos-len(CRLF_Avant)) * 8)
+							UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2
+						End If
 						
 						' locate 5, 5
 						' Print "Nombre CRLF      :" & Nombre_CRLF & ".   "
@@ -505,10 +610,76 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 						' TableauLignes
 
 					End if
+
 					' Si il y a un fond de couleurs (COL:1)
 					if Fond_Couleur = TRUE Then
 						Line (Pos_X, Pos_Y)- step (Siz_X, Siz_Y), RGB(Couleur_FOND_R, Couleur_FOND_V, Couleur_FOND_B), BF
 					End if
+					
+					' Surlignage de la selection (glissement souris)
+					Dim Sel_Debut_Abs as integer = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Debut
+					Dim Sel_Fin_Abs as integer = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Sel_Fin
+					If Sel_Debut_Abs >= 0 And Sel_Fin_Abs > Sel_Debut_Abs Then
+						Dim Hauteur_Ligne as integer = 8
+						Dim Index_Police as integer = -1
+						Dim Taille_Police as integer = 8
+						Dim Utilise_Police as boolean = false
+						If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+							If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+								Dim Nom_Police as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(Taille_Police, Nom_Police, Index_Police)
+								If Index_Police >= 0 Then
+									Hauteur_Ligne = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_y
+									Utilise_Police = true
+								End If
+							End If
+						End If
+						' Clipper dans la zone du textbox
+						view screen (Pos_X, Pos_Y)-(Pos_X + Siz_X, Pos_Y + Siz_Y)
+						Dim Pos_Abs_Debut as integer = 0
+						For Boucle_Ligne as integer = 1 to NombreLignes
+							Dim Texte_Ligne as string
+							If NombreLignes > 1 Then
+								Texte_Ligne = TableauLignes(Boucle_Ligne)
+							Else
+								Texte_Ligne = Texte
+							End If
+							Dim Longueur_Ligne as integer = Len(Texte_Ligne)
+							' Intersection de la selection avec la ligne courante
+							Dim Debut_Sel_Ligne as integer = Sel_Debut_Abs - Pos_Abs_Debut
+							Dim Fin_Sel_Ligne as integer = Sel_Fin_Abs - Pos_Abs_Debut
+							If Debut_Sel_Ligne < 0 Then Debut_Sel_Ligne = 0
+							If Fin_Sel_Ligne > Longueur_Ligne Then Fin_Sel_Ligne = Longueur_Ligne
+							If Debut_Sel_Ligne < Fin_Sel_Ligne Then
+								Dim Pos_Y_Ligne as integer = Pos_Y + 5 + (Boucle_Ligne - 1) * Hauteur_Ligne
+								Dim Pos_X_Debut as integer = 0
+								Dim Pos_X_Fin as integer = 0
+								If Utilise_Police Then
+									' Somme des largeurs de chaque glyphe pour determiner les pixels de selection
+									For i_char as integer = 1 to Debut_Sel_Ligne
+										Dim Code_ASCII as integer = Asc(Texte_Ligne, i_char) - 32
+										If Code_ASCII < 0 Then Code_ASCII = 0
+										If Code_ASCII > 128 Then Code_ASCII = 128
+										Pos_X_Debut += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_char(Code_ASCII)
+									Next i_char
+									Pos_X_Fin = Pos_X_Debut
+									For i_char as integer = Debut_Sel_Ligne + 1 to Fin_Sel_Ligne
+										Dim Code_ASCII as integer = Asc(Texte_Ligne, i_char) - 32
+										If Code_ASCII < 0 Then Code_ASCII = 0
+										If Code_ASCII > 128 Then Code_ASCII = 128
+										Pos_X_Fin += CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(Index_Police, Taille_Police).size_char(Code_ASCII)
+									Next i_char
+								Else
+									Pos_X_Debut = Debut_Sel_Ligne * 8
+									Pos_X_Fin = Fin_Sel_Ligne * 8
+								End If
+								' Dessiner le rectangle de selection
+								Line (Pos_X + 4 + Pos_X_Debut, Pos_Y_Ligne)-(Pos_X + 4 + Pos_X_Fin - 1, Pos_Y_Ligne + Hauteur_Ligne - 1), RGB(30, 100, 210), BF
+							End If
+							Pos_Abs_Debut += Longueur_Ligne + TypeRetourOct
+						Next Boucle_Ligne
+						view  ' Reinitialiser le clipping
+					End If
 					
 					
 					' Afficher le texte

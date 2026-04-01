@@ -648,6 +648,7 @@ Type _SYSTEME_Cpcdos_OSx__
 		CONST KEY_DOWN				as String = CHR(255) & CHR(80) ' Touche fleche bas
 		CONST KEY_LEFT				as String = CHR(255) & CHR(75) ' Touche fleche gauche
 		CONST KEY_RIGHT				as String = CHR(255) & CHR(77) ' Touche fleche droite
+		CONST KEY_DEL				as String = CHR(255) & CHR(83) ' Touche Suppr (effacement avant)
 		
 		CONST KEY_F10				as String = CHR(255) & CHR(68) ' Touche fleche droite
 	

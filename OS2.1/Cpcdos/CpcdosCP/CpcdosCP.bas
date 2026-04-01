@@ -625,7 +625,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 		
 		' Verifer si c'est pas un label
 		If InstrREV(Commande, ":") > Instr(Commande, ":") Then VerifierLabel = 1
-		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 1 Then
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
 				DEBUG("[CpcdosC+] Tentative d'execution : " & Commande & CRLF & " - CleID:" & Auth_PID & " [&B" & Bin(_CLE_, 36) & "] -> 0x" & hex(Auth_PID, 10) & CRLF & " - Size:" & LEN(Commande) & " bytes" & CRLF & " - Niveau:" & NIVEAU_CCP & CRLF & " - idKernel:" & Auth_Kernel & CRLF & " - idOS:" & Auth_OS & CRLF & " - idUtilisateur:" & Auth_Utilisateur & CRLF & " - PID:" & Auth_PID & CRLF & " - TID:" & Auth_TID, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 			Else
@@ -738,7 +738,13 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					End if
 				End if
 
-				Debug("/!\ French syntax is deprecated and will be removed in future major release ! You should use " & this.Liste_CMD_EN(Boucle) & " instead", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				Static _warned_fr(100) as boolean
+				If Boucle >= 0 AND Boucle <= 100 Then   ' verifier les bornes AVANT l'acces tableau (FB n'a pas de court-circuit sur AND)
+					If NOT _warned_fr(Boucle) Then
+						_warned_fr(Boucle) = true
+						Debug("/!\ French syntax is deprecated and will be removed in future major release ! You should use " & this.Liste_CMD_EN(Boucle) & " instead", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					End If
+				End If
 				TailleComm = LEN(this.Liste_CMD_FR(Boucle))
 				CommPosition = Position_CMD
 				OnCherche = Lcase(this.Liste_CMD_FR(Boucle))

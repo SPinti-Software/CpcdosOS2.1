@@ -1985,6 +1985,13 @@ End sub
 
 
 sub _SYSTEME_Cpcdos_OSx__.debug_font(police_index as integer, size_index as integer)
+	' Guard : n'afficher les infos de fonte qu'une seule fois par paire (police, taille)
+	' Evite de dumper 128 tailles de caracteres a chaque appel de rendu texte
+	Static _printed(16, 16) as boolean
+	if police_index >= 0 AND police_index <= 16 AND size_index >= 0 AND size_index <= 16 Then
+		if _printed(police_index, size_index) = true Then Exit Sub
+		_printed(police_index, size_index) = true
+	End if
 	DEBUG(" === " & CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_name(police_index) & " ===", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ACTION, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 
 	' WIDTH
