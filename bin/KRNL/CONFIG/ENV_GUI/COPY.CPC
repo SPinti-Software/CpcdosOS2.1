@@ -1,6 +1,6 @@
 // COPY GUI monitor
 // Affiche une fenetre de progression si une copie dure plus d'1 seconde.
-// Variables attendues (niveau 3):
+// Variables attendues (niveau 2):
 // CPC_SYS.IO.COPY_GUI.SRC, DST, PCT, BYTES, SPEED, CANCEL, DONE, RESULT
 
 CCP/ /SET.LEVEL = 2
@@ -29,8 +29,9 @@ End/ Window
 
 TextBlock/ copy_gui_src
 .handle         = "%copy_gui_handle%"
-.parameters     = "COL:0 MULTILINES:0"
+.parameters     = "COL:1 MULTILINES:0"
 .text           = "Source : %CPC_SYS.IO.COPY_GUI.SRC%"
+.backcolor      = "235,235,235"
 .px             = "10"
 .py             = "10"
 .sx             = "440"
@@ -40,8 +41,9 @@ End/ TextBlock
 
 TextBlock/ copy_gui_dst
 .handle         = "%copy_gui_handle%"
-.parameters     = "COL:0 MULTILINES:0"
+.parameters     = "COL:1 MULTILINES:0"
 .text           = "Destination : %CPC_SYS.IO.COPY_GUI.DST%"
+.backcolor      = "235,235,235"
 .px             = "10"
 .py             = "32"
 .sx             = "440"
@@ -51,8 +53,9 @@ End/ TextBlock
 
 TextBlock/ copy_gui_status
 .handle         = "%copy_gui_handle%"
-.parameters     = "COL:0 MULTILINES:0"
+.parameters     = "COL:1 MULTILINES:0"
 .text           = "%CPC_SYS.IO.COPY_GUI.PCT%\% - 0 ko/s                    "
+.backcolor      = "235,235,235"
 .px             = "10"
 .py             = "64"
 .sx             = "440"
@@ -126,16 +129,19 @@ End/ if
 if/ "%CHANGED%" == "0" then: Goto/ CHECK_CANCEL_COPY_GUI
 
 TextBlock/ /MODIF:copy_gui_src
+.backcolor = "235,235,235"
 .text = "Source : %CPC_SYS.IO.COPY_GUI.SRC%"
 create/
 End/ TextBlock
 
 TextBlock/ /MODIF:copy_gui_dst
+.backcolor = "235,235,235"
 .text = "Destination : %CPC_SYS.IO.COPY_GUI.DST%"
 create/
 End/ TextBlock
 
 TextBlock/ /MODIF:copy_gui_status
+.backcolor = "235,235,235"
 .text = "%CPC_SYS.IO.COPY_GUI.PCT%\% - %COPY_GUI_SPEED_KO% ko/s                    "
 create/
 End/ TextBlock
@@ -154,6 +160,7 @@ set/ COPY_GUI_LAST_DST = "%CPC_SYS.IO.COPY_GUI.DST%"
 :CHECK_CANCEL_COPY_GUI:
 if/ "%CPC_SYS.IO.COPY_GUI.CANCEL%" == "1" then:
 TextBlock/ /MODIF:copy_gui_status
+.backcolor = "235,235,235"
 .text = "Annulation en cours..."
 create/
 End/ TextBlock
@@ -164,11 +171,13 @@ Goto/ LOOP_COPY_GUI
 :END_COPY_GUI:
 if/ "%CPC_SYS.IO.COPY_GUI.RESULT%" == "1" then:
 TextBlock/ /MODIF:copy_gui_status
+.backcolor = "235,235,235"
 .text = "Copie terminee (%CPC_SYS.IO.COPY_GUI.PCT%\%)                    "
 create/
 End/ TextBlock
 Else:
 TextBlock/ /MODIF:copy_gui_status
+.backcolor = "235,235,235"
 .text = "Copie interrompue ou en erreur                    "
 create/
 End/ TextBlock

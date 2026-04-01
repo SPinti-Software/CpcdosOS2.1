@@ -191,8 +191,10 @@ namespace cpinti
 									if(c == '1' || c == 'O' || c == 'o' || c == 'Y' || c == 'y' || c == 'T' || c == 't')
 									{
 										annulee = true;
+										free(valeur_annuler);
 										break;
 									}
+									free(valeur_annuler);
 								}
 							}
 						}
@@ -252,7 +254,7 @@ namespace cpinti
 			if(RETOUR == false)
 			{
 				// Probleme!
-				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
+				std::string Erreur_STR = std::string(strerror(errno));
 				cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible de copier le fichier '" + std::string(Source) + "' a '" + std::string(Destination) + "'. Raison:" + std::string(strerror(errno)), 
 										 "[ERROR] Unable to copy file '" + std::string(Source) + "' to '" + std::string(Destination) + "'. Raison:" + std::string(strerror(errno)),
 									 "gestionnaire_fichier", "Lire_Fichier_complet()",

@@ -1459,6 +1459,10 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Source 		 = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, 1, Instr(Param, ",") - 1)), CHR(09))), CHR(09))
 			Destination  = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, Instr(Param, ",") + 1)), CHR(09))), CHR(09))
 
+			' Corriger les retours chariot parasites dans les chemins de fichiers
+			Source      = RTRIM(Source, ANY CHR(13) & CHR(10))
+			Destination = RTRIM(Destination, ANY CHR(13) & CHR(10))
+
 			if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_GUI.PCT"
 			if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_GUI.BYTES"
 			if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_GUI.SPEED"
@@ -10357,13 +10361,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					INSTANCE_STRUCT_THREAD.USER_ID	= Auth_Utilisateur					' ID de l'user
 					INSTANCE_STRUCT_THREAD.KERNEL_ID= Auth_Kernel						' ID du kernel
 					
-					INSTANCE_STRUCT_THREAD.ARG_1 = malloc(sizeof(Param))
-					memcpy(INSTANCE_STRUCT_THREAD.ARG_1, cast(any ptr, @Param), sizeof(Param))
+					' Deep copy des String pour eviter use-after-free (le descripteur
+					' FreeBASIC pointe vers les donnees de Param qui seront liberees
+					' a la sortie de CpcdosCP_SHELL)
+					INSTANCE_STRUCT_THREAD.ARG_1 = callocate(1, sizeof(String))
+					*cast(String ptr, INSTANCE_STRUCT_THREAD.ARG_1) = Param
 					INSTANCE_STRUCT_THREAD.ARG_2 = NULL ' CLE
 					INSTANCE_STRUCT_THREAD.ARG_3 = cast(any ptr, NIVEAU_CCP)
 					INSTANCE_STRUCT_THREAD.ARG_4 = cast(any ptr, Param_1)
-					INSTANCE_STRUCT_THREAD.ARG_5 = malloc(sizeof(Param_2))
-					memcpy(INSTANCE_STRUCT_THREAD.ARG_5, cast(any ptr, @Param_2), sizeof(Param_2))
+					INSTANCE_STRUCT_THREAD.ARG_5 = callocate(1, sizeof(String))
+					*cast(String ptr, INSTANCE_STRUCT_THREAD.ARG_5) = Param_2
 
 					
 					'' 25-01-2017 A FAIRE : Gerer les priorites

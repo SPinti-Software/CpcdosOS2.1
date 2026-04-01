@@ -23,6 +23,12 @@ Function Shell_THREAD cdecl Alias "Shell_THREAD" (ByVal thread_struct as _STRUCT
 	Dim _ARG_4 as Integer 			= cast(Integer, thread_struct.ARG_4)
 	Dim _ARG_5 as String 			= *cast(CONST String ptr, thread_struct.ARG_5)
 	
+	' Liberer les copies profondes allouees par le CMD/ /THREAD handler
+	*cast(String ptr, thread_struct.ARG_1) = ""
+	deallocate(thread_struct.ARG_1)
+	*cast(String ptr, thread_struct.ARG_5) = ""
+	deallocate(thread_struct.ARG_5)
+	
 	dim Nouvelle_Cle as double = CPCDOS_INSTANCE.Generer_cle(_KERNEL_ID, _OSID, _USERID, _PID, _TID)
 	' ============= PUBLIC VARIABLES =============
 	
