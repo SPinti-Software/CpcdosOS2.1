@@ -3098,10 +3098,12 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__FENETRE(_INDEX_FENETRE_).OBJET_FOCUS_INDEX = The_Objet_index
 											
 											' Nouveau clic (bouton vient d'etre appuye) : reinitialiser la selection
-											If NOT this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression Then
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Ancre = -1
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Debut = -1
-												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Fin   = -1
+											If Type_Clic AND 1 Then
+												If NOT this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Ancre = -1
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Debut = -1
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).Sel_Fin   = -1
+												End If
 											End If
 											
 											this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression = TRUE
@@ -3109,14 +3111,16 @@ Function _SCI_Cpcdos_OSx__.Interaction_SOURIS_FENETRE(Pos_X as integer, Pos_Y as
 											this.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pression_Bouton = Type_Clic
 											
 											
-											' Donner position X et Y de la souris pour estimer la position du curseur d'edition du textebox
-											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_New 	= true
-											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Move_Keyb 		= false
-											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_X = Pos_X
-											CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_Y = Pos_Y
-											
-											' Actualiser graphiquement le textebox pour l'effet de ""
-											Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
+											If Type_Clic AND 1 Then
+												' Donner position X et Y de la souris pour estimer la position du curseur d'edition du textebox
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_New 	= true
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Move_Keyb 		= false
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_X = Pos_X
+												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(The_Objet_index).PROP_TYPE.Pos_User_Mouse_Y = Pos_Y
+												
+												' Actualiser graphiquement le textebox pour l'effet de ""
+												Creer_TextBox(The_Objet_index, _INDEX_FENETRE_)
+											End If
 											
 											
 											' CORRECTION 03/12/2019 : Cette ligne est ici sinon textebox Freez� car pas fichier events
@@ -5321,6 +5325,21 @@ Function _SCI_Cpcdos_OSx__.Sizing_window_ending(INDEX_FENETRE as integer) as boo
 			end if
 		End if
 	End if
+	
+	' Auto-resize des TextBox console (enfant de cette fenetre) pour suivre la taille de la fenetre
+	For _ar_tb as integer = 0 to CPCDOS_INSTANCE._MAX_GUI_TEXTBOX
+		If this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).Identification_Objet.Index_FNT_PARENT = INDEX_FENETRE Then
+			If this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).Initialisation_OK = TRUE Then
+				Dim _ar_newSX as integer = Siz_X - this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).POS_X - 4
+				Dim _ar_newSY as integer = Siz_Y - this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).POS_Y - 4
+				If _ar_newSX > 0 And _ar_newSY > 0 Then
+					this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).SIZ_X = _ar_newSX
+					this.INST_INIT_GUI.GUI__TEXTBOX(_ar_tb).SIZ_Y = _ar_newSY
+					Creer_TextBox(_ar_tb, INDEX_FENETRE)
+				End If
+			End If
+		End If
+	Next _ar_tb
 	
 	return true
 End Function

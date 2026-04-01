@@ -1,6 +1,6 @@
-// GUI Console test
+// GUI Console - CpcdosC+ Shell Terminal
 // SPinti Software 
-// 13-OCT-2020
+// 13-OCT-2020 / Modernise 2025
 // Free code!
 
 window/ Console_text
@@ -57,8 +57,6 @@ Function/ Console_text.Resize(up)
                 .sy = "%Size_Y%"
                 create/
         end/ textbox
-        
-        
 
 End/ function
 

@@ -90,6 +90,9 @@ namespace cpinti
 				const char* nom_processus = (NomProcessus != nullptr) ? NomProcessus : "";
 				memset(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, 0, sizeof(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus));
 				strncpy((char*) gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus, nom_processus, sizeof(gestionnaire_tache::Liste_Processus[Resultat].Nom_Processus) - 1);
+
+				/** Nombre de threads = 1 (thread d'execution principal implicite) **/
+				gestionnaire_tache::Liste_Processus[Resultat].NB_Thread = 1;
 			}
 			else
 			{

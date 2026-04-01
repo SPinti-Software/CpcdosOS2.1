@@ -45,6 +45,40 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 						exit for
 					End if
 				Next index_free
+				
+				' Banniere technique a la premiere initialisation d'une console
+				If this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.Console = TRUE Then
+					If this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Terminal_BannerShown = FALSE Then
+						Dim _bn_CLE as double = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Identification_Objet._CLE_
+						Dim _bn_uid as integer = CPCDOS_INSTANCE.get_id_Utilisateur(_bn_CLE)
+						Dim _bn_mode as string = "USER"
+						If _bn_uid = 0 Then _bn_mode = "ADMIN"
+
+						Dim _bn_cpu as string = Trim(CPCDOS_INSTANCE.SYSTEME_INSTANCE.cpuid.NomProcesseur)
+						Dim _bn_mem as string = Str(Int(_Memoire_actuel / (1024 * 1024)))
+						Dim _bn_th as string = Str(cpinti.gestionnaire_tache.cpinti_get_nombre_threads())
+						Dim _bn_kn as string = "Cpcdos OS" & _VERSION_MAJEUR & " " & _VERSION_MINEUR
+						Dim _bn_osn as string = Str(CPCDOS_INSTANCE.get_id_OS(_bn_CLE))
+
+						Dim _bn as string = ""
+						_bn &= "[CpcdosC+ GUI Console]" & CRLF
+						_bn &= " Kernel: " & _bn_kn & " (ID " & CPCDOS_INSTANCE.get_id_kernel(_bn_CLE) & ")" & CRLF
+						_bn &= " OS ID: " & _bn_osn & CRLF
+						_bn &= " CpcdosC+ v" & _VERSION_CCP & ": READY" & CRLF
+						_bn &= " Mode: " & _bn_mode & " (UID " & _bn_uid & ")" & CRLF
+						_bn &= " CPU: " & _bn_cpu & CRLF
+						_bn &= " RAM: " & _bn_mem & " MB free" & CRLF
+						_bn &= " Threads: " & _bn_th & CRLF
+
+						If Len(this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Texte) > 0 Then
+							this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Texte &= CRLF
+						End If
+						this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Texte &= _bn
+						this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Terminal_InputStart = Len(this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Texte)
+						this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.UserEdit_Pos = Len(this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Texte)
+						this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Terminal_BannerShown = TRUE
+					End If
+				End If
 			else
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -104,6 +138,7 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 				' Position du curseur d'edition utilisateur
 				' Position par caracteres ASCII
 				Dim UserEdit_Pos		as uinteger = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.UserEdit_Pos
+				Dim TB_Scroll_Y			as integer = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).Scroll_Y
 				Dim Move_Keyb 			as boolean = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.Move_Keyb
 				Dim Pos_User_New		as boolean = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.Pos_User_New
 				Dim Pos_User_Mouse_X	as integer = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).PROP_TYPE.Pos_User_Mouse_X
@@ -474,8 +509,8 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 									End If
 								End If
 								
-								' Ligne cliquee (Y) : le texte commence a PY+5 dans Ecrire_ecran_ml
-								Dim Pos_Souris_Y as integer = Pos_User_Mouse_Y - Pos_Y - 5
+								' Ligne cliquee (Y) : le texte commence a PY+5 dans Ecrire_ecran_ml (+ scroll)
+								Dim Pos_Souris_Y as integer = Pos_User_Mouse_Y - Pos_Y - 5 + TB_Scroll_Y
 								If Pos_Souris_Y < 0 Then Pos_Souris_Y = 0
 								UserEdit_Pos_Y = Pos_Souris_Y \ Hauteur_Ligne  ' 0-based
 								If UserEdit_Pos_Y >= NombreLignes Then UserEdit_Pos_Y = NombreLignes - 1
@@ -588,14 +623,14 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 									Next i_char
 								End If
 								UE_PosX = Pos_X + Curseur_Px + 4  ' +4 = offset interne texte dans Ecrire_ecran_ml (PX+3+1)
-								UE_PosY = Pos_Y + (Nombre_CRLF * Hauteur_Ligne) + 2
+								UE_PosY = Pos_Y + (Nombre_CRLF * Hauteur_Ligne) + 2 - TB_Scroll_Y
 							Else
 								UE_PosX = Pos_X + (abs(UserEdit_Pos-len(CRLF_Avant)) * 8)
-								UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2
+								UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2 - TB_Scroll_Y
 							End If
 						Else
 							UE_PosX = Pos_X + (abs(UserEdit_Pos-len(CRLF_Avant)) * 8)
-							UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2
+							UE_PosY = Pos_Y + (Nombre_CRLF * 8) + 2 - TB_Scroll_Y
 						End If
 						
 						' locate 5, 5
@@ -651,7 +686,7 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 							If Debut_Sel_Ligne < 0 Then Debut_Sel_Ligne = 0
 							If Fin_Sel_Ligne > Longueur_Ligne Then Fin_Sel_Ligne = Longueur_Ligne
 							If Debut_Sel_Ligne < Fin_Sel_Ligne Then
-								Dim Pos_Y_Ligne as integer = Pos_Y + 5 + (Boucle_Ligne - 1) * Hauteur_Ligne
+								Dim Pos_Y_Ligne as integer = Pos_Y + 5 + (Boucle_Ligne - 1) * Hauteur_Ligne - TB_Scroll_Y
 								Dim Pos_X_Debut as integer = 0
 								Dim Pos_X_Fin as integer = 0
 								If Utilise_Police Then
@@ -682,9 +717,36 @@ Function _SCI_Cpcdos_OSx__.Creer_TextBox(_index_ as integer, _INDEX_PID_ as inte
 					End If
 					
 					
-					' Afficher le texte
+					' Afficher le texte (avec scroll si necessaire)
 					IF len(Texte) > 0 Then
-						CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran_ml(Texte, TableauLignes(), NombreLignes, TypeRetourOct, Pos_X, Pos_Y, Siz_X, Siz_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						IF TB_Scroll_Y > 0 Then
+							' Rendu avec scroll : clipper au TextBox et dessiner chaque ligne avec offset
+							view screen (Pos_X, Pos_Y)-(Pos_X + Siz_X, Pos_Y + Siz_Y)
+							Dim _sc_line_h as integer = 8
+							If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+								If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+									Dim _scfn as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+									Dim _scfn_idx as integer = -1
+									Dim _scfs_idx as integer = 8
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(_scfs_idx, _scfn, _scfn_idx)
+									If _scfn_idx >= 0 Then
+										_sc_line_h = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(_scfn_idx, _scfs_idx).size_y
+									End If
+								End If
+							End If
+							if TypeRetourOct > 0 Then
+								Dim _sc_posEnY as integer = 1
+								For _sc_boucle as integer = 1 to NombreLignes
+									CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(TableauLignes(_sc_boucle), Pos_X + 4, Pos_Y + 5 + _sc_posEnY - TB_Scroll_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+									_sc_posEnY = (_sc_boucle * _sc_line_h) + 1
+								Next _sc_boucle
+							Else
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran(Texte, Pos_X + 4, Pos_Y + 5 - TB_Scroll_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+							End if
+							view
+						Else
+							CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Ecrire_ecran_ml(Texte, TableauLignes(), NombreLignes, TypeRetourOct, Pos_X, Pos_Y, Siz_X, Siz_Y, Couleur_FNT_R, Couleur_FNT_V, Couleur_FNT_B)
+						End If
 					End if
 					
 					' Pointeur_IMG = this.INST_INIT_GUI.GUI__TEXTBOX(_index_).EditBar_PTR

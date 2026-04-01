@@ -1400,20 +1400,75 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 							Dim Taille_Texte as uinteger
 							
 							Dim UserEdit_Pos as uinteger = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).PROP_TYPE.UserEdit_Pos
+							
+							' Index raccourci du TextBox focus
+							Dim _TBIdx_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX
+							Dim IsConsole as boolean = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).PROP_TYPE.Console
+							Dim ConsoleInputStart as uinteger = CUInt(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_InputStart)
+
+							' Detection de la touche MAJ pour la selection clavier
+							Dim IsShift as boolean = MultiKey(&h2A) OrElse MultiKey(&h36)
+							Dim PosAvantMouvement as uinteger = UserEdit_Pos
+							Dim IsArrowForSel as boolean = false
+							' Si pas de MAJ, effacer la selection en cours
+							If NOT IsShift Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Ancre = -1
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Debut = -1
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Fin = -1
+							End If
+							
 							' Compater l'ensemble des caracteres speciaux
 							
-							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_LEFT Then if UserEdit_Pos > 0 Then UserEdit_Pos -= 1
+							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_LEFT Then
+								if IsConsole Then
+									if UserEdit_Pos > ConsoleInputStart Then UserEdit_Pos -= 1
+								else
+									if UserEdit_Pos > 0 Then UserEdit_Pos -= 1
+								end if
+							End if
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_RIGHT Then UserEdit_Pos += 1
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_BEGIN Then 
-								UserEdit_Pos = 0
+								if IsConsole Then
+									UserEdit_Pos = ConsoleInputStart
+								else
+									UserEdit_Pos = 0
+								end if
 							End if
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_END Then 
 								UserEdit_Pos = len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte)
 							End if
+
+							' Marquer les touches de navigation pour la mise a jour selection MAJ+fleche
+							If (ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_LEFT) OrElse _
+							   (ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_RIGHT) OrElse _
+							   (ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_BEGIN) OrElse _
+							   (ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_END) Then
+								IsArrowForSel = true
+							End If
 							
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_TOP Then 
+							  IF IsConsole Then
+								' Mode terminal : naviguer dans l'historique des commandes (vers le haut)
+								Dim HistCount_UP as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistCount
+								Dim HistIdx_UP as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistIndex
 								
-								DIM TEXTE as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte
+								IF HistCount_UP > 0 Then
+									' Sauvegarder la saisie courante si on commence la navigation
+									IF HistIdx_UP = -1 Then
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistTemp = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte, ConsoleInputStart + 1)
+										HistIdx_UP = HistCount_UP - 1
+									ElseIF HistIdx_UP > 0 Then
+										HistIdx_UP -= 1
+									End if
+									
+									' Remplacer le texte de saisie par la commande historique
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte, ConsoleInputStart) & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_Historique(HistIdx_UP)
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistIndex = HistIdx_UP
+									UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte)
+								End if
+							  Else
+								' Mode normal : deplacer le curseur vers le haut
+								DIM TEXTE as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte
 								Dim Texte_Avant as String = mid(TEXTE, 1, UserEdit_Pos)
 								Dim Texte_Apres as String = mid(TEXTE, UserEdit_Pos)
 								Dim NombreCRLF as integer = CPCDOS_INSTANCE.Compter_Caractere(TEXTE, CRLF)
@@ -1453,9 +1508,29 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 								if UserEdit_Pos > Len(TEXTE) Then UserEdit_Pos = Len(TEXTE)
 								if UserEdit_Pos < 1 Then UserEdit_Pos = 0
 								
+							  End if ' Fin IsConsole Else (KEY_TOP)
 							End if
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_DOWN Then 
-							
+							  IF IsConsole Then
+								' Mode terminal : naviguer dans l'historique des commandes (vers le bas)
+								Dim HistCount_DN as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistCount
+								Dim HistIdx_DN as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistIndex
+								
+								IF HistIdx_DN >= 0 Then
+									IF HistIdx_DN < HistCount_DN - 1 Then
+										HistIdx_DN += 1
+										' Remplacer par la commande suivante
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte, ConsoleInputStart) & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_Historique(HistIdx_DN)
+									Else
+										HistIdx_DN = -1
+										' Restaurer la saisie originale
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte, ConsoleInputStart) & CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistTemp
+									End if
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Terminal_HistIndex = HistIdx_DN
+									UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte)
+								End if
+							  Else
+								' Mode normal : deplacer le curseur vers le bas
 								DIM TEXTE as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte
 								Dim Texte_Avant as String = mid(TEXTE, 1, UserEdit_Pos)
 								Dim Texte_Apres as String = mid(TEXTE, UserEdit_Pos)
@@ -1504,17 +1579,39 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 									
 									if UserEdit_Pos > Len(TEXTE) Then UserEdit_Pos = Len(TEXTE)
 								End if
+							  End if ' Fin IsConsole Else (KEY_DOWN)
 							End if
 
 
 							' Touche SUPPR : effacer le caractere suivant le curseur
 							IF ToucheRecupere = CPCDOS_INSTANCE.SYSTEME_INSTANCE.KEY_DEL Then
-								Dim TEXTE_DEL as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte
-								If Len(TEXTE_DEL) > CInt(UserEdit_Pos) Then
-									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte = Left(TEXTE_DEL, UserEdit_Pos) & Mid(TEXTE_DEL, UserEdit_Pos + 2)
-								End If
+								' En mode console, ne pas supprimer dans la zone output
+								IF NOT IsConsole OR UserEdit_Pos >= ConsoleInputStart Then
+									Dim TEXTE_DEL as String = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte
+									If Len(TEXTE_DEL) > CInt(UserEdit_Pos) Then
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Texte = Left(TEXTE_DEL, UserEdit_Pos) & Mid(TEXTE_DEL, UserEdit_Pos + 2)
+									End If
+								End if
 							End If
 							
+							' Mise a jour de la selection clavier (MAJ + fleche de navigation)
+							If IsShift And IsArrowForSel Then
+								If CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Ancre < 0 Then
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Ancre = CInt(PosAvantMouvement)
+								End If
+								Dim _Ancre_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Ancre
+								If CInt(UserEdit_Pos) < _Ancre_ Then
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Debut = CInt(UserEdit_Pos)
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Fin = _Ancre_
+								ElseIf CInt(UserEdit_Pos) > _Ancre_ Then
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Debut = _Ancre_
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Fin = CInt(UserEdit_Pos)
+								Else
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Debut = -1
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_TBIdx_).Sel_Fin = -1
+								End If
+							End If
+
 							' Jamais supperieur +1 au texte
 							Taille_Texte = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)).OBJET_FOCUS_INDEX).Texte)
 							IF UserEdit_Pos > Taille_Texte Then UserEdit_Pos = Taille_Texte
@@ -1676,8 +1773,13 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' Touche BackSpace on supprime le caractere AVANT la position du curseur
 						IF ToucheRecupere = TOUCHE_BACK Then
 							' Effacer + deplacer le curseur uniquement si y'a du texte..  ogique
+							' En mode console, proteger la zone output
+							Dim ConsProtect_BS as uinteger = 0
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.Console = TRUE Then
+								ConsProtect_BS = CUInt(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_InputStart)
+							End if
 						
-							if NOT Texte_Avant = "" Then
+							if NOT Texte_Avant = "" AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos > ConsProtect_BS Then
 								Texte_Avant = Mid(Texte_Avant, 1, Len(Texte_Avant) - 1)
 								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos -= 1
 							End if
@@ -1686,11 +1788,26 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						ElseIf ToucheRecupere = TOUCHE_SUPPR Then
 							
 							' Effacer (ne pas deplacer le curseur) uniquement si y'a du texte.. logique encore une fois
-							if NOT Texte_Apres = "" Then
+							' En mode console, proteger la zone output
+							Dim ConsProtect_DEL as uinteger = 0
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.Console = TRUE Then
+								ConsProtect_DEL = CUInt(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_InputStart)
+							End if
+							if NOT Texte_Apres = "" AND CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos >= ConsProtect_DEL Then
 								Texte_Apres = Mid(Texte_Apres, 2, Len(Texte_Apres))
 							End if
 						Else
 							IF PasDeINKEY = FALSE Then ' Si la touche ENTRE n'est PAS pressee et qu'on est en multi/mono ligne
+								' En mode console, forcer le curseur a la fin si on est dans la zone output
+								IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.Console = TRUE Then
+									Dim ConsInputStart_Ins as uinteger = CUInt(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_InputStart)
+									IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos < ConsInputStart_Ins Then
+										' Deplacer le curseur a la fin du texte
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte)
+										Texte_Avant = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte
+										Texte_Apres = ""
+									End If
+								End If
 								' Ajouter la touche pressee !
 								Texte_Avant += ToucheRecupere
 								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos += 1
@@ -1715,6 +1832,7 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 					
 					' Si on est en mode CONSOLE GRAPHIQUE
 					if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.Console = TRUE Then
+
 						dim touche_entre as boolean = false
 						if ToucheRecupere = CR Then touche_entre = true
 						if ToucheRecupere = LF Then touche_entre = true
@@ -1724,21 +1842,88 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						' ' L'utilisateur presse la touche ENTRER
 						if touche_entre = true then
 						
+							dim ligne_exec as string
 							
-							' ' On recupere la derniere ligne
-							dim ligne_exec as string = Mid(console_avant_ligne, InstrREV(console_avant_ligne, ToucheRecupere, len(console_avant_ligne) - 1) + 1)
+							' Mode CONSOLE : extraction depuis Terminal_InputStart
+							Dim TIS as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_InputStart
+							ligne_exec = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte, TIS + 1)
+							' Retirer le retour chariot final si present
+							ligne_exec = RTRIM(ligne_exec, ANY CHR(13) & CHR(10))
 							
-							
-							if len(ligne_exec) > 2 then
+							if len(ligne_exec) > 0 then
+
+								' Sauvegarder dans l'historique
+								Dim HC as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_HistCount
+								' Decaler l'historique si plein (50 max)
+								IF HC >= 50 Then
+									For _hi_ as integer = 0 to 48
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_Historique(_hi_) = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_Historique(_hi_ + 1)
+									Next
+									HC = 49
+								End if
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_Historique(HC) = ligne_exec
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_HistCount = HC + 1
+								' Reset navigation historique
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_HistIndex = -1
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_HistTemp = ""
 
 								' ' Et on execute la ligne recuperee
 								CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(ligne_exec, _CLE_OBJ_, 2, 330, "#GUI_TXTBOX:" & Index_Focus_OBJ)
 							
-								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ))
+								' S'assurer que la sortie se termine par un retour a la ligne pour que le prompt soit sur une nouvelle ligne
+								Dim _txt_apres as string = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte
+								If Len(_txt_apres) > 0 Then
+									Dim _dernier as integer = Asc(Right(_txt_apres, 1))
+									If _dernier <> 13 And _dernier <> 10 Then
+										CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte &= CRLF
+									End If
+								End If
+
+								' Mettre a jour la position du curseur a la fin du texte
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte)
 							end if
+							
+							' Toujours mettre a jour InputStart (meme si commande vide)
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Terminal_InputStart = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte)
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte)
 						End if
 					End if
-						
+
+					' Auto-scroll : s'assurer que le curseur est visible dans le TextBox
+					Scope
+						Dim _as_line_h as integer = 8
+						If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.is_loaded Then
+							If CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.enable Then
+								Dim _asfn as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+								Dim _asfn_idx as integer = -1
+								Dim _asfs_idx as integer = 8
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(_asfs_idx, _asfn, _asfn_idx)
+								If _asfn_idx >= 0 Then
+									_as_line_h = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(_asfn_idx, _asfs_idx).size_y
+								End If
+							End If
+						End If
+						' Compter le nombre de CRLF avant le curseur pour determiner la ligne courante
+						Dim _as_UserPos as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).PROP_TYPE.UserEdit_Pos
+						Dim _as_TexteAvant as string = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Texte, 1, _as_UserPos)
+						Dim _as_NbLignes as integer = CPCDOS_INSTANCE.compter_Caractere(_as_TexteAvant, CRLF)
+						IF _as_NbLignes <= 0 Then _as_NbLignes = CPCDOS_INSTANCE.compter_Caractere(_as_TexteAvant, LF)
+						IF _as_NbLignes <= 0 Then _as_NbLignes = CPCDOS_INSTANCE.compter_Caractere(_as_TexteAvant, CR)
+						IF _as_NbLignes < 0 Then _as_NbLignes = 0
+						' Position pixel du curseur (relative au debut du texte)
+						Dim _as_CursorY as integer = _as_NbLignes * _as_line_h
+						Dim _as_SizY as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).SIZ_Y
+						Dim _as_ScrollY as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Scroll_Y
+						' Si le curseur est en dessous de la zone visible, scroller vers le bas
+						IF _as_CursorY + _as_line_h + 5 > _as_ScrollY + _as_SizY Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Scroll_Y = _as_CursorY + _as_line_h + 5 - _as_SizY
+						End If
+						' Si le curseur est au dessus de la zone visible, scroller vers le haut
+						IF _as_CursorY < _as_ScrollY Then
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_Focus_OBJ).Scroll_Y = _as_CursorY
+						End If
+					End Scope
+
 					IF NOT Fichier_evenement = "" Then
 							' Go !
 						Pret_Pour_Evenement = TRUE
@@ -2043,6 +2228,32 @@ Function THREAD__SCI Alias "THREAD__SCI" (ByVal thread_struct as _STRUCT_THREAD_
 						IF Ancien_X <> Pos_X OR Ancien_Y <> Pos_Y OR Ancien_Clic <> TypeClic OR Ancien_Scroll <> Scroll_Weel Then
 							CPCDOS_INSTANCE.SCI_INSTANCE.Interaction_SOURIS_FENETRE(Pos_X, Pos_Y, TypeClic)
 						End if
+
+						' --- Scroll molette pour TextBox ---
+						IF Ancien_Scroll <> Scroll_Weel Then
+							Dim _sw_FenIdx as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_sw_FenIdx).OBJET_FOCUS_TYPE = CPCDOS_INSTANCE.SCI_INSTANCE.GUI_TYPE.TextBox Then
+								Dim _sw_TBIdx as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__FENETRE(_sw_FenIdx).OBJET_FOCUS_INDEX
+								Dim _sw_delta as integer = Ancien_Scroll - Scroll_Weel
+								' Hauteur de ligne depuis le font manager
+								Dim _sw_line_h as integer = 8
+								Dim _sw_Nom_Police as string = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.general_font
+								Dim _sw_Index_Police as integer = -1
+								Dim _sw_Taille_Police as integer = 8
+								CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_check_array(_sw_Taille_Police, _sw_Nom_Police, _sw_Index_Police)
+								if _sw_Index_Police >= 0 Then
+									_sw_line_h = CPCDOS_INSTANCE.SYSTEME_INSTANCE.font_manager.font_pos(_sw_Index_Police, _sw_Taille_Police).size_y
+								End if
+								if _sw_line_h < 1 Then _sw_line_h = 8
+								' Appliquer le delta : 3 lignes par cran de molette
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_sw_TBIdx).Scroll_Y += _sw_delta * _sw_line_h * 3
+								' Clamper a 0 minimum
+								if CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_sw_TBIdx).Scroll_Y < 0 Then
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(_sw_TBIdx).Scroll_Y = 0
+								End if
+							End If
+						End If
+
 					End if
 
 					Dim _index_ as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.POSITION(1)

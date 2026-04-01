@@ -331,6 +331,11 @@ Function _SCI_Cpcdos_OSx__.Creer_ListBox(_index_ as integer, _INDEX_PID_ as inte
 					End if
 				End if
 				
+				' Effacer le buffer avec la couleur de fond avant chaque frame (evite les artefacts visuels)
+				if DESKTOPMODE = false Then
+					Dim _lb_ptr_ As Any Ptr = CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Recuperer_BITMAP_PTR(IMG_BUFFER_ID)
+					If _lb_ptr_ <> 0 Then Line _lb_ptr_, (0, 0)-(Siz_X-1, Siz_Y-1), RGBA(Couleur_R, Couleur_V, Couleur_B, 255), BF
+				End If
 				' Push l'image background sur le buffer
 				if DESKTOPMODE = false Then CPCDOS_INSTANCE.SYSTEME_INSTANCE.MEMOIRE_MAP.Modifier_BITMAP_CP(CPCDOS_INSTANCE.SCI_INSTANCE.LST_BACKGROUND_ID, IMG_BUFFER_ID, 0, 0)
 				

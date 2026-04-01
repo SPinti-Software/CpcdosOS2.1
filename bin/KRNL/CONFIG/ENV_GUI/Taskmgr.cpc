@@ -11,9 +11,6 @@ CCP/ /SET.LEVEL = 3
 
 // ---- LISTBOX ----
 
-
-set/ DisplayMode = 0
-
 function/ display_taskmgr()
         // Create this in new process
         ccp/ /set.level = 2
@@ -27,6 +24,11 @@ function/ display_taskmgr()
 end/ function
 
 function/ __display_taskmgr()
+	ccp/ /set.level = 3
+        set/ TASKMGR_SELECTED_INDEX = -1
+        set/ TASKMGR_INTERACT = 0
+	ccp/ /set.level = 2
+
         // ===== Build window =====
         Window/ taskmgr_win
 
@@ -52,14 +54,18 @@ function/ __display_taskmgr()
         // Getting icon process list in Listbox format
         @#list_icon_process_listbox sys/ /process /listb /icon
 
+        // Cache initial rendered content to avoid useless redraw loops
+        set/ TASKMGR_LAST_TEXT = %list_process_listbox%
+        set/ TASKMGR_LAST_ICON = %list_icon_process_listbox%
+
         // ===== Build listbox =====
         listbox/ listbox_gui
                 .handle         = "%window_handle%"
-                .parameters     = "EXPLOREMODE:%DisplayMode% CTX:2"
+                .parameters     = "EXPLOREMODE:0 CTX:2"
                 .px             = "1"
                 .py             = "1"
                 .sx             = "450"
-                .sy             = "250"
+                .sy             = "218"
                 .opacity        = "255"
                 .textcolor      = "028,028,028"
                 .backcolor      = "255,255,255"
@@ -68,6 +74,20 @@ function/ __display_taskmgr()
                 .events         = "%_exe_path_%"
                 create/
         End/ listbox
+
+        // Kill button
+        Button/ taskmgr_kill_btn
+                .handle         = "%window_handle%"
+                .Image          = "OS/MEDIA/GUI/BUTTONS/BTN_RED.PNG"
+                .Parameters     = "IMGAUTO:2"
+                .text           = "Arreter processus"
+                .px             = "286"
+                .py             = "222"
+                .sx             = "160"
+                .sy             = "26"
+                .event          = "%_exe_path_%=MouseClick,Click"
+                create/
+        End/ Button
 
         ccp/ /set.level = 3
 
@@ -90,6 +110,19 @@ function/ __display_taskmgr()
 
         set/ listbox_gui.ctx_number = 4
 
+        // Auto-refresh every 1 second
+        :TASKMGR_REFRESH_LOOP:
+        ccp/ /pause 1000
+
+        // Suspend refresh while user is interacting with the list/context menu
+        if/ "%TASKMGR_INTERACT%" == "0" then:
+                @#item_index listbox/ /selected_index listbox_gui
+                if/ "%item_index%" == "" then: /F:refresh()
+                if/ "%item_index%" == "-1" then: /F:refresh()
+        End/ if
+
+        Goto/ TASKMGR_REFRESH_LOOP
+
 end/ function
 
 
@@ -102,9 +135,24 @@ function/ taskmgr_win.WindowClosed()
 end/ function
 
 Function/ listbox_gui.selected(item_str,item_index)
-        ccp/ /set.level = 1
+        ccp/ /set.level = 3
+
+        // Keep last explicit user selection for kill button fallback
+        set/ TASKMGR_SELECTED_INDEX = %item_index%
 
 end/ Function
+
+Function/ listbox_gui.MouseEnter()
+        set/ TASKMGR_INTERACT = 1
+End/ Function
+
+Function/ listbox_gui.MouseMove()
+        set/ TASKMGR_INTERACT = 1
+End/ Function
+
+Function/ listbox_gui.MouseLeave()
+        set/ TASKMGR_INTERACT = 0
+End/ Function
 
 
 Function/ kill_selected_process()
@@ -114,6 +162,23 @@ Function/ kill_selected_process()
         // Getting item name
         @#item_index listbox/ /selected_index listbox_gui
 
+        // Fallback to last selected item if current selection is transiently lost
+        ccp/ /set.level = 3
+        if/ "%item_index%" == "" then: set/ item_index = %TASKMGR_SELECTED_INDEX%
+        if/ "%item_index%" == "-1" then: set/ item_index = %TASKMGR_SELECTED_INDEX%
+        ccp/ /set.level = 1
+
+        // Nothing selected or invalid PID mapping
+        if/ "%item_index%" == "" then: Goto/ END_KILL_SELECTED_PROCESS
+        if/ "%item_index%" == "-1" then: Goto/ END_KILL_SELECTED_PROCESS
+        if/ "%list_process_pid[item_index]%" == "" then: Goto/ END_KILL_SELECTED_PROCESS
+
+        // Self-kill: close this process and return immediately
+        if/ "%list_process_pid[item_index]%" == "%_pid_taskmgr_%" then:
+                close/ /PID %_pid_taskmgr_%
+                Goto/ END_KILL_SELECTED_PROCESS
+        End/ if
+
         // Getting PID number from array
         close/ /PID %list_process_pid[item_index]%
 
@@ -122,6 +187,18 @@ Function/ kill_selected_process()
         // Refresh list
         /F:refresh()
 
+        :END_KILL_SELECTED_PROCESS:
+
+End/ function
+
+Function/ taskmgr_kill_btn.MouseClick()
+        set/ TASKMGR_INTERACT = 1
+        /F:kill_selected_process()
+End/ function
+
+Function/ taskmgr_kill_btn.Click()
+        set/ TASKMGR_INTERACT = 1
+        /F:kill_selected_process()
 End/ function
 
 Function/ refresh()
@@ -129,11 +206,26 @@ Function/ refresh()
 
         ccp/ /set.level = 1
 
+        // Preserve current user selection index before potential redraw
+        @#item_index listbox/ /selected_index listbox_gui
+        if/ "%item_index%" != "" then:
+                if/ "%item_index%" != "-1" then:
+                        ccp/ /set.level = 3
+                        set/ TASKMGR_SELECTED_INDEX = %item_index%
+                        ccp/ /set.level = 1
+                End/ if
+        End/ if
+
         // Getting process list in Listbox format 
         @#list_process_listbox sys/ /process /listb
 
         // Getting icon process list in Listbox format
         @#list_icon_process_listbox sys/ /process /listb /icon
+
+        // Avoid hammering GUI memory map when nothing changed
+        if/ "%list_process_listbox%" == "%TASKMGR_LAST_TEXT%" then:
+                if/ "%list_icon_process_listbox%" == "%TASKMGR_LAST_ICON%" then: Goto/ END_REFRESH
+        End/ if
         
         listbox/ /modif:listbox_gui
                 .text           = "%list_process_listbox%"
@@ -141,29 +233,42 @@ Function/ refresh()
                 create/
         End/ listbox
 
+        set/ TASKMGR_LAST_TEXT = %list_process_listbox%
+        set/ TASKMGR_LAST_ICON = %list_icon_process_listbox%
+
         ccp/ /set.level = 3
         sys/ /process /list /index /array list_process_pid
 
+        :END_REFRESH:
+
 End/ function
 
-Function/ listbox_window.Resize(sizeup)
+Function/ taskmgr_win.Resize(sizeup)
 	// If user change window size
 
-	// Getting window size informations
-	window/ /modif:listbox_window
+        // Getting window size informations
+	window/ /modif:taskmgr_win
 		@#Win_Size_X .sx
 		@#Win_Size_Y .sy
 	end/ window
-	
-        // According textbox size
-        set/ Win_Size_Y = /C(%Win_Size_Y% - 23)
+
+        // Reserve space for kill button
+        set/ List_Size_Y = /C(%Win_Size_Y% - 55)
+        set/ Btn_Pos_X   = /C(%Win_Size_X% - 164)
+        set/ Btn_Pos_Y   = /C(%Win_Size_Y% - 28)
 
         // And modify listbox object size
 	listbox/ /modif:listbox_gui
 		.sx     = "%Win_Size_X%"
-		.sy     = "%Win_Size_Y%"
+                .sy     = "%List_Size_Y%"
 		create/
 	end/ listbox
+
+        button/ /modif:taskmgr_kill_btn
+                .px     = "%Btn_Pos_X%"
+                .py     = "%Btn_Pos_Y%"
+                create/
+        end/ button
 
 End/ function
 

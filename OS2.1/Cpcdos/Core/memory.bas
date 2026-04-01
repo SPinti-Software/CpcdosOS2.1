@@ -2041,11 +2041,26 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		End if
 
 		' Write on screen on directly on buffer
+		' Revalider le buffer texte juste avant l'ecriture finale pour eviter un pointeur stale
+		if this.utilise(buffer_text_font) = false Then
+			DEBUG("Ecrire_ecran_font() : Abort, text buffer released before final write.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			Supprimer_BITMAP(buffer_text_font)
+			return false
+		End if
+		ptr_buffer_text = this.donnees_RVBA(buffer_text_font)
+		if ptr_buffer_text = 0 Then
+			DEBUG("Ecrire_ecran_font() : Abort, invalid text buffer pointer before final write.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			Supprimer_BITMAP(buffer_text_font)
+			return false
+		End if
+
+		ENTRER_SectionCritique()
 		if bitmap_id > 0 Then
 			Dim ptr_target_bitmap as any ptr = 0
 			if this.utilise(bitmap_id) = true Then ptr_target_bitmap = this.donnees_RVBA(bitmap_id)
 			if ptr_target_bitmap = 0 Then
 				DEBUG("Ecrire_ecran_font() : Abort, invalid target bitmap pointer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+				SORTIR_SectionCritique()
 				Supprimer_BITMAP(buffer_text_font)  ' buffer_char est statique, on ne le detruit pas
 				return false
 			End if
@@ -2053,6 +2068,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		else
 			put (PX, PY), ptr_buffer_text, alpha
 		End if
+		SORTIR_SectionCritique()
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran_font() : OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")

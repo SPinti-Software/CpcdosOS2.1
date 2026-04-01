@@ -559,6 +559,14 @@ Type Cpcdos_GUI__TEXTBOX
 	
 	CONSOLE					as boolean	' Indique si c'est un textbox pour la console
 	
+	' Mode console CONSOLE:1 - historique et protection output
+	Terminal_InputStart		as integer		' Position dans .Texte ou commence la saisie courante
+	Terminal_Historique(0 to 49) as String	' Historique des 50 dernieres commandes
+	Terminal_HistCount		as integer		' Nombre de commandes dans l'historique
+	Terminal_HistIndex		as integer		' Index de navigation (-1 = saisie courante)
+	Terminal_HistTemp		as String		' Sauvegarde temporaire de la saisie en cours
+	Terminal_BannerShown	as boolean = FALSE ' Bannière technique déjà affichée
+	
 	IMG_ID					as integer
 	IMG_ORG_ID				as integer
 
@@ -581,6 +589,9 @@ Type Cpcdos_GUI__TEXTBOX
 	Sel_Ancre				as integer = -1  ' Ancre de selection (position au 1er clic, -1 = aucune)
 	Sel_Debut				as integer = -1  ' Debut de la selection (toujours <= Sel_Fin, -1 = pas de selection)
 	Sel_Fin					as integer = -1  ' Fin de la selection (-1 = pas de selection)
+
+	' Scroll vertical (en pixels, 0 = pas de scroll)
+	Scroll_Y				as integer = 0
 End Type
 
 ' ==== Pour la creation d'une barre de progression ====

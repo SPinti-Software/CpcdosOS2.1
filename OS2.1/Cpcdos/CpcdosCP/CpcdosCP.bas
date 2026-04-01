@@ -252,6 +252,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 	Dim CommandesAide			as String
 	Dim Message_erreur			as String
 	Dim RetourVAR				as string
+	Dim Aide_Retour			as String = ""
 	Dim Commande				as String = _COMMANDE_
 	
 	
@@ -412,10 +413,31 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							DEBUG("[CPCDOS] CTX TEXT COPY : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 
-							' EFFECTUER UNE COPIE
-							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+							' EFFECTUER UNE COPIE (selection prioritaire)
+							Dim Sel_Debut_COPY as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Debut
+							Dim Sel_Fin_COPY as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Fin
+							Dim HasSelection_COPY as boolean = FALSE
+							If Sel_Debut_COPY >= 0 And Sel_Fin_COPY > Sel_Debut_COPY Then
+								If CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+									Dim TIS_COPY as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+									If Sel_Fin_COPY > TIS_COPY Then
+										If Sel_Debut_COPY < TIS_COPY Then Sel_Debut_COPY = TIS_COPY
+										If Sel_Fin_COPY > Sel_Debut_COPY Then HasSelection_COPY = TRUE
+									End If
+								Else
+									HasSelection_COPY = TRUE
+								End If
+							End If
 
-							
+							If HasSelection_COPY Then
+								CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Debut_COPY + 1, Sel_Fin_COPY - Sel_Debut_COPY)
+							Else
+								CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+							End If
+
+							' Actualiser l'affichage du textebox pour conserver la selection visible
+							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
+
 						
 							exit for
 						end if
@@ -441,11 +463,43 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							DEBUG("[CPCDOS] CTX TEXT CUT : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 
-							' EFFECTUER UNE COPIE
-							CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+							' EFFECTUER UNE COPIE + SUPPRESSION (selection prioritaire)
+							Dim Sel_Debut_CUT as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Debut
+							Dim Sel_Fin_CUT as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Fin
+							Dim HasSelection_CUT as boolean = FALSE
+							If Sel_Debut_CUT >= 0 And Sel_Fin_CUT > Sel_Debut_CUT Then
+								If CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+									Dim TIS_CUT as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+									If Sel_Fin_CUT > TIS_CUT Then
+										If Sel_Debut_CUT < TIS_CUT Then Sel_Debut_CUT = TIS_CUT
+										If Sel_Fin_CUT > Sel_Debut_CUT Then HasSelection_CUT = TRUE
+									End If
+								Else
+									HasSelection_CUT = TRUE
+								End If
+							End If
 
-							' Clean text
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+							If HasSelection_CUT Then
+								CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Debut_CUT + 1, Sel_Fin_CUT - Sel_Debut_CUT)
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Debut_CUT) & Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Fin_CUT + 1)
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = Sel_Debut_CUT
+							Else
+								' Fallback historique
+								IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+									Dim TIS_CUT as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+									CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, TIS_CUT + 1)
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, TIS_CUT)
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = TIS_CUT
+								Else
+									CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte
+									CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+								End If
+							End If
+
+							' Effacer la selection apres couper
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Ancre = -1
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Debut = -1
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Fin   = -1
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
@@ -475,8 +529,33 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							
 							DEBUG("[CPCDOS] CTX TEXT PAST : '" & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__ & "'", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")							
 							
-							' EFFECTUER UN COLLER
+							' EFFECTUER UN COLLER (remplacer la selection si presente)
 							Dim position_curseur as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos
+							Dim Sel_Debut_PASTE as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Debut
+							Dim Sel_Fin_PASTE as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Fin
+							Dim HasSelection_PASTE as boolean = FALSE
+							If Sel_Debut_PASTE >= 0 And Sel_Fin_PASTE > Sel_Debut_PASTE Then
+								If CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+									Dim TIS_PSEL as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+									If Sel_Fin_PASTE > TIS_PSEL Then
+										If Sel_Debut_PASTE < TIS_PSEL Then Sel_Debut_PASTE = TIS_PSEL
+										If Sel_Fin_PASTE > Sel_Debut_PASTE Then HasSelection_PASTE = TRUE
+									End If
+								Else
+									HasSelection_PASTE = TRUE
+								End If
+							End If
+
+							If HasSelection_PASTE Then
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Debut_PASTE) & Mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, Sel_Fin_PASTE + 1)
+								position_curseur = Sel_Debut_PASTE
+							End If
+
+							' En mode console, forcer le collage dans la zone de saisie
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+								Dim TIS_PASTE as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+								IF position_curseur < TIS_PASTE Then position_curseur = Len(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte)
+							End If
 
 							' Placer le texte o� est positionn� le curseur
 							Dim Traitement as string = mid(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, 1, position_curseur) & CPCDOS_INSTANCE.__PRESSE_PAPIER_TEXTE__
@@ -489,6 +568,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 
 							'Mettre a jour
 							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Traitement
+
+							' Effacer la selection apres coller
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Ancre = -1
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Debut = -1
+							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Sel_Fin   = -1
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
@@ -517,7 +601,14 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 							DEBUG("[CPCDOS] CTX TEXT DELETED", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, "")
 
 							' EFFACER
-							CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+							' En mode console, ne supprimer que la zone de saisie
+							IF CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.Console = TRUE Then
+								Dim TIS_DEL as integer = CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Terminal_InputStart
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = Left(CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte, TIS_DEL)
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).PROP_TYPE.UserEdit_Pos = TIS_DEL
+							Else
+								CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).Texte = ""
+							End If
 
 							' Actualiser l'affichage du textebox
 							CPCDOS_INSTANCE.SCI_INSTANCE.Creer_TextBox(INDEX_Textbox, CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(INDEX_Textbox).identification_objet.Index_FNT_PARENT)
@@ -821,6 +912,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					Commande = Ltrim(Ltrim(Rtrim(Rtrim(Rtrim(Rtrim(Param), chr(10)), chr(13)), chr(09))), CHR(09))
 				END IF
 			END IF
+			If AfficherAide = 1 Then
+				If Instr(UCase(Param_2), "#GUI_TXTBOX:") > 0 Then Aide_Retour = Param_2
+			End If
 			IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 then
 				IF AfficherAide = 1 THEN
 					Mess_Debug = "** Liste des commandes disponibles **"
@@ -1020,6 +1114,9 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			if Instr(Param_2, Trame_GUI_TXTBOX) > 0 Then
 				Dim Index_txtbox as integer = Val(Mid(Param_2, Instr(Param_2, Trame_GUI_TXTBOX) + Len(Trame_GUI_TXTBOX)))
 				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_txtbox).Texte = ""
+				' Reset Terminal_InputStart si mode terminal
+				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_txtbox).Terminal_InputStart = 0
+				CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.GUI__TEXTBOX(Index_txtbox).PROP_TYPE.UserEdit_Pos = 0
 			else
 				cls 0
 			End if
@@ -16391,7 +16488,11 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												IF INSTR(GUI__PROP_TYPE, "MULTILIGNES:1") > 0 Then GUI__PROP_TYPE_MultiLignes = TRUE
 												
 												IF INSTR(GUI__PROP_TYPE, "CONSOLE:0") > 0 Then GUI__PROP_TYPE_Console = FALSE
-												IF INSTR(GUI__PROP_TYPE, "CONSOLE:1") > 0 Then GUI__PROP_TYPE_Console = TRUE
+												IF INSTR(GUI__PROP_TYPE, "CONSOLE:1") > 0 Then
+													GUI__PROP_TYPE_Console = TRUE
+													GUI__PROP_TYPE_Editable = TRUE
+													GUI__PROP_TYPE_MultiLignes = TRUE
+												End if
 
 												IF INSTR(GUI__PROP_TYPE, "MENUCONTEXT:0") > 0 Then GUI__PROP_TYPE_ContextMenu = 0
 												IF INSTR(GUI__PROP_TYPE, "MENUCONTEXT:1") > 0 Then GUI__PROP_TYPE_ContextMenu = 1
@@ -17190,6 +17291,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Multi_Lignes = GUI__PROP_TYPE_MultiLignes
 												
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.Console = GUI__PROP_TYPE_Console
+
+														' Initialiser Console : InputStart a la fin du texte initial, HistIndex a -1
+														IF GUI__PROP_TYPE_Console = TRUE Then
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.Terminal_HistIndex = -1
+													CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.UserEdit_Pos = Len(GUI__PROP_TEXTE)
+												End if
 
 												CPCDOS_INSTANCE.SCI_INSTANCE.INST_INIT_GUI.TEMP_GUI__TEXTBOX.PROP_TYPE.ContextMenu = GUI__PROP_TYPE_ContextMenu
 												
@@ -22364,12 +22471,12 @@ _FIN_EXE_CCP_EXE:
 								' Cuter apres le ;
 								ListeProcessus = Mid(ListeProcessus, Instr(ListeProcessus, ";") + 1)
 
-								' Creer le tableau
-								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+								' Creer le tableau (avec [index] pour compatibilite acces dynamique %var[idx]%)
+								CpcdosCP_SHELL("SET/ " & NomVariable & "[" & index & "] = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
 							Else
 								dim item as String = ListeProcessus
 
-								CpcdosCP_SHELL("SET/ " & NomVariable & "(" & index & ") = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
+								CpcdosCP_SHELL("SET/ " & NomVariable & "[" & index & "] = " & item, _CLE_, NIVEAU_CCP, Param_1, Param_2) 
 
 								exit for
 							End if
@@ -23167,7 +23274,7 @@ _FIN_EXE_CCP_EXE:
 	
 	IF LEN(CommandesAide) > 1 then
 	REM IF CommandesAide <> "" then
-		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+		DEBUG(CommandesAide, CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.couleur_normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, Aide_Retour)
 
 		CommandesAide = ""
 	else
