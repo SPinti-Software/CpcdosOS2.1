@@ -593,7 +593,7 @@ Type __Noyau_Cpcdos_OSx__
 		Declare Function 	Ecrire_fichier_complet(ByVal Chemin as String, ByVal Donnees as String, ByVal FLAG as integer) as double
 		
 		Declare Function 	Supprimer_Fichier	(ByVal Chemin as String, ByVal securise as boolean, ByVal NombrePasses as integer) as boolean
-		Declare Function 	Copier_Fichier		(ByVal Source as String, ByVal Destination as String, ByVal Priorite as integer, ByVal Var_Progression as String, ByVal Var_Octets as String, ByVal Var_OctetsParSec as String) as boolean
+		Declare Function 	Copier_Fichier		(ByVal Source as String, ByVal Destination as String, ByVal Priorite as integer, ByVal Var_Progression as String, ByVal Var_Octets as String, ByVal Var_OctetsParSec as String, ByVal Var_Annuler as String, ByVal CLE_Contexte as double) as boolean
 		Declare Function 	Renommer_Fichier	(ByVal Source as String, ByVal Destination as String) as boolean
 		Declare Function 	Deplacer_Fichier(ByVal Source as String, ByVal Destination as String) as boolean
 		

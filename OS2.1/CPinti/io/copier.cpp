@@ -46,6 +46,9 @@
 // #include "leakchk.h"
 
 extern "C" void 		cpc_CCP_Exec_Commande			(const char* COMMANDE, long ID);
+extern "C" char* 		cpc_CCP_Lire_Variable			(const char* NomVariable, int niveau);
+extern "C" void 		cpc_CCP_Exec_Commande_CLE		(const char* COMMANDE, long NIVEAU, double CLE);
+extern "C" char* 		cpc_CCP_Lire_Variable_CLE		(const char* NomVariable, int niveau, double CLE);
 
 namespace cpinti 
 {
@@ -56,7 +59,7 @@ namespace cpinti
 		// ================================= LECTURE =================================
 		// ===========================================================================
 
-		bool Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
+		bool Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec, const char* VAR_Annuler, double cle_contexte)
 		{
 			// Cette methode permet de copier un fichier source a une destination
 		
@@ -74,6 +77,8 @@ namespace cpinti
 			
 			// Definit les attributs temporaires		
 			bool RETOUR = false;
+			bool erreur_copie = false;
+			bool annulee = false;
 			long CompteurDoevents = 0;
 			
 			// Les descripteurs de fichier
@@ -85,11 +90,11 @@ namespace cpinti
 				Priorite = 1;
 			}
 			
-			// Ouvrir le fichier SOURCE
-			Instance_Fichier_SOURCE = fopen (Source, "r");
+			// Ouvrir le fichier SOURCE 
+			Instance_Fichier_SOURCE = fopen (Source, "rb");
 
 			// Ouvrir le fichier DESTINATION
-			Instance_Fichier_DESTINATION = fopen (Destination, "w");
+			Instance_Fichier_DESTINATION = fopen (Destination, "wb");
 
 			// Si c'est ok pour la source
 			if (Instance_Fichier_SOURCE != NULL) 
@@ -113,46 +118,57 @@ namespace cpinti
 					clock_t	TempsDebut;
 					clock_t	TempsFin;
 
-					char _output_ = '\0';
-					int data = 0;
-					
 					char* _Commande_CpcdosCP = (char*) malloc(sizeof(char) * 256);
+					unsigned long derniere_progression = 101;
 					
-					ENTRER_SectionCritique();
-
 					if(has_var_octets_par_sec)
 					{
 						TempsDebut = clock();
 					}
 
-					// Boucler jusqu'a la fin du fichier
-					while (Position < TailleFichier) 
-					{ 
+					// Copie par blocs de 4Ko (fread/fwrite >> fgetc/fputc octet par octet)
+					char _buffer_copie_[4096];
+					unsigned long lu_copie = 0;
+					unsigned long CompteurFlush = 0;
 
-						// Cette partie va permettre d'alleger le CPU
-						if(CompteurDoevents >= 8192)
+					while ((lu_copie = (unsigned long) fread(_buffer_copie_, 1, 4096, Instance_Fichier_SOURCE)) > 0)
+					{
+						size_t ecrit = fwrite(_buffer_copie_, 1, (size_t) lu_copie, Instance_Fichier_DESTINATION);
+						if (ecrit != (size_t) lu_copie)
+						{
+							erreur_copie = true;
+							break;
+						}
+
+						Position           += lu_copie;
+						NombreOctets       += lu_copie;
+						NombreOctetsParSec += lu_copie;
+
+						// Yield CPU et mise a jour progression toutes les ~64 iterations (~256Ko)
+						CompteurDoevents++;
+						CompteurFlush++;
+						if(CompteurDoevents >= 64)
 						{
 							CompteurDoevents = 0;
-							SORTIR_SectionCritique();
-							doevents(0);
-							ENTRER_SectionCritique();
+							doevents((Priorite <= 1) ? 1 : 0);
 							
 							/** PROGRESSION EN POURCENTAGE **/
 							if(has_var_progression && (TailleFichier > 0))
 							{
-								
-								valeur = ((double) NombreOctets / (double) TailleFichier) * 100;
-								snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_Progression, valeur);
-								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
+								unsigned long progression = (unsigned long) ((((double) NombreOctets / (double) TailleFichier) * 100.0));
+								if(progression != derniere_progression)
+								{
+									derniere_progression = progression;
+									snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = %lu", VAR_Progression, progression);
+										cpc_CCP_Exec_Commande_CLE(_Commande_CpcdosCP, 3, cle_contexte);
+								}
 							}
 							
 							/** NOMBRE D'OCTETS COPIES **/
 							if(has_var_octets)
 							{
-
-								valeur = (double) NombreOctets;
-								snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_Octets, valeur);
-								cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
+								snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = %lu", VAR_Octets, NombreOctets);
+								cpc_CCP_Exec_Commande_CLE(_Commande_CpcdosCP, 3, cle_contexte);
 							}
 						
 							if(vitesse > 1)
@@ -160,33 +176,34 @@ namespace cpinti
 								/** NOMBRE D'OCTETS PAR SECONDES **/
 								if(has_var_octets_par_sec)
 								{
-									
-									snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = /F:CPC.long(%f)", VAR_OctetsParSec, vitesse);
-									cpc_CCP_Exec_Commande(_Commande_CpcdosCP, 5);
+									snprintf(_Commande_CpcdosCP, 256, "FIX/ %s = %lu", VAR_OctetsParSec, (unsigned long) vitesse);
+									cpc_CCP_Exec_Commande_CLE(_Commande_CpcdosCP, 3, cle_contexte);
 									vitesse = 0;
 								}
 							}
 
-						} else
-							CompteurDoevents++;
-						
-						
-						// Recuperer le caractere SOURCE
-						data = fgetc(Instance_Fichier_SOURCE);
-						if(data == EOF)
-						{
-							break;
+							if((VAR_Annuler != NULL) && (strlen(VAR_Annuler) > 1))
+							{
+								char* valeur_annuler = cpc_CCP_Lire_Variable_CLE(VAR_Annuler, 3, cle_contexte);
+								if(valeur_annuler != NULL)
+								{
+									char c = valeur_annuler[0];
+									if(c == '1' || c == 'O' || c == 'o' || c == 'Y' || c == 'y' || c == 'T' || c == 't')
+									{
+										annulee = true;
+										break;
+									}
+								}
+							}
 						}
 
-						// Ecrire le caractere DESTINATION
-						fputc(data, Instance_Fichier_DESTINATION);
-						
-						// Avancer d'une position
-						Position++;
-						
-						NombreOctetsParSec++;
-						NombreOctets++;
-	
+						// Flush periodique: limite les pertes en cas d'arret brutal sans penaliser excessivement
+						if(CompteurFlush >= 16)
+						{
+							CompteurFlush = 0;
+							fflush(Instance_Fichier_DESTINATION);
+						}
+
 						if(has_var_octets_par_sec)
 						{
 							TempsFin = clock();
@@ -205,13 +222,16 @@ namespace cpinti
 						}
 					}	
 
-					SORTIR_SectionCritique();
+					fflush(Instance_Fichier_DESTINATION);
 					
 					_Commande_CpcdosCP[0] = '\0';
 					free(_Commande_CpcdosCP);
 					
-					// OK
-					RETOUR = true;
+					// OK uniquement si aucune erreur de lecture/ecriture
+					if(!erreur_copie && !annulee && (ferror(Instance_Fichier_SOURCE) == 0) && (ferror(Instance_Fichier_DESTINATION) == 0))
+						RETOUR = true;
+					else
+						RETOUR = false;
 				}
 				else
 				{

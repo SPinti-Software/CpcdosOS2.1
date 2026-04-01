@@ -79,17 +79,19 @@ End function
 
 Function _SYSTEME_Cpcdos_OSx__.TailleString(ByRef Texte as string) as integer
 	' Permet de calculer la taille d'une variable String
-	' avec la taille deja definie
-	Dim Resultat as integer
-	Dim Taille as integer
-	Dim Texte_len as integer = Len(Texte)
-	if Texte_len <= 0 Then return 0
+	' Dim Resultat as integer
+	' Dim Taille as integer
+	' Dim Texte_len as integer = Len(Texte)
+	' if Texte_len <= 0 Then return 0
 
-	For Boucle as integer = 1 to Texte_len
-		Resultat = (255 AND ASC(Texte, Boucle))
-		IF Resultat <> 0 Then Taille += 1
-	Next Boucle
-	Function = Taille
+	' For Boucle as integer = 1 to Texte_len
+		' Resultat = (255 AND ASC(Texte, Boucle))
+		' IF Resultat <> 0 Then Taille += 1
+	' Next Boucle
+	' Function = Taille
+
+	' O(1) : Len() FreeBASIC est deja O(1), la boucle octet par octet etait inutile
+	Function = Len(Texte)
 End function
 
 Sub _SYSTEME_Cpcdos_OSx__.Update_memoire()

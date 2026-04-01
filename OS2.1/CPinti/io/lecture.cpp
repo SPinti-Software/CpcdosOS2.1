@@ -65,77 +65,53 @@ namespace cpinti
 			
 			
 			ENTRER_SectionCritique();
-			bool section_critique_active = true;
-			
-			// Definit les attributs temporaires		
-			long CompteurDoevents = 0;
-			unsigned long Position = 0;
-			int data = 0;
-			bool lecture_complete = true;
+
+			// Lecture par chunks de 8Ko : rapide (fread) ET cooperatif (IRQ restores entre chunks)
+			// Evite le freeze USB qui surviendrait avec un seul fread() sur toute la taille du fichier
+			// Meme pattern que copier.cpp : SORTIR/doevents/ENTRER entre chaque chunk
+			bool lecture_complete = false;
 			FILE* Instance_Fichier;
 
 			// Ouvrir un canal du fichier
-			Instance_Fichier = fopen (Source, MODE);
-			
+			Instance_Fichier = fopen(Source, MODE);
+
 			// Si c'est OPEN
-			if (Instance_Fichier != NULL) 
+			if (Instance_Fichier != NULL)
 			{
-				
-				// Boucler jusqu'a la fin du fichier
-				while (Position < TailleFichier) 
-				{ 
+				const unsigned long CHUNK_LECTURE = 8192UL;
+				unsigned long position  = 0;
+				unsigned long lu_chunk  = 0;
 
-					// Cette partie va permettre d'alleger le CPU
-					if(CompteurDoevents >= 8192)
-					{
-						CompteurDoevents = 0;
-						SORTIR_SectionCritique();
-						section_critique_active = false;
-						doevents(0);
-						ENTRER_SectionCritique();
-						section_critique_active = true;
-					} else
-						CompteurDoevents++;
-					
-					
-					// Recuperer le caractere
-					data = fgetc(Instance_Fichier);
-					if (data == EOF)
-					{
-						lecture_complete = false;
-						break;
-					}
-
-					// Merge le caractere avec les donnees
-					_DONNEES[Position] = static_cast<char>(data);
-					
-					// Avancer d'une position
-					Position++;
-					
-				}
-
-				while (Position < TailleFichier)
+				while (position < TailleFichier)
 				{
-					_DONNEES[Position] = 0;
-					Position++;
+					unsigned long reste = TailleFichier - position;
+					unsigned long chunk = (reste < CHUNK_LECTURE) ? reste : CHUNK_LECTURE;
+
+					lu_chunk = (unsigned long) fread(_DONNEES + position, 1, (size_t) chunk, Instance_Fichier);
+					if (lu_chunk == 0) break;
+					position += lu_chunk;
+
+					// Restaurer les IRQ et ceder le CPU entre chaque chunk (crucial sur USB)
+					SORTIR_SectionCritique();
+					doevents(0);
+					ENTRER_SectionCritique();
 				}
-				
+
+				// Zero-fill le reste si lecture incomplete (mode texte: CRLF->LF peut reduire position)
+				if (position < TailleFichier)
+					memset(_DONNEES + position, 0, (size_t)(TailleFichier - position));
+
+				lecture_complete = (position > 0);
+
 				// Fermer le fichier
 				fclose(Instance_Fichier);
-				
-				if (section_critique_active)
-				{
-					SORTIR_SectionCritique();
-				}
 
+				SORTIR_SectionCritique();
 				return lecture_complete;
 			}
 			else
 			{
-				if (section_critique_active)
-				{
-					SORTIR_SectionCritique();
-				}
+				SORTIR_SectionCritique();
 				// Sinon probleme
 				std::string Erreur_STR = std::to_string((unsigned long) strerror(errno));
 					cpinti_dbg::CPINTI_DEBUG("[ERREUR] Impossible d'ouvrir le fichier '" + std::string(Source) + "'. Raison:" + std::string(strerror(errno)), 

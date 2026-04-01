@@ -57,6 +57,7 @@ Function/ INIT_CRT()
 	declare/ CPC.ENTIER(value)						: level(5)
 	declare/ CPC.INT(value)						: level(5)
 	declare/ CPC.INTEGER(value)					: level(5)
+	declare/ CPC.LONG(value)						: level(5)
 
 	// Permet de FRACtionner la value pour recuperer les chiffres APRES la virgule
 	declare/ CPC.FRAC(value)						: level(5)

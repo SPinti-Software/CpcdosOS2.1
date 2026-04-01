@@ -26,6 +26,8 @@ Declare Function 	cpc_Obtenir_Zone_Contexte 		cdecl Alias "cpc_Obtenir_Zone_Cont
 Declare Sub 		cpc_CCP_Exec_Commande 			cdecl alias "cpc_CCP_Exec_Commande"  			(Commande as CONST ZString PTR, niveau as integer)
 declare Function	cpc_CCP_Exec_Commande_ret		cdecl alias "cpc_CCP_Exec_Commande_ret"			(Commande as CONST ZString PTR, niveau as integer) as ZString PTR
 Declare Function	cpc_CCP_Lire_Variable 			cdecl alias "cpc_CCP_Lire_Variable"  			(NomVariable as CONST ZString PTR, niveau as integer) as ZString ptr
+Declare Sub 		cpc_CCP_Exec_Commande_CLE		cdecl alias "cpc_CCP_Exec_Commande_CLE"			(Commande as CONST ZString PTR, niveau as integer, cle as double)
+Declare Function	cpc_CCP_Lire_Variable_CLE		cdecl alias "cpc_CCP_Lire_Variable_CLE"			(NomVariable as CONST ZString PTR, niveau as integer, cle as double) as ZString ptr
 Declare function 	cpc_CCP_Exec_Thread_cpc 		cdecl Alias "cpc_CCP_Exec_Thread_cpc" 			(Chemin as CONST ZString PTR, Priorite as integer) as integer
 
 Declare Function	cpc_Exec_en_cours				cdecl alias "cpc_Exec_en_cours"					(ARG as integer) as ZString ptr
@@ -650,6 +652,19 @@ Public sub cpc_CCP_Exec_Commande cdecl Alias "cpc_CCP_Exec_Commande" (Commande a
 	Dim CMD_shell as String = *Commande
 	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(CMD_shell, CPCDOS_INSTANCE.SYSTEME_INSTANCE._MAIN_CLE, niveau, 0, "")
 End sub
+
+Public Sub cpc_CCP_Exec_Commande_CLE cdecl Alias "cpc_CCP_Exec_Commande_CLE" (Commande As CONST ZString PTR, niveau As Integer, cle As Double)
+	Dim CMD_shell As String = *Commande
+	CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(CMD_shell, cle, niveau, 0, "")
+End Sub
+
+Public Function cpc_CCP_Lire_Variable_CLE cdecl Alias "cpc_CCP_Lire_Variable_CLE" (NomVariable As CONST ZString PTR, niveau As Integer, cle As Double) As ZString PTR
+	Dim NomVariable_str As String = *NomVariable
+	Dim Resultat As String = CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(NomVariable_str, niveau, cle)
+	Dim Variable As ZString PTR = malloc(Len(Resultat) + 1)
+	*Variable = Resultat
+	Return Variable
+End Function
 
 Public Function	cpc_CCP_Lire_Variable cdecl alias "cpc_CCP_Lire_Variable" (NomVariable as CONST ZString PTR, niveau as integer) as ZString ptr
 	Dim NomVariable_str as String = *NomVariable

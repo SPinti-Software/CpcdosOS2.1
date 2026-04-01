@@ -1301,6 +1301,8 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim Var_Progression 	as String
 			Dim Var_Octets 			as String
 			Dim Var_OctetsParSec 	as String
+			Dim Var_Annuler 		as String
+			Dim GUI_CopyMonitor 	as boolean = false
 			
 			
 
@@ -1456,6 +1458,26 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			
 			Source 		 = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, 1, Instr(Param, ",") - 1)), CHR(09))), CHR(09))
 			Destination  = Rtrim(Rtrim(Ltrim(Ltrim(Mid(Param, Instr(Param, ",") + 1)), CHR(09))), CHR(09))
+
+			if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_GUI.PCT"
+			if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_GUI.BYTES"
+			if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_GUI.SPEED"
+			Var_Annuler = "CPC_SYS.IO.COPY_GUI.CANCEL"
+
+			if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = true AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = true Then
+				GUI_CopyMonitor = true
+
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.PCT = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.BYTES = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.SPEED = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.CANCEL = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.DONE = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.RESULT = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.SRC = " & CHR(34) & Source & CHR(34), _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.DST = " & CHR(34) & Destination & CHR(34), _CLE_, 3, 0, "")
+
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("CMD/ /THREAD[STD] EXE/ & %CPC.REP.KRNL%/CONFIG/ENV_GUI/COPY.CPC", _CLE_, 3, 0, "")
+			End if
 			
 			IF Not Var_Progression = "" Then
 				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
@@ -1475,7 +1497,15 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				END IF
 			End if
 
-			Resultat = CPCDOS_INSTANCE.Copier_Fichier(Source, Destination, Priorite_copie, Var_Progression, Var_Octets, Var_OctetsParSec) ' Utilisation Temporaire du CRT0 FreeBasic --> DOS
+			Resultat = CPCDOS_INSTANCE.Copier_Fichier(Source, Destination, Priorite_copie, Var_Progression, Var_Octets, Var_OctetsParSec, Var_Annuler, _CLE_) ' Utilisation Temporaire du CRT0 FreeBasic --> DOS
+			if GUI_CopyMonitor Then
+				if Resultat = true Then
+					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.RESULT = 1", _CLE_, 3, 0, "")
+				Else
+					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.RESULT = 0", _CLE_, 3, 0, "")
+				End if
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.DONE = 1", _CLE_, 3, 0, "")
+			End if
 			
 			If Resultat = false Then
 				' ERREUR

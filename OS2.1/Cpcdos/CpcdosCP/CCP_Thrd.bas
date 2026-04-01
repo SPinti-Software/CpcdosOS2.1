@@ -35,8 +35,8 @@ Function Shell_THREAD cdecl Alias "Shell_THREAD" (ByVal thread_struct as _STRUCT
 
 		if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then doevents(0) : Sleep 5 : Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then doevents(0) : Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		
 		SCOPE
@@ -102,8 +102,8 @@ Function Wrapper_THREAD cdecl Alias "Wrapper_THREAD" (ByVal thread_struct as _ST
 
 		if Etat_Thread = CPCDOS_INSTANCE.__ARRETE 		Then EN_VIE = FALSE : Exit While ' Arreter le thread
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_ARRET 	Then EN_VIE = FALSE : Exit While ' Arreter le thread
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then Continue While	' Mettre en pause/Sauter le code
-		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_PAUSE 	Then doevents(0) : Sleep 5 : Continue While	' Mettre en pause/Sauter le code
+		if Etat_Thread = CPCDOS_INSTANCE.__EN_ATTENTE 	Then doevents(0) : Sleep 5 : Continue While	' Mettre en pause/Sauter le code
 		if Etat_Thread = CPCDOS_INSTANCE.__EN_EXECUTION Then				' Executer le thread normalement
 		
 		SCOPE

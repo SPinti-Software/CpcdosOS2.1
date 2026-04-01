@@ -42,7 +42,7 @@ Extern "C++" lib "cpnti"
 			declare function cpinti_Lire_Fichier_complet	(Source as CONST ZString ptr, Mode as CONST ZString ptr, Retour_ptr as ZString ptr, TailleFichier as uinteger) as boolean
 			declare function cpinti_Ecrire_Fichier_complet	(Source as CONST ZString ptr, Donnees as CONST ZString ptr, FLAG as integer) as boolean
 			declare function cpinti_Supprimer_Fichier		(Source as CONST ZString ptr, Securise as boolean, NombrePasses as integer) as boolean
-			declare function cpinti_Copier_Fichier			(Source as CONST ZString ptr, Destination as CONST ZString ptr, Priorite as integer, VAR_Progression as CONST ZString ptr, VAR_Octets as CONST ZString ptr, VAR_OctetsParSecondes as CONST ZString ptr) as boolean
+			declare function cpinti_Copier_Fichier			(Source as CONST ZString ptr, Destination as CONST ZString ptr, Priorite as integer, VAR_Progression as CONST ZString ptr, VAR_Octets as CONST ZString ptr, VAR_OctetsParSecondes as CONST ZString ptr, VAR_Annuler as CONST ZString ptr, CLE_Contexte as double) as boolean
 		end namespace
 		
 		' == EXTRA ==

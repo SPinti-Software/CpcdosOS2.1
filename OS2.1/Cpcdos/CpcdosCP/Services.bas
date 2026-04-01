@@ -815,11 +815,11 @@ Function _SHELL_Cpcdos_OSx__.Recherche_Fonction_CPCDOS(byval CCP_Fonction_EXEC a
 		
 		' ----- CONVERSIONS NUMERIQUES -------
 		
-		' ** INT : Convertir en valeur ENTIER (INTEGER)
-		IF CCP_Fonction_EXEC = "CPC.INT" OR CCP_Fonction_EXEC = "CPC.INTEGER" OR CCP_Fonction_EXEC = "CPC.ENTIER" Then 
+		' ** INT/LONG : Convertir en valeur entiere (32 bits)
+		IF CCP_Fonction_EXEC = "CPC.INT" OR CCP_Fonction_EXEC = "CPC.INTEGER" OR CCP_Fonction_EXEC = "CPC.ENTIER" OR CCP_Fonction_EXEC = "CPC.LONG" Then 
 			IF CCP_Fonction_ARGS_N = 1 Then
 			
-				Recherche_Fonction_CPCDOS = STR(INT(VAL(CCP_Fonction_DATA(1))))
+				Recherche_Fonction_CPCDOS = STR(CLng(FIX(VAL(CCP_Fonction_DATA(1)))))
 				Exit _scope2
 			ELSE
 				' Erreur !

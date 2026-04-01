@@ -253,7 +253,7 @@ namespace cpinti
 			
 		} /* SUPPRIMER FICHIER */
 		
-		bool cpinti_Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec)
+		bool cpinti_Copier_Fichier(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec, const char* VAR_Annuler, double cle_contexte)
 		{
 			// Cette fonction va permettre de d'ecrire de maniere COMPLET un fichier
 			// Source 		= Source d'acces au fichier
@@ -281,7 +281,7 @@ namespace cpinti
 							Ligne_reste, Alerte_validation, Date_avec, Ligne_r_normal);
 
 							
-			if(cpinti::gestionnaire_fichier::Copier_Fichier(Source, Destination, Priorite, VAR_Progression, VAR_Octets, VAR_OctetsParSec) == true)
+			if(cpinti::gestionnaire_fichier::Copier_Fichier(Source, Destination, Priorite, VAR_Progression, VAR_Octets, VAR_OctetsParSec, VAR_Annuler, cle_contexte) == true)
 			{
 				cpinti_dbg::CPINTI_DEBUG("[OK]", "[OK]", "", "", Ligne_saute, Alerte_surbrille, Date_sans, Ligne_r_normal);
 				return true;

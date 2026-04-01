@@ -1,0 +1,197 @@
+// COPY GUI monitor
+// Affiche une fenetre de progression si une copie dure plus d'1 seconde.
+// Variables attendues (niveau 3):
+// CPC_SYS.IO.COPY_GUI.SRC, DST, PCT, BYTES, SPEED, CANCEL, DONE, RESULT
+
+CCP/ /SET.LEVEL = 2
+
+// Delai anti-flicker: n'afficher que si la copie depasse ~1 seconde
+// CCP/ /PAUSE 1000
+// if/ "%CPC_SYS.IO.COPY_GUI.DONE%" == "1" then:
+// return/
+// End/ if
+
+Window/ copy_gui_window
+.title          = "Copie en cours"
+.parameters     = "TYPE:0 SIZ:0 SIZBTN:0 REDUCT:0"
+.px             = "180"
+.py             = "140"
+.sx             = "460"
+.sy             = "220"
+.opacity        = "220"
+.WindowColor    = "235,235,235"
+.TitleColor     = "240,240,240"
+.backcolor      = "235,235,235"
+.icon           = "OS/MEDIA/GUI/ico_copy.png"
+.events         = "%_exe_path_%=WindowClosed"
+@#copy_gui_handle create/
+End/ Window
+
+TextBlock/ copy_gui_src
+.handle         = "%copy_gui_handle%"
+.parameters     = "COL:0 MULTILINES:0"
+.text           = "Source : %CPC_SYS.IO.COPY_GUI.SRC%"
+.px             = "10"
+.py             = "10"
+.sx             = "440"
+.sy             = "20"
+create/
+End/ TextBlock
+
+TextBlock/ copy_gui_dst
+.handle         = "%copy_gui_handle%"
+.parameters     = "COL:0 MULTILINES:0"
+.text           = "Destination : %CPC_SYS.IO.COPY_GUI.DST%"
+.px             = "10"
+.py             = "32"
+.sx             = "440"
+.sy             = "20"
+create/
+End/ TextBlock
+
+TextBlock/ copy_gui_status
+.handle         = "%copy_gui_handle%"
+.parameters     = "COL:0 MULTILINES:0"
+.text           = "%CPC_SYS.IO.COPY_GUI.PCT%\% - 0 ko/s                    "
+.px             = "10"
+.py             = "64"
+.sx             = "440"
+.sy             = "20"
+create/
+End/ TextBlock
+
+BarreProgression/ copy_gui_progress
+.handle         = "%copy_gui_handle%"
+.texte          = "Progression %CPC_SYS.IO.COPY_GUI.PCT%\%"
+.Valeur         = "%CPC_SYS.IO.COPY_GUI.PCT%"
+.px             = "10"
+.py             = "92"
+.tx             = "440"
+.ty             = "28"
+.CouleurTexte   = "000,000,000"
+.CouleurFond    = "070,170,090"
+.image          = "OS/Media/GUI/Buttons/BTN_GRBL.png"
+creer/
+Fin/ BarreProgression
+
+Button/ copy_gui_cancel_btn
+.handle         = "%copy_gui_handle%"
+.Image          = "OS/MEDIA/GUI/BUTTONS/BTN_RED.PNG"
+.Parameters     = "IMGAUTO:2"
+.text           = "Annuler"
+.px             = "320"
+.py             = "168"
+.sx             = "120"
+.sy             = "34"
+.event          = "%_exe_path_%=MouseClick,Click"
+Create/
+End/ Button
+
+set/ COPY_GUI_LAST_PCT = "0"
+set/ COPY_GUI_LAST_SPEED = 0
+set/ COPY_GUI_LAST_SRC = ""
+set/ COPY_GUI_LAST_DST = ""
+
+
+:LOOP_COPY_GUI:
+CCP/ /PAUSE 260
+
+if/ "%CPC_SYS.IO.COPY_GUI.DONE%" == "1" then: Goto/ END_COPY_GUI
+
+set/ COPY_GUI_SPEED_KO = /C(%CPC_SYS.IO.COPY_GUI.SPEED% / 1024)
+
+if/ "%COPY_GUI_LAST_PCT%" == "" then: set/ COPY_GUI_LAST_PCT = "-1"
+if/ "%COPY_GUI_LAST_SPEED%" == "" then: set/ COPY_GUI_LAST_SPEED = "-1"
+if/ "%COPY_GUI_LAST_SRC%" == "" then: set/ COPY_GUI_LAST_SRC = "%CPC_SYS.IO.COPY_GUI.SRC%"
+if/ "%COPY_GUI_LAST_DST%" == "" then: set/ COPY_GUI_LAST_DST = "%CPC_SYS.IO.COPY_GUI.DST%"
+
+set/ CHANGED = "0"
+
+if/ "%CPC_SYS.IO.COPY_GUI.SRC%" != "%COPY_GUI_LAST_SRC%" then:
+set/ CHANGED = "1"
+End/ if
+
+if/ "%CPC_SYS.IO.COPY_GUI.DST%" != "%COPY_GUI_LAST_DST%" then:
+set/ CHANGED = "1"
+End/ if
+
+if/ "%CPC_SYS.IO.COPY_GUI.PCT%" != "%COPY_GUI_LAST_PCT%" then:
+set/ CHANGED = "1"
+End/ if
+
+if/ "%COPY_GUI_SPEED_KO%" != "%COPY_GUI_LAST_SPEED%" then:
+set/ CHANGED = "1"
+End/ if
+
+if/ "%CHANGED%" == "0" then: Goto/ CHECK_CANCEL_COPY_GUI
+
+TextBlock/ /MODIF:copy_gui_src
+.text = "Source : %CPC_SYS.IO.COPY_GUI.SRC%"
+create/
+End/ TextBlock
+
+TextBlock/ /MODIF:copy_gui_dst
+.text = "Destination : %CPC_SYS.IO.COPY_GUI.DST%"
+create/
+End/ TextBlock
+
+TextBlock/ /MODIF:copy_gui_status
+.text = "%CPC_SYS.IO.COPY_GUI.PCT%\% - %COPY_GUI_SPEED_KO% ko/s                    "
+create/
+End/ TextBlock
+
+BarreProgression/ /MODIF:copy_gui_progress
+.Valeur = "%CPC_SYS.IO.COPY_GUI.PCT%"
+.texte  = "Progression %CPC_SYS.IO.COPY_GUI.PCT%\%"
+creer/
+Fin/ BarreProgression
+
+set/ COPY_GUI_LAST_PCT = "%CPC_SYS.IO.COPY_GUI.PCT%"
+set/ COPY_GUI_LAST_SPEED = "%COPY_GUI_SPEED_KO%"
+set/ COPY_GUI_LAST_SRC = "%CPC_SYS.IO.COPY_GUI.SRC%"
+set/ COPY_GUI_LAST_DST = "%CPC_SYS.IO.COPY_GUI.DST%"
+
+:CHECK_CANCEL_COPY_GUI:
+if/ "%CPC_SYS.IO.COPY_GUI.CANCEL%" == "1" then:
+TextBlock/ /MODIF:copy_gui_status
+.text = "Annulation en cours..."
+create/
+End/ TextBlock
+End/ if
+
+Goto/ LOOP_COPY_GUI
+
+:END_COPY_GUI:
+if/ "%CPC_SYS.IO.COPY_GUI.RESULT%" == "1" then:
+TextBlock/ /MODIF:copy_gui_status
+.text = "Copie terminee (%CPC_SYS.IO.COPY_GUI.PCT%\%)                    "
+create/
+End/ TextBlock
+Else:
+TextBlock/ /MODIF:copy_gui_status
+.text = "Copie interrompue ou en erreur                    "
+create/
+End/ TextBlock
+End/ if
+
+CCP/ /PAUSE 450
+CLOSE/ copy_gui_window
+return/
+
+Function/ copy_gui_cancel_btn.MouseClick()
+SET/ CPC_SYS.IO.COPY_GUI.CANCEL = 1
+End/ Function
+
+Function/ copy_gui_cancel_btn.Click()
+SET/ CPC_SYS.IO.COPY_GUI.CANCEL = 1
+End/ Function
+
+Function/ copy_gui_window.MouseEnter()
+End/ Function
+
+Function/ copy_gui_window.MouseMove()
+End/ Function
+
+Function/ copy_gui_window.WindowClosed()
+SET/ CPC_SYS.IO.COPY_GUI.CANCEL = 1
+End/ Function

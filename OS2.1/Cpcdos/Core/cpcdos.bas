@@ -1076,7 +1076,7 @@ Function __Noyau_Cpcdos_OSx__.Supprimer_Fichier(ByVal Source as String, ByVal se
 	' function = false
 End Function
 
-Function __Noyau_Cpcdos_OSx__.Copier_Fichier(ByVal Source as String, ByVal Destination as String, ByVal Priorite as integer, ByVal Var_Progression as String, ByVal Var_Octets as String, ByVal Var_OctetsParSec as String) as boolean
+Function __Noyau_Cpcdos_OSx__.Copier_Fichier(ByVal Source as String, ByVal Destination as String, ByVal Priorite as integer, ByVal Var_Progression as String, ByVal Var_Octets as String, ByVal Var_OctetsParSec as String, ByVal Var_Annuler as String, ByVal CLE_Contexte as double) as boolean
 	' Cette fonction permet de copier un fichier source a une destination
 	
 	'	Source	: Source d'acces au fichier source
@@ -1115,15 +1115,17 @@ Function __Noyau_Cpcdos_OSx__.Copier_Fichier(ByVal Source as String, ByVal Desti
 	Dim VAR_Progression_CHAR 	as ZString PTR = CPCDOS_INSTANCE.SYSTEME_INSTANCE.AllouerString(VAR_Progression)
 	Dim VAR_Octets_CHAR 		as ZString PTR = CPCDOS_INSTANCE.SYSTEME_INSTANCE.AllouerString(VAR_Octets)
 	Dim VAR_OctetsParSec_CHAR 	as ZString PTR = CPCDOS_INSTANCE.SYSTEME_INSTANCE.AllouerString(VAR_OctetsParSec)
+	Dim VAR_Annuler_CHAR 		as ZString PTR = CPCDOS_INSTANCE.SYSTEME_INSTANCE.AllouerString(VAR_Annuler)
 
 	
 	' Copier le fichier depuis CPinti Core
-	Copier_Fichier = cpinti.gestionnaire_fichier.cpinti_Copier_Fichier(Source_CHAR, Destination_CHAR, Priorite, VAR_Progression_CHAR, VAR_Octets_CHAR, VAR_OctetsParSec_CHAR)
+	Copier_Fichier = cpinti.gestionnaire_fichier.cpinti_Copier_Fichier(Source_CHAR, Destination_CHAR, Priorite, VAR_Progression_CHAR, VAR_Octets_CHAR, VAR_OctetsParSec_CHAR, VAR_Annuler_CHAR, CLE_Contexte)
 
 	' Liberer la memoire
 	CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(VAR_OctetsParSec_CHAR)
 	CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(VAR_Octets_CHAR)
 	CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(VAR_Progression_CHAR)
+	CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(VAR_Annuler_CHAR)
 	
 	' CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(Destination_CHAR)
 	' CPCDOS_INSTANCE.SYSTEME_INSTANCE.DesAllouerString(Source_CHAR)

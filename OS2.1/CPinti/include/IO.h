@@ -30,7 +30,7 @@ namespace cpinti
 		bool 					cpinti_Lire_Fichier_complet		(const char* Source, const char* Mode, char* _DONNEES, unsigned long TailleFichier);
 		bool 					cpinti_Ecrire_Fichier_complet	(const char* Source, const char* _DONNEES, long Mode);
 		bool 					cpinti_Supprimer_Fichier		(const char* Source, bool Securise, long NombrePasses);
-		bool 					cpinti_Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec);
+		bool 					cpinti_Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec, const char* VAR_Annuler, double cle_contexte);
 	
 		// INTERNE
 		long inf					(FILE *source, FILE *dest);
@@ -39,7 +39,7 @@ namespace cpinti
 		bool 					Lire_Fichier_complet	(const char* Source, const char* MODE, char *_DONNEES, unsigned long Taille_Fichier);
 		bool					Ecrire_fichier			(const char* Source, const char* Donnees, long FLAG);
 		bool					Supprimer_Ficher		(const char* Source, bool securise, long NombrePasses);
-		bool 					Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec);
+		bool 					Copier_Fichier			(const char* Source, const char* Destination, long Priorite, const char* VAR_Progression, const char* VAR_Octets, const char* VAR_OctetsParSec, const char* VAR_Annuler, double cle_contexte);
 	}
 
 }
