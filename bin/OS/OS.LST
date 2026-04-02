@@ -1,5 +1,6 @@
-BOOTSCR=GoatOS
-GoatOS:GOATOS
+BOOTSCR=MyOS
 MyOS:MyOS
+
+
 
 
