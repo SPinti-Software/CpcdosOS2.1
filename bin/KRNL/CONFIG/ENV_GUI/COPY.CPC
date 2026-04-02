@@ -3,7 +3,9 @@
 // Variables attendues (niveau 3):
 // CPC_SYS.IO.COPY_GUI.SRC, DST, PCT, BYTES, SPEED, CANCEL, DONE, RESULT
 
-CCP/ /SET.LEVEL = 3
+
+// Niveau 2 car les variables tel que _exe_path_ sont de niveau 2
+CCP/ /SET.LEVEL = 2
 
 // Delai anti-flicker: n'afficher que si la copie depasse ~1 seconde
 // CCP/ /PAUSE 1000
