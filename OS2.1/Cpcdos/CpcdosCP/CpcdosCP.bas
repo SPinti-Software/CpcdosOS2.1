@@ -1400,10 +1400,24 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Dim Var_OctetsParSec 	as String
 			Dim Var_Annuler 		as String
 			Dim GUI_CopyMonitor 	as boolean = false
+			Dim Console_CopyMonitor as boolean = false
+			Dim Internal_CopyWorker as boolean = false
+			Dim Token_InternalCopyWorker as String = " /INTERNALCOPYWORKER"
+			Dim Console_ResultVar as String = "CPC_SYS.IO.COPY_CUI.RESULT"
+			Dim Console_DoneVar as String = "CPC_SYS.IO.COPY_CUI.DONE"
+			Dim Console_CancelVar as String = "CPC_SYS.IO.COPY_CUI.CANCEL"
 			
 			
 
 			Dim PosProgress as integer = Instr(Ucase(Param), " /PROGRESSION:")
+						Dim PosInternalCopyWorker as integer = Instr(Ucase(Param), Token_InternalCopyWorker)
+						if PosInternalCopyWorker > 0 Then
+							Internal_CopyWorker = true
+							Param = Param & " "
+							Param = Mid(Param, 1, PosInternalCopyWorker - 1) & " " & Mid(Param, Instr(PosInternalCopyWorker + Len(Token_InternalCopyWorker), Param & " ", " ") + 1)
+						End if
+
+						PosProgress = Instr(Ucase(Param), " /PROGRESSION:")
 			
 			IF NOT INSTR(Param, ",") > 0 Then 
 				IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
@@ -1560,13 +1574,12 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 			Source      = RTRIM(Source, ANY CHR(13) & CHR(10))
 			Destination = RTRIM(Destination, ANY CHR(13) & CHR(10))
 
-			if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_GUI.PCT"
-			if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_GUI.BYTES"
-			if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_GUI.SPEED"
-			Var_Annuler = "CPC_SYS.IO.COPY_GUI.CANCEL"
-
 			if CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Exec = true AND CPCDOS_INSTANCE.SCI_INSTANCE.GUI_Mode = true Then
 				GUI_CopyMonitor = true
+				if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_GUI.PCT"
+				if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_GUI.BYTES"
+				if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_GUI.SPEED"
+				Var_Annuler = "CPC_SYS.IO.COPY_GUI.CANCEL"
 
 				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.PCT = 0", _CLE_, 3, 0, "")
 				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.BYTES = 0", _CLE_, 3, 0, "")
@@ -1581,27 +1594,148 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				' Laisser le thread GUI demarrer et s'initialiser avant de lancer la copie
 				Sleep 150
 				doevents(0)
+			ElseIf Internal_CopyWorker Then
+				if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_CUI.PCT"
+				if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_CUI.BYTES"
+				if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_CUI.SPEED"
+				Var_Annuler = Console_CancelVar
+			ElseIf Affichage > 0 Then
+				Console_CopyMonitor = true
+				if Var_Progression = "" Then Var_Progression = "CPC_SYS.IO.COPY_CUI.PCT"
+				if Var_Octets = "" Then Var_Octets = "CPC_SYS.IO.COPY_CUI.BYTES"
+				if Var_OctetsParSec = "" Then Var_OctetsParSec = "CPC_SYS.IO.COPY_CUI.SPEED"
+				Var_Annuler = Console_CancelVar
 			End if
 			
-			IF Not Var_Progression = "" Then
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Copie du fichier '" & Source & "' a '" & Destination & "' (Priorite:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] File copy '" & Source & "' a '" & Destination & "' (Priority:" & Priorite_copie & ")  ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					End if
-				END IF
-			Else
-				IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
-					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
-						DEBUG("[CpcdosC+] Copie du fichier '" & Source & "' a '" & Destination & "' avec " & Var_Progression & " comme indicateur (Priorite:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					Else
-						DEBUG("[CpcdosC+] File copy '" & Source & "' a '" & Destination & "' with " & Var_Progression & " like indicator (Priority:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
-					End if
-				END IF
+			If Internal_CopyWorker = false Then
+				IF Not Var_Progression = "" Then
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Copie du fichier '" & Source & "' a '" & Destination & "' (Priorite:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] File copy '" & Source & "' a '" & Destination & "' (Priority:" & Priorite_copie & ")  ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					END IF
+				Else
+					IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
+						IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+							DEBUG("[CpcdosC+] Copie du fichier '" & Source & "' a '" & Destination & "' avec " & Var_Progression & " comme indicateur (Priorite:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						Else
+							DEBUG("[CpcdosC+] File copy '" & Source & "' a '" & Destination & "' with " & Var_Progression & " like indicator (Priority:" & Priorite_copie & ") ...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_Normal, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+						End if
+					END IF
+				End if
 			End if
 
-			Resultat = CPCDOS_INSTANCE.Copier_Fichier(Source, Destination, Priorite_copie, Var_Progression, Var_Octets, Var_OctetsParSec, Var_Annuler, _CLE_) ' Utilisation Temporaire du CRT0 FreeBasic --> DOS
+			if Console_CopyMonitor Then
+				Dim Console_Commande as String
+				Dim Console_TotalOctets as UInteger = CPCDOS_INSTANCE.Taille_Fichier(Source)
+				Dim Console_Progression as Integer = 0
+				Dim Console_Octets as UInteger = 0
+				Dim Console_Vitesse as UInteger = 0
+				Dim Console_PrecedentPourcent as Integer = -1
+				Dim Console_PrecedentOctets as UInteger = 0
+				Dim Console_PrecedentVitesse as UInteger = 0
+				Dim Console_AttenteTicks as Integer = 0
+				Dim Console_Barre as String
+				Dim Console_Texte as String
+				Dim Console_TailleTexte as String
+				Dim Console_TailleTotaleTexte as String
+				Dim Console_VitesseTexte as String
+				Dim Console_BarreMax as Integer = 32
+				Dim Console_BarreRemplie as Integer = 0
+
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Var_Progression & " = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Var_Octets & " = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Var_OctetsParSec & " = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_CancelVar & " = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_ResultVar & " = 0", _CLE_, 3, 0, "")
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_DoneVar & " = 0", _CLE_, 3, 0, "")
+
+				' Commande worker volontairement courte: les variables de suivi sont forcees cote worker.
+				Console_Commande = "CMD/ /THREAD[STD] COPY/ " & Source & ", " & Destination & " /INTERNALCOPYWORKER"
+				' Ne pas injecter /PRIORITE:* ici: le parseur copy/ interne peut perdre la virgule source,destination.
+
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL(Console_Commande, _CLE_, 3, 0, "")
+
+				while val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Console_DoneVar, 3, _CLE_)) = 0
+					Console_Progression = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Var_Progression, 3, _CLE_))
+					Console_Octets = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Var_Octets, 3, _CLE_))
+					Console_Vitesse = val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Var_OctetsParSec, 3, _CLE_))
+
+					if Console_Progression <> Console_PrecedentPourcent OR Console_Octets <> Console_PrecedentOctets OR Console_Vitesse <> Console_PrecedentVitesse Then
+						Console_AttenteTicks = 0
+						Console_PrecedentPourcent = Console_Progression
+						Console_PrecedentOctets = Console_Octets
+						Console_PrecedentVitesse = Console_Vitesse
+
+						Console_BarreRemplie = CInt((Console_Progression * Console_BarreMax) / 100)
+						if Console_BarreRemplie < 0 Then Console_BarreRemplie = 0
+						if Console_BarreRemplie > Console_BarreMax Then Console_BarreRemplie = Console_BarreMax
+
+						if Console_BarreRemplie >= Console_BarreMax Then
+							Console_Barre = String(Console_BarreMax, ASC("#"))
+						ElseIf Console_BarreRemplie > 0 Then
+							Console_Barre = String(Console_BarreRemplie, ASC("#")) & ">" & String(Console_BarreMax - Console_BarreRemplie - 1, ASC("-"))
+						Else
+							Console_Barre = ">" & String(Console_BarreMax - 1, ASC("-"))
+						End if
+
+						if Console_Octets < CPCDOS_INSTANCE._KILO_OCTETS Then
+							Console_TailleTexte = STR(Console_Octets) & " B"
+						elseif Console_Octets < CPCDOS_INSTANCE._MEGA_OCTETS Then
+							Console_TailleTexte = STR(CINT(Console_Octets / CPCDOS_INSTANCE._KILO_OCTETS)) & " KB"
+						elseif Console_Octets < CPCDOS_INSTANCE._GIGA_OCTETS Then
+							Console_TailleTexte = STR(CINT(Console_Octets / CPCDOS_INSTANCE._MEGA_OCTETS)) & " MB"
+						Else
+							Console_TailleTexte = STR(CINT(Console_Octets / CPCDOS_INSTANCE._GIGA_OCTETS)) & " GB"
+						End if
+
+						if Console_TotalOctets < CPCDOS_INSTANCE._KILO_OCTETS Then
+							Console_TailleTotaleTexte = STR(Console_TotalOctets) & " B"
+						elseif Console_TotalOctets < CPCDOS_INSTANCE._MEGA_OCTETS Then
+							Console_TailleTotaleTexte = STR(CINT(Console_TotalOctets / CPCDOS_INSTANCE._KILO_OCTETS)) & " KB"
+						elseif Console_TotalOctets < CPCDOS_INSTANCE._GIGA_OCTETS Then
+							Console_TailleTotaleTexte = STR(CINT(Console_TotalOctets / CPCDOS_INSTANCE._MEGA_OCTETS)) & " MB"
+						Else
+							Console_TailleTotaleTexte = STR(CINT(Console_TotalOctets / CPCDOS_INSTANCE._GIGA_OCTETS)) & " GB"
+						End if
+
+						if Console_Vitesse < CPCDOS_INSTANCE._KILO_OCTETS Then
+							Console_VitesseTexte = STR(Console_Vitesse) & " B/s"
+						elseif Console_Vitesse < CPCDOS_INSTANCE._MEGA_OCTETS Then
+							Console_VitesseTexte = STR(CINT(Console_Vitesse / CPCDOS_INSTANCE._KILO_OCTETS)) & " KB/s"
+						elseif Console_Vitesse < CPCDOS_INSTANCE._GIGA_OCTETS Then
+							Console_VitesseTexte = STR(CINT(Console_Vitesse / CPCDOS_INSTANCE._MEGA_OCTETS)) & " MB/s"
+						Else
+							Console_VitesseTexte = STR(CINT(Console_Vitesse / CPCDOS_INSTANCE._GIGA_OCTETS)) & " GB/s"
+						End if
+
+						Console_Texte = "[COPY] [" & Console_Barre & "] " & Console_Progression & "% - " & Console_TailleTexte & "/" & Console_TailleTotaleTexte & " - " & Console_VitesseTexte & "      "
+						DEBUG(Console_Texte, Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CR, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+					Else
+						Console_AttenteTicks += 1
+						if Console_AttenteTicks > 400 Then Exit while
+					End if
+
+					Sleep 25
+					doevents(0)
+				wend
+
+				DEBUG("", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
+				if val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Console_DoneVar, 3, _CLE_)) = 0 Then
+					IF CPCDOS_INSTANCE.Utilisateur_Langage = 0 Then
+						DEBUG("[CpcdosC+] Worker copy console indisponible, bascule en copie directe...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+					Else
+						DEBUG("[CpcdosC+] Console copy worker unavailable, switching to direct copy...", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_AVERTISSEMENT, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
+					End if
+					Resultat = CPCDOS_INSTANCE.Copier_Fichier(Source, Destination, Priorite_copie, Var_Progression, Var_Octets, Var_OctetsParSec, Var_Annuler, _CLE_)
+				Else
+					Resultat = (val(CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CCP_Lire_Variable(Console_ResultVar, 3, _CLE_)) = 1)
+				End if
+			Else
+				Resultat = CPCDOS_INSTANCE.Copier_Fichier(Source, Destination, Priorite_copie, Var_Progression, Var_Octets, Var_OctetsParSec, Var_Annuler, _CLE_) ' Utilisation Temporaire du CRT0 FreeBasic --> DOS
+			End if
 			if GUI_CopyMonitor Then
 				if Resultat = true Then
 					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.RESULT = 1", _CLE_, 3, 0, "")
@@ -1609,9 +1743,16 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.RESULT = 0", _CLE_, 3, 0, "")
 				End if
 				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ CPC_SYS.IO.COPY_GUI.DONE = 1", _CLE_, 3, 0, "")
+			ElseIf Internal_CopyWorker Then
+				if Resultat = true Then
+					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_ResultVar & " = 1", _CLE_, 3, 0, "")
+				Else
+					CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_ResultVar & " = 0", _CLE_, 3, 0, "")
+				End if
+				CPCDOS_INSTANCE.SHELLCCP_INSTANCE.CpcdosCP_SHELL("SET/ " & Console_DoneVar & " = 1", _CLE_, 3, 0, "")
 			End if
 			
-			If Resultat = false Then
+			If Resultat = false And Internal_CopyWorker = false Then
 				' ERREUR
 				DEBUG("0", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				
@@ -1621,7 +1762,7 @@ Function _SHELL_Cpcdos_OSx__.CpcdosCP_SHELL(ByVal _COMMANDE_ as String, byval _C
 				Else
 					DEBUG("[CpcdosC+] " & Message_erreur & ". '" & Param & "'", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.AvecDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_CPCDOS, RetourVAR)
 				End if
-			Else
+			ElseIf Internal_CopyWorker = false Then
 				' OK
 				DEBUG("OK", Affichage, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, RetourVAR)
 				
