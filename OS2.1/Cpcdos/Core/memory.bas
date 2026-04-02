@@ -1944,17 +1944,9 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		' Create text buffer for final GUI drawing
 		Dim buffer_text_font as integer = Creer_BITMAP("FONT_BUFFER", Size_text_len, font_SY, 0, 0, 0, 0, 2222)
 
-		' Create char buffer (statique : reutilise si meme taille de glyphe, evite malloc/free par appel de rendu)
-		Static _char_buf_id as integer
-		Static _char_buf_sx as integer
-		Static _char_buf_sy as integer
-		if _char_buf_id <= 0 OR _char_buf_sx <> font_SX OR _char_buf_sy <> font_SY Then
-			if _char_buf_id > 0 Then Supprimer_BITMAP(_char_buf_id)
-			_char_buf_id = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 0, 0, 0, 0, 2222)
-			_char_buf_sx = font_SX
-			_char_buf_sy = font_SY
-		End if
-		dim buffer_char as integer = _char_buf_id
+		' Create char buffer : alloue a chaque appel pour eviter toute collision inter-threads
+		' (l'ancien buffer Static etait partage entre threads → race condition → crash)
+		dim buffer_char as integer = Creer_BITMAP("FONT_CHAR_BUFFER", font_SX, font_SY, 0, 0, 0, 0, 2222)
 
 		Dim ptr_font_src as any ptr = 0
 		Dim ptr_buffer_text as any ptr = 0
@@ -1966,7 +1958,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 
 		if ptr_font_src = 0 OR ptr_buffer_text = 0 OR ptr_buffer_char = 0 Then
 			DEBUG("Ecrire_ecran_font() : Abort, invalid bitmap pointer (font/buffer).", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
-			_char_buf_id = 0 : Supprimer_BITMAP(buffer_char)  ' forcer recreation au prochain appel
+			Supprimer_BITMAP(buffer_char)
 			Supprimer_BITMAP(buffer_text_font)
 			return false
 		End if
@@ -2050,6 +2042,7 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 		ptr_buffer_text = this.donnees_RVBA(buffer_text_font)
 		if ptr_buffer_text = 0 Then
 			DEBUG("Ecrire_ecran_font() : Abort, invalid text buffer pointer before final write.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
+			Supprimer_BITMAP(buffer_char)
 			Supprimer_BITMAP(buffer_text_font)
 			return false
 		End if
@@ -2061,7 +2054,8 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			if ptr_target_bitmap = 0 Then
 				DEBUG("Ecrire_ecran_font() : Abort, invalid target bitmap pointer.", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_ERREUR, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 				SORTIR_SectionCritique()
-				Supprimer_BITMAP(buffer_text_font)  ' buffer_char est statique, on ne le detruit pas
+				Supprimer_BITMAP(buffer_char)
+				Supprimer_BITMAP(buffer_text_font)
 				return false
 			End if
 			put ptr_target_bitmap, (PX, PY), ptr_buffer_text, alpha
@@ -2074,8 +2068,9 @@ Function _memoire_bitmap.Ecrire_ecran_font(byval bitmap_id as integer, byval Tex
 			DEBUG("Ecrire_ecran_font() : OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
 		End if
 
-		' Clean buffers (buffer_char est statique et reutilise : seul buffer_text_font est detruit)
+		' Clean buffers (les deux sont alloues par appel, les deux doivent etre detruits)
 		Supprimer_BITMAP(buffer_text_font)
+		Supprimer_BITMAP(buffer_char)
 
 		IF CPCDOS_INSTANCE.SYSTEME_INSTANCE.get_DBG_DEBUG() > 0 Then
 			DEBUG("Ecrire_ecran_font() : Clean buffers OK", CPCDOS_INSTANCE.DEBUG_INSTANCE.Ecran, CPCDOS_INSTANCE.DEBUG_INSTANCE.NonLog, CPCDOS_INSTANCE.DEBUG_INSTANCE.Couleur_OK, 0, CPCDOS_INSTANCE.DEBUG_INSTANCE.CRLF, CPCDOS_INSTANCE.DEBUG_INSTANCE.SansDate, CPCDOS_INSTANCE.DEBUG_INSTANCE.SIGN_AFF, "")
